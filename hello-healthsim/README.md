@@ -133,6 +133,63 @@ See [examples/](examples/) for more detailed examples with expected outputs.
 
 ---
 
+## Hello, Oncology!
+
+PatientSim includes comprehensive oncology scenario skills for generating realistic cancer patient journeys with accurate staging, biomarkers, and treatment protocols.
+
+### Example 6: Breast Cancer Patient
+
+```
+Generate a 55-year-old female with Stage IIA ER-positive, HER2-negative breast cancer
+```
+
+This generates a complete breast cancer patient with:
+- TNM staging (T2 N0 M0)
+- Biomarkers (ER 95%, PR 80%, HER2 1+, Ki-67 15%)
+- Molecular subtype (Luminal A)
+- Oncotype DX score and chemotherapy benefit assessment
+- Surgical details (lumpectomy, sentinel node biopsy)
+- Treatment plan (surgery → radiation → hormonal therapy)
+
+### Example 7: Lung Cancer with Targeted Therapy
+
+```
+Generate a 68-year-old male with Stage IV NSCLC, EGFR exon 19 deletion positive, with brain metastases
+```
+
+This generates biomarker-driven lung cancer treatment:
+- Comprehensive molecular testing (EGFR, ALK, ROS1, PD-L1)
+- Brain metastases management (SRS)
+- Targeted therapy selection (osimertinib for EGFR mutation)
+- Surveillance imaging schedule
+
+### Example 8: Colorectal Cancer with Biomarkers
+
+```
+Generate a 58-year-old with Stage III colon cancer, MSI-high status
+```
+
+This generates colorectal cancer with genomic context:
+- MSI/MMR testing results
+- RAS/BRAF mutation status
+- Genetic counseling referral (Lynch syndrome evaluation)
+- Adjuvant chemotherapy (CAPOX) with duration
+
+### Example 9: Cancer Patient with Comorbidities
+
+```
+Generate a 70-year-old with Stage IIIB colon cancer who has CKD Stage 3b and Type 2 diabetes requiring chemotherapy dose adjustments
+```
+
+This generates multi-morbid oncology patients:
+- Chemotherapy dose modifications for renal function
+- Multi-specialty care coordination
+- Enhanced monitoring protocols
+
+See [examples/oncology-examples.md](examples/oncology-examples.md) for detailed oncology examples with complete outputs.
+
+---
+
 ## What's Included
 
 ```
@@ -208,6 +265,15 @@ Once you're comfortable with basic generation:
 | "pharmacy claim for metformin" | NCPDP claim + pricing + copay |
 | "drug interaction alert" | Claim + DUR response + clinical info |
 | "specialty drug claim" | High-cost drug + prior auth + copay assistance |
+
+### Oncology (PatientSim)
+
+| Request | What You Get |
+|---------|--------------|
+| "breast cancer patient" | Patient + staging + biomarkers + treatment plan |
+| "lung cancer EGFR positive" | Patient + molecular testing + targeted therapy |
+| "colon cancer MSI-high" | Patient + genomic testing + adjuvant chemo |
+| "cancer with comorbidities" | Multi-morbid patient + dose adjustments |
 
 ### Format Requests
 
