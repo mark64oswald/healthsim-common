@@ -297,4 +297,4 @@ OBX|1|NM|2345-7^Glucose^LN||98|mg/dL|70-100|N|||F|||20250115150000
 - [hl7v2-orm.md](hl7v2-orm.md) - Order messages
 - [../references/hl7v2-segments.md](../references/hl7v2-segments.md) - Segment reference
 - [../references/code-systems.md](../references/code-systems.md) - LOINC codes
-- [../scenarios/patientsim/orders-results.md](../scenarios/patientsim/orders-results.md) - Orders/results scenario
+- [../skills/patientsim/orders-results.md](../skills/patientsim/orders-results.md) - Orders/results scenario

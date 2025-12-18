@@ -190,9 +190,9 @@ Generate a patient as FHIR R4 Bundle
 ### "Claude doesn't know about specific scenarios"
 
 Add the relevant scenario file:
-- Diabetes issues → Add `scenarios/patientsim/diabetes-management.md`
-- Claims issues → Add `scenarios/membersim/professional-claims.md`
-- Pharmacy issues → Add `scenarios/rxmembersim/retail-pharmacy.md`
+- Diabetes issues → Add `skills/patientsim/diabetes-management.md`
+- Claims issues → Add `skills/membersim/professional-claims.md`
+- Pharmacy issues → Add `skills/rxmembersim/retail-pharmacy.md`
 
 ### "MCP server not connecting"
 

@@ -293,7 +293,7 @@ healthsim/
 │   │   ├── SKILL.md
 │   │   ├── scripts/
 │   │   ├── references/
-│   │   └── scenarios/
+│   │   └── skills/
 │   ├── membersim/
 │   │   └── [same structure]
 │   ├── rxmembersim/
@@ -376,7 +376,7 @@ Claude: [Brief response description]
 When generating [entities], follow this workflow:
 
 1. **Understand the request** - Identify scenario, count, variations
-2. **Load scenario** - Read appropriate `scenarios/*.md` file
+2. **Load scenario** - Read appropriate `skills/*.md` file
 3. **Generate data** - Create canonical JSON per `references/canonical-model.md`
 4. **Validate** - Run `scripts/validate_[entity].py`
 5. **Export** - Transform to requested format via `scripts/export_*.py`
@@ -385,7 +385,7 @@ When generating [entities], follow this workflow:
 
 | Scenario | File | Description | Triggers |
 |----------|------|-------------|----------|
-| [Name] | `scenarios/[name].md` | [Description] | "[trigger phrases]" |
+| [Name] | `skills/[name].md` | [Description] | "[trigger phrases]" |
 
 ## Output Formats
 
@@ -422,10 +422,10 @@ All generated data is validated for:
 
 ## Extension
 
-To add new scenarios, see `scenarios/_template.md`.
+To add new scenarios, see `skills/_template.md`.
 ```
 
-#### 2.3 Scenario Template (scenarios/_template.md)
+#### 2.3 Scenario Template (skills/_template.md)
 
 ```markdown
 # [Scenario Name]
@@ -765,7 +765,7 @@ skills/patientsim/
 │   ├── lab-tests.csv                # Lab tests with LOINC + normal ranges
 │   ├── vital-signs.csv              # Vital sign definitions
 │   └── fhir-mappings.md             # Field mapping documentation
-└── scenarios/
+└── skills/
     ├── _template.md                 # Template for new scenarios
     ├── diabetes.md                  # Diabetes management (enhanced)
     ├── heart-failure.md             # Heart failure (enhanced)
@@ -798,7 +798,7 @@ skills/patientsim/
    - CSV: Flattened patient records
    - Parquet: Using pyarrow
 
-5. **Scenarios** (scenarios/*.md)
+5. **Scenarios** (skills/*.md)
    - Merge existing skills with new format
    - Add event sequences
    - Include variation triggers
@@ -856,7 +856,7 @@ skills/membersim/
 │   ├── place-of-service.csv
 │   ├── plan-types.csv
 │   └── x12-mappings.md
-└── scenarios/
+└── skills/
     ├── _template.md
     ├── professional-claims.md       # From existing skill
     ├── facility-claims.md           # From existing skill
@@ -903,7 +903,7 @@ skills/rxmembersim/
 │   ├── formulary-tiers.csv
 │   ├── dur-codes.csv
 │   └── ncpdp-mappings.md
-└── scenarios/
+└── skills/
     ├── _template.md
     ├── retail-pharmacy.md           # From existing skill
     ├── specialty-pharmacy.md        # From existing skill
@@ -1129,7 +1129,7 @@ This guide will have you generating synthetic healthcare data in minutes.
 
 ## Next Steps
 
-- Explore [clinical scenarios](../skills/patientsim/scenarios/)
+- Explore [clinical scenarios](../skills/patientsim/)
 - Try [batch generation](user-guide/batch-generation.md)
 - Load data to [analytics databases](user-guide/analytics-integration.md) (DuckDB, Databricks)
 ```

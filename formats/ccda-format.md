@@ -747,14 +747,14 @@ When generating C-CDA documents for oncology patients:
 
 ## Related Skills
 
-- [patientsim/SKILL.md](../scenarios/patientsim/SKILL.md) - PatientSim foundational model and entities
+- [patientsim/SKILL.md](../skills/patientsim/SKILL.md) - PatientSim foundational model and entities
 - [data-models.md](../references/data-models.md) - Entity schemas and relationships
 - [code-systems.md](../references/code-systems.md) - Healthcare code system references
 - [fhir-r4.md](fhir-r4.md) - FHIR R4 format for comparison
 - [hl7v2-adt.md](hl7v2-adt.md) - HL7v2 format for legacy systems
-- [diabetes-management.md](../scenarios/patientsim/diabetes-management.md) - Diabetes clinical patterns
-- [heart-failure.md](../scenarios/patientsim/heart-failure.md) - Heart failure clinical patterns
-- [chronic-kidney-disease.md](../scenarios/patientsim/chronic-kidney-disease.md) - CKD clinical patterns
+- [diabetes-management.md](../skills/patientsim/diabetes-management.md) - Diabetes clinical patterns
+- [heart-failure.md](../skills/patientsim/heart-failure.md) - Heart failure clinical patterns
+- [chronic-kidney-disease.md](../skills/patientsim/chronic-kidney-disease.md) - CKD clinical patterns
 - [oncology-domain.md](../references/oncology-domain.md) - Oncology clinical patterns
 
 ## Reference Data

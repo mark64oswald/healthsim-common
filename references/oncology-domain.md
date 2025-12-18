@@ -1339,11 +1339,11 @@ if metastatic:
 ## Related Skills
 
 **Cancer-Specific Scenario Skills** (to be developed):
-- skills/scenarios/breast-cancer.md
-- skills/scenarios/lung-cancer.md
-- skills/scenarios/colorectal-cancer.md
-- skills/scenarios/lymphoma.md
-- skills/scenarios/prostate-cancer.md
+- skills/breast-cancer.md
+- skills/lung-cancer.md
+- skills/colorectal-cancer.md
+- skills/lymphoma.md
+- skills/prostate-cancer.md
 
 **Complementary Domain Skills**:
 - skills/healthcare/clinical-domain.md - General clinical knowledge

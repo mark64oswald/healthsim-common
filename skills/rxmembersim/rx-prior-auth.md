@@ -676,12 +676,173 @@ Full clinical review for high-cost or specialty drugs.
 3. Approved quantity must not exceed FDA max dosing
 4. Appeal deadlines must meet regulatory requirements (72 hours Medicare Part D)
 
+## Electronic Prior Authorization (ePA)
+
+Electronic Prior Authorization (ePA) enables real-time digital PA transactions, replacing fax-based workflows.
+
+### NCPDP SCRIPT Standard
+
+```
+Version: SCRIPT 2017071 (current)
+Transaction Types:
+  - PAInitiationRequest    # Start PA process
+  - PAInitiationResponse   # Return questions
+  - PARequest              # Submit answers
+  - PAResponse             # Return decision
+  - PAAppealRequest/Response
+  - PACancelRequest/Response
+```
+
+### ePA Workflow
+
+```
+1. Prescriber sends Rx (NewRx)
+   ↓
+2. Pharmacy submits claim → Rejects: "PA Required" (75)
+   ↓
+3. Pharmacy sends PAInitiationRequest
+   ↓
+4. PBM returns PAInitiationResponse with questions
+   ↓
+5. Prescriber completes questions in EHR
+   ↓
+6. PARequest submitted with answers
+   ↓
+7. PBM processes, returns PAResponse
+   ↓
+8. If approved: PA number issued, claim resubmitted
+```
+
+### Real-Time Determination
+
+```yaml
+real_time_pa:
+  auto_approval:
+    response_time: "<30 seconds"
+    eligibility:
+      - Claims history shows prior use
+      - Member has diagnosis on file
+      - Step therapy already completed
+
+  standard:
+    response_time: "24-72 hours"
+    requires: "Clinical pharmacist review"
+```
+
+### Question Set Structure
+
+```yaml
+question:
+  id: "Q001"
+  text: "Has the patient tried and failed metformin?"
+  type: "boolean"
+  required: true
+
+question:
+  id: "Q002"
+  text: "What is the patient's current A1C?"
+  type: "numeric"
+  required: true
+  validation:
+    min: 4.0
+    max: 20.0
+
+question:
+  id: "Q003"
+  text: "Select all diagnoses that apply:"
+  type: "multi_select"
+  required: true
+  options:
+    - code: "E11.9"
+      text: "Type 2 diabetes without complications"
+    - code: "E11.65"
+      text: "Type 2 diabetes with hyperglycemia"
+
+# Conditional question
+question:
+  id: "Q004"
+  text: "Why was metformin discontinued?"
+  type: "single_select"
+  required: true
+  condition:
+    question: "Q001"
+    answer: true
+  options:
+    - "GI intolerance"
+    - "Renal insufficiency"
+    - "Lactic acidosis risk"
+    - "Inadequate response"
+```
+
+### ePA Message Examples
+
+**PAInitiationRequest:**
+```xml
+<PAInitiationRequest>
+  <Patient>
+    <MemberID>MEM001</MemberID>
+    <DateOfBirth>1965-03-15</DateOfBirth>
+  </Patient>
+  <Drug>
+    <NDC>00169413512</NDC>
+    <DrugName>Ozempic</DrugName>
+    <Quantity>1</Quantity>
+    <DaysSupply>28</DaysSupply>
+  </Drug>
+  <Prescriber>
+    <NPI>1234567890</NPI>
+  </Prescriber>
+</PAInitiationRequest>
+```
+
+**PAResponse (Approved):**
+```xml
+<PAResponse>
+  <PARequestID>EPA-2024-001234</PARequestID>
+  <Decision>APPROVED</Decision>
+  <PANumber>PA-2024-567890</PANumber>
+  <EffectiveDate>2024-01-15</EffectiveDate>
+  <ExpirationDate>2024-07-15</ExpirationDate>
+  <ApprovedQuantity>1</ApprovedQuantity>
+</PAResponse>
+```
+
+### ePA Status Tracking
+
+| Status | Description |
+|--------|-------------|
+| INITIATED | Request started, awaiting questions |
+| PENDING_PRESCRIBER | Questions sent, awaiting answers |
+| SUBMITTED | Answers received, under review |
+| APPROVED | PA granted |
+| DENIED | PA not granted |
+| CANCELLED | Request withdrawn |
+| APPEALED | Under appeal |
+
+### ePA Performance Metrics
+
+```yaml
+epa_metrics:
+  auto_approval_rate: "35-45%"
+  avg_turnaround_time:
+    auto: "<30 seconds"
+    standard: "24-48 hours"
+    complex: "48-72 hours"
+  approval_rate: "75-85%"
+
+comparison_to_fax:
+  fax_turnaround: "3-5 days"
+  epa_turnaround: "24-48 hours"
+  improvement: "60-80% faster"
+```
+
 ## Output Formats
 
 | Format | Request | Use Case |
 |--------|---------|----------|
 | JSON | default | API testing |
 | NCPDP P1/P2 | "as NCPDP PA" | PA transaction |
+| NCPDP SCRIPT | "as ePA" | Electronic PA workflow |
 | PDF | "PA letter" | Provider/member notification |
 | CSV | "as CSV" | PA tracking report |
 

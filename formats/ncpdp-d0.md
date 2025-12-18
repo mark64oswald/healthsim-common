@@ -359,7 +359,7 @@ Pricing:
 
 ## Related Skills
 
-- [../scenarios/rxmembersim/retail-pharmacy.md](../scenarios/rxmembersim/retail-pharmacy.md) - Pharmacy claims
-- [../scenarios/rxmembersim/dur-alerts.md](../scenarios/rxmembersim/dur-alerts.md) - DUR processing
-- [../scenarios/rxmembersim/formulary-management.md](../scenarios/rxmembersim/formulary-management.md) - Coverage
+- [../skills/rxmembersim/retail-pharmacy.md](../skills/rxmembersim/retail-pharmacy.md) - Pharmacy claims
+- [../skills/rxmembersim/dur-alerts.md](../skills/rxmembersim/dur-alerts.md) - DUR processing
+- [../skills/rxmembersim/formulary-management.md](../skills/rxmembersim/formulary-management.md) - Coverage
 - [../references/code-systems.md](../references/code-systems.md) - NDC codes

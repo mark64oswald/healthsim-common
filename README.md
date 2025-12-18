@@ -72,7 +72,7 @@ healthsim-workspace/
 │   ├── TROUBLESHOOTING.md     # Common issues
 │   └── examples/              # Detailed examples
 │
-├── scenarios/                  # Domain-specific generation
+├── skills/                  # Domain-specific generation
 │   ├── patientsim/            # Clinical data (9 scenarios + 3 oncology)
 │   │   ├── SKILL.md
 │   │   ├── diabetes-management.md
@@ -275,7 +275,7 @@ See [hello-healthsim/](hello-healthsim/) for detailed setup instructions.
 - **[Contributing](docs/contributing.md)** - Development guidelines
 
 ### Reference
-- **[scenarios/](scenarios/)** - Clinical scenarios organized by product
+- **[skills/](skills/)** - Clinical scenarios organized by product
 - **[formats/](formats/)** - Output format transformations (FHIR, HL7v2, X12, NCPDP)
 - **[references/](references/)** - Code systems, clinical rules, terminology
 

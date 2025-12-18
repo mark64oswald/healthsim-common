@@ -278,8 +278,8 @@ List complementary skills Claude might need:
 ## Related Skills
 
 - **healthcare/clinical-domain.md** - Foundation for all medical knowledge
-- **scenarios/pneumonia.md** - For pneumonia-source sepsis details
-- **scenarios/uti.md** - For urosepsis details
+- **skills/patientsim/sepsis-acute-care.md** - For pneumonia-source sepsis details
+- **skills/patientsim/sepsis-acute-care.md** - For urosepsis details
 - **fhir/observation-vitals.md** - For encoding vital signs to FHIR
 - **validation/clinical-plausibility.md** - Ensures generated sepsis patients are realistic
 ```

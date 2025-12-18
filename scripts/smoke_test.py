@@ -63,10 +63,10 @@ def test_directory_structure(test: SmokeTest):
     print_header("1. Directory Structure")
 
     required_dirs = [
-        "scenarios/patientsim",
-        "scenarios/patientsim/oncology",
-        "scenarios/membersim",
-        "scenarios/rxmembersim",
+        "skills/patientsim",
+        "skills/patientsim/oncology",
+        "skills/membersim",
+        "skills/rxmembersim",
         "references/oncology",
         "formats",
         "hello-healthsim",
@@ -88,9 +88,9 @@ def test_oncology_skills(test: SmokeTest):
 
     oncology_skills = [
         "references/oncology-domain.md",  # Foundational oncology knowledge (in references/)
-        "scenarios/patientsim/oncology/breast-cancer.md",
-        "scenarios/patientsim/oncology/lung-cancer.md",
-        "scenarios/patientsim/oncology/colorectal-cancer.md",
+        "skills/patientsim/oncology/breast-cancer.md",
+        "skills/patientsim/oncology/lung-cancer.md",
+        "skills/patientsim/oncology/colorectal-cancer.md",
     ]
 
     for skill_path in oncology_skills:
@@ -144,7 +144,7 @@ def test_skill_cross_references(test: SmokeTest):
     print_header("4. Cross-References")
 
     # Check PatientSim SKILL.md references oncology
-    patientsim_skill = test.base_path / "scenarios/patientsim/SKILL.md"
+    patientsim_skill = test.base_path / "skills/patientsim/SKILL.md"
     if patientsim_skill.exists():
         content = patientsim_skill.read_text()
         test.check(
@@ -154,7 +154,7 @@ def test_skill_cross_references(test: SmokeTest):
         )
 
     # Check MemberSim SKILL.md references oncology
-    membersim_skill = test.base_path / "scenarios/membersim/SKILL.md"
+    membersim_skill = test.base_path / "skills/membersim/SKILL.md"
     if membersim_skill.exists():
         content = membersim_skill.read_text()
         test.check(
@@ -169,7 +169,7 @@ def test_skill_cross_references(test: SmokeTest):
         )
 
     # Check relative links resolve
-    oncology_readme = test.base_path / "scenarios/patientsim/oncology/README.md"
+    oncology_readme = test.base_path / "skills/patientsim/oncology/README.md"
     if oncology_readme.exists():
         content = oncology_readme.read_text()
         # Extract markdown links
@@ -248,10 +248,10 @@ def test_json_examples_in_skills(test: SmokeTest):
     print_header("6. JSON Example Validation")
 
     skill_files = [
-        "scenarios/patientsim/oncology/breast-cancer.md",
-        "scenarios/patientsim/oncology/lung-cancer.md",
-        "scenarios/patientsim/oncology/colorectal-cancer.md",
-        "scenarios/membersim/SKILL.md",
+        "skills/patientsim/oncology/breast-cancer.md",
+        "skills/patientsim/oncology/lung-cancer.md",
+        "skills/patientsim/oncology/colorectal-cancer.md",
+        "skills/membersim/SKILL.md",
     ]
 
     for skill_path in skill_files:
@@ -285,9 +285,9 @@ def test_cross_product_integration(test: SmokeTest):
 
     # Check that oncology spans all three products
     products = {
-        "PatientSim": "scenarios/patientsim/oncology/breast-cancer.md",
-        "MemberSim": "scenarios/membersim/SKILL.md",
-        "RxMemberSim": "scenarios/rxmembersim/SKILL.md",
+        "PatientSim": "skills/patientsim/oncology/breast-cancer.md",
+        "MemberSim": "skills/membersim/SKILL.md",
+        "RxMemberSim": "skills/rxmembersim/SKILL.md",
     }
 
     oncology_coverage = {}

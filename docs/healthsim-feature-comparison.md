@@ -90,8 +90,8 @@ This document compares features from the current Python-library HealthSim archit
 
 | Feature | Current (Python) | Skills-First | Notes on Skills-First Implementation |
 |---------|------------------|--------------|--------------------------------------|
-| **Pre-built clinical scenarios** | ✅ Skills + Generator | ✅ `scenarios/*.md` | Richer scenario descriptions possible |
-| **Custom scenarios** | ✅ Create Skill + code | ✅ Create `scenarios/*.md` | Easier to create (markdown vs. Python) |
+| **Pre-built clinical scenarios** | ✅ Skills + Generator | ✅ `skills/*.md` | Richer scenario descriptions possible |
+| **Custom scenarios** | ✅ Create Skill + code | ✅ Create `skills/*.md` | Easier to create (markdown vs. Python) |
 | **Scenario variations** | ✅ Skill variations | ✅ Documented in scenario | Claude selects appropriate variation |
 | **Multi-event patient journeys** | ✅ Timeline class | ✅ Scenario event patterns | Scenarios describe event sequences |
 | **Temporal progression** | ✅ Generator logic | ⚠️ Claude reasoning | Claude follows scenario timeline patterns |
@@ -142,7 +142,7 @@ This document compares features from the current Python-library HealthSim archit
 
 | Feature | Current (Python) | Skills-First | Notes on Skills-First Implementation |
 |---------|------------------|--------------|--------------------------------------|
-| **Add new scenario** | ⚠️ Skill + Generator code | ✅ Add `scenarios/*.md` | Much easier - just write markdown |
+| **Add new scenario** | ⚠️ Skill + Generator code | ✅ Add `skills/*.md` | Much easier - just write markdown |
 | **Add new entity type** | ✅ New Pydantic model | 🔄 Update canonical model | Add to `canonical-model.md` schema |
 | **Add new output format** | ✅ New Transformer class | ✅ Add `export_*.py` script | Create new export script |
 | **Add reference data** | ✅ Update Python module | ✅ Add CSV file | Add to `references/*.csv` |

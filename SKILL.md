@@ -70,7 +70,7 @@ Load these for clinical data generation:
 | **Maternal Health** | pregnancy, prenatal, L&D, postpartum | Prenatal visits, GDM, preeclampsia, delivery |
 | **Oncology** | cancer, tumor, chemotherapy, breast/lung/colorectal | Staging, treatment protocols, tumor markers |
 
-See: [scenarios/patientsim/](scenarios/patientsim/) for detailed skills
+See: [skills/patientsim/](skills/patientsim/) for detailed skills
 
 ### MemberSim Scenarios
 
@@ -87,7 +87,7 @@ Load these for claims and payer data:
 | **Value-Based Care** | quality measures, VBC, HEDIS | Attribution, measure compliance, incentives |
 | **Behavioral Health** | mental health, psychiatry, SUD, therapy | Psychotherapy, medication management, PHP/IOP |
 
-See: [scenarios/membersim/](scenarios/membersim/) for detailed skills
+See: [skills/membersim/](skills/membersim/) for detailed skills
 
 ### RxMemberSim Scenarios
 
@@ -104,7 +104,7 @@ Load these for pharmacy and PBM data:
 | **Rx Accumulators** | rx deductible, rx OOP, Part D phases | Pharmacy cost sharing tracking, TrOOP |
 | **Manufacturer Programs** | copay card, patient assistance | Copay cards, PAPs, hub services |
 
-See: [scenarios/rxmembersim/](scenarios/rxmembersim/) for detailed skills
+See: [skills/rxmembersim/](skills/rxmembersim/) for detailed skills
 
 ### TrialSim Scenarios
 
@@ -117,7 +117,7 @@ Load these for clinical trial data:
 | **Phase II PoC** | Phase 2, proof of concept, dose finding | Efficacy signal, dose selection (planned) |
 | **Adaptive Design** | adaptive, platform, basket, umbrella | Dynamic allocation, interim analyses (planned) |
 
-See: [scenarios/trialsim/](scenarios/trialsim/) for detailed skills
+See: [skills/trialsim/](skills/trialsim/) for detailed skills
 
 ## Output Formats
 

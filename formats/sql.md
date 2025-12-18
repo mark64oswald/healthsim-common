@@ -1006,7 +1006,7 @@ VALUES ('MRN00000001', '123 Main St, Apt #5');
 ## Related Skills
 
 - [csv.md](csv.md) - CSV export
-- [../scenarios/patientsim/SKILL.md](../scenarios/patientsim/SKILL.md) - Patient data
-- [../scenarios/membersim/SKILL.md](../scenarios/membersim/SKILL.md) - Claims data
-- [../scenarios/rxmembersim/SKILL.md](../scenarios/rxmembersim/SKILL.md) - Pharmacy data
+- [../skills/patientsim/SKILL.md](../skills/patientsim/SKILL.md) - Patient data
+- [../skills/membersim/SKILL.md](../skills/membersim/SKILL.md) - Claims data
+- [../skills/rxmembersim/SKILL.md](../skills/rxmembersim/SKILL.md) - Pharmacy data
 - [../references/code-systems.md](../references/code-systems.md) - Code systems

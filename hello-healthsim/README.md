@@ -464,7 +464,7 @@ Now you have three scenarios you can compare - perfect for testing how different
 ```
 healthsim-workspace/
 ├── SKILL.md                    # Master skill file (start here)
-├── scenarios/
+├── skills/
 │   ├── patientsim/            # Clinical/EMR data generation
 │   │   ├── diabetes-management.md
 │   │   ├── heart-failure.md

@@ -101,7 +101,7 @@ healthsim-workspace/
 │   ├── code-systems.md                # ICD-10, CPT, LOINC, etc.
 │   └── generation-patterns.md         # Distributions, reproducibility
 │
-├── scenarios/
+├── skills/
 │   ├── patientsim/
 │   │   ├── SKILL.md                   # PatientSim overview
 │   │   ├── diabetes-management.md
@@ -284,41 +284,41 @@ HealthSim is a family of Skills for generating realistic synthetic healthcare da
 
 "Generate a 65-year-old diabetic patient with hypertension"
 
-→ Claude uses [diabetes-management.md](scenarios/patientsim/diabetes-management.md)
+→ Claude uses [diabetes-management.md](skills/patientsim/diabetes-management.md)
 
 ### Generate Claims
 
 "Create professional claims for an office visit"
 
-→ Claude uses [professional-claims.md](scenarios/membersim/professional-claims.md)
+→ Claude uses [professional-claims.md](skills/membersim/professional-claims.md)
 
 ### Generate Pharmacy Data
 
 "Generate a pharmacy claim with a DUR alert for drug interaction"
 
-→ Claude uses [dur-alerts.md](scenarios/rxmembersim/dur-alerts.md)
+→ Claude uses [dur-alerts.md](skills/rxmembersim/dur-alerts.md)
 
 ## Skill Routing
 
 Based on user request, load the appropriate scenario skill:
 
 ### PatientSim Scenarios
-- [Diabetes Management](scenarios/patientsim/diabetes-management.md)
-- [Heart Failure](scenarios/patientsim/heart-failure.md)
-- [Chronic Kidney Disease](scenarios/patientsim/chronic-kidney-disease.md)
-- [Sepsis/Acute Care](scenarios/patientsim/sepsis-acute-care.md)
+- [Diabetes Management](skills/patientsim/diabetes-management.md)
+- [Heart Failure](skills/patientsim/heart-failure.md)
+- [Chronic Kidney Disease](skills/patientsim/chronic-kidney-disease.md)
+- [Sepsis/Acute Care](skills/patientsim/sepsis-acute-care.md)
 
 ### MemberSim Scenarios
-- [Professional Claims](scenarios/membersim/professional-claims.md)
-- [Facility Claims](scenarios/membersim/facility-claims.md)
-- [Prior Authorization](scenarios/membersim/prior-authorization.md)
-- [Accumulator Tracking](scenarios/membersim/accumulator-tracking.md)
+- [Professional Claims](skills/membersim/professional-claims.md)
+- [Facility Claims](skills/membersim/facility-claims.md)
+- [Prior Authorization](skills/membersim/prior-authorization.md)
+- [Accumulator Tracking](skills/membersim/accumulator-tracking.md)
 
 ### RxMemberSim Scenarios
-- [Retail Pharmacy](scenarios/rxmembersim/retail-pharmacy.md)
-- [Specialty Pharmacy](scenarios/rxmembersim/specialty-pharmacy.md)
-- [DUR Alerts](scenarios/rxmembersim/dur-alerts.md)
-- [Formulary Management](scenarios/rxmembersim/formulary-management.md)
+- [Retail Pharmacy](skills/rxmembersim/retail-pharmacy.md)
+- [Specialty Pharmacy](skills/rxmembersim/specialty-pharmacy.md)
+- [DUR Alerts](skills/rxmembersim/dur-alerts.md)
+- [Formulary Management](skills/rxmembersim/formulary-management.md)
 
 ## Output Formats
 
@@ -354,9 +354,9 @@ For code lookups and validation:
 | `patientsim.formats.fhir` | `formats/fhir-r4.md` | Transformation patterns |
 | `patientsim.formats.hl7v2` | `formats/hl7v2-adt.md` | Message templates |
 | `membersim.core.member` | `references/data-models.md` (Member entity) | Schema |
-| `membersim.claims` | `scenarios/membersim/*.md` | Scenario patterns |
-| `rxmembersim.dur` | `scenarios/rxmembersim/dur-alerts.md` | DUR rules |
-| `rxmembersim.formulary` | `scenarios/rxmembersim/formulary-management.md` | Formulary patterns |
+| `membersim.claims` | `skills/membersim/*.md` | Scenario patterns |
+| `rxmembersim.dur` | `skills/rxmembersim/dur-alerts.md` | DUR rules |
+| `rxmembersim.formulary` | `skills/rxmembersim/formulary-management.md` | Formulary patterns |
 
 ### 4.2 Functionality Translation
 

@@ -68,5 +68,5 @@ Claude generates a complete trial dataset:
 
 ## Related Skills
 
-- [scenarios/trialsim/SKILL.md](../scenarios/trialsim/SKILL.md) - Full TrialSim documentation
-- [scenarios/trialsim/phase3-pivotal.md](../scenarios/trialsim/phase3-pivotal.md) - Phase III details
+- [skills/trialsim/SKILL.md](../skills/trialsim/SKILL.md) - Full TrialSim documentation
+- [skills/trialsim/phase3-pivotal.md](../skills/trialsim/phase3-pivotal.md) - Phase III details

@@ -356,12 +356,12 @@ Reference data for behavioral health diagnosis codes, medications, and clinical 
 
 ### MemberSim Scenarios
 
-- [../scenarios/membersim/behavioral-health.md](../scenarios/membersim/behavioral-health.md) - Behavioral health claims
+- [../skills/membersim/behavioral-health.md](../skills/membersim/behavioral-health.md) - Behavioral health claims
 
 ### RxMemberSim Scenarios
 
-- [../scenarios/rxmembersim/retail-pharmacy.md](../scenarios/rxmembersim/retail-pharmacy.md) - Psychiatric medication fills
-- [../scenarios/rxmembersim/rx-prior-auth.md](../scenarios/rxmembersim/rx-prior-auth.md) - PA for controlled substances
+- [../skills/rxmembersim/retail-pharmacy.md](../skills/rxmembersim/retail-pharmacy.md) - Psychiatric medication fills
+- [../skills/rxmembersim/rx-prior-auth.md](../skills/rxmembersim/rx-prior-auth.md) - PA for controlled substances
 
 ### References
 

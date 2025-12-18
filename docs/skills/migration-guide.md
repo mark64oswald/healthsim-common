@@ -58,7 +58,7 @@ Skills are automatically detected as v2.0 when they include both:
 from healthsim.skills.loader import SkillLoader
 
 loader = SkillLoader()
-skill = loader.load_file("skills/scenarios/sepsis.md")
+skill = loader.load_file("skills/sepsis.md")
 
 if skill.is_v2_format():
     print(f"v2.0 skill with intent keywords: {skill.when_to_use}")
