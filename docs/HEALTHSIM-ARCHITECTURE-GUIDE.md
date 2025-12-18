@@ -68,7 +68,6 @@ HealthSim replaces traditional programming with conversational AI. Users describ
 | **PatientSim** | Clinical/EMR | FHIR R4, HL7v2, C-CDA | Patient, Encounter, Diagnosis, Procedure, Lab, Medication |
 | **MemberSim** | Payer/Claims | X12 837/835, 834, 270/271 | Member, Claim, Payment, Accumulator, Prior Auth |
 | **RxMemberSim** | Pharmacy/PBM | NCPDP D.0 | Prescription, PharmacyClaim, Formulary, DUR Alert |
-| **TrialSim** | Clinical Trials | CDISC (CDASH, SDTM, ADaM) | Study, Site, Subject, Visit, AdverseEvent, Randomization |
 
 ### 2.2 Planned Products
 
@@ -86,10 +85,10 @@ HealthSim replaces traditional programming with conversational AI. Users describ
                     └────────┬────────┘
                              │ provides population patterns
                              ▼
-┌─────────────┐    ┌─────────────────┐    ┌─────────────┐
-│ NetworkSim  │◄───│   PatientSim    │───►│  TrialSim   │
-│ (Providers) │    │   (Clinical)    │    │  (Trials)   │
-└──────┬──────┘    └────────┬────────┘    └─────────────┘
+┌─────────────┐    ┌─────────────────┐
+│ NetworkSim  │◄───│   PatientSim    │
+│ (Providers) │    │   (Clinical)    │
+└──────┬──────┘    └────────┬────────┘
        │                    │
        │    ┌───────────────┼───────────────┐
        │    │               │               │
@@ -102,7 +101,6 @@ HealthSim replaces traditional programming with conversational AI. Users describ
 
 **Key Integration Points:**
 - PatientSim patients can become MemberSim members (add coverage)
-- PatientSim patients can become TrialSim subjects (enroll in trial)
 - PatientSim medications can generate RxMemberSim pharmacy claims
 - PopulationSim demographics inform all patient generation
 - NetworkSim providers referenced across all claims
@@ -238,15 +236,8 @@ healthsim-common/
 │   │   ├── rx-accumulators.md
 │   │   └── manufacturer-programs.md
 │   │
-│   ├── trialsim/
-│   │   ├── SKILL.md                  # TrialSim overview
-│   │   ├── clinical-trials-domain.md # Domain knowledge
-│   │   ├── phase1-dose-escalation.md
-│   │   ├── phase2-proof-of-concept.md
-│   │   ├── phase3-pivotal.md
-│   │   ├── oncology-trials.md
-│   │   ├── cardiovascular-trials.md
-│   │   └── cdisc-outputs.md
+│   ├── common/                        # Shared skills
+│   │   └── state-management.md
 │   │
 │   ├── populationsim/                 # (Planned)
 │   │   ├── SKILL.md
@@ -269,8 +260,7 @@ healthsim-common/
 │   └── examples/                     # Example outputs
 │       ├── patientsim/
 │       ├── membersim/
-│       ├── rxmembersim/
-│       └── trialsim/
+│       └── rxmembersim/
 │
 └── scripts/                           # Helper scripts (minimal Python)
     ├── validate_output.py            # Output validation
@@ -288,7 +278,7 @@ The `healthsim.code-workspace` file organizes folders for development:
     { "name": "patientsim", "path": "./healthsim-common/skills/patientsim" },
     { "name": "membersim", "path": "./healthsim-common/skills/membersim" },
     { "name": "rxmembersim", "path": "./healthsim-common/skills/rxmembersim" },
-    { "name": "trialsim", "path": "./healthsim-common/skills/trialsim" },
+    { "name": "common", "path": "./healthsim-common/skills/common" },
     { "name": "populationsim", "path": "./healthsim-common/skills/populationsim" },
     { "name": "networksim", "path": "./healthsim-common/skills/networksim" }
   ]
@@ -440,7 +430,6 @@ Activate this skill when user mentions:
 | PatientSim | Person | Patient | mrn, encounters, diagnoses, medications |
 | MemberSim | Person | Member | member_id, plan, coverage, accumulators |
 | RxMemberSim | Member | RxMember | rx_bin, rx_pcn, rx_group, formulary |
-| TrialSim | Patient | Subject | subject_id, consent_date, randomization, arm |
 | PopulationSim | Person | PopulationMember | census_tract, sdoh_indices, demographics |
 | NetworkSim | - | Provider | npi, specialty, networks, facilities |
 
@@ -451,14 +440,12 @@ Person (base)
   ├── Patient (PatientSim)
   │     ├── extends to → Member (MemberSim)
   │     │                  └── extends to → RxMember (RxMemberSim)
-  │     └── extends to → Subject (TrialSim)
   │
   └── PopulationMember (PopulationSim)
 
 Provider (NetworkSim)
   ├── referenced by → Encounter (PatientSim)
-  ├── referenced by → Claim (MemberSim)
-  └── referenced by → Site (TrialSim)
+  └── referenced by → Claim (MemberSim)
 ```
 
 ---
@@ -483,7 +470,6 @@ By default, Claude outputs data as **JSON** matching the canonical data model.
 | X12 835 | `formats/x12-835.md` | "as 835", "remittance" | Payment posting |
 | X12 270/271 | `formats/x12-270-271.md` | "eligibility check" | Eligibility |
 | NCPDP D.0 | `formats/ncpdp-d0.md` | "as NCPDP" | Pharmacy |
-| CDISC SDTM | `skills/trialsim/cdisc-outputs.md` | "as SDTM" | FDA submission |
 
 ### 7.3 Export Formats
 

@@ -39,14 +39,16 @@ HealthSim is a suite of products for generating synthetic healthcare data throug
 
 ## Repository Overview
 
-| Repository | Purpose | GitHub | Key Contents |
-|------------|---------|--------|--------------|
-| **[healthsim-common](https://github.com/mark64oswald/healthsim-common)** | Skills & shared docs | [repo](https://github.com/mark64oswald/healthsim-common) | Scenarios, formats, references, SKILL.md files |
-| **[healthsim-common](https://github.com/mark64oswald/healthsim-common)** | Shared Python library | [repo](https://github.com/mark64oswald/healthsim-common) | Models, validation, state management, generation |
-| **[PatientSim](https://github.com/mark64oswald/PatientSim)** | Clinical/EMR data | [repo](https://github.com/mark64oswald/PatientSim) | Patients, encounters, diagnoses, labs, vitals |
-| **[MemberSim](https://github.com/mark64oswald/membersim)** | Claims/payer data | [repo](https://github.com/mark64oswald/membersim) | Members, claims, benefits, prior auth |
-| **[RxMemberSim](https://github.com/mark64oswald/rxmembersim)** | Pharmacy/PBM data | [repo](https://github.com/mark64oswald/rxmembersim) | Prescriptions, formularies, DUR alerts |
-| **[healthsim-hello](https://github.com/mark64oswald/healthsim-hello)** | Demo & examples | [repo](https://github.com/mark64oswald/healthsim-hello) | Sample integrations, test harness |
+This is a **monorepo** containing all HealthSim skills, formats, references, and shared Python code.
+
+| Component | Location | Description |
+|-----------|----------|-------------|
+| **Skills** | `skills/` | Product-specific skills (patientsim, membersim, rxmembersim) and shared skills (common) |
+| **Formats** | `formats/` | Output format transformations (FHIR, HL7v2, X12, NCPDP, C-CDA, CSV, SQL) |
+| **References** | `references/` | Clinical reference data, code systems, validation rules |
+| **Python Core** | `src/healthsim/` | Shared Python library (models, validation, state, generation) |
+| **Getting Started** | `hello-healthsim/` | Tutorials, examples, and setup guides |
+| **Documentation** | `docs/` | Architecture guides, extension docs, MCP integration |
 
 ---
 
