@@ -9,21 +9,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- [TrialSim] Initial folder structure and product setup
-- [TrialSim] Product SKILL.md with routing and overview
-- [TrialSim] Domain skill: clinical-trials-domain.md
-- [TrialSim] Domain skill placeholder: recruitment-enrollment.md
-- [TrialSim] Scenario skill: phase3-pivotal.md
-- [TrialSim] Quick start example: trialsim-quickstart.md
-- [TrialSim] Added to master SKILL.md product routing table
 - Comprehensive documentation hub (docs/README.md)
 - Link audit and fixes across all documentation
+- Skills common/ directory for shared skills
+- State management skill moved to skills/common/
+
+### Fixed
+
+- Linting and formatting issues across Python codebase
+- RxMemberSim SKILL.md missing YAML frontmatter
 
 ## [1.2.0] - 2024-12-14
 
 ### Changed
 
-- Renamed repository from healthsim-common to healthsim-common
+- Renamed repository from healthsim-skills to healthsim-common
 - Updated all internal references to new repository name
 - Updated README title to "HealthSim Workspace"
 

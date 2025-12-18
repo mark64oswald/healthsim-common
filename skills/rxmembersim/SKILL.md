@@ -1,4 +1,33 @@
+---
+name: healthsim-rxmembersim
+description: "RxMemberSim generates realistic synthetic pharmacy data for testing PBM systems, claims adjudication, and drug utilization review. Use when user requests: (1) pharmacy claims or prescription data, (2) DUR alerts or drug interactions, (3) formulary or tier scenarios, (4) pharmacy prior authorization, (5) NCPDP formatted output."
+---
+
 # RxMemberSim - Pharmacy and PBM Data Generation
+
+## For Claude
+
+Use this skill when the user requests pharmacy data, prescription fills, or PBM (Pharmacy Benefit Management) scenarios. This is the primary skill for generating realistic synthetic pharmacy claims and drug utilization data.
+
+**When to apply this skill:**
+
+- User mentions prescriptions, pharmacy claims, or medication fills
+- User requests DUR (Drug Utilization Review) alerts or drug interactions
+- User specifies formulary, tier, or coverage scenarios
+- User asks for NCPDP formatted output
+- User needs pharmacy prior authorization or step therapy data
+
+**Key capabilities:**
+
+- Generate pharmacy members with BIN/PCN/Group identifiers
+- Create prescription fills (new and refill) with NDC codes
+- Model pharmacy claim adjudication and pricing
+- Generate DUR alerts (drug interactions, therapeutic duplications, early refills)
+- Handle formulary management and tier structures
+- Model manufacturer copay programs and patient assistance
+- Transform output to NCPDP D.0 format
+
+For specific pharmacy scenarios, load the appropriate scenario skill from the table below.
 
 ## Overview
 

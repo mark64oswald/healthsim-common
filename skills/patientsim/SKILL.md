@@ -5,6 +5,28 @@ description: "Generate realistic clinical patient data including demographics, e
 
 # PatientSim - Clinical Patient Data Generation
 
+## For Claude
+
+Use this skill when the user requests clinical patient data, EMR/EHR test data, or medical records. This is the primary skill for generating realistic synthetic patients with complete clinical histories.
+
+**When to apply this skill:**
+
+- User mentions patients, clinical data, or medical records
+- User requests EMR or EHR test data
+- User specifies clinical scenarios (diabetes, heart failure, oncology, etc.)
+- User asks for HL7v2 messages, FHIR resources, or C-CDA documents
+- User needs encounters, diagnoses, medications, labs, or vitals
+
+**Key capabilities:**
+
+- Generate patients with realistic demographics and identifiers
+- Create encounters across care settings (inpatient, outpatient, ED, observation)
+- Apply clinical scenarios from specialized skills (diabetes, oncology, etc.)
+- Produce appropriately coded data (ICD-10, CPT, LOINC, RxNorm)
+- Transform output to healthcare standards (FHIR R4, HL7v2, C-CDA)
+
+For specific clinical scenarios, load the appropriate scenario skill from the table below.
+
 ## Overview
 
 PatientSim generates realistic synthetic clinical data for EMR/EHR testing, including:

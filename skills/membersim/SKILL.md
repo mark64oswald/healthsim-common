@@ -5,6 +5,29 @@ description: "MemberSim generates realistic synthetic claims and payer data for 
 
 # MemberSim - Claims and Payer Data Generation
 
+## For Claude
+
+Use this skill when the user requests healthcare claims, payer data, or benefits administration scenarios. This is the primary skill for generating realistic synthetic claims and member data.
+
+**When to apply this skill:**
+
+- User mentions claims, billing, or reimbursement
+- User requests 837P (professional) or 837I (facility) claims
+- User specifies payer, insurance, or benefits scenarios
+- User asks for X12 formatted output (834, 835, 837, 270/271)
+- User needs member enrollment, eligibility, or prior authorization data
+
+**Key capabilities:**
+
+- Generate members with coverage and benefit plans
+- Create professional and facility claims with proper coding
+- Model claim adjudication with CARC codes and payment calculations
+- Track accumulators (deductible, OOP, coinsurance)
+- Handle prior authorization workflows
+- Transform output to X12 formats (837, 835, 834, 270/271)
+
+For specific claims scenarios, load the appropriate scenario skill from the table below.
+
 ## Overview
 
 MemberSim generates realistic synthetic claims and payer data for testing claims processing systems, payment integrity, and benefits administration. This includes:
