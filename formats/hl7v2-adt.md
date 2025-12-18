@@ -265,5 +265,5 @@ DG1|1||I50.23^Acute on chronic systolic heart failure^I10|||F|
 - [hl7v2-oru.md](hl7v2-oru.md) - HL7v2 Results messages
 - [../references/hl7v2-segments.md](../references/hl7v2-segments.md) - Complete segment reference
 - [fhir-r4.md](fhir-r4.md) - Modern FHIR format
-- [../scenarios/patientsim/SKILL.md](../scenarios/patientsim/SKILL.md) - Patient data
-- [../scenarios/patientsim/orders-results.md](../scenarios/patientsim/orders-results.md) - Orders and results scenario
+- [../skills/patientsim/SKILL.md](../skills/patientsim/SKILL.md) - Patient data
+- [../skills/patientsim/orders-results.md](../skills/patientsim/orders-results.md) - Orders and results scenario

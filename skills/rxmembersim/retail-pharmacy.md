@@ -178,23 +178,97 @@ Apply this skill when the user's request involves:
 
 ## Claim Pricing
 
-### Pricing Components
-```json
-{
-  "ingredient_cost": {
-    "basis": "AWP, WAC, or MAC",
-    "awp_discount": "AWP - 15% to AWP - 20%",
-    "mac_list": "Maximum Allowable Cost for generics"
-  },
-  "dispensing_fee": {
-    "retail": "$1.50 - $3.00",
-    "mail_order": "$0.00 - $2.00"
-  },
-  "gross_amount_due": "ingredient_cost + dispensing_fee"
-}
+### Pricing Benchmarks
+
+**AWP (Average Wholesale Price)**
+- Published benchmark price (often inflated)
+- "Sticker price" - rarely reflects actual cost
+- Used for reimbursement calculations
+- AWP discounts common: AWP - 15% to AWP - 20%
+
+**WAC (Wholesale Acquisition Cost)**
+- Manufacturer's list price to wholesalers
+- More accurate than AWP
+- Does not include rebates or discounts
+- Typically 16-20% below AWP
+
+**MAC (Maximum Allowable Cost)**
+- PBM-set ceiling price for generics
+- Updated frequently (weekly/monthly)
+- Based on market prices for multi-source drugs
+- Pharmacies reimbursed at MAC regardless of acquisition cost
+
+**NADAC (National Average Drug Acquisition Cost)**
+- CMS survey-based actual acquisition cost
+- Used for Medicaid reimbursement
+- Updated weekly
+- Most accurate cost benchmark
+
+### Reimbursement Formulas
+
+**Brand Drugs:**
+```
+Reimbursement = AWP - Discount% + Dispensing Fee
+
+Example:
+AWP: $500.00, Discount: 15%, Dispensing Fee: $2.00
+Reimbursement = $500 - $75 + $2 = $427.00
 ```
 
+**Generic Drugs:**
+```
+Reimbursement = Lower of:
+  - MAC + Dispensing Fee
+  - AWP - Discount% + Dispensing Fee
+  - U&C Price
+
+Example:
+MAC: $15.00, AWP: $100.00 (15% discount = $85.00), U&C: $25.00
+Dispensing Fee: $2.00
+Reimbursement = $15 + $2 = $17.00 (MAC wins)
+```
+
+### Spread Pricing vs Pass-Through
+
+**Traditional Spread Model:**
+```
+Plan Pays PBM:     AWP - 15% + $2.00 = $87.00
+PBM Pays Pharmacy: AWP - 17% + $1.50 = $84.50
+PBM Spread:        $2.50 per claim
+```
+
+**Pass-Through Model:**
+```
+Plan Pays PBM:     Actual pharmacy payment + admin fee
+PBM Pays Pharmacy: AWP - 17% + $1.50 = $84.50
+PBM Fee:          $3.00 per claim
+Plan Cost:        $87.50 (transparent)
+```
+
+### Manufacturer Rebates
+
+**Rebate Types:**
+- **Base Rebate**: Guaranteed % of WAC
+- **Market Share Rebate**: Bonus for formulary position
+- **Price Protection**: Protection against price increases
+- **Admin Fees**: PBM administrative fees
+
+**Example Rebate Calculation:**
+```
+Drug WAC: $1,000
+Base Rebate: 25% = $250
+Market Share Bonus: 5% = $50
+Total Rebate: $300 per Rx
+```
+
+**Rebate Flow:**
+1. Manufacturer → PBM (quarterly)
+2. PBM retains admin fee (3-5%)
+3. PBM → Plan Sponsor (pass-through or retained)
+4. Rebates may reduce net plan cost
+
 ### Copay by Tier (Commercial Plan)
+
 | Tier | Description | 30-Day Copay | 90-Day Mail |
 |------|-------------|--------------|-------------|
 | 1 | Preferred Generic | $10 | $25 |
@@ -202,6 +276,27 @@ Apply this skill when the user's request involves:
 | 3 | Preferred Brand | $50 | $125 |
 | 4 | Non-Preferred Brand | $80 | $200 |
 | 5 | Specialty | 25% coinsurance | N/A |
+
+### Copay Assistance and Accumulators
+
+**Manufacturer Copay Cards:**
+```
+Brand Drug Cost: $500
+Plan Copay: $75
+Copay Card Covers: $65
+Patient Pays: $10
+
+Note: $65 may not count toward deductible/OOPM
+```
+
+**Copay Accumulator Programs:**
+Plan design to prevent copay card from counting toward accumulators:
+```
+Drug Cost: $500
+Copay Card Pays: $75 → Does NOT apply to deductible
+Patient True Spend: $0
+Deductible Credit: $0
+```
 
 ## Claim Structure
 

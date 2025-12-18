@@ -491,5 +491,5 @@ When a claim is submitted:
 - [SKILL.md](SKILL.md) - MemberSim overview
 - [professional-claims.md](professional-claims.md) - Claims requiring PA
 - [facility-claims.md](facility-claims.md) - Inpatient PA
-- [../../scenarios/rxmembersim/prior-authorization.md](../rxmembersim/prior-authorization.md) - Pharmacy PA
+- [../../skills/rxmembersim/prior-authorization.md](../rxmembersim/prior-authorization.md) - Pharmacy PA
 - [../../references/data-models.md](../../references/data-models.md) - Entity schemas

@@ -387,7 +387,7 @@ How was this tested?
 
 When contributing to healthsim-workspace:
 
-- **Scenarios**: Add to `scenarios/[product]/`
+- **Scenarios**: Add to `skills/[product]/`
 - **Formats**: Add to `formats/`
 - **References**: Add to `references/`
 - **Shared docs**: Add to `docs/`

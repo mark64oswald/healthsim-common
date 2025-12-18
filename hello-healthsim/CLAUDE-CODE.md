@@ -264,7 +264,7 @@ mkdir -p .claude/commands
 cat > .claude/commands/patient.md << 'EOF'
 Generate a patient based on the provided description.
 
-Read the SKILL.md file and relevant scenario from scenarios/patientsim/
+Read the SKILL.md file and relevant scenario from skills/patientsim/
 to generate appropriate clinical data including:
 - Demographics
 - Diagnoses (ICD-10)
@@ -287,7 +287,7 @@ EOF
 cat > .claude/commands/claim.md << 'EOF'
 Generate a healthcare claim based on the provided description.
 
-Read scenarios/membersim/SKILL.md to generate appropriate claim data.
+Read skills/membersim/SKILL.md to generate appropriate claim data.
 Include:
 - Claim header with proper codes
 - Service lines with CPT/HCPCS

@@ -59,7 +59,7 @@ HealthSim is a suite of products for generating synthetic healthcare data throug
 | 1. Setup | [hello-healthsim/README.md](../hello-healthsim/README.md) | 5 min |
 | 2. First generation | [hello-healthsim/examples/](../hello-healthsim/examples/) | 10 min |
 | 3. Understand Skills | [SKILL.md](../SKILL.md) | 15 min |
-| 4. Explore scenarios | [scenarios/](../scenarios/) | As needed |
+| 4. Explore skills | [skills/](../skills/) | As needed |
 
 ---
 
@@ -80,9 +80,9 @@ HealthSim is a suite of products for generating synthetic healthcare data throug
 | Document | Description |
 |----------|-------------|
 | [SKILL.md](../SKILL.md) | Master skill file (start here) |
-| [scenarios/patientsim/](../scenarios/patientsim/) | Clinical scenarios (diabetes, heart failure, oncology, etc.) |
-| [scenarios/membersim/](../scenarios/membersim/) | Claims scenarios (professional, facility, behavioral health) |
-| [scenarios/rxmembersim/](../scenarios/rxmembersim/) | Pharmacy scenarios (retail, specialty, DUR) |
+| [skills/patientsim/](../skills/patientsim/) | Clinical scenarios (diabetes, heart failure, oncology, etc.) |
+| [skills/membersim/](../skills/membersim/) | Claims scenarios (professional, facility, behavioral health) |
+| [skills/rxmembersim/](../skills/rxmembersim/) | Pharmacy scenarios (retail, specialty, DUR) |
 | [skills/creating-skills.md](skills/creating-skills.md) | How to create new skills |
 | [skills/format-specification-v2.md](skills/format-specification-v2.md) | Skills format specification |
 
@@ -162,7 +162,7 @@ HealthSim is a suite of products for generating synthetic healthcare data throug
 
 | Location | Contents |
 |----------|----------|
-| [scenarios/patientsim/SKILL.md](../scenarios/patientsim/SKILL.md) | PatientSim skill overview |
+| [skills/patientsim/SKILL.md](../skills/patientsim/SKILL.md) | PatientSim skill overview |
 | [PatientSim/docs/](https://github.com/mark64oswald/PatientSim/tree/main/docs) | Product documentation |
 | [PatientSim/docs/user-guide/](https://github.com/mark64oswald/PatientSim/tree/main/docs/user-guide) | User guides |
 | [PatientSim/docs/tutorials/](https://github.com/mark64oswald/PatientSim/tree/main/docs/tutorials) | Step-by-step tutorials |
@@ -173,7 +173,7 @@ HealthSim is a suite of products for generating synthetic healthcare data throug
 
 | Location | Contents |
 |----------|----------|
-| [scenarios/membersim/SKILL.md](../scenarios/membersim/SKILL.md) | MemberSim skill overview |
+| [skills/membersim/SKILL.md](../skills/membersim/SKILL.md) | MemberSim skill overview |
 | [MemberSim/docs/](https://github.com/mark64oswald/membersim/tree/main/docs) | Product documentation |
 | [MemberSim/docs/user-guide/](https://github.com/mark64oswald/membersim/tree/main/docs/user-guide) | User guides |
 | [MemberSim/docs/tutorials/](https://github.com/mark64oswald/membersim/tree/main/docs/tutorials) | Step-by-step tutorials |
@@ -183,7 +183,7 @@ HealthSim is a suite of products for generating synthetic healthcare data throug
 
 | Location | Contents |
 |----------|----------|
-| [scenarios/rxmembersim/SKILL.md](../scenarios/rxmembersim/SKILL.md) | RxMemberSim skill overview |
+| [skills/rxmembersim/SKILL.md](../skills/rxmembersim/SKILL.md) | RxMemberSim skill overview |
 | [RxMemberSim/docs/](https://github.com/mark64oswald/rxmembersim/tree/main/docs) | Product documentation |
 | [RxMemberSim/docs/user-guide/](https://github.com/mark64oswald/rxmembersim/tree/main/docs/user-guide) | User guides |
 | [RxMemberSim/docs/tutorials/](https://github.com/mark64oswald/rxmembersim/tree/main/docs/tutorials) | Step-by-step tutorials |

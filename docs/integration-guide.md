@@ -14,7 +14,7 @@ SKILL.md (Root Router)
 │   ├── clinical-rules.md
 │   ├── validation-rules.md
 │   └── hl7v2-segments.md
-├── scenarios/            (Domain Generators)
+├── skills/            (Domain Generators)
 │   ├── patientsim/       (Clinical, Orders, Results)
 │   ├── membersim/        (Claims)
 │   └── rxmembersim/      (Pharmacy)
@@ -581,5 +581,5 @@ See [dimensional-analytics.md](../formats/dimensional-analytics.md) for star sch
 - [validation-rules.md](../references/validation-rules.md) - Validation rules
 - [testing-patterns.md](testing-patterns.md) - Testing patterns
 - [hl7v2-segments.md](../references/hl7v2-segments.md) - HL7v2 segment reference
-- [orders-results.md](../scenarios/patientsim/orders-results.md) - Orders and results scenario
+- [orders-results.md](../skills/patientsim/orders-results.md) - Orders and results scenario
 - [dimensional-analytics.md](../formats/dimensional-analytics.md) - Star schema format

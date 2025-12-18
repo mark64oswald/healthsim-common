@@ -9,7 +9,7 @@ Learn how to customize and extend HealthSim with new scenarios, formats, and cod
 ```
 healthsim-workspace/
 ├── SKILL.md                    # Master skill (entry point)
-├── scenarios/                  # Domain-specific generation rules
+├── skills/                  # Domain-specific generation rules
 │   ├── patientsim/            # Clinical data
 │   ├── membersim/             # Claims data
 │   └── rxmembersim/           # Pharmacy data
@@ -33,15 +33,15 @@ healthsim-workspace/
 
 | Product | Directory | Use For |
 |---------|-----------|---------|
-| PatientSim | `scenarios/patientsim/` | Clinical/EMR scenarios |
-| MemberSim | `scenarios/membersim/` | Claims/payer scenarios |
-| RxMemberSim | `scenarios/rxmembersim/` | Pharmacy/PBM scenarios |
+| PatientSim | `skills/patientsim/` | Clinical/EMR scenarios |
+| MemberSim | `skills/membersim/` | Claims/payer scenarios |
+| RxMemberSim | `skills/rxmembersim/` | Pharmacy/PBM scenarios |
 
 ### Step 2: Create the Scenario File
 
 ```bash
 # Example: Adding a maternal health scenario
-touch scenarios/patientsim/maternal-health.md
+touch skills/patientsim/maternal-health.md
 ```
 
 ### Step 3: Follow the Template
@@ -346,13 +346,13 @@ Before committing:
 
 Here's a checklist for adding a new "Wound Care" scenario:
 
-- [ ] Create `scenarios/patientsim/wound-care.md`
+- [ ] Create `skills/patientsim/wound-care.md`
   - [ ] Add trigger phrases (wound, ulcer, debridement)
   - [ ] Define parameters (wound_type, location, severity)
   - [ ] Add wound-related ICD-10 codes
   - [ ] Add wound care CPT codes
   - [ ] Include example output
-- [ ] Update `scenarios/patientsim/SKILL.md`
+- [ ] Update `skills/patientsim/SKILL.md`
   - [ ] Add to scenario table
   - [ ] Add to related skills
 - [ ] Update `references/code-systems.md`

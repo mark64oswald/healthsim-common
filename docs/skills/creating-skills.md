@@ -74,7 +74,7 @@ HealthSim products use Skills Format v2.0 with dedicated sections.
 
 ## Example: Sepsis Scenario
 
-Create `skills/scenarios/sepsis.md`:
+Create `skills/sepsis.md`:
 
 ```markdown
 # Sepsis Management Scenario
@@ -310,4 +310,4 @@ Dorothy Williams, 68F, MRN-648291
 - [Skills Format v1.0](format-specification.md) - Original specification
 - [Skills Format v2.0](format-specification-v2.md) - Claude-optimized format
 - [Migration Guide](migration-guide.md) - Migrating v1.0 to v2.0
-- [Existing Skills](../../scenarios/) - Reference implementations
+- [Existing Skills](../../skills/) - Reference implementations

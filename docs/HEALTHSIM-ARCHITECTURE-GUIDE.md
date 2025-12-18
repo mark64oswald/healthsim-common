@@ -204,7 +204,7 @@ healthsim-workspace/
 │   ├── sql.md                        # SQL INSERT statements
 │   └── dimensional-analytics.md      # Star schema for analytics
 │
-├── scenarios/                         # Domain-specific scenario skills
+├── skills/                         # Domain-specific scenario skills
 │   ├── patientsim/
 │   │   ├── SKILL.md                  # PatientSim overview
 │   │   ├── diabetes-management.md
@@ -285,12 +285,12 @@ The `healthsim.code-workspace` file organizes folders for development:
 {
   "folders": [
     { "name": "healthsim-core", "path": "./healthsim-workspace" },
-    { "name": "patientsim", "path": "./healthsim-workspace/scenarios/patientsim" },
-    { "name": "membersim", "path": "./healthsim-workspace/scenarios/membersim" },
-    { "name": "rxmembersim", "path": "./healthsim-workspace/scenarios/rxmembersim" },
-    { "name": "trialsim", "path": "./healthsim-workspace/scenarios/trialsim" },
-    { "name": "populationsim", "path": "./healthsim-workspace/scenarios/populationsim" },
-    { "name": "networksim", "path": "./healthsim-workspace/scenarios/networksim" }
+    { "name": "patientsim", "path": "./healthsim-workspace/skills/patientsim" },
+    { "name": "membersim", "path": "./healthsim-workspace/skills/membersim" },
+    { "name": "rxmembersim", "path": "./healthsim-workspace/skills/rxmembersim" },
+    { "name": "trialsim", "path": "./healthsim-workspace/skills/trialsim" },
+    { "name": "populationsim", "path": "./healthsim-workspace/skills/populationsim" },
+    { "name": "networksim", "path": "./healthsim-workspace/skills/networksim" }
   ]
 }
 ```
@@ -304,8 +304,8 @@ The `healthsim.code-workspace` file organizes folders for development:
 | Type | Purpose | Location | Example |
 |------|---------|----------|---------|
 | **Master Skill** | Entry point, routing | `SKILL.md` (root) | Routes to product skills |
-| **Product Skill** | Product overview | `scenarios/{product}/SKILL.md` | PatientSim overview |
-| **Scenario Skill** | Specific use case | `scenarios/{product}/*.md` | `diabetes-management.md` |
+| **Product Skill** | Product overview | `skills/{product}/SKILL.md` | PatientSim overview |
+| **Scenario Skill** | Specific use case | `skills/{product}/*.md` | `diabetes-management.md` |
 | **Reference Skill** | Code lookups, rules | `references/*.md` | `code-systems.md` |
 | **Format Skill** | Output transformation | `formats/*.md` | `fhir-r4.md` |
 
@@ -483,7 +483,7 @@ By default, Claude outputs data as **JSON** matching the canonical data model.
 | X12 835 | `formats/x12-835.md` | "as 835", "remittance" | Payment posting |
 | X12 270/271 | `formats/x12-270-271.md` | "eligibility check" | Eligibility |
 | NCPDP D.0 | `formats/ncpdp-d0.md` | "as NCPDP" | Pharmacy |
-| CDISC SDTM | `scenarios/trialsim/cdisc-outputs.md` | "as SDTM" | FDA submission |
+| CDISC SDTM | `skills/trialsim/cdisc-outputs.md` | "as SDTM" | FDA submission |
 
 ### 7.3 Export Formats
 
@@ -591,7 +591,7 @@ Use consistent code systems across products:
 
 ### 10.1 Adding a New Scenario
 
-1. Create skill file in `scenarios/{product}/`
+1. Create skill file in `skills/{product}/`
 2. Follow standard skill template
 3. Include YAML frontmatter with triggers
 4. Add examples with expected output
@@ -608,7 +608,7 @@ Use consistent code systems across products:
 
 ### 10.3 Adding a New Product
 
-1. Create `scenarios/{newproduct}/` directory
+1. Create `skills/{newproduct}/` directory
 2. Create product SKILL.md overview
 3. Define canonical entities (extend common where possible)
 4. Create initial scenario skills

@@ -415,7 +415,7 @@ skills/
 ├── domain/              # Domain knowledge skills
 │   ├── clinical-basics.md
 │   └── infectious-disease.md
-├── scenarios/           # Scenario templates
+├── skills/           # Scenario templates
 │   ├── sepsis.md
 │   ├── diabetes-management.md
 │   └── cardiac-arrest.md

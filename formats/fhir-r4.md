@@ -723,5 +723,5 @@ Read each line, parse as JSON, wrap in Bundle with appropriate `entry[]` structu
 
 - [hl7v2-adt.md](hl7v2-adt.md) - Legacy HL7v2 messages
 - [x12-837.md](x12-837.md) - Claims format
-- [../scenarios/patientsim/SKILL.md](../scenarios/patientsim/SKILL.md) - Patient data source
+- [../skills/patientsim/SKILL.md](../skills/patientsim/SKILL.md) - Patient data source
 - [../references/data-models.md](../references/data-models.md) - Entity schemas

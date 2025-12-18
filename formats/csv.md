@@ -684,6 +684,6 @@ CLM20250115003|MEM001234|professional|denied|2025-01-16|200.00|NULL
 
 - [sql.md](sql.md) - SQL INSERT statements
 - [fhir-r4.md](fhir-r4.md) - FHIR format
-- [../scenarios/patientsim/SKILL.md](../scenarios/patientsim/SKILL.md) - Patient data
-- [../scenarios/membersim/SKILL.md](../scenarios/membersim/SKILL.md) - Claims data
-- [../scenarios/rxmembersim/SKILL.md](../scenarios/rxmembersim/SKILL.md) - Pharmacy data
+- [../skills/patientsim/SKILL.md](../skills/patientsim/SKILL.md) - Patient data
+- [../skills/membersim/SKILL.md](../skills/membersim/SKILL.md) - Claims data
+- [../skills/rxmembersim/SKILL.md](../skills/rxmembersim/SKILL.md) - Pharmacy data

@@ -268,4 +268,4 @@ ORC|OK|ORD001234^EHR|LAB001234^LAB||SC||^^^^^R||20250115143100||||||||||||||||||
 - [hl7v2-oru.md](hl7v2-oru.md) - Results messages
 - [../references/hl7v2-segments.md](../references/hl7v2-segments.md) - Segment reference
 - [../references/code-systems.md](../references/code-systems.md) - CPT, LOINC codes
-- [../scenarios/patientsim/orders-results.md](../scenarios/patientsim/orders-results.md) - Orders scenario
+- [../skills/patientsim/orders-results.md](../skills/patientsim/orders-results.md) - Orders scenario

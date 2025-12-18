@@ -1517,9 +1517,9 @@ Before finalizing a patient, verify:
 ## Related Skills
 
 Complementary skills:
-- **scenarios/patientsim/sepsis-acute-care.md** - Detailed sepsis scenario template using this knowledge
-- **scenarios/patientsim/diabetes-management.md** - Diabetes-specific scenario patterns
-- **scenarios/patientsim/ed-chest-pain.md** - Chest pain evaluation workflow
+- **skills/patientsim/sepsis-acute-care.md** - Detailed sepsis scenario template using this knowledge
+- **skills/patientsim/diabetes-management.md** - Diabetes-specific scenario patterns
+- **skills/patientsim/ed-chest-pain.md** - Chest pain evaluation workflow
 - **formats/fhir-r4.md** - How to export this data to FHIR
 - **formats/hl7v2-adt.md** - How to format ADT messages
 

@@ -63,7 +63,7 @@ Load these for clinical data generation:
 | **Chronic Kidney Disease** | CKD, eGFR, dialysis, nephrology | CKD staging, progression, comorbidities |
 | **Sepsis/Acute Care** | sepsis, infection, ICU, critical | Sepsis criteria, antibiotic protocols, ICU stay |
 
-See: [scenarios/patientsim/](scenarios/patientsim/) for detailed skills
+See: [skills/patientsim/](skills/patientsim/) for detailed skills
 
 ### MemberSim Scenarios
 
@@ -77,7 +77,7 @@ Load these for claims and payer data:
 | **Accumulator Tracking** | deductible, OOP, accumulator | Year-to-date tracking, family vs individual |
 | **Value-Based Care** | quality measures, VBC, HEDIS | Attribution, measure compliance, incentives |
 
-See: [scenarios/membersim/](scenarios/membersim/) for detailed skills
+See: [skills/membersim/](skills/membersim/) for detailed skills
 
 ### RxMemberSim Scenarios
 
@@ -92,7 +92,7 @@ Load these for pharmacy and PBM data:
 | **Prior Authorization** | pharmacy PA, step therapy | Clinical criteria, approval workflow |
 | **Manufacturer Programs** | copay card, patient assistance | Copay assistance, rebates |
 
-See: [scenarios/rxmembersim/](scenarios/rxmembersim/) for detailed skills
+See: [skills/rxmembersim/](skills/rxmembersim/) for detailed skills
 
 ## Output Formats
 

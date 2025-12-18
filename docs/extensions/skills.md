@@ -109,7 +109,7 @@ HealthSim uses three types of skills:
 - Diabetes (HbA1c control levels, complications, regimens)
 - Joint replacement (pre-op, post-op, rehab)
 
-**File location:** `skills/scenarios/[scenario].md`
+**File location:** `skills/[scenario].md`
 
 **When to use:** Adding a new patient generation pattern
 
@@ -305,7 +305,7 @@ Enable: "Generate [scenario] patient with [characteristics]"
 - Timing: [early vs late presentation]
 - Complications: [which complications present]
 
-**File Location:** skills/scenarios/[scenario].md
+**File Location:** skills/[scenario].md
 
 **Follow:** skills/SKILL_TEMPLATE_V2.md structure
 
@@ -346,9 +346,9 @@ For detailed clinical rules, see the [Clinical Rules](../../references/clinical-
 
 This domain knowledge supports several scenario skills:
 
-- **[Heart Failure](../../scenarios/patientsim/heart-failure.md)** - HFrEF/HFpEF management
-- **[Diabetes Management](../../scenarios/patientsim/diabetes-management.md)** - Type 1/2 diabetes
-- **[ED Chest Pain](../../scenarios/patientsim/ed-chest-pain.md)** - ACS workup and management
+- **[Heart Failure](../../skills/patientsim/heart-failure.md)** - HFrEF/HFpEF management
+- **[Diabetes Management](../../skills/patientsim/diabetes-management.md)** - Type 1/2 diabetes
+- **[ED Chest Pain](../../skills/patientsim/ed-chest-pain.md)** - ACS workup and management
 
 Refer to those skills for specific generation patterns.
 ```

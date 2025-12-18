@@ -355,8 +355,8 @@ Claude will:
 
 ## Related Skills
 
-- [../scenarios/patientsim/SKILL.md](../scenarios/patientsim/SKILL.md) - Clinical data generation
-- [../scenarios/membersim/SKILL.md](../scenarios/membersim/SKILL.md) - Claims data generation
-- [../scenarios/rxmembersim/SKILL.md](../scenarios/rxmembersim/SKILL.md) - Pharmacy data generation
+- [../skills/patientsim/SKILL.md](../skills/patientsim/SKILL.md) - Clinical data generation
+- [../skills/membersim/SKILL.md](../skills/membersim/SKILL.md) - Claims data generation
+- [../skills/rxmembersim/SKILL.md](../skills/rxmembersim/SKILL.md) - Pharmacy data generation
 - [sql.md](sql.md) - SQL INSERT format (transactional, not dimensional)
 - [csv.md](csv.md) - CSV export format

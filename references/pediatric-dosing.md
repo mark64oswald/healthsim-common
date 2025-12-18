@@ -305,12 +305,12 @@ Adjusted body weight = IBW + 0.4 × (Actual - IBW)
 
 ### PatientSim Scenarios
 
-- [../scenarios/patientsim/SKILL.md](../scenarios/patientsim/SKILL.md) - Patient generation
-- [../scenarios/patientsim/diabetes-management.md](../scenarios/patientsim/diabetes-management.md) - Pediatric T1DM
+- [../skills/patientsim/SKILL.md](../skills/patientsim/SKILL.md) - Patient generation
+- [../skills/patientsim/diabetes-management.md](../skills/patientsim/diabetes-management.md) - Pediatric T1DM
 
 ### RxMemberSim Scenarios
 
-- [../scenarios/rxmembersim/retail-pharmacy.md](../scenarios/rxmembersim/retail-pharmacy.md) - Pediatric prescription fills
+- [../skills/rxmembersim/retail-pharmacy.md](../skills/rxmembersim/retail-pharmacy.md) - Pediatric prescription fills
 
 ### References
 
