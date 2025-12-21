@@ -9,6 +9,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **[Cross-Product]** Cross-Product Identity Correlation section in data-models.md
+  - Entity inheritance diagram (Person → Patient/Member/RxMember)
+  - Identity linking keys table (SSN as universal correlator)
+  - Cross-product identity pattern with JSON example
+  - Event correlation timing across products (encounters → claims → fills)
+  - TrialSim identity considerations for trial subjects
+- **[Cross-Product]** Integration patterns added to all scenario skills
+  - PatientSim: 9 skills updated with MemberSim/RxMemberSim references
+  - MemberSim: 7 skills updated with PatientSim/RxMemberSim references
+  - RxMemberSim: 8 skills updated with PatientSim/MemberSim references
+  - Each section includes contextual integration pattern guidance
+- **[Docs]** Cross-product integration as standard development practice
+  - HEALTHSIM-DEVELOPMENT-PROCESS.md updated with integration checklist
+  - HEALTHSIM-PROJECT-INSTRUCTIONS.md updated with integration reminders
+  - New skill and product checklists include cross-product verification
+- **[Docs]** CROSS-PRODUCT-INTEGRATION-GAPS.md gap analysis
+  - 7 structural gaps identified with severity ratings
+  - Implementation roadmap with 4 phases
+  - Status tracking for gap resolution
 - **[TrialSim]** Comprehensive development plan (docs/TRIALSIM-DEVELOPMENT-PLAN.md)
   - 6-phase development roadmap covering 16 weeks
   - Architecture for skills, therapeutic areas, CDISC compliance
