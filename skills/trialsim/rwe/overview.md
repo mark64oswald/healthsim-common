@@ -89,6 +89,38 @@ This is a **foundation skill** for RWE generation. Apply this when users request
 
 ---
 
+## Validation Guidelines
+
+When generating RWE data, validate against these quality standards:
+
+### Data Quality Framework
+
+| Dimension | Validation Check |
+|-----------|-----------------|
+| Relevance | Variables align with research question and target population |
+| Reliability | Source data has documented accuracy and verification processes |
+| Completeness | Missing data rates acceptable (<20% for key variables) |
+| Accrual | Collection timeframe covers study period adequately |
+
+### External Control Arm Rules
+
+| Rule | Requirement |
+|------|-------------|
+| Population overlap | External controls must meet trial I/E criteria |
+| Temporal alignment | Data collection period comparable to trial enrollment |
+| Endpoint definition | Outcome measures defined identically to trial |
+| Confounding adjustment | Key prognostic factors balanced or adjusted |
+
+### Regulatory Acceptance Criteria
+
+| Use Case | Evidence Requirements |
+|----------|----------------------|
+| External control | Pre-specified analysis plan, sensitivity analyses |
+| Label expansion | Prospective design preferred, adequate sample size |
+| Post-marketing safety | Signal detection methodology documented |
+
+---
+
 ## Version History
 
 | Version | Date | Changes |

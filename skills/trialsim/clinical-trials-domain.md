@@ -79,3 +79,36 @@ When using NetworkSim provider as investigator:
 - [Recruitment & Enrollment](recruitment-enrollment.md)
 - [SDTM Format](../../formats/cdisc-sdtm.md)
 - [ADaM Format](../../formats/cdisc-adam.md)
+
+---
+
+## Validation Guidelines
+
+When generating clinical trial data, validate against these domain rules:
+
+### Phase-Appropriate Design Rules
+
+| Phase | Typical N | Design Constraints |
+|-------|-----------|-------------------|
+| Phase I | 10-80 | Dose escalation, healthy volunteers or patients |
+| Phase II | 50-300 | Randomization optional, proof-of-concept focus |
+| Phase III | 300-3000+ | Must be randomized, adequate power for endpoints |
+| Phase IV | Variable | Post-marketing, real-world setting |
+
+### Regulatory Compliance
+
+| Rule | Requirement |
+|------|-------------|
+| ICF timing | Informed consent must precede all study procedures |
+| Randomization | Must occur after eligibility confirmed |
+| SUSAR reporting | Within 7 days for fatal/life-threatening, 15 days otherwise |
+| Protocol deviations | Must be documented with reason and impact |
+
+### CDISC Standards
+
+| Standard | Validation |
+|----------|------------|
+| USUBJID | Must be unique across all studies (STUDYID-SITEID-SUBJID format) |
+| Date formats | ISO 8601 (YYYY-MM-DD or YYYY-MM-DDTHH:MM:SS) |
+| Controlled terms | Must use CDISC CT where applicable |
+| MedDRA coding | AE terms must map to valid MedDRA PT |

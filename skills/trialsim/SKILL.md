@@ -9,6 +9,31 @@ description: "Generate realistic clinical trial synthetic data including study d
 
 TrialSim generates realistic synthetic clinical trial data for testing, training, and development purposes.
 
+## For Claude
+
+Use this skill when the user requests clinical trial data, CDISC-compliant datasets, or regulatory submission test data. This is the primary skill for generating realistic synthetic clinical trial data.
+
+**When to apply this skill:**
+
+- User mentions clinical trials, studies, or protocols
+- User requests CDISC, SDTM, or ADaM datasets
+- User specifies trial phases (Phase I, II, III, IV)
+- User mentions FDA/EMA submission data or regulatory requirements
+- User asks for adverse events, safety data, or efficacy endpoints
+- User mentions specific therapeutic areas (oncology, cardiovascular, CNS)
+- User requests SDTM domains (DM, AE, VS, LB, CM, EX, DS, MH)
+
+**Key capabilities:**
+
+- Generate complete study definitions with protocol parameters
+- Create multi-site, multi-country trial configurations
+- Produce subject-level longitudinal data with realistic patterns
+- Generate safety data (adverse events, labs, vitals) with MedDRA/LOINC coding
+- Create efficacy endpoints for various therapeutic areas
+- Output CDISC-compliant formats (SDTM, ADaM)
+
+For specific trial phases, therapeutic areas, or SDTM domains, load the appropriate skill from the tables below.
+
 ## Overview
 
 TrialSim provides:
