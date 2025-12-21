@@ -128,6 +128,7 @@ Examples:
 - [ ] YAML frontmatter with `name` and `description` (triggers included)
 - [ ] At least 2 complete examples with JSON output
 - [ ] Linked from product SKILL.md routing table
+- [ ] Cross-product check: Related skills identified, bidirectional links added
 - [ ] hello-healthsim example added
 - [ ] CHANGELOG.md updated
 
@@ -136,8 +137,9 @@ Examples:
 - [ ] Directory: `skills/{product}/`
 - [ ] Product SKILL.md created
 - [ ] Master SKILL.md updated with routing
+- [ ] Cross-product review: All existing products checked for integration
 - [ ] VS Code workspace updated
-- [ ] Architecture guide updated
+- [ ] Architecture guide updated (including cross-product mapping)
 - [ ] hello-healthsim quickstart added
 
 ---
@@ -160,6 +162,7 @@ From within `skills/{product}/`:
 
 - **Single repo**: Clone `healthsim-workspace` to get everything
 - **Follow existing patterns**: Review similar files before creating new ones
+- **Cross-product integration**: Check for related skills in other products, add bidirectional references
 - **Skills are flat**: Scenarios go directly in product folder, not nested
 - **Formats are shared**: All formats in root `formats/`, never in product folders
 - **Packages for Python**: Python infrastructure in `packages/`, not in `skills/`
