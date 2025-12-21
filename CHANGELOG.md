@@ -9,6 +9,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **[Skills Quality]** YAML frontmatter added to all scenario skills
+  - 10 files updated: state-management.md, value-based-care.md, all RxMemberSim skills
+  - Frontmatter includes `name` and `description` with trigger phrases
+  - Enables better skill discovery and routing
+- **[Skills Quality]** Validation Rules sections added to 25+ scenario skills
+  - Field-level validation tables (format, requirements, examples)
+  - Business rules for realistic data generation
+  - Covers all PatientSim, MemberSim, and RxMemberSim scenario skills
+- **[TrialSim]** Usage examples added to SKILL.md
+  - 4 comprehensive examples: Phase 3 trial, adverse events, screening, SDTM output
+  - Follows pattern established by PatientSim and MemberSim
+
 - **[Cross-Product]** Cross-Product Identity Correlation section in data-models.md
   - Entity inheritance diagram (Person → Patient/Member/RxMember)
   - Identity linking keys table (SSN as universal correlator)
