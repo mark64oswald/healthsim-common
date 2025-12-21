@@ -27,6 +27,7 @@ description: "Standard workflow for developing HealthSim skills and products. Re
 - **Follow existing patterns** - Review similar files before creating new ones
 - **Progressive disclosure** - Master skill routes to detailed skills
 - **Extend, don't duplicate** - Reference canonical models
+- **Cross-product integration** - Check for related skills in other products, add bidirectional references
 - **Test frequently** - Verify after each change
 - **Document as you go** - Update CHANGELOG.md every session
 
@@ -101,6 +102,42 @@ From `skills/{product}/`:
 | Root formats | `[../../formats/fhir-r4.md](../../formats/fhir-r4.md)` |
 | Root references | `[../../references/code-systems.md](../../references/code-systems.md)` |
 
+### Cross-Product Integration
+
+**Every new skill should check for related skills in other products.**
+
+When creating or updating a skill:
+
+1. **Search for related content** across products:
+   - Does PatientSim have a clinical care skill for this domain?
+   - Does TrialSim have a therapeutic area skill?
+   - Is there shared reference data in `references/`?
+
+2. **Add bidirectional cross-references** in Related Skills sections:
+   ```markdown
+   ## Related Skills
+   
+   **Cross-Product (TrialSim):**
+   - [therapeutic-areas/oncology.md](../trialsim/therapeutic-areas/oncology.md) - Trial endpoints, RECIST
+   
+   > **Integration Pattern:** Use this PatientSim skill for clinical care journeys. 
+   > Use TrialSim skill for trial-specific endpoints and SDTM mapping.
+   ```
+
+3. **Include integration pattern notes** explaining when to use each product's skill
+
+**Current Cross-Product Mappings:**
+
+| Domain | PatientSim | TrialSim | Shared Reference |
+|--------|------------|----------|------------------|
+| Oncology | `oncology/*.md` | `therapeutic-areas/oncology.md` | `references/oncology-domain.md` |
+| Cardiovascular | `heart-failure.md` | `therapeutic-areas/cardiovascular.md` | - |
+| CNS/Behavioral | `behavioral-health.md` | `therapeutic-areas/cns.md` | - |
+| Diabetes | `diabetes-management.md` | *(future)* | - |
+| Pediatrics | `pediatrics/*.md` | *(future: rare disease)* | - |
+
+**When adding a new product**, review ALL existing products for integration opportunities.
+
 ---
 
 ## 4. Git Workflow
@@ -142,6 +179,8 @@ git push
 - [ ] `description` includes trigger phrases
 - [ ] At least 2 complete examples with JSON output
 - [ ] Linked from product `SKILL.md` routing table
+- [ ] **Cross-product check**: Related skills in other products identified
+- [ ] **Cross-references added**: Bidirectional links with integration patterns
 - [ ] hello-healthsim example added
 - [ ] CHANGELOG.md updated
 - [ ] All links valid (test relative paths)
@@ -152,8 +191,10 @@ git push
 - [ ] Product `SKILL.md` created with routing table
 - [ ] At least one scenario skill created
 - [ ] Master `SKILL.md` updated with routing
+- [ ] **Cross-product review**: All existing products checked for integration opportunities
+- [ ] **Cross-references added**: Links to/from related skills in other products
+- [ ] **Architecture guide updated**: Cross-product mapping table updated
 - [ ] VS Code workspace file updated
-- [ ] Architecture guide updated
 - [ ] hello-healthsim quickstart added
 
 ---
@@ -178,6 +219,7 @@ Read these files FIRST:
 - [ ] I have read all reference documents
 - [ ] I understand the directory structure rules
 - [ ] I know which files to create/modify
+- [ ] I have checked for related skills in other products
 
 ## Deliverables
 
@@ -200,6 +242,7 @@ Read these files FIRST:
 ## Post-Flight Checklist
 - [ ] All files have YAML frontmatter
 - [ ] All links valid
+- [ ] Cross-product references added (bidirectional)
 - [ ] CHANGELOG.md updated
 
 ## Success Criteria
