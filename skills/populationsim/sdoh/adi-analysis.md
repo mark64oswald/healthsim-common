@@ -46,6 +46,52 @@ The adi-analysis skill provides detailed analysis of the Area Deprivation Index 
 
 ---
 
+## Data Sources (Embedded v2.0)
+
+This skill reads from PopulationSim's embedded ADI data:
+
+| Level | File | Records | Source |
+|-------|------|---------|--------|
+| Block Group | `data/block_group/adi_blockgroup_2023.csv` | 242,336 | UW-Madison Neighborhood Atlas |
+
+### File Structure
+
+| Column | Description | Values |
+|--------|-------------|--------|
+| FIPS | 12-digit block group FIPS | e.g., "482012104001" |
+| ADI_NATRANK | National percentile ranking | 1-100 or suppression code |
+| ADI_STATERNK | State decile ranking | 1-10 or suppression code |
+
+### Suppression Codes
+
+| Code | Meaning | Action |
+|------|---------|--------|
+| GQ | >33% group quarters population | Exclude from analysis |
+| PH | Population <100 or <30 housing units | Exclude from analysis |
+| GQ-PH | Both conditions | Exclude from analysis |
+| QDI | Missing key demographic factor | Exclude from analysis |
+
+### Data Lookup Pattern
+
+```
+1. Identify geography type:
+   - Block group: direct lookup by 12-digit FIPS
+   - Tract: aggregate block groups (first 11 digits match)
+   - County: aggregate all block groups (first 5 digits match)
+2. Read `data/block_group/adi_blockgroup_2023.csv`
+3. Filter by FIPS prefix
+4. Exclude suppressed values
+5. Return rankings with Neighborhood Atlas source citation
+```
+
+### Data Vintage
+
+- **Source**: UW-Madison Neighborhood Atlas
+- **Version**: 2023 v4.0.1
+- **Base Data**: 2019-2023 ACS 5-year estimates
+
+---
+
 ## ADI Structure
 
 ### 17 Variables Across 4 Domains

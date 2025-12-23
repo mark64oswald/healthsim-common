@@ -48,6 +48,47 @@ The county-profile skill generates comprehensive PopulationProfile objects for U
 
 ---
 
+## Data Sources (Embedded v2.0)
+
+This skill reads from PopulationSim's embedded data package for **exact values**:
+
+| Data Type | File | Key Columns |
+|-----------|------|-------------|
+| Health Indicators | `data/county/places_county_2024.csv` | CountyFIPS, [MEASURE]_CrudePrev |
+| SVI Scores | `data/county/svi_county_2022.csv` | STCNTY, RPL_THEMES, RPL_THEME1-4 |
+| Demographics | `data/county/svi_county_2022.csv` | E_TOTPOP, EP_POV150, EP_UNINSUR, EP_MINRTY |
+
+### Data Access Pattern
+
+```
+1. Resolve county name → FIPS code (via data/crosswalks/fips_county.csv)
+2. Read health indicators from places_county_2024.csv
+3. Read SVI scores and demographics from svi_county_2022.csv
+4. Assemble PopulationProfile with source citations
+```
+
+### Key Column Mappings
+
+**CDC PLACES Measures (Wide Format):**
+- DIABETES_CrudePrev → Diabetes prevalence
+- OBESITY_CrudePrev → Obesity prevalence
+- BPHIGH_CrudePrev → Hypertension prevalence
+- CSMOKING_CrudePrev → Smoking prevalence
+- DEPRESSION_CrudePrev → Depression prevalence
+
+**SVI Columns:**
+- RPL_THEMES → Overall SVI (0-1)
+- RPL_THEME1 → Socioeconomic Status
+- RPL_THEME2 → Household Characteristics
+- RPL_THEME3 → Minority/Language
+- RPL_THEME4 → Housing/Transportation
+- E_TOTPOP → Total population
+- EP_POV150 → % below 150% poverty
+- EP_UNINSUR → % uninsured
+- EP_MINRTY → % minority
+
+---
+
 ## Generation Patterns
 
 ### Pattern 1: Single County Profile
@@ -55,38 +96,54 @@ The county-profile skill generates comprehensive PopulationProfile objects for U
 **Input**: "Profile San Diego County"
 
 **Process**:
-1. Resolve county identifier → FIPS 06073
-2. Pull ACS demographics (S0101, B03002, S1901, S2701)
-3. Pull CDC PLACES health measures
-4. Pull SVI scores for county
-5. Calculate county-level ADI aggregate
-6. Assemble PopulationProfile
+1. **Resolve county FIPS:**
+   - Read `data/crosswalks/fips_county.csv`
+   - Filter: county_name = "San Diego" AND state_abbr = "CA"
+   - Result: county_fips = "06073"
 
-**Output**: Complete PopulationProfile for San Diego County
+2. **Pull CDC PLACES health measures:**
+   - Read `data/county/places_county_2024.csv`
+   - Filter: CountyFIPS = "06073"
+   - Extract: TotalPopulation, DIABETES_CrudePrev, OBESITY_CrudePrev, BPHIGH_CrudePrev, etc.
+
+3. **Pull SVI scores and demographics:**
+   - Read `data/county/svi_county_2022.csv`
+   - Filter: STCNTY = "06073"
+   - Extract: RPL_THEMES, RPL_THEME1-4, E_TOTPOP, EP_POV150, EP_UNINSUR, EP_MINRTY
+
+4. **Assemble PopulationProfile with provenance**
+
+**Output**: Complete PopulationProfile with exact values from embedded data
 
 ### Pattern 2: County Comparison
 
 **Input**: "Compare Harris County TX to Los Angeles County CA"
 
 **Process**:
-1. Generate profiles for both counties
-2. Calculate differences and ratios
-3. Identify notable disparities
-4. Apply benchmark comparisons
+1. Resolve both county FIPS codes (48201, 06037)
+2. Read PLACES and SVI data for both counties
+3. Calculate absolute and relative differences
+4. Identify statistically significant disparities
+5. Format comparison table with both values
 
-**Output**: Two profiles with comparison table
+**Output**: Side-by-side comparison with source citations
 
 ### Pattern 3: County with Specific Focus
 
 **Input**: "Show diabetes-related metrics for Cook County IL"
 
 **Process**:
-1. Generate base county profile
-2. Expand health indicators section with diabetes-related measures
-3. Include diabetes-correlated SDOH factors
-4. Add comorbidity context
+1. Resolve county FIPS: 17031
+2. Read PLACES file, extract diabetes-related measures:
+   - DIABETES_CrudePrev (primary)
+   - OBESITY_CrudePrev (risk factor)
+   - BPHIGH_CrudePrev (comorbidity)
+   - LPA_CrudePrev (risk factor)
+   - CHECKUP_CrudePrev (prevention)
+3. Read SVI for socioeconomic context
+4. Format focused profile
 
-**Output**: Profile with diabetes focus
+**Output**: Profile emphasizing diabetes ecosystem
 
 ---
 
@@ -265,56 +322,59 @@ The county-profile skill generates comprehensive PopulationProfile objects for U
 
 **Harris County, TX (FIPS 48201) Population Profile**
 
-| Category | Value | vs Texas |
-|----------|-------|----------|
-| **Population** | 4,731,145 | Largest in TX |
-| **Median Age** | 34.4 | Younger than state (35.8) |
-| **Median Income** | $67,706 | Above state ($67,321) |
-| **Poverty Rate** | 13.8% | Above state (13.1%) |
+| Category | Value | Source |
+|----------|-------|--------|
+| **Population** | 4,835,125 | CDC PLACES 2024 |
+| **Below 150% Poverty** | 25.4% | SVI 2022 |
+| **Uninsured** | 21.1% | SVI 2022 |
+| **Minority** | 72.4% | SVI 2022 |
 
-**Race/Ethnicity**:
-- Hispanic: 43.8%
-- White NH: 28.5%
-- Black: 19.4%
-- Asian: 7.3%
+**Health Indicators** (CDC PLACES 2024):
+| Condition | Harris County | National Avg | Status |
+|-----------|---------------|--------------|--------|
+| Diabetes | 13.2% | 10.1% | ⚠️ Above |
+| Obesity | 37.3% | 32.1% | ⚠️ Above |
+| Hypertension | 32.8% | 32.4% | ≈ Average |
+| Smoking | 12.7% | 14.1% | ✓ Below |
+| Depression | 19.7% | 18.6% | ≈ Average |
 
-**Health Indicators** (CDC PLACES):
-| Condition | Harris | Texas | National |
-|-----------|--------|-------|----------|
-| Diabetes | 12.4% | 11.8% | 10.1% ⚠️ |
-| Obesity | 33.8% | 33.2% | 32.1% |
-| Uninsured | 18.2% | 17.5% | 8.8% ⚠️ |
+**Social Vulnerability Index** (CDC SVI 2022):
+| Theme | Score | Interpretation |
+|-------|-------|----------------|
+| **Overall SVI** | 0.633 | Moderate-High |
+| Socioeconomic | 0.671 | Moderate-High |
+| Household Comp | 0.586 | Moderate |
+| Minority/Language | 0.794 | High |
+| Housing/Transport | 0.478 | Moderate |
 
-**SDOH Indices**:
-- SVI Overall: 0.68 (moderate-high vulnerability)
-- ADI National: 58th percentile
+*Data Sources: CDC PLACES 2024 Release (2022 BRFSS), CDC/ATSDR SVI 2022 (2018-2022 ACS)*
 
 ---
 
 ### Example 2: County Comparison
 
-**Request**: "Compare Maricopa County AZ to Clark County NV"
+**Request**: "Compare San Diego County CA to Cook County IL"
 
 **Response**:
 
-**County Comparison: Maricopa vs Clark**
+**County Comparison: San Diego vs Cook**
 
-| Metric | Maricopa, AZ | Clark, NV | Difference |
-|--------|--------------|-----------|------------|
-| Population | 4,420,568 | 2,265,461 | +2.15M |
-| Median Age | 38.1 | 38.4 | -0.3 |
-| Median Income | $82,134 | $68,879 | +$13,255 |
-| Poverty Rate | 10.8% | 12.1% | -1.3% |
-| Diabetes | 10.2% | 11.8% | -1.6% ✓ |
-| Obesity | 30.4% | 28.2% | +2.2% |
-| Uninsured | 9.8% | 11.2% | -1.4% ✓ |
-| SVI Overall | 0.51 | 0.62 | -0.11 ✓ |
+| Metric | San Diego, CA | Cook, IL | Difference |
+|--------|---------------|----------|------------|
+| Population | 3,269,973 | 5,087,072 | -1.8M |
+| Diabetes | 10.0% | 11.8% | -1.8% ✓ |
+| Obesity | 25.3% | 31.0% | -5.7% ✓ |
+| Hypertension | 28.7% | 31.0% | -2.3% ✓ |
+| Smoking | 10.0% | 11.1% | -1.1% ✓ |
+| SVI Overall | 0.545 | 0.566 | -0.02 ✓ |
 
 **Key Findings**:
-- Maricopa has higher income and lower poverty
-- Maricopa has lower diabetes prevalence
-- Clark has lower obesity but higher uninsured
-- Maricopa has lower social vulnerability overall
+- San Diego has lower chronic disease prevalence across all measures
+- San Diego has 5.7% lower obesity rate (significant difference)
+- Both counties have moderate social vulnerability
+- Cook County has larger population but higher health burden
+
+*Data Sources: CDC PLACES 2024, CDC SVI 2022*
 
 ---
 
@@ -324,40 +384,30 @@ The county-profile skill generates comprehensive PopulationProfile objects for U
 
 **Response**:
 
-**Cuyahoga County, OH - Cardiovascular Health Profile**
+**Cuyahoga County, OH (FIPS 39035) - Cardiovascular Health Profile**
 
-**Demographics Context**:
-- Population: 1,249,352
-- Median Age: 40.2 (older than state average)
-- 65+ Population: 18.4%
+**Demographics Context** (from embedded data):
+- Population: 1,233,088
+- SVI Overall: 0.479 (Moderate vulnerability)
 
-**Cardiovascular Conditions** (CDC PLACES):
-| Condition | Cuyahoga | Ohio | National | Status |
-|-----------|----------|------|----------|--------|
-| Coronary Heart Disease | 6.8% | 6.4% | 5.4% | ⚠️ High |
-| Stroke | 3.8% | 3.5% | 3.0% | ⚠️ High |
-| Hypertension | 35.2% | 33.8% | 32.4% | ⚠️ High |
-| High Cholesterol | 34.1% | 32.8% | 31.2% | ⚠️ High |
+**Cardiovascular Conditions** (CDC PLACES 2024):
+| Condition | Cuyahoga | National Avg | Status |
+|-----------|----------|--------------|--------|
+| Coronary Heart Disease | 6.9% | 5.4% | ⚠️ Above |
+| Stroke | 4.0% | 3.0% | ⚠️ Above |
+| Hypertension | 38.5% | 32.4% | ⚠️ Above |
+| Diabetes | 13.4% | 10.1% | ⚠️ Above |
 
-**CV Risk Factors**:
-| Factor | Cuyahoga | Ohio | National |
-|--------|----------|------|----------|
-| Obesity | 34.8% | 35.2% | 32.1% |
-| Smoking | 19.2% | 19.8% | 14.1% |
-| Physical Inactivity | 27.4% | 26.2% | 22.8% |
-| Diabetes | 12.8% | 12.1% | 10.1% |
-
-**SDOH Context**:
-- SVI: 0.72 (high vulnerability)
-- Socioeconomic Theme: 0.78 (high)
-- Uninsured: 5.8%
+**CV Risk Factors** (CDC PLACES 2024):
+| Factor | Cuyahoga | National Avg |
+|--------|----------|--------------|
+| Obesity | 35.3% | 32.1% |
+| Smoking | 14.8% | 14.1% |
 
 **Implications for HealthSim**:
-When generating patients from Cuyahoga County, expect:
-- Higher rates of CV conditions and risk factors
-- Multiple comorbidities common (HTN + DM + HLD)
-- Higher smoking history prevalence
-- SDOH factors: higher rates of economic barriers
+When generating patients from Cuyahoga County, expect higher rates of CV conditions and risk factors, with multiple comorbidities common (HTN + DM + obesity).
+
+*Data Source: CDC PLACES 2024 Release (2022 BRFSS)*
 
 ---
 

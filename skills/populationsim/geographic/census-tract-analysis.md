@@ -53,31 +53,89 @@ The census-tract-analysis skill provides granular neighborhood-level population 
 
 ---
 
+## Data Sources (Embedded v2.0)
+
+This skill reads from PopulationSim's embedded tract-level data:
+
+| Data Type | File | Records | Key Columns |
+|-----------|------|---------|-------------|
+| Health Indicators | `data/tract/places_tract_2024.csv` | 83,522 | LocationID, [MEASURE]_CrudePrev |
+| SVI Full Dataset | `data/tract/svi_tract_2022.csv` | 84,120 | FIPS, RPL_THEMES, E_TOTPOP, EP_* |
+| ADI Rankings | `data/block_group/adi_blockgroup_2023.csv` | 242,336 | FIPS (12-digit), ADI_NATRANK |
+
+### Key Column Reference
+
+**CDC PLACES Tract Columns:**
+- LocationID: 11-digit tract FIPS
+- StateAbbr, CountyName: Geography identifiers
+- [MEASURE]_CrudePrev: Crude prevalence (e.g., DIABETES_CrudePrev)
+- TotalPopulation: Tract population 18+
+
+**SVI Tract Columns:**
+- FIPS: 11-digit tract FIPS
+- STCNTY: 5-digit county FIPS (for filtering)
+- E_TOTPOP: Total population
+- RPL_THEMES: Overall SVI (0-1, higher = more vulnerable)
+- RPL_THEME1-4: Theme-specific rankings
+- EP_POV150, EP_UNINSUR, EP_MINRTY: Key percentages
+
+### Tract FIPS Structure
+```
+11 digits: [State-2][County-3][Tract-6]
+Example: 48201311500
+  48 = Texas
+  201 = Harris County
+  311500 = Tract 3115.00
+```
+
+---
+
 ## Generation Patterns
 
 ### Pattern 1: High-Vulnerability Tract Identification
 
-**Input**: "Find high-SVI tracts in Los Angeles County"
+**Input**: "Find high-SVI tracts in Harris County, TX"
 
 **Process**:
-1. Load all LA County tracts (~2,500 tracts)
-2. Filter to SVI ≥ 0.75
-3. Sort by SVI descending
-4. Aggregate demographics and health indicators
-5. Identify common characteristics
+1. **Read SVI tract data:**
+   - Read `data/tract/svi_tract_2022.csv`
+   - Filter: STCNTY = "48201" (Harris County)
+2. **Apply SVI filter:**
+   - Filter: RPL_THEMES >= 0.75
+3. **Sort and limit:**
+   - Sort by RPL_THEMES descending
+   - Return top 20 tracts
+4. **Format with provenance**
 
-**Output**: List of high-vulnerability tracts with profiles
+**Output**: 
+```
+Harris County High-Vulnerability Tracts (SVI ≥ 0.75)
+
+| Tract FIPS | SVI | Population | Poverty | Minority |
+|------------|-----|------------|---------|----------|
+| 48201311500 | 0.98 | 4,521 | 52.3% | 94.2% |
+| 48201311600 | 0.96 | 3,892 | 48.7% | 91.8% |
+| ... | ... | ... | ... | ... |
+
+Found 187 high-vulnerability tracts in Harris County (24% of 786 total tracts)
+
+*Source: CDC/ATSDR SVI 2022*
+```
 
 ### Pattern 2: Disease Hotspot Detection
 
-**Input**: "Identify diabetes hotspots in Houston area"
+**Input**: "Identify diabetes hotspots in Harris County"
 
 **Process**:
-1. Load Harris County and adjacent county tracts
-2. Pull CDC PLACES diabetes prevalence
-3. Calculate z-scores vs county average
-4. Flag tracts > 1.5 standard deviations
-5. Cluster adjacent hotspot tracts
+1. **Read PLACES tract data:**
+   - Read `data/tract/places_tract_2024.csv`
+   - Filter: CountyFIPS = "48201"
+2. **Calculate statistics:**
+   - County mean diabetes prevalence
+   - Standard deviation across tracts
+3. **Identify hotspots:**
+   - Tracts where DIABETES_CrudePrev > mean + 1.5*SD
+4. **Cross-reference with SVI for context**
 
 **Output**: Diabetes hotspot clusters with demographics
 

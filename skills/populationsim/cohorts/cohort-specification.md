@@ -46,6 +46,29 @@ The cohort-specification skill creates complete CohortSpecification objects that
 
 ---
 
+## Data Sources (Embedded v2.0)
+
+Cohort specifications are built from **real data** in the embedded data package:
+
+| Component | Data Source | File |
+|-----------|-------------|------|
+| Demographics | SVI tract data | `data/tract/svi_tract_2022.csv` |
+| Health Indicators | CDC PLACES | `data/county/places_county_2024.csv` |
+| SVI Scores | SVI county/tract | `data/county/svi_county_2022.csv` |
+| ADI Rankings | ADI block group | `data/block_group/adi_blockgroup_2023.csv` |
+| Metro Counties | CBSA crosswalk | `data/crosswalks/cbsa_definitions.csv` |
+
+### Data-First Specification Pattern
+
+When building a CohortSpecification:
+1. **Look up actual values** from embedded data files
+2. **Use real prevalence rates** from CDC PLACES
+3. **Use real demographic distributions** from SVI tract data
+4. **Use real SVI/ADI scores** for SDOH profile
+5. **Cite data sources** in the specification metadata
+
+---
+
 ## Generation Process
 
 ### Step 1: Geographic Foundation

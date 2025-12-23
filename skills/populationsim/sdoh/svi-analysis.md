@@ -45,6 +45,40 @@ The svi-analysis skill provides detailed analysis of CDC/ATSDR Social Vulnerabil
 
 ---
 
+## Data Sources (Embedded v2.0)
+
+This skill reads from PopulationSim's embedded SVI data:
+
+| Level | File | Records | Key Columns |
+|-------|------|---------|-------------|
+| County | `data/county/svi_county_2022.csv` | 3,144 | STCNTY, RPL_THEMES, RPL_THEME1-4 |
+| Tract | `data/tract/svi_tract_2022.csv` | 84,120 | FIPS, RPL_THEMES, RPL_THEME1-4, EP_* |
+
+### Key Column Reference
+
+**SVI Ranking Columns (0-1, higher = more vulnerable):**
+- `RPL_THEMES`: Overall SVI ranking
+- `RPL_THEME1`: Socioeconomic Status
+- `RPL_THEME2`: Household Characteristics
+- `RPL_THEME3`: Minority/Language Status
+- `RPL_THEME4`: Housing/Transportation
+
+**Estimate Columns (E_*):** Raw counts (e.g., E_TOTPOP, E_POV150)
+**Percentage Columns (EP_*):** Percentages (e.g., EP_POV150, EP_UNINSUR)
+**Missing Values:** -999 indicates suppressed/unavailable data
+
+### Data Lookup Pattern
+
+```
+1. Identify geography (county FIPS or tract FIPS)
+2. Read appropriate SVI file
+3. Filter by STCNTY (county) or FIPS (tract)
+4. Extract RPL_* scores and EP_* variables
+5. Return with CDC/ATSDR SVI 2022 source citation
+```
+
+---
+
 ## SVI Structure
 
 ### 4 Themes, 16 Variables
