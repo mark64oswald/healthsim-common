@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **[PopulationSim]** Embedded Data Package v2.0 - Phase 1 Complete (2024-12-23)
+  - Created `skills/populationsim/data/` directory with real-world datasets:
+    - **CDC PLACES 2024**: County (3,143 records, 4.8 MB) and Tract (83,522 records, 67 MB)
+    - **CDC/ATSDR SVI 2022**: Tract (84,120 records, 61 MB) and County (aggregated, 3,144 records)
+    - **Geography Crosswalks**: State (51), County (3,144), Tract-to-County (84,120)
+  - Data sources provide 100% US geographic coverage with:
+    - 40 health outcome measures (diabetes, obesity, COPD, depression, etc.)
+    - 16 social vulnerability indicators across 4 themes
+    - Demographics including race/ethnicity, age, income, education, insurance
+  - Comprehensive `data/README.md` documentation including:
+    - Data source descriptions and methodology
+    - Column schemas for all datasets
+    - Join keys and usage examples
+    - Citation requirements
+    - Data vintage and refresh schedule
+  - **Note**: ADI block group data requires manual registration at neighborhoodatlas.medicine.wisc.edu
+  - Total data package size: 132 MB
+
 ### Changed
 
 - **[Cross-Product]** Bidirectional PopulationSim Cross-References (2024-12-23)

@@ -1,0 +1,1919 @@
+county_fips,state_fips,state_name,county_name,cbsa_code,cbsa_title,cbsa_type,csa_code,csa_title,central_outlying
+01001,01,Alabama,Autauga County,33860,"Montgomery, AL",Metro,388,"Montgomery-Selma, AL",Central
+01003,01,Alabama,Baldwin County,19300,"Daphne-Fairhope-Foley, AL",Metro,380,"Mobile-Daphne-Fairhope, AL",Central
+01005,01,Alabama,Barbour County,21640,"Eufaula, AL-GA",Micro,,,Central
+01007,01,Alabama,Bibb County,13820,"Birmingham, AL",Metro,142,"Birmingham-Cullman-Talladega, AL",Outlying
+01009,01,Alabama,Blount County,13820,"Birmingham, AL",Metro,142,"Birmingham-Cullman-Talladega, AL",Outlying
+01015,01,Alabama,Calhoun County,11500,"Anniston-Oxford, AL",Metro,,,Central
+01017,01,Alabama,Chambers County,29300,"LaGrange, GA-AL",Micro,122,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Outlying
+01021,01,Alabama,Chilton County,13820,"Birmingham, AL",Metro,142,"Birmingham-Cullman-Talladega, AL",Outlying
+01031,01,Alabama,Coffee County,21460,"Enterprise, AL",Micro,222,"Dothan-Enterprise-Ozark, AL",Central
+01033,01,Alabama,Colbert County,22520,"Florence-Muscle Shoals, AL",Metro,250,"Florence-Muscle Shoals-Russellville, AL",Central
+01037,01,Alabama,Coosa County,45180,"Talladega-Sylacauga, AL",Micro,142,"Birmingham-Cullman-Talladega, AL",Outlying
+01043,01,Alabama,Cullman County,18980,"Cullman, AL",Micro,142,"Birmingham-Cullman-Talladega, AL",Central
+01045,01,Alabama,Dale County,37120,"Ozark, AL",Micro,222,"Dothan-Enterprise-Ozark, AL",Central
+01047,01,Alabama,Dallas County,42820,"Selma, AL",Micro,388,"Montgomery-Selma, AL",Central
+01049,01,Alabama,DeKalb County,22840,"Fort Payne, AL",Micro,290,"Huntsville-Decatur-Albertville, AL-TN",Central
+01051,01,Alabama,Elmore County,33860,"Montgomery, AL",Metro,388,"Montgomery-Selma, AL",Central
+01055,01,Alabama,Etowah County,23460,"Gadsden, AL",Metro,,,Central
+01059,01,Alabama,Franklin County,40770,"Russellville, AL",Micro,250,"Florence-Muscle Shoals-Russellville, AL",Central
+01061,01,Alabama,Geneva County,20020,"Dothan, AL",Metro,222,"Dothan-Enterprise-Ozark, AL",Outlying
+01063,01,Alabama,Greene County,46220,"Tuscaloosa, AL",Metro,,,Outlying
+01065,01,Alabama,Hale County,46220,"Tuscaloosa, AL",Metro,,,Outlying
+01067,01,Alabama,Henry County,20020,"Dothan, AL",Metro,222,"Dothan-Enterprise-Ozark, AL",Outlying
+01069,01,Alabama,Houston County,20020,"Dothan, AL",Metro,222,"Dothan-Enterprise-Ozark, AL",Central
+01071,01,Alabama,Jackson County,42460,"Scottsboro, AL",Micro,174,"Chattanooga-Cleveland-Dalton, TN-GA-AL",Central
+01073,01,Alabama,Jefferson County,13820,"Birmingham, AL",Metro,142,"Birmingham-Cullman-Talladega, AL",Central
+01077,01,Alabama,Lauderdale County,22520,"Florence-Muscle Shoals, AL",Metro,250,"Florence-Muscle Shoals-Russellville, AL",Central
+01079,01,Alabama,Lawrence County,19460,"Decatur, AL",Metro,290,"Huntsville-Decatur-Albertville, AL-TN",Outlying
+01081,01,Alabama,Lee County,12220,"Auburn-Opelika, AL",Metro,194,"Columbus-Auburn-Opelika, GA-AL",Central
+01083,01,Alabama,Limestone County,26620,"Huntsville, AL",Metro,290,"Huntsville-Decatur-Albertville, AL-TN",Central
+01085,01,Alabama,Lowndes County,33860,"Montgomery, AL",Metro,388,"Montgomery-Selma, AL",Outlying
+01087,01,Alabama,Macon County,12220,"Auburn-Opelika, AL",Metro,194,"Columbus-Auburn-Opelika, GA-AL",Outlying
+01089,01,Alabama,Madison County,26620,"Huntsville, AL",Metro,290,"Huntsville-Decatur-Albertville, AL-TN",Central
+01095,01,Alabama,Marshall County,10700,"Albertville, AL",Micro,290,"Huntsville-Decatur-Albertville, AL-TN",Central
+01097,01,Alabama,Mobile County,33660,"Mobile, AL",Metro,380,"Mobile-Daphne-Fairhope, AL",Central
+01101,01,Alabama,Montgomery County,33860,"Montgomery, AL",Metro,388,"Montgomery-Selma, AL",Central
+01103,01,Alabama,Morgan County,19460,"Decatur, AL",Metro,290,"Huntsville-Decatur-Albertville, AL-TN",Central
+01107,01,Alabama,Pickens County,46220,"Tuscaloosa, AL",Metro,,,Outlying
+01109,01,Alabama,Pike County,45980,"Troy, AL",Micro,,,Central
+01113,01,Alabama,Russell County,17980,"Columbus, GA-AL",Metro,194,"Columbus-Auburn-Opelika, GA-AL",Central
+01115,01,Alabama,St. Clair County,13820,"Birmingham, AL",Metro,142,"Birmingham-Cullman-Talladega, AL",Central
+01117,01,Alabama,Shelby County,13820,"Birmingham, AL",Metro,142,"Birmingham-Cullman-Talladega, AL",Central
+01121,01,Alabama,Talladega County,45180,"Talladega-Sylacauga, AL",Micro,142,"Birmingham-Cullman-Talladega, AL",Central
+01123,01,Alabama,Tallapoosa County,10760,"Alexander City, AL",Micro,194,"Columbus-Auburn-Opelika, GA-AL",Central
+01125,01,Alabama,Tuscaloosa County,46220,"Tuscaloosa, AL",Metro,,,Central
+01127,01,Alabama,Walker County,13820,"Birmingham, AL",Metro,142,"Birmingham-Cullman-Talladega, AL",Outlying
+02020,02,Alaska,Anchorage Municipality,11260,"Anchorage, AK",Metro,,,Central
+02090,02,Alaska,Fairbanks North Star Borough,21820,"Fairbanks-College, AK",Metro,,,Central
+02110,02,Alaska,Juneau City and Borough,27940,"Juneau, AK",Micro,,,Central
+02130,02,Alaska,Ketchikan Gateway Borough,28540,"Ketchikan, AK",Micro,,,Central
+02170,02,Alaska,Matanuska-Susitna Borough,11260,"Anchorage, AK",Metro,,,Outlying
+04003,04,Arizona,Cochise County,43420,"Sierra Vista-Douglas, AZ",Metro,,,Central
+04005,04,Arizona,Coconino County,22380,"Flagstaff, AZ",Metro,,,Central
+04007,04,Arizona,Gila County,37740,"Payson, AZ",Micro,429,"Phoenix-Mesa, AZ",Central
+04009,04,Arizona,Graham County,40940,"Safford, AZ",Micro,,,Central
+04013,04,Arizona,Maricopa County,38060,"Phoenix-Mesa-Chandler, AZ",Metro,429,"Phoenix-Mesa, AZ",Central
+04015,04,Arizona,Mohave County,29420,"Lake Havasu City-Kingman, AZ",Metro,,,Central
+04017,04,Arizona,Navajo County,43320,"Show Low, AZ",Micro,,,Central
+04019,04,Arizona,Pima County,46060,"Tucson, AZ",Metro,536,"Tucson-Nogales, AZ",Central
+04021,04,Arizona,Pinal County,38060,"Phoenix-Mesa-Chandler, AZ",Metro,429,"Phoenix-Mesa, AZ",Central
+04023,04,Arizona,Santa Cruz County,35700,"Nogales, AZ",Micro,536,"Tucson-Nogales, AZ",Central
+04025,04,Arizona,Yavapai County,39150,"Prescott Valley-Prescott, AZ",Metro,,,Central
+04027,04,Arizona,Yuma County,49740,"Yuma, AZ",Metro,,,Central
+05005,05,Arkansas,Baxter County,34260,"Mountain Home, AR",Micro,,,Central
+05007,05,Arkansas,Benton County,22220,"Fayetteville-Springdale-Rogers, AR",Metro,,,Central
+05009,05,Arkansas,Boone County,25460,"Harrison, AR",Micro,,,Central
+05013,05,Arkansas,Calhoun County,15780,"Camden, AR",Micro,,,Outlying
+05019,05,Arkansas,Clark County,11660,"Arkadelphia, AR",Micro,,,Central
+05025,05,Arkansas,Cleveland County,38220,"Pine Bluff, AR",Micro,340,"Little Rock-North Little Rock, AR",Outlying
+05027,05,Arkansas,Columbia County,31620,"Magnolia, AR",Micro,,,Central
+05031,05,Arkansas,Craighead County,27860,"Jonesboro, AR",Metro,308,"Jonesboro-Paragould, AR",Central
+05033,05,Arkansas,Crawford County,22900,"Fort Smith, AR-OK",Metro,,,Central
+05035,05,Arkansas,Crittenden County,32820,"Memphis, TN-MS-AR",Metro,368,"Memphis-Clarksdale-Forrest City, TN-MS-AR",Central
+05045,05,Arkansas,Faulkner County,30780,"Little Rock-North Little Rock-Conway, AR",Metro,340,"Little Rock-North Little Rock, AR",Outlying
+05051,05,Arkansas,Garland County,26300,"Hot Springs, AR",Metro,284,"Hot Springs-Malvern, AR",Central
+05053,05,Arkansas,Grant County,30780,"Little Rock-North Little Rock-Conway, AR",Metro,340,"Little Rock-North Little Rock, AR",Outlying
+05055,05,Arkansas,Greene County,37500,"Paragould, AR",Micro,308,"Jonesboro-Paragould, AR",Central
+05059,05,Arkansas,Hot Spring County,31680,"Malvern, AR",Micro,284,"Hot Springs-Malvern, AR",Central
+05063,05,Arkansas,Independence County,12900,"Batesville, AR",Micro,,,Central
+05069,05,Arkansas,Jefferson County,38220,"Pine Bluff, AR",Micro,340,"Little Rock-North Little Rock, AR",Central
+05081,05,Arkansas,Little River County,45500,"Texarkana, TX-AR",Metro,,,Outlying
+05085,05,Arkansas,Lonoke County,30780,"Little Rock-North Little Rock-Conway, AR",Metro,340,"Little Rock-North Little Rock, AR",Central
+05087,05,Arkansas,Madison County,22220,"Fayetteville-Springdale-Rogers, AR",Metro,,,Outlying
+05091,05,Arkansas,Miller County,45500,"Texarkana, TX-AR",Metro,,,Central
+05093,05,Arkansas,Mississippi County,14180,"Blytheville, AR",Micro,,,Central
+05101,05,Arkansas,Newton County,25460,"Harrison, AR",Micro,,,Outlying
+05103,05,Arkansas,Ouachita County,15780,"Camden, AR",Micro,,,Central
+05105,05,Arkansas,Perry County,30780,"Little Rock-North Little Rock-Conway, AR",Metro,340,"Little Rock-North Little Rock, AR",Outlying
+05111,05,Arkansas,Poinsett County,27860,"Jonesboro, AR",Metro,308,"Jonesboro-Paragould, AR",Outlying
+05115,05,Arkansas,Pope County,40780,"Russellville, AR",Micro,,,Central
+05119,05,Arkansas,Pulaski County,30780,"Little Rock-North Little Rock-Conway, AR",Metro,340,"Little Rock-North Little Rock, AR",Central
+05123,05,Arkansas,St. Francis County,22620,"Forrest City, AR",Micro,368,"Memphis-Clarksdale-Forrest City, TN-MS-AR",Central
+05125,05,Arkansas,Saline County,30780,"Little Rock-North Little Rock-Conway, AR",Metro,340,"Little Rock-North Little Rock, AR",Central
+05131,05,Arkansas,Sebastian County,22900,"Fort Smith, AR-OK",Metro,,,Central
+05139,05,Arkansas,Union County,20980,"El Dorado, AR",Micro,,,Central
+05143,05,Arkansas,Washington County,22220,"Fayetteville-Springdale-Rogers, AR",Metro,,,Central
+05145,05,Arkansas,White County,42620,"Searcy, AR",Micro,340,"Little Rock-North Little Rock, AR",Central
+05149,05,Arkansas,Yell County,40780,"Russellville, AR",Micro,,,Outlying
+06001,06,California,Alameda County,41860,"San Francisco-Oakland-Fremont, CA",Metro,488,"San Jose-San Francisco-Oakland, CA",Central
+06003,06,California,Alpine County,23820,"Gardnerville Ranchos, NV-CA",Micro,456,"Reno-Carson City-Gardnerville Ranchos, NV-CA",Outlying
+06007,06,California,Butte County,17020,"Chico, CA",Metro,,,Central
+06013,06,California,Contra Costa County,41860,"San Francisco-Oakland-Fremont, CA",Metro,488,"San Jose-San Francisco-Oakland, CA",Outlying
+06015,06,California,Del Norte County,18860,"Crescent City, CA",Micro,152,"Brookings-Crescent City, OR-CA",Central
+06017,06,California,El Dorado County,40900,"Sacramento-Roseville-Folsom, CA",Metro,472,"Sacramento-Roseville, CA",Central
+06019,06,California,Fresno County,23420,"Fresno, CA",Metro,260,"Fresno-Hanford-Corcoran, CA",Central
+06023,06,California,Humboldt County,21700,"Eureka-Arcata, CA",Micro,,,Central
+06025,06,California,Imperial County,20940,"El Centro, CA",Metro,,,Central
+06027,06,California,Inyo County,13860,"Bishop, CA",Micro,,,Central
+06029,06,California,Kern County,12540,"Bakersfield-Delano, CA",Metro,,,Central
+06031,06,California,Kings County,25260,"Hanford-Corcoran, CA",Metro,260,"Fresno-Hanford-Corcoran, CA",Central
+06033,06,California,Lake County,17340,"Clearlake, CA",Micro,,,Central
+06035,06,California,Lassen County,45000,"Susanville, CA",Micro,,,Central
+06037,06,California,Los Angeles County,31080,"Los Angeles-Long Beach-Anaheim, CA",Metro,348,"Los Angeles-Long Beach, CA",Central
+06039,06,California,Madera County,23420,"Fresno, CA",Metro,260,"Fresno-Hanford-Corcoran, CA",Outlying
+06041,06,California,Marin County,41860,"San Francisco-Oakland-Fremont, CA",Metro,488,"San Jose-San Francisco-Oakland, CA",Central
+06045,06,California,Mendocino County,46380,"Ukiah, CA",Micro,,,Central
+06047,06,California,Merced County,32900,"Merced, CA",Metro,488,"San Jose-San Francisco-Oakland, CA",Central
+06053,06,California,Monterey County,41500,"Salinas, CA",Metro,,,Central
+06055,06,California,Napa County,34900,"Napa, CA",Metro,488,"San Jose-San Francisco-Oakland, CA",Central
+06057,06,California,Nevada County,46020,"Truckee-Grass Valley, CA",Micro,472,"Sacramento-Roseville, CA",Central
+06059,06,California,Orange County,31080,"Los Angeles-Long Beach-Anaheim, CA",Metro,348,"Los Angeles-Long Beach, CA",Central
+06061,06,California,Placer County,40900,"Sacramento-Roseville-Folsom, CA",Metro,472,"Sacramento-Roseville, CA",Central
+06065,06,California,Riverside County,40140,"Riverside-San Bernardino-Ontario, CA",Metro,348,"Los Angeles-Long Beach, CA",Central
+06067,06,California,Sacramento County,40900,"Sacramento-Roseville-Folsom, CA",Metro,472,"Sacramento-Roseville, CA",Central
+06069,06,California,San Benito County,41940,"San Jose-Sunnyvale-Santa Clara, CA",Metro,488,"San Jose-San Francisco-Oakland, CA",Outlying
+06071,06,California,San Bernardino County,40140,"Riverside-San Bernardino-Ontario, CA",Metro,348,"Los Angeles-Long Beach, CA",Central
+06073,06,California,San Diego County,41740,"San Diego-Chula Vista-Carlsbad, CA",Metro,,,Central
+06075,06,California,San Francisco County,41860,"San Francisco-Oakland-Fremont, CA",Metro,488,"San Jose-San Francisco-Oakland, CA",Central
+06077,06,California,San Joaquin County,44700,"Stockton-Lodi, CA",Metro,488,"San Jose-San Francisco-Oakland, CA",Central
+06079,06,California,San Luis Obispo County,42020,"San Luis Obispo-Paso Robles, CA",Metro,,,Central
+06081,06,California,San Mateo County,41860,"San Francisco-Oakland-Fremont, CA",Metro,488,"San Jose-San Francisco-Oakland, CA",Central
+06083,06,California,Santa Barbara County,42200,"Santa Maria-Santa Barbara, CA",Metro,,,Central
+06085,06,California,Santa Clara County,41940,"San Jose-Sunnyvale-Santa Clara, CA",Metro,488,"San Jose-San Francisco-Oakland, CA",Central
+06087,06,California,Santa Cruz County,42100,"Santa Cruz-Watsonville, CA",Metro,488,"San Jose-San Francisco-Oakland, CA",Central
+06089,06,California,Shasta County,39820,"Redding, CA",Metro,454,"Redding-Red Bluff, CA",Central
+06095,06,California,Solano County,46700,"Vallejo, CA",Metro,488,"San Jose-San Francisco-Oakland, CA",Central
+06097,06,California,Sonoma County,42220,"Santa Rosa-Petaluma, CA",Metro,,,Central
+06099,06,California,Stanislaus County,33700,"Modesto, CA",Metro,488,"San Jose-San Francisco-Oakland, CA",Central
+06101,06,California,Sutter County,49700,"Yuba City, CA",Metro,472,"Sacramento-Roseville, CA",Central
+06103,06,California,Tehama County,39780,"Red Bluff, CA",Micro,454,"Redding-Red Bluff, CA",Central
+06107,06,California,Tulare County,47300,"Visalia, CA",Metro,,,Central
+06109,06,California,Tuolumne County,43760,"Sonora, CA",Micro,,,Central
+06111,06,California,Ventura County,37100,"Oxnard-Thousand Oaks-Ventura, CA",Metro,348,"Los Angeles-Long Beach, CA",Central
+06113,06,California,Yolo County,40900,"Sacramento-Roseville-Folsom, CA",Metro,472,"Sacramento-Roseville, CA",Outlying
+06115,06,California,Yuba County,49700,"Yuba City, CA",Metro,472,"Sacramento-Roseville, CA",Central
+08001,08,Colorado,Adams County,19740,"Denver-Aurora-Centennial, CO",Metro,216,"Denver-Aurora-Greeley, CO",Central
+08003,08,Colorado,Alamosa County,10480,"Alamosa, CO",Micro,,,Central
+08005,08,Colorado,Arapahoe County,19740,"Denver-Aurora-Centennial, CO",Metro,216,"Denver-Aurora-Greeley, CO",Central
+08013,08,Colorado,Boulder County,14500,"Boulder, CO",Metro,216,"Denver-Aurora-Greeley, CO",Central
+08014,08,Colorado,Broomfield County,19740,"Denver-Aurora-Centennial, CO",Metro,216,"Denver-Aurora-Greeley, CO",Central
+08019,08,Colorado,Clear Creek County,19740,"Denver-Aurora-Centennial, CO",Metro,216,"Denver-Aurora-Greeley, CO",Outlying
+08021,08,Colorado,Conejos County,10480,"Alamosa, CO",Micro,,,Outlying
+08023,08,Colorado,Costilla County,10480,"Alamosa, CO",Micro,,,Outlying
+08031,08,Colorado,Denver County,19740,"Denver-Aurora-Centennial, CO",Metro,216,"Denver-Aurora-Greeley, CO",Central
+08035,08,Colorado,Douglas County,19740,"Denver-Aurora-Centennial, CO",Metro,216,"Denver-Aurora-Greeley, CO",Central
+08037,08,Colorado,Eagle County,20780,"Edwards, CO",Micro,233,"Edwards-Rifle, CO",Central
+08039,08,Colorado,Elbert County,19740,"Denver-Aurora-Centennial, CO",Metro,216,"Denver-Aurora-Greeley, CO",Outlying
+08041,08,Colorado,El Paso County,17820,"Colorado Springs, CO",Metro,,,Central
+08043,08,Colorado,Fremont County,15860,"Cañon City, CO",Micro,444,"Pueblo-Cañon City, CO",Central
+08045,08,Colorado,Garfield County,40090,"Rifle, CO",Micro,233,"Edwards-Rifle, CO",Central
+08047,08,Colorado,Gilpin County,19740,"Denver-Aurora-Centennial, CO",Metro,216,"Denver-Aurora-Greeley, CO",Outlying
+08059,08,Colorado,Jefferson County,19740,"Denver-Aurora-Centennial, CO",Metro,216,"Denver-Aurora-Greeley, CO",Central
+08065,08,Colorado,Lake County,14720,"Breckenridge, CO",Micro,,,Outlying
+08067,08,Colorado,La Plata County,20420,"Durango, CO",Micro,,,Central
+08069,08,Colorado,Larimer County,22660,"Fort Collins-Loveland, CO",Metro,,,Central
+08075,08,Colorado,Logan County,44540,"Sterling, CO",Micro,,,Central
+08077,08,Colorado,Mesa County,24300,"Grand Junction, CO",Metro,,,Central
+08081,08,Colorado,Moffat County,44460,"Steamboat Springs, CO",Micro,,,Outlying
+08085,08,Colorado,Montrose County,33940,"Montrose, CO",Micro,,,Central
+08087,08,Colorado,Morgan County,22820,"Fort Morgan, CO",Micro,,,Central
+08093,08,Colorado,Park County,19740,"Denver-Aurora-Centennial, CO",Metro,216,"Denver-Aurora-Greeley, CO",Outlying
+08097,08,Colorado,Pitkin County,40090,"Rifle, CO",Micro,233,"Edwards-Rifle, CO",Outlying
+08101,08,Colorado,Pueblo County,39380,"Pueblo, CO",Metro,444,"Pueblo-Cañon City, CO",Central
+08107,08,Colorado,Routt County,44460,"Steamboat Springs, CO",Micro,,,Central
+08117,08,Colorado,Summit County,14720,"Breckenridge, CO",Micro,,,Central
+08119,08,Colorado,Teller County,17820,"Colorado Springs, CO",Metro,,,Outlying
+08123,08,Colorado,Weld County,24540,"Greeley, CO",Metro,216,"Denver-Aurora-Greeley, CO",Central
+09110,09,Connecticut,Capitol Planning Region,25540,"Hartford-West Hartford-East Hartford, CT",Metro,405,"New Haven-Hartford-Waterbury, CT",Central
+09120,09,Connecticut,Greater Bridgeport Planning Region,14860,"Bridgeport-Stamford-Danbury, CT",Metro,408,"New York-Newark, NY-NJ-CT-PA",Central
+09130,09,Connecticut,Lower Connecticut River Valley Planning Region,25540,"Hartford-West Hartford-East Hartford, CT",Metro,405,"New Haven-Hartford-Waterbury, CT",Central
+09140,09,Connecticut,Naugatuck Valley Planning Region,47930,"Waterbury-Shelton, CT",Metro,405,"New Haven-Hartford-Waterbury, CT",Central
+09150,09,Connecticut,Northeastern Connecticut Planning Region,39480,"Putnam, CT",Micro,405,"New Haven-Hartford-Waterbury, CT",Central
+09160,09,Connecticut,Northwest Hills Planning Region,45860,"Torrington, CT",Micro,405,"New Haven-Hartford-Waterbury, CT",Central
+09170,09,Connecticut,South Central Connecticut Planning Region,35300,"New Haven, CT",Metro,405,"New Haven-Hartford-Waterbury, CT",Central
+09180,09,Connecticut,Southeastern Connecticut Planning Region,35980,"Norwich-New London-Willimantic, CT",Metro,405,"New Haven-Hartford-Waterbury, CT",Central
+09190,09,Connecticut,Western Connecticut Planning Region,14860,"Bridgeport-Stamford-Danbury, CT",Metro,408,"New York-Newark, NY-NJ-CT-PA",Central
+10001,10,Delaware,Kent County,20100,"Dover, DE",Metro,428,"Philadelphia-Reading-Camden, PA-NJ-DE-MD",Central
+10003,10,Delaware,New Castle County,37980,"Philadelphia-Camden-Wilmington, PA-NJ-DE-MD",Metro,428,"Philadelphia-Reading-Camden, PA-NJ-DE-MD",Central
+10005,10,Delaware,Sussex County,42580,"Seaford, DE",Micro,,,Central
+11001,11,District of Columbia,District of Columbia,47900,"Washington-Arlington-Alexandria, DC-VA-MD-WV",Metro,548,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Central
+12001,12,Florida,Alachua County,23540,"Gainesville, FL",Metro,264,"Gainesville-Lake City, FL",Central
+12003,12,Florida,Baker County,27260,"Jacksonville, FL",Metro,300,"Jacksonville-Kingsland-Palatka, FL-GA",Outlying
+12005,12,Florida,Bay County,37460,"Panama City-Panama City Beach, FL",Metro,,,Central
+12009,12,Florida,Brevard County,37340,"Palm Bay-Melbourne-Titusville, FL",Metro,,,Central
+12011,12,Florida,Broward County,33100,"Miami-Fort Lauderdale-West Palm Beach, FL",Metro,370,"Miami-Port St. Lucie-Fort Lauderdale, FL",Central
+12015,12,Florida,Charlotte County,39460,"Punta Gorda, FL",Metro,412,"North Port-Bradenton, FL",Central
+12017,12,Florida,Citrus County,26140,"Homosassa Springs, FL",Metro,,,Central
+12019,12,Florida,Clay County,27260,"Jacksonville, FL",Metro,300,"Jacksonville-Kingsland-Palatka, FL-GA",Central
+12021,12,Florida,Collier County,34940,"Naples-Marco Island, FL",Metro,163,"Cape Coral-Fort Myers-Naples, FL",Central
+12023,12,Florida,Columbia County,29380,"Lake City, FL",Micro,264,"Gainesville-Lake City, FL",Central
+12027,12,Florida,DeSoto County,11580,"Arcadia, FL",Micro,412,"North Port-Bradenton, FL",Central
+12031,12,Florida,Duval County,27260,"Jacksonville, FL",Metro,300,"Jacksonville-Kingsland-Palatka, FL-GA",Central
+12033,12,Florida,Escambia County,37860,"Pensacola-Ferry Pass-Brent, FL",Metro,,,Central
+12035,12,Florida,Flagler County,19660,"Deltona-Daytona Beach-Ormond Beach, FL",Metro,422,"Orlando-Lakeland-Deltona, FL",Central
+12039,12,Florida,Gadsden County,45220,"Tallahassee, FL",Metro,533,"Tallahassee-Bainbridge, FL-GA",Outlying
+12041,12,Florida,Gilchrist County,23540,"Gainesville, FL",Metro,264,"Gainesville-Lake City, FL",Outlying
+12043,12,Florida,Glades County,17500,"Clewiston, FL",Micro,163,"Cape Coral-Fort Myers-Naples, FL",Outlying
+12051,12,Florida,Hendry County,17500,"Clewiston, FL",Micro,163,"Cape Coral-Fort Myers-Naples, FL",Central
+12053,12,Florida,Hernando County,45300,"Tampa-St. Petersburg-Clearwater, FL",Metro,,,Outlying
+12055,12,Florida,Highlands County,42700,"Sebring, FL",Metro,,,Central
+12057,12,Florida,Hillsborough County,45300,"Tampa-St. Petersburg-Clearwater, FL",Metro,,,Central
+12061,12,Florida,Indian River County,42680,"Sebastian-Vero Beach-West Vero Corridor, FL",Metro,370,"Miami-Port St. Lucie-Fort Lauderdale, FL",Central
+12065,12,Florida,Jefferson County,45220,"Tallahassee, FL",Metro,533,"Tallahassee-Bainbridge, FL-GA",Outlying
+12069,12,Florida,Lake County,36740,"Orlando-Kissimmee-Sanford, FL",Metro,422,"Orlando-Lakeland-Deltona, FL",Outlying
+12071,12,Florida,Lee County,15980,"Cape Coral-Fort Myers, FL",Metro,163,"Cape Coral-Fort Myers-Naples, FL",Central
+12073,12,Florida,Leon County,45220,"Tallahassee, FL",Metro,533,"Tallahassee-Bainbridge, FL-GA",Central
+12075,12,Florida,Levy County,23540,"Gainesville, FL",Metro,264,"Gainesville-Lake City, FL",Outlying
+12081,12,Florida,Manatee County,35840,"North Port-Bradenton-Sarasota, FL",Metro,412,"North Port-Bradenton, FL",Central
+12083,12,Florida,Marion County,36100,"Ocala, FL",Metro,,,Central
+12085,12,Florida,Martin County,38940,"Port St. Lucie, FL",Metro,370,"Miami-Port St. Lucie-Fort Lauderdale, FL",Central
+12086,12,Florida,Miami-Dade County,33100,"Miami-Fort Lauderdale-West Palm Beach, FL",Metro,370,"Miami-Port St. Lucie-Fort Lauderdale, FL",Central
+12087,12,Florida,Monroe County,28580,"Key West-Key Largo, FL",Micro,370,"Miami-Port St. Lucie-Fort Lauderdale, FL",Central
+12089,12,Florida,Nassau County,27260,"Jacksonville, FL",Metro,300,"Jacksonville-Kingsland-Palatka, FL-GA",Outlying
+12091,12,Florida,Okaloosa County,18880,"Crestview-Fort Walton Beach-Destin, FL",Metro,,,Central
+12093,12,Florida,Okeechobee County,36380,"Okeechobee, FL",Micro,370,"Miami-Port St. Lucie-Fort Lauderdale, FL",Central
+12095,12,Florida,Orange County,36740,"Orlando-Kissimmee-Sanford, FL",Metro,422,"Orlando-Lakeland-Deltona, FL",Central
+12097,12,Florida,Osceola County,36740,"Orlando-Kissimmee-Sanford, FL",Metro,422,"Orlando-Lakeland-Deltona, FL",Outlying
+12099,12,Florida,Palm Beach County,33100,"Miami-Fort Lauderdale-West Palm Beach, FL",Metro,370,"Miami-Port St. Lucie-Fort Lauderdale, FL",Central
+12101,12,Florida,Pasco County,45300,"Tampa-St. Petersburg-Clearwater, FL",Metro,,,Central
+12103,12,Florida,Pinellas County,45300,"Tampa-St. Petersburg-Clearwater, FL",Metro,,,Central
+12105,12,Florida,Polk County,29460,"Lakeland-Winter Haven, FL",Metro,422,"Orlando-Lakeland-Deltona, FL",Central
+12107,12,Florida,Putnam County,37260,"Palatka, FL",Micro,300,"Jacksonville-Kingsland-Palatka, FL-GA",Central
+12109,12,Florida,St. Johns County,27260,"Jacksonville, FL",Metro,300,"Jacksonville-Kingsland-Palatka, FL-GA",Central
+12111,12,Florida,St. Lucie County,38940,"Port St. Lucie, FL",Metro,370,"Miami-Port St. Lucie-Fort Lauderdale, FL",Central
+12113,12,Florida,Santa Rosa County,37860,"Pensacola-Ferry Pass-Brent, FL",Metro,,,Central
+12115,12,Florida,Sarasota County,35840,"North Port-Bradenton-Sarasota, FL",Metro,412,"North Port-Bradenton, FL",Central
+12117,12,Florida,Seminole County,36740,"Orlando-Kissimmee-Sanford, FL",Metro,422,"Orlando-Lakeland-Deltona, FL",Central
+12119,12,Florida,Sumter County,48680,"Wildwood-The Villages, FL",Metro,422,"Orlando-Lakeland-Deltona, FL",Central
+12127,12,Florida,Volusia County,19660,"Deltona-Daytona Beach-Ormond Beach, FL",Metro,422,"Orlando-Lakeland-Deltona, FL",Central
+12129,12,Florida,Wakulla County,45220,"Tallahassee, FL",Metro,533,"Tallahassee-Bainbridge, FL-GA",Outlying
+12131,12,Florida,Walton County,18880,"Crestview-Fort Walton Beach-Destin, FL",Metro,,,Central
+12133,12,Florida,Washington County,37460,"Panama City-Panama City Beach, FL",Metro,,,Outlying
+13003,13,Georgia,Atkinson County,20060,"Douglas, GA",Micro,,,Outlying
+13009,13,Georgia,Baldwin County,33300,"Milledgeville, GA",Micro,,,Central
+13013,13,Georgia,Barrow County,12060,"Atlanta-Sandy Springs-Roswell, GA",Metro,122,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Outlying
+13015,13,Georgia,Bartow County,12060,"Atlanta-Sandy Springs-Roswell, GA",Metro,122,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Outlying
+13017,13,Georgia,Ben Hill County,22340,"Fitzgerald, GA",Micro,,,Central
+13021,13,Georgia,Bibb County,31420,"Macon-Bibb County, GA",Metro,356,"Macon-Bibb County--Warner Robins, GA",Central
+13025,13,Georgia,Brantley County,15260,"Brunswick-St. Simons, GA",Metro,,,Outlying
+13027,13,Georgia,Brooks County,46660,"Valdosta, GA",Metro,,,Outlying
+13029,13,Georgia,Bryan County,42340,"Savannah, GA",Metro,496,"Savannah-Hinesville-Statesboro, GA",Central
+13031,13,Georgia,Bulloch County,44340,"Statesboro, GA",Micro,496,"Savannah-Hinesville-Statesboro, GA",Central
+13033,13,Georgia,Burke County,12260,"Augusta-Richmond County, GA-SC",Metro,,,Outlying
+13035,13,Georgia,Butts County,12060,"Atlanta-Sandy Springs-Roswell, GA",Metro,122,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Outlying
+13039,13,Georgia,Camden County,28680,"Kingsland, GA",Micro,300,"Jacksonville-Kingsland-Palatka, FL-GA",Central
+13045,13,Georgia,Carroll County,12060,"Atlanta-Sandy Springs-Roswell, GA",Metro,122,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Outlying
+13047,13,Georgia,Catoosa County,16860,"Chattanooga, TN-GA",Metro,174,"Chattanooga-Cleveland-Dalton, TN-GA-AL",Central
+13051,13,Georgia,Chatham County,42340,"Savannah, GA",Metro,496,"Savannah-Hinesville-Statesboro, GA",Central
+13053,13,Georgia,Chattahoochee County,17980,"Columbus, GA-AL",Metro,194,"Columbus-Auburn-Opelika, GA-AL",Central
+13055,13,Georgia,Chattooga County,44900,"Summerville, GA",Micro,174,"Chattanooga-Cleveland-Dalton, TN-GA-AL",Central
+13057,13,Georgia,Cherokee County,12060,"Atlanta-Sandy Springs-Roswell, GA",Metro,122,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Central
+13059,13,Georgia,Clarke County,12020,"Athens-Clarke County, GA",Metro,122,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Central
+13063,13,Georgia,Clayton County,12060,"Atlanta-Sandy Springs-Roswell, GA",Metro,122,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Central
+13067,13,Georgia,Cobb County,12060,"Atlanta-Sandy Springs-Roswell, GA",Metro,122,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Central
+13069,13,Georgia,Coffee County,20060,"Douglas, GA",Micro,,,Central
+13071,13,Georgia,Colquitt County,34220,"Moultrie, GA",Micro,,,Central
+13073,13,Georgia,Columbia County,12260,"Augusta-Richmond County, GA-SC",Metro,,,Central
+13077,13,Georgia,Coweta County,12060,"Atlanta-Sandy Springs-Roswell, GA",Metro,122,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Central
+13079,13,Georgia,Crawford County,31420,"Macon-Bibb County, GA",Metro,356,"Macon-Bibb County--Warner Robins, GA",Outlying
+13081,13,Georgia,Crisp County,18380,"Cordele, GA",Micro,,,Central
+13083,13,Georgia,Dade County,16860,"Chattanooga, TN-GA",Metro,174,"Chattanooga-Cleveland-Dalton, TN-GA-AL",Outlying
+13085,13,Georgia,Dawson County,12060,"Atlanta-Sandy Springs-Roswell, GA",Metro,122,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Central
+13087,13,Georgia,Decatur County,12460,"Bainbridge, GA",Micro,533,"Tallahassee-Bainbridge, FL-GA",Central
+13089,13,Georgia,DeKalb County,12060,"Atlanta-Sandy Springs-Roswell, GA",Metro,122,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Central
+13095,13,Georgia,Dougherty County,10500,"Albany, GA",Metro,,,Central
+13097,13,Georgia,Douglas County,12060,"Atlanta-Sandy Springs-Roswell, GA",Metro,122,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Central
+13101,13,Georgia,Echols County,46660,"Valdosta, GA",Metro,,,Outlying
+13103,13,Georgia,Effingham County,42340,"Savannah, GA",Metro,496,"Savannah-Hinesville-Statesboro, GA",Outlying
+13109,13,Georgia,Evans County,44340,"Statesboro, GA",Micro,496,"Savannah-Hinesville-Statesboro, GA",Outlying
+13113,13,Georgia,Fayette County,12060,"Atlanta-Sandy Springs-Roswell, GA",Metro,122,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Central
+13115,13,Georgia,Floyd County,40660,"Rome, GA",Metro,122,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Central
+13117,13,Georgia,Forsyth County,12060,"Atlanta-Sandy Springs-Roswell, GA",Metro,122,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Central
+13121,13,Georgia,Fulton County,12060,"Atlanta-Sandy Springs-Roswell, GA",Metro,122,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Central
+13127,13,Georgia,Glynn County,15260,"Brunswick-St. Simons, GA",Metro,,,Central
+13129,13,Georgia,Gordon County,15660,"Calhoun, GA",Micro,122,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Central
+13131,13,Georgia,Grady County,45620,"Thomasville, GA",Micro,,,Outlying
+13135,13,Georgia,Gwinnett County,12060,"Atlanta-Sandy Springs-Roswell, GA",Metro,122,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Central
+13137,13,Georgia,Habersham County,18460,"Cornelia, GA",Micro,122,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Central
+13139,13,Georgia,Hall County,23580,"Gainesville, GA",Metro,122,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Central
+13143,13,Georgia,Haralson County,12060,"Atlanta-Sandy Springs-Roswell, GA",Metro,122,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Outlying
+13145,13,Georgia,Harris County,17980,"Columbus, GA-AL",Metro,194,"Columbus-Auburn-Opelika, GA-AL",Outlying
+13149,13,Georgia,Heard County,12060,"Atlanta-Sandy Springs-Roswell, GA",Metro,122,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Outlying
+13151,13,Georgia,Henry County,12060,"Atlanta-Sandy Springs-Roswell, GA",Metro,122,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Central
+13153,13,Georgia,Houston County,47580,"Warner Robins, GA",Metro,356,"Macon-Bibb County--Warner Robins, GA",Central
+13157,13,Georgia,Jackson County,27600,"Jefferson, GA",Micro,122,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Central
+13159,13,Georgia,Jasper County,12060,"Atlanta-Sandy Springs-Roswell, GA",Metro,122,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Outlying
+13167,13,Georgia,Johnson County,20140,"Dublin, GA",Micro,,,Outlying
+13169,13,Georgia,Jones County,31420,"Macon-Bibb County, GA",Metro,356,"Macon-Bibb County--Warner Robins, GA",Outlying
+13173,13,Georgia,Lanier County,46660,"Valdosta, GA",Metro,,,Outlying
+13175,13,Georgia,Laurens County,20140,"Dublin, GA",Micro,,,Central
+13177,13,Georgia,Lee County,10500,"Albany, GA",Metro,,,Central
+13179,13,Georgia,Liberty County,25980,"Hinesville, GA",Metro,496,"Savannah-Hinesville-Statesboro, GA",Central
+13181,13,Georgia,Lincoln County,12260,"Augusta-Richmond County, GA-SC",Metro,,,Outlying
+13183,13,Georgia,Long County,25980,"Hinesville, GA",Metro,496,"Savannah-Hinesville-Statesboro, GA",Outlying
+13185,13,Georgia,Lowndes County,46660,"Valdosta, GA",Metro,,,Central
+13187,13,Georgia,Lumpkin County,12060,"Atlanta-Sandy Springs-Roswell, GA",Metro,122,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Outlying
+13189,13,Georgia,McDuffie County,12260,"Augusta-Richmond County, GA-SC",Metro,,,Outlying
+13191,13,Georgia,McIntosh County,15260,"Brunswick-St. Simons, GA",Metro,,,Outlying
+13195,13,Georgia,Madison County,12020,"Athens-Clarke County, GA",Metro,122,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Outlying
+13197,13,Georgia,Marion County,17980,"Columbus, GA-AL",Metro,194,"Columbus-Auburn-Opelika, GA-AL",Outlying
+13199,13,Georgia,Meriwether County,12060,"Atlanta-Sandy Springs-Roswell, GA",Metro,122,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Outlying
+13207,13,Georgia,Monroe County,31420,"Macon-Bibb County, GA",Metro,356,"Macon-Bibb County--Warner Robins, GA",Outlying
+13209,13,Georgia,Montgomery County,47080,"Vidalia, GA",Micro,,,Outlying
+13211,13,Georgia,Morgan County,12060,"Atlanta-Sandy Springs-Roswell, GA",Metro,122,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Outlying
+13213,13,Georgia,Murray County,19140,"Dalton, GA",Metro,174,"Chattanooga-Cleveland-Dalton, TN-GA-AL",Outlying
+13215,13,Georgia,Muscogee County,17980,"Columbus, GA-AL",Metro,194,"Columbus-Auburn-Opelika, GA-AL",Central
+13217,13,Georgia,Newton County,12060,"Atlanta-Sandy Springs-Roswell, GA",Metro,122,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Central
+13219,13,Georgia,Oconee County,12020,"Athens-Clarke County, GA",Metro,122,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Central
+13221,13,Georgia,Oglethorpe County,12020,"Athens-Clarke County, GA",Metro,122,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Outlying
+13223,13,Georgia,Paulding County,12060,"Atlanta-Sandy Springs-Roswell, GA",Metro,122,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Central
+13225,13,Georgia,Peach County,47580,"Warner Robins, GA",Metro,356,"Macon-Bibb County--Warner Robins, GA",Central
+13227,13,Georgia,Pickens County,12060,"Atlanta-Sandy Springs-Roswell, GA",Metro,122,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Outlying
+13229,13,Georgia,Pierce County,48180,"Waycross, GA",Micro,,,Outlying
+13231,13,Georgia,Pike County,12060,"Atlanta-Sandy Springs-Roswell, GA",Metro,122,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Outlying
+13233,13,Georgia,Polk County,16340,"Cedartown, GA",Micro,122,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Central
+13239,13,Georgia,Quitman County,21640,"Eufaula, AL-GA",Micro,,,Outlying
+13245,13,Georgia,Richmond County,12260,"Augusta-Richmond County, GA-SC",Metro,,,Central
+13247,13,Georgia,Rockdale County,12060,"Atlanta-Sandy Springs-Roswell, GA",Metro,122,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Central
+13249,13,Georgia,Schley County,11140,"Americus, GA",Micro,,,Outlying
+13255,13,Georgia,Spalding County,12060,"Atlanta-Sandy Springs-Roswell, GA",Metro,122,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Outlying
+13257,13,Georgia,Stephens County,45740,"Toccoa, GA",Micro,,,Central
+13259,13,Georgia,Stewart County,17980,"Columbus, GA-AL",Metro,194,"Columbus-Auburn-Opelika, GA-AL",Outlying
+13261,13,Georgia,Sumter County,11140,"Americus, GA",Micro,,,Central
+13263,13,Georgia,Talbot County,17980,"Columbus, GA-AL",Metro,194,"Columbus-Auburn-Opelika, GA-AL",Outlying
+13273,13,Georgia,Terrell County,10500,"Albany, GA",Metro,,,Outlying
+13275,13,Georgia,Thomas County,45620,"Thomasville, GA",Micro,,,Central
+13277,13,Georgia,Tift County,45700,"Tifton, GA",Micro,,,Central
+13279,13,Georgia,Toombs County,47080,"Vidalia, GA",Micro,,,Central
+13285,13,Georgia,Troup County,29300,"LaGrange, GA-AL",Micro,122,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Central
+13287,13,Georgia,Turner County,45700,"Tifton, GA",Micro,,,Outlying
+13289,13,Georgia,Twiggs County,31420,"Macon-Bibb County, GA",Metro,356,"Macon-Bibb County--Warner Robins, GA",Outlying
+13293,13,Georgia,Upson County,45580,"Thomaston, GA",Micro,122,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Central
+13295,13,Georgia,Walker County,16860,"Chattanooga, TN-GA",Metro,174,"Chattanooga-Cleveland-Dalton, TN-GA-AL",Central
+13297,13,Georgia,Walton County,12060,"Atlanta-Sandy Springs-Roswell, GA",Metro,122,"Atlanta--Athens-Clarke County--Sandy Springs, GA-AL",Central
+13299,13,Georgia,Ware County,48180,"Waycross, GA",Micro,,,Central
+13305,13,Georgia,Wayne County,27700,"Jesup, GA",Micro,496,"Savannah-Hinesville-Statesboro, GA",Central
+13313,13,Georgia,Whitfield County,19140,"Dalton, GA",Metro,174,"Chattanooga-Cleveland-Dalton, TN-GA-AL",Central
+13321,13,Georgia,Worth County,10500,"Albany, GA",Metro,,,Outlying
+15001,15,Hawaii,Hawaii County,25900,"Hilo-Kailua, HI",Micro,,,Central
+15003,15,Hawaii,Honolulu County,46520,"Urban Honolulu, HI",Metro,,,Central
+15005,15,Hawaii,Kalawao County,27980,"Kahului-Wailuku, HI",Metro,,,Outlying
+15007,15,Hawaii,Kauai County,28180,"Kapaa, HI",Micro,,,Central
+15009,15,Hawaii,Maui County,27980,"Kahului-Wailuku, HI",Metro,,,Central
+16001,16,Idaho,Ada County,14260,"Boise City, ID",Metro,147,"Boise City-Mountain Home-Ontario, ID-OR",Central
+16005,16,Idaho,Bannock County,38540,"Pocatello, ID",Metro,,,Central
+16011,16,Idaho,Bingham County,13940,"Blackfoot, ID",Micro,292,"Idaho Falls-Rexburg-Blackfoot, ID",Central
+16013,16,Idaho,Blaine County,25200,"Hailey, ID",Micro,,,Central
+16015,16,Idaho,Boise County,14260,"Boise City, ID",Metro,147,"Boise City-Mountain Home-Ontario, ID-OR",Outlying
+16017,16,Idaho,Bonner County,41760,"Sandpoint, ID",Micro,,,Central
+16019,16,Idaho,Bonneville County,26820,"Idaho Falls, ID",Metro,292,"Idaho Falls-Rexburg-Blackfoot, ID",Central
+16023,16,Idaho,Butte County,26820,"Idaho Falls, ID",Metro,292,"Idaho Falls-Rexburg-Blackfoot, ID",Outlying
+16025,16,Idaho,Camas County,25200,"Hailey, ID",Micro,,,Outlying
+16027,16,Idaho,Canyon County,14260,"Boise City, ID",Metro,147,"Boise City-Mountain Home-Ontario, ID-OR",Outlying
+16031,16,Idaho,Cassia County,15420,"Burley, ID",Micro,,,Central
+16039,16,Idaho,Elmore County,34300,"Mountain Home, ID",Micro,147,"Boise City-Mountain Home-Ontario, ID-OR",Central
+16041,16,Idaho,Franklin County,30860,"Logan, UT-ID",Metro,,,Outlying
+16043,16,Idaho,Fremont County,39940,"Rexburg, ID",Micro,292,"Idaho Falls-Rexburg-Blackfoot, ID",Outlying
+16045,16,Idaho,Gem County,14260,"Boise City, ID",Metro,147,"Boise City-Mountain Home-Ontario, ID-OR",Outlying
+16051,16,Idaho,Jefferson County,26820,"Idaho Falls, ID",Metro,292,"Idaho Falls-Rexburg-Blackfoot, ID",Outlying
+16053,16,Idaho,Jerome County,46300,"Twin Falls, ID",Metro,,,Outlying
+16055,16,Idaho,Kootenai County,17660,"Coeur d'Alene, ID",Metro,518,"Spokane-Spokane Valley-Coeur d'Alene, WA-ID",Central
+16057,16,Idaho,Latah County,34140,"Moscow, ID",Micro,446,"Pullman-Moscow, WA-ID",Central
+16063,16,Idaho,Lincoln County,25200,"Hailey, ID",Micro,,,Outlying
+16065,16,Idaho,Madison County,39940,"Rexburg, ID",Micro,292,"Idaho Falls-Rexburg-Blackfoot, ID",Central
+16067,16,Idaho,Minidoka County,15420,"Burley, ID",Micro,,,Central
+16069,16,Idaho,Nez Perce County,30300,"Lewiston, ID-WA",Metro,,,Central
+16071,16,Idaho,Oneida County,14940,"Brigham City, UT-ID",Micro,482,"Salt Lake City-Provo-Orem, UT-ID",Outlying
+16073,16,Idaho,Owyhee County,14260,"Boise City, ID",Metro,147,"Boise City-Mountain Home-Ontario, ID-OR",Outlying
+16075,16,Idaho,Payette County,36620,"Ontario, OR-ID",Micro,147,"Boise City-Mountain Home-Ontario, ID-OR",Central
+16081,16,Idaho,Teton County,27220,"Jackson, WY-ID",Micro,,,Outlying
+16083,16,Idaho,Twin Falls County,46300,"Twin Falls, ID",Metro,,,Central
+17001,17,Illinois,Adams County,39500,"Quincy, IL-MO",Micro,448,"Quincy-Hannibal, IL-MO",Central
+17003,17,Illinois,Alexander County,16020,"Cape Girardeau, MO-IL",Metro,164,"Cape Girardeau-Sikeston, MO-IL",Outlying
+17005,17,Illinois,Bond County,41180,"St. Louis, MO-IL",Metro,476,"St. Louis-St. Charles-Farmington, MO-IL",Outlying
+17007,17,Illinois,Boone County,40420,"Rockford, IL",Metro,466,"Rockford-Freeport-Rochelle, IL",Central
+17011,17,Illinois,Bureau County,36837,"Ottawa, IL",Micro,176,"Chicago-Naperville, IL-IN-WI",Central
+17013,17,Illinois,Calhoun County,41180,"St. Louis, MO-IL",Metro,476,"St. Louis-St. Charles-Farmington, MO-IL",Outlying
+17019,17,Illinois,Champaign County,16580,"Champaign-Urbana, IL",Metro,169,"Champaign-Urbana-Danville, IL",Central
+17021,17,Illinois,Christian County,45380,"Taylorville, IL",Micro,522,"Springfield-Jacksonville-Lincoln, IL",Central
+17027,17,Illinois,Clinton County,41180,"St. Louis, MO-IL",Metro,476,"St. Louis-St. Charles-Farmington, MO-IL",Outlying
+17029,17,Illinois,Coles County,16660,"Charleston-Mattoon, IL",Micro,,,Central
+17031,17,Illinois,Cook County,16980,"Chicago-Naperville-Elgin, IL-IN",Metro,176,"Chicago-Naperville, IL-IN-WI",Central
+17035,17,Illinois,Cumberland County,20820,"Effingham, IL",Micro,,,Outlying
+17037,17,Illinois,DeKalb County,16980,"Chicago-Naperville-Elgin, IL-IN",Metro,176,"Chicago-Naperville, IL-IN-WI",Outlying
+17043,17,Illinois,DuPage County,16980,"Chicago-Naperville-Elgin, IL-IN",Metro,176,"Chicago-Naperville, IL-IN-WI",Central
+17049,17,Illinois,Effingham County,20820,"Effingham, IL",Micro,,,Central
+17053,17,Illinois,Ford County,16580,"Champaign-Urbana, IL",Metro,169,"Champaign-Urbana-Danville, IL",Outlying
+17057,17,Illinois,Fulton County,15900,"Canton, IL",Micro,427,"Peoria-Canton, IL",Central
+17063,17,Illinois,Grundy County,16980,"Chicago-Naperville-Elgin, IL-IN",Metro,176,"Chicago-Naperville, IL-IN-WI",Outlying
+17071,17,Illinois,Henderson County,15460,"Burlington, IA-IL",Micro,161,"Burlington-Fort Madison, IA-IL",Outlying
+17073,17,Illinois,Henry County,19340,"Davenport-Moline-Rock Island, IA-IL",Metro,209,"Davenport-Moline, IA-IL",Outlying
+17077,17,Illinois,Jackson County,16060,"Carbondale, IL",Micro,166,"Carbondale-Marion-Herrin, IL",Central
+17081,17,Illinois,Jefferson County,34500,"Mount Vernon, IL",Micro,,,Central
+17083,17,Illinois,Jersey County,41180,"St. Louis, MO-IL",Metro,476,"St. Louis-St. Charles-Farmington, MO-IL",Outlying
+17089,17,Illinois,Kane County,16980,"Chicago-Naperville-Elgin, IL-IN",Metro,176,"Chicago-Naperville, IL-IN-WI",Central
+17091,17,Illinois,Kankakee County,28100,"Kankakee, IL",Metro,176,"Chicago-Naperville, IL-IN-WI",Central
+17093,17,Illinois,Kendall County,16980,"Chicago-Naperville-Elgin, IL-IN",Metro,176,"Chicago-Naperville, IL-IN-WI",Central
+17095,17,Illinois,Knox County,23660,"Galesburg, IL",Micro,,,Central
+17097,17,Illinois,Lake County,16980,"Chicago-Naperville-Elgin, IL-IN",Metro,176,"Chicago-Naperville, IL-IN-WI",Central
+17099,17,Illinois,LaSalle County,36837,"Ottawa, IL",Micro,176,"Chicago-Naperville, IL-IN-WI",Central
+17103,17,Illinois,Lee County,19940,"Dixon, IL",Micro,221,"Dixon-Sterling, IL",Central
+17105,17,Illinois,Livingston County,38700,"Pontiac, IL",Micro,145,"Bloomington-Pontiac, IL",Central
+17107,17,Illinois,Logan County,30660,"Lincoln, IL",Micro,522,"Springfield-Jacksonville-Lincoln, IL",Central
+17109,17,Illinois,McDonough County,31380,"Macomb, IL",Micro,,,Central
+17111,17,Illinois,McHenry County,16980,"Chicago-Naperville-Elgin, IL-IN",Metro,176,"Chicago-Naperville, IL-IN-WI",Central
+17113,17,Illinois,McLean County,14010,"Bloomington, IL",Metro,145,"Bloomington-Pontiac, IL",Central
+17115,17,Illinois,Macon County,19500,"Decatur, IL",Metro,,,Central
+17117,17,Illinois,Macoupin County,41180,"St. Louis, MO-IL",Metro,476,"St. Louis-St. Charles-Farmington, MO-IL",Outlying
+17119,17,Illinois,Madison County,41180,"St. Louis, MO-IL",Metro,476,"St. Louis-St. Charles-Farmington, MO-IL",Central
+17121,17,Illinois,Marion County,16460,"Centralia, IL",Micro,476,"St. Louis-St. Charles-Farmington, MO-IL",Central
+17123,17,Illinois,Marshall County,37900,"Peoria, IL",Metro,427,"Peoria-Canton, IL",Outlying
+17127,17,Illinois,Massac County,37140,"Paducah, KY-IL",Metro,424,"Paducah-Mayfield, KY-IL",Outlying
+17129,17,Illinois,Menard County,44100,"Springfield, IL",Metro,522,"Springfield-Jacksonville-Lincoln, IL",Outlying
+17131,17,Illinois,Mercer County,19340,"Davenport-Moline-Rock Island, IA-IL",Metro,209,"Davenport-Moline, IA-IL",Outlying
+17133,17,Illinois,Monroe County,41180,"St. Louis, MO-IL",Metro,476,"St. Louis-St. Charles-Farmington, MO-IL",Central
+17137,17,Illinois,Morgan County,27300,"Jacksonville, IL",Micro,522,"Springfield-Jacksonville-Lincoln, IL",Central
+17141,17,Illinois,Ogle County,40300,"Rochelle, IL",Micro,466,"Rockford-Freeport-Rochelle, IL",Central
+17143,17,Illinois,Peoria County,37900,"Peoria, IL",Metro,427,"Peoria-Canton, IL",Central
+17147,17,Illinois,Piatt County,16580,"Champaign-Urbana, IL",Metro,169,"Champaign-Urbana-Danville, IL",Outlying
+17155,17,Illinois,Putnam County,36837,"Ottawa, IL",Micro,176,"Chicago-Naperville, IL-IN-WI",Outlying
+17161,17,Illinois,Rock Island County,19340,"Davenport-Moline-Rock Island, IA-IL",Metro,209,"Davenport-Moline, IA-IL",Central
+17163,17,Illinois,St. Clair County,41180,"St. Louis, MO-IL",Metro,476,"St. Louis-St. Charles-Farmington, MO-IL",Central
+17167,17,Illinois,Sangamon County,44100,"Springfield, IL",Metro,522,"Springfield-Jacksonville-Lincoln, IL",Central
+17171,17,Illinois,Scott County,27300,"Jacksonville, IL",Micro,522,"Springfield-Jacksonville-Lincoln, IL",Outlying
+17175,17,Illinois,Stark County,37900,"Peoria, IL",Metro,427,"Peoria-Canton, IL",Outlying
+17177,17,Illinois,Stephenson County,23300,"Freeport, IL",Micro,466,"Rockford-Freeport-Rochelle, IL",Central
+17179,17,Illinois,Tazewell County,37900,"Peoria, IL",Metro,427,"Peoria-Canton, IL",Central
+17183,17,Illinois,Vermilion County,19180,"Danville, IL",Micro,169,"Champaign-Urbana-Danville, IL",Central
+17195,17,Illinois,Whiteside County,44580,"Sterling, IL",Micro,221,"Dixon-Sterling, IL",Central
+17197,17,Illinois,Will County,16980,"Chicago-Naperville-Elgin, IL-IN",Metro,176,"Chicago-Naperville, IL-IN-WI",Central
+17199,17,Illinois,Williamson County,32060,"Marion-Herrin, IL",Micro,166,"Carbondale-Marion-Herrin, IL",Central
+17201,17,Illinois,Winnebago County,40420,"Rockford, IL",Metro,466,"Rockford-Freeport-Rochelle, IL",Central
+17203,17,Illinois,Woodford County,37900,"Peoria, IL",Metro,427,"Peoria-Canton, IL",Central
+18001,18,Indiana,Adams County,19540,"Decatur, IN",Micro,258,"Fort Wayne-Huntington-Auburn, IN",Central
+18003,18,Indiana,Allen County,23060,"Fort Wayne, IN",Metro,258,"Fort Wayne-Huntington-Auburn, IN",Central
+18005,18,Indiana,Bartholomew County,18020,"Columbus, IN",Metro,294,"Indianapolis-Carmel-Muncie, IN",Central
+18007,18,Indiana,Benton County,29200,"Lafayette-West Lafayette, IN",Metro,320,"Lafayette-West Lafayette-Frankfort, IN",Outlying
+18011,18,Indiana,Boone County,26900,"Indianapolis-Carmel-Greenwood, IN",Metro,294,"Indianapolis-Carmel-Muncie, IN",Central
+18013,18,Indiana,Brown County,26900,"Indianapolis-Carmel-Greenwood, IN",Metro,294,"Indianapolis-Carmel-Muncie, IN",Outlying
+18015,18,Indiana,Carroll County,29200,"Lafayette-West Lafayette, IN",Metro,320,"Lafayette-West Lafayette-Frankfort, IN",Outlying
+18017,18,Indiana,Cass County,30900,"Logansport, IN",Micro,,,Central
+18019,18,Indiana,Clark County,31140,"Louisville/Jefferson County, KY-IN",Metro,350,"Louisville/Jefferson County--Elizabethtown, KY-IN",Central
+18021,18,Indiana,Clay County,45460,"Terre Haute, IN",Metro,,,Outlying
+18023,18,Indiana,Clinton County,23140,"Frankfort, IN",Micro,320,"Lafayette-West Lafayette-Frankfort, IN",Central
+18027,18,Indiana,Daviess County,47780,"Washington, IN",Micro,,,Central
+18029,18,Indiana,Dearborn County,17140,"Cincinnati, OH-KY-IN",Metro,178,"Cincinnati-Wilmington, OH-KY-IN",Outlying
+18031,18,Indiana,Decatur County,24700,"Greensburg, IN",Micro,294,"Indianapolis-Carmel-Muncie, IN",Central
+18033,18,Indiana,DeKalb County,12140,"Auburn, IN",Micro,258,"Fort Wayne-Huntington-Auburn, IN",Central
+18035,18,Indiana,Delaware County,34620,"Muncie, IN",Metro,294,"Indianapolis-Carmel-Muncie, IN",Central
+18037,18,Indiana,Dubois County,27540,"Jasper, IN",Micro,,,Central
+18039,18,Indiana,Elkhart County,21140,"Elkhart-Goshen, IN",Metro,515,"South Bend-Elkhart-Mishawaka, IN-MI",Central
+18041,18,Indiana,Fayette County,18220,"Connersville, IN",Micro,458,"Richmond-Connersville, IN",Central
+18043,18,Indiana,Floyd County,31140,"Louisville/Jefferson County, KY-IN",Metro,350,"Louisville/Jefferson County--Elizabethtown, KY-IN",Central
+18047,18,Indiana,Franklin County,17140,"Cincinnati, OH-KY-IN",Metro,178,"Cincinnati-Wilmington, OH-KY-IN",Outlying
+18053,18,Indiana,Grant County,31980,"Marion, IN",Micro,,,Central
+18057,18,Indiana,Hamilton County,26900,"Indianapolis-Carmel-Greenwood, IN",Metro,294,"Indianapolis-Carmel-Muncie, IN",Central
+18059,18,Indiana,Hancock County,26900,"Indianapolis-Carmel-Greenwood, IN",Metro,294,"Indianapolis-Carmel-Muncie, IN",Central
+18061,18,Indiana,Harrison County,31140,"Louisville/Jefferson County, KY-IN",Metro,350,"Louisville/Jefferson County--Elizabethtown, KY-IN",Outlying
+18063,18,Indiana,Hendricks County,26900,"Indianapolis-Carmel-Greenwood, IN",Metro,294,"Indianapolis-Carmel-Muncie, IN",Central
+18065,18,Indiana,Henry County,35220,"New Castle, IN",Micro,294,"Indianapolis-Carmel-Muncie, IN",Central
+18067,18,Indiana,Howard County,29020,"Kokomo, IN",Metro,294,"Indianapolis-Carmel-Muncie, IN",Central
+18069,18,Indiana,Huntington County,26540,"Huntington, IN",Micro,258,"Fort Wayne-Huntington-Auburn, IN",Central
+18071,18,Indiana,Jackson County,42980,"Seymour, IN",Micro,294,"Indianapolis-Carmel-Muncie, IN",Central
+18073,18,Indiana,Jasper County,16980,"Chicago-Naperville-Elgin, IL-IN",Metro,176,"Chicago-Naperville, IL-IN-WI",Outlying
+18077,18,Indiana,Jefferson County,31500,"Madison, IN",Micro,,,Central
+18081,18,Indiana,Johnson County,26900,"Indianapolis-Carmel-Greenwood, IN",Metro,294,"Indianapolis-Carmel-Muncie, IN",Central
+18083,18,Indiana,Knox County,47180,"Vincennes, IN",Micro,,,Central
+18085,18,Indiana,Kosciusko County,47700,"Warsaw, IN",Micro,515,"South Bend-Elkhart-Mishawaka, IN-MI",Central
+18089,18,Indiana,Lake County,16980,"Chicago-Naperville-Elgin, IL-IN",Metro,176,"Chicago-Naperville, IL-IN-WI",Central
+18091,18,Indiana,LaPorte County,33140,"Michigan City-La Porte, IN",Metro,176,"Chicago-Naperville, IL-IN-WI",Central
+18093,18,Indiana,Lawrence County,13260,"Bedford, IN",Micro,144,"Bloomington-Bedford, IN",Central
+18095,18,Indiana,Madison County,26900,"Indianapolis-Carmel-Greenwood, IN",Metro,294,"Indianapolis-Carmel-Muncie, IN",Outlying
+18097,18,Indiana,Marion County,26900,"Indianapolis-Carmel-Greenwood, IN",Metro,294,"Indianapolis-Carmel-Muncie, IN",Central
+18099,18,Indiana,Marshall County,38500,"Plymouth, IN",Micro,515,"South Bend-Elkhart-Mishawaka, IN-MI",Central
+18103,18,Indiana,Miami County,37940,"Peru, IN",Micro,294,"Indianapolis-Carmel-Muncie, IN",Central
+18105,18,Indiana,Monroe County,14020,"Bloomington, IN",Metro,144,"Bloomington-Bedford, IN",Central
+18107,18,Indiana,Montgomery County,18820,"Crawfordsville, IN",Micro,294,"Indianapolis-Carmel-Muncie, IN",Central
+18109,18,Indiana,Morgan County,26900,"Indianapolis-Carmel-Greenwood, IN",Metro,294,"Indianapolis-Carmel-Muncie, IN",Central
+18111,18,Indiana,Newton County,16980,"Chicago-Naperville-Elgin, IL-IN",Metro,176,"Chicago-Naperville, IL-IN-WI",Outlying
+18113,18,Indiana,Noble County,28340,"Kendallville, IN",Micro,258,"Fort Wayne-Huntington-Auburn, IN",Central
+18115,18,Indiana,Ohio County,17140,"Cincinnati, OH-KY-IN",Metro,178,"Cincinnati-Wilmington, OH-KY-IN",Outlying
+18119,18,Indiana,Owen County,14020,"Bloomington, IN",Metro,144,"Bloomington-Bedford, IN",Outlying
+18127,18,Indiana,Porter County,16980,"Chicago-Naperville-Elgin, IL-IN",Metro,176,"Chicago-Naperville, IL-IN-WI",Central
+18129,18,Indiana,Posey County,21780,"Evansville, IN",Metro,241,"Evansville-Henderson, IN-KY",Outlying
+18133,18,Indiana,Putnam County,24600,"Greencastle, IN",Micro,294,"Indianapolis-Carmel-Muncie, IN",Central
+18141,18,Indiana,St. Joseph County,43780,"South Bend-Mishawaka, IN-MI",Metro,515,"South Bend-Elkhart-Mishawaka, IN-MI",Central
+18145,18,Indiana,Shelby County,26900,"Indianapolis-Carmel-Greenwood, IN",Metro,294,"Indianapolis-Carmel-Muncie, IN",Outlying
+18151,18,Indiana,Steuben County,11420,"Angola, IN",Micro,258,"Fort Wayne-Huntington-Auburn, IN",Central
+18153,18,Indiana,Sullivan County,45460,"Terre Haute, IN",Metro,,,Outlying
+18157,18,Indiana,Tippecanoe County,29200,"Lafayette-West Lafayette, IN",Metro,320,"Lafayette-West Lafayette-Frankfort, IN",Central
+18159,18,Indiana,Tipton County,26900,"Indianapolis-Carmel-Greenwood, IN",Metro,294,"Indianapolis-Carmel-Muncie, IN",Outlying
+18163,18,Indiana,Vanderburgh County,21780,"Evansville, IN",Metro,241,"Evansville-Henderson, IN-KY",Central
+18165,18,Indiana,Vermillion County,45460,"Terre Haute, IN",Metro,,,Outlying
+18167,18,Indiana,Vigo County,45460,"Terre Haute, IN",Metro,,,Central
+18169,18,Indiana,Wabash County,47340,"Wabash, IN",Micro,,,Central
+18171,18,Indiana,Warren County,29200,"Lafayette-West Lafayette, IN",Metro,320,"Lafayette-West Lafayette-Frankfort, IN",Outlying
+18173,18,Indiana,Warrick County,21780,"Evansville, IN",Metro,241,"Evansville-Henderson, IN-KY",Central
+18175,18,Indiana,Washington County,31140,"Louisville/Jefferson County, KY-IN",Metro,350,"Louisville/Jefferson County--Elizabethtown, KY-IN",Outlying
+18177,18,Indiana,Wayne County,39980,"Richmond, IN",Micro,458,"Richmond-Connersville, IN",Central
+18179,18,Indiana,Wells County,23060,"Fort Wayne, IN",Metro,258,"Fort Wayne-Huntington-Auburn, IN",Outlying
+18181,18,Indiana,White County,33900,"Monticello, IN",Micro,320,"Lafayette-West Lafayette-Frankfort, IN",Central
+18183,18,Indiana,Whitley County,23060,"Fort Wayne, IN",Metro,258,"Fort Wayne-Huntington-Auburn, IN",Outlying
+19011,19,Iowa,Benton County,16300,"Cedar Rapids, IA",Metro,168,"Cedar Rapids-Iowa City, IA",Outlying
+19013,19,Iowa,Black Hawk County,47940,"Waterloo-Cedar Falls, IA",Metro,,,Central
+19015,19,Iowa,Boone County,11180,"Ames, IA",Metro,218,"Des Moines-West Des Moines-Ames, IA",Outlying
+19017,19,Iowa,Bremer County,47940,"Waterloo-Cedar Falls, IA",Metro,,,Outlying
+19021,19,Iowa,Buena Vista County,44740,"Storm Lake, IA",Micro,,,Central
+19027,19,Iowa,Carroll County,16140,"Carroll, IA",Micro,,,Central
+19033,19,Iowa,Cerro Gordo County,32380,"Mason City, IA",Micro,,,Central
+19041,19,Iowa,Clay County,43980,"Spencer, IA",Micro,517,"Spencer-Spirit Lake, IA",Central
+19045,19,Iowa,Clinton County,17540,"Clinton, IA",Micro,209,"Davenport-Moline, IA-IL",Central
+19049,19,Iowa,Dallas County,19780,"Des Moines-West Des Moines, IA",Metro,218,"Des Moines-West Des Moines-Ames, IA",Central
+19057,19,Iowa,Des Moines County,15460,"Burlington, IA-IL",Micro,161,"Burlington-Fort Madison, IA-IL",Central
+19059,19,Iowa,Dickinson County,44020,"Spirit Lake, IA",Micro,517,"Spencer-Spirit Lake, IA",Central
+19061,19,Iowa,Dubuque County,20220,"Dubuque, IA",Metro,,,Central
+19075,19,Iowa,Grundy County,47940,"Waterloo-Cedar Falls, IA",Metro,,,Outlying
+19077,19,Iowa,Guthrie County,19780,"Des Moines-West Des Moines, IA",Metro,218,"Des Moines-West Des Moines-Ames, IA",Outlying
+19085,19,Iowa,Harrison County,36540,"Omaha, NE-IA",Metro,420,"Omaha-Fremont, NE-IA",Outlying
+19099,19,Iowa,Jasper County,19780,"Des Moines-West Des Moines, IA",Metro,218,"Des Moines-West Des Moines-Ames, IA",Outlying
+19103,19,Iowa,Johnson County,26980,"Iowa City, IA",Metro,168,"Cedar Rapids-Iowa City, IA",Central
+19105,19,Iowa,Jones County,16300,"Cedar Rapids, IA",Metro,168,"Cedar Rapids-Iowa City, IA",Outlying
+19111,19,Iowa,Lee County,22800,"Fort Madison, IA",Micro,161,"Burlington-Fort Madison, IA-IL",Central
+19113,19,Iowa,Linn County,16300,"Cedar Rapids, IA",Metro,168,"Cedar Rapids-Iowa City, IA",Central
+19121,19,Iowa,Madison County,19780,"Des Moines-West Des Moines, IA",Metro,218,"Des Moines-West Des Moines-Ames, IA",Outlying
+19123,19,Iowa,Mahaska County,36820,"Oskaloosa, IA",Micro,218,"Des Moines-West Des Moines-Ames, IA",Central
+19125,19,Iowa,Marion County,37800,"Pella, IA",Micro,218,"Des Moines-West Des Moines-Ames, IA",Central
+19127,19,Iowa,Marshall County,32260,"Marshalltown, IA",Micro,,,Central
+19129,19,Iowa,Mills County,36540,"Omaha, NE-IA",Metro,420,"Omaha-Fremont, NE-IA",Outlying
+19139,19,Iowa,Muscatine County,34700,"Muscatine, IA",Micro,209,"Davenport-Moline, IA-IL",Central
+19149,19,Iowa,Plymouth County,30180,"Le Mars, IA",Micro,512,"Sioux City-Le Mars, IA-NE-SD",Central
+19153,19,Iowa,Polk County,19780,"Des Moines-West Des Moines, IA",Metro,218,"Des Moines-West Des Moines-Ames, IA",Central
+19155,19,Iowa,Pottawattamie County,36540,"Omaha, NE-IA",Metro,420,"Omaha-Fremont, NE-IA",Central
+19163,19,Iowa,Scott County,19340,"Davenport-Moline-Rock Island, IA-IL",Metro,209,"Davenport-Moline, IA-IL",Central
+19169,19,Iowa,Story County,11180,"Ames, IA",Metro,218,"Des Moines-West Des Moines-Ames, IA",Central
+19179,19,Iowa,Wapello County,36900,"Ottumwa, IA",Micro,,,Central
+19181,19,Iowa,Warren County,19780,"Des Moines-West Des Moines, IA",Metro,218,"Des Moines-West Des Moines-Ames, IA",Outlying
+19183,19,Iowa,Washington County,26980,"Iowa City, IA",Metro,168,"Cedar Rapids-Iowa City, IA",Outlying
+19187,19,Iowa,Webster County,22700,"Fort Dodge, IA",Micro,,,Central
+19193,19,Iowa,Woodbury County,43580,"Sioux City, IA-NE-SD",Metro,512,"Sioux City-Le Mars, IA-NE-SD",Central
+19195,19,Iowa,Worth County,32380,"Mason City, IA",Micro,,,Outlying
+20005,20,Kansas,Atchison County,11860,"Atchison, KS",Micro,312,"Kansas City-Overland Park-Kansas City, MO-KS",Central
+20009,20,Kansas,Barton County,24460,"Great Bend, KS",Micro,,,Central
+20015,20,Kansas,Butler County,48620,"Wichita, KS",Metro,556,"Wichita-Arkansas City-Winfield, KS",Central
+20017,20,Kansas,Chase County,21380,"Emporia, KS",Micro,,,Outlying
+20021,20,Kansas,Cherokee County,27900,"Joplin, MO-KS",Metro,309,"Joplin-Miami, MO-OK-KS",Outlying
+20035,20,Kansas,Cowley County,11680,"Arkansas City-Winfield, KS",Micro,556,"Wichita-Arkansas City-Winfield, KS",Central
+20037,20,Kansas,Crawford County,38260,"Pittsburg, KS",Micro,,,Central
+20043,20,Kansas,Doniphan County,41140,"St. Joseph, MO-KS",Metro,312,"Kansas City-Overland Park-Kansas City, MO-KS",Outlying
+20045,20,Kansas,Douglas County,29940,"Lawrence, KS",Metro,312,"Kansas City-Overland Park-Kansas City, MO-KS",Central
+20051,20,Kansas,Ellis County,25700,"Hays, KS",Micro,,,Central
+20055,20,Kansas,Finney County,23780,"Garden City, KS",Micro,,,Central
+20057,20,Kansas,Ford County,19980,"Dodge City, KS",Micro,,,Central
+20059,20,Kansas,Franklin County,36840,"Ottawa, KS",Micro,312,"Kansas City-Overland Park-Kansas City, MO-KS",Central
+20061,20,Kansas,Geary County,31740,"Manhattan, KS",Metro,,,Outlying
+20079,20,Kansas,Harvey County,48620,"Wichita, KS",Metro,556,"Wichita-Arkansas City-Winfield, KS",Outlying
+20085,20,Kansas,Jackson County,45820,"Topeka, KS",Metro,,,Outlying
+20087,20,Kansas,Jefferson County,45820,"Topeka, KS",Metro,,,Outlying
+20091,20,Kansas,Johnson County,28140,"Kansas City, MO-KS",Metro,312,"Kansas City-Overland Park-Kansas City, MO-KS",Central
+20103,20,Kansas,Leavenworth County,28140,"Kansas City, MO-KS",Metro,312,"Kansas City-Overland Park-Kansas City, MO-KS",Outlying
+20107,20,Kansas,Linn County,28140,"Kansas City, MO-KS",Metro,312,"Kansas City-Overland Park-Kansas City, MO-KS",Outlying
+20111,20,Kansas,Lyon County,21380,"Emporia, KS",Micro,,,Central
+20113,20,Kansas,McPherson County,32700,"McPherson, KS",Micro,,,Central
+20121,20,Kansas,Miami County,28140,"Kansas City, MO-KS",Metro,312,"Kansas City-Overland Park-Kansas City, MO-KS",Outlying
+20139,20,Kansas,Osage County,45820,"Topeka, KS",Metro,,,Outlying
+20143,20,Kansas,Ottawa County,41460,"Salina, KS",Micro,,,Outlying
+20149,20,Kansas,Pottawatomie County,31740,"Manhattan, KS",Metro,,,Outlying
+20155,20,Kansas,Reno County,26740,"Hutchinson, KS",Micro,,,Central
+20161,20,Kansas,Riley County,31740,"Manhattan, KS",Metro,,,Central
+20169,20,Kansas,Saline County,41460,"Salina, KS",Micro,,,Central
+20173,20,Kansas,Sedgwick County,48620,"Wichita, KS",Metro,556,"Wichita-Arkansas City-Winfield, KS",Central
+20175,20,Kansas,Seward County,30580,"Liberal, KS",Micro,,,Central
+20177,20,Kansas,Shawnee County,45820,"Topeka, KS",Metro,,,Central
+20191,20,Kansas,Sumner County,48620,"Wichita, KS",Metro,556,"Wichita-Arkansas City-Winfield, KS",Outlying
+20197,20,Kansas,Wabaunsee County,45820,"Topeka, KS",Metro,,,Outlying
+20209,20,Kansas,Wyandotte County,28140,"Kansas City, MO-KS",Metro,312,"Kansas City-Overland Park-Kansas City, MO-KS",Central
+21003,21,Kentucky,Allen County,14540,"Bowling Green, KY",Metro,150,"Bowling Green-Glasgow-Franklin, KY",Outlying
+21005,21,Kentucky,Anderson County,23180,"Frankfort, KY",Micro,336,"Lexington-Fayette--Richmond--Frankfort, KY",Outlying
+21007,21,Kentucky,Ballard County,37140,"Paducah, KY-IL",Metro,424,"Paducah-Mayfield, KY-IL",Outlying
+21009,21,Kentucky,Barren County,23980,"Glasgow, KY",Micro,150,"Bowling Green-Glasgow-Franklin, KY",Central
+21011,21,Kentucky,Bath County,34460,"Mount Sterling, KY",Micro,336,"Lexington-Fayette--Richmond--Frankfort, KY",Outlying
+21013,21,Kentucky,Bell County,33180,"Middlesborough, KY",Micro,371,"Middlesborough-Corbin, KY",Central
+21015,21,Kentucky,Boone County,17140,"Cincinnati, OH-KY-IN",Metro,178,"Cincinnati-Wilmington, OH-KY-IN",Central
+21017,21,Kentucky,Bourbon County,30460,"Lexington-Fayette, KY",Metro,336,"Lexington-Fayette--Richmond--Frankfort, KY",Outlying
+21019,21,Kentucky,Boyd County,26580,"Huntington-Ashland, WV-KY-OH",Metro,170,"Charleston-Huntington-Ashland, WV-OH-KY",Central
+21021,21,Kentucky,Boyle County,19220,"Danville, KY",Micro,,,Central
+21023,21,Kentucky,Bracken County,17140,"Cincinnati, OH-KY-IN",Metro,178,"Cincinnati-Wilmington, OH-KY-IN",Outlying
+21029,21,Kentucky,Bullitt County,31140,"Louisville/Jefferson County, KY-IN",Metro,350,"Louisville/Jefferson County--Elizabethtown, KY-IN",Central
+21031,21,Kentucky,Butler County,14540,"Bowling Green, KY",Metro,150,"Bowling Green-Glasgow-Franklin, KY",Outlying
+21035,21,Kentucky,Calloway County,34660,"Murray, KY",Micro,,,Central
+21037,21,Kentucky,Campbell County,17140,"Cincinnati, OH-KY-IN",Metro,178,"Cincinnati-Wilmington, OH-KY-IN",Central
+21039,21,Kentucky,Carlisle County,37140,"Paducah, KY-IL",Metro,424,"Paducah-Mayfield, KY-IL",Outlying
+21043,21,Kentucky,Carter County,26580,"Huntington-Ashland, WV-KY-OH",Metro,170,"Charleston-Huntington-Ashland, WV-OH-KY",Outlying
+21047,21,Kentucky,Christian County,17300,"Clarksville, TN-KY",Metro,,,Outlying
+21049,21,Kentucky,Clark County,30460,"Lexington-Fayette, KY",Metro,336,"Lexington-Fayette--Richmond--Frankfort, KY",Outlying
+21051,21,Kentucky,Clay County,18340,"Corbin, KY",Micro,371,"Middlesborough-Corbin, KY",Outlying
+21059,21,Kentucky,Daviess County,36980,"Owensboro, KY",Metro,,,Central
+21061,21,Kentucky,Edmonson County,14540,"Bowling Green, KY",Metro,150,"Bowling Green-Glasgow-Franklin, KY",Outlying
+21065,21,Kentucky,Estill County,40080,"Richmond-Berea, KY",Micro,336,"Lexington-Fayette--Richmond--Frankfort, KY",Outlying
+21067,21,Kentucky,Fayette County,30460,"Lexington-Fayette, KY",Metro,336,"Lexington-Fayette--Richmond--Frankfort, KY",Central
+21071,21,Kentucky,Floyd County,38210,"Pikeville, KY",Micro,,,Outlying
+21073,21,Kentucky,Franklin County,23180,"Frankfort, KY",Micro,336,"Lexington-Fayette--Richmond--Frankfort, KY",Central
+21077,21,Kentucky,Gallatin County,17140,"Cincinnati, OH-KY-IN",Metro,178,"Cincinnati-Wilmington, OH-KY-IN",Outlying
+21081,21,Kentucky,Grant County,17140,"Cincinnati, OH-KY-IN",Metro,178,"Cincinnati-Wilmington, OH-KY-IN",Outlying
+21083,21,Kentucky,Graves County,32460,"Mayfield, KY",Micro,424,"Paducah-Mayfield, KY-IL",Central
+21087,21,Kentucky,Green County,15820,"Campbellsville, KY",Micro,,,Outlying
+21089,21,Kentucky,Greenup County,26580,"Huntington-Ashland, WV-KY-OH",Metro,170,"Charleston-Huntington-Ashland, WV-OH-KY",Central
+21093,21,Kentucky,Hardin County,21060,"Elizabethtown, KY",Metro,350,"Louisville/Jefferson County--Elizabethtown, KY-IN",Central
+21101,21,Kentucky,Henderson County,25775,"Henderson, KY",Micro,241,"Evansville-Henderson, IN-KY",Central
+21103,21,Kentucky,Henry County,31140,"Louisville/Jefferson County, KY-IN",Metro,350,"Louisville/Jefferson County--Elizabethtown, KY-IN",Outlying
+21107,21,Kentucky,Hopkins County,31580,"Madisonville, KY",Micro,,,Central
+21111,21,Kentucky,Jefferson County,31140,"Louisville/Jefferson County, KY-IN",Metro,350,"Louisville/Jefferson County--Elizabethtown, KY-IN",Central
+21113,21,Kentucky,Jessamine County,30460,"Lexington-Fayette, KY",Metro,336,"Lexington-Fayette--Richmond--Frankfort, KY",Outlying
+21117,21,Kentucky,Kenton County,17140,"Cincinnati, OH-KY-IN",Metro,178,"Cincinnati-Wilmington, OH-KY-IN",Central
+21121,21,Kentucky,Knox County,18340,"Corbin, KY",Micro,371,"Middlesborough-Corbin, KY",Central
+21123,21,Kentucky,Larue County,21060,"Elizabethtown, KY",Metro,350,"Louisville/Jefferson County--Elizabethtown, KY-IN",Outlying
+21125,21,Kentucky,Laurel County,18340,"Corbin, KY",Micro,371,"Middlesborough-Corbin, KY",Central
+21127,21,Kentucky,Lawrence County,26580,"Huntington-Ashland, WV-KY-OH",Metro,170,"Charleston-Huntington-Ashland, WV-OH-KY",Outlying
+21137,21,Kentucky,Lincoln County,19220,"Danville, KY",Micro,,,Outlying
+21139,21,Kentucky,Livingston County,37140,"Paducah, KY-IL",Metro,424,"Paducah-Mayfield, KY-IL",Outlying
+21145,21,Kentucky,McCracken County,37140,"Paducah, KY-IL",Metro,424,"Paducah-Mayfield, KY-IL",Central
+21149,21,Kentucky,McLean County,36980,"Owensboro, KY",Metro,,,Outlying
+21151,21,Kentucky,Madison County,40080,"Richmond-Berea, KY",Micro,336,"Lexington-Fayette--Richmond--Frankfort, KY",Central
+21163,21,Kentucky,Meade County,31140,"Louisville/Jefferson County, KY-IN",Metro,350,"Louisville/Jefferson County--Elizabethtown, KY-IN",Outlying
+21165,21,Kentucky,Menifee County,34460,"Mount Sterling, KY",Micro,336,"Lexington-Fayette--Richmond--Frankfort, KY",Outlying
+21169,21,Kentucky,Metcalfe County,23980,"Glasgow, KY",Micro,150,"Bowling Green-Glasgow-Franklin, KY",Outlying
+21173,21,Kentucky,Montgomery County,34460,"Mount Sterling, KY",Micro,336,"Lexington-Fayette--Richmond--Frankfort, KY",Central
+21179,21,Kentucky,Nelson County,31140,"Louisville/Jefferson County, KY-IN",Metro,350,"Louisville/Jefferson County--Elizabethtown, KY-IN",Outlying
+21185,21,Kentucky,Oldham County,31140,"Louisville/Jefferson County, KY-IN",Metro,350,"Louisville/Jefferson County--Elizabethtown, KY-IN",Central
+21191,21,Kentucky,Pendleton County,17140,"Cincinnati, OH-KY-IN",Metro,178,"Cincinnati-Wilmington, OH-KY-IN",Outlying
+21195,21,Kentucky,Pike County,38210,"Pikeville, KY",Micro,,,Central
+21199,21,Kentucky,Pulaski County,43700,"Somerset, KY",Micro,,,Central
+21203,21,Kentucky,Rockcastle County,40080,"Richmond-Berea, KY",Micro,336,"Lexington-Fayette--Richmond--Frankfort, KY",Outlying
+21209,21,Kentucky,Scott County,30460,"Lexington-Fayette, KY",Metro,336,"Lexington-Fayette--Richmond--Frankfort, KY",Outlying
+21211,21,Kentucky,Shelby County,31140,"Louisville/Jefferson County, KY-IN",Metro,350,"Louisville/Jefferson County--Elizabethtown, KY-IN",Outlying
+21213,21,Kentucky,Simpson County,23190,"Franklin, KY",Micro,150,"Bowling Green-Glasgow-Franklin, KY",Central
+21215,21,Kentucky,Spencer County,31140,"Louisville/Jefferson County, KY-IN",Metro,350,"Louisville/Jefferson County--Elizabethtown, KY-IN",Outlying
+21217,21,Kentucky,Taylor County,15820,"Campbellsville, KY",Micro,,,Central
+21221,21,Kentucky,Trigg County,17300,"Clarksville, TN-KY",Metro,,,Outlying
+21227,21,Kentucky,Warren County,14540,"Bowling Green, KY",Metro,150,"Bowling Green-Glasgow-Franklin, KY",Central
+21233,21,Kentucky,Webster County,25775,"Henderson, KY",Micro,241,"Evansville-Henderson, IN-KY",Outlying
+21235,21,Kentucky,Whitley County,18340,"Corbin, KY",Micro,371,"Middlesborough-Corbin, KY",Central
+21239,21,Kentucky,Woodford County,30460,"Lexington-Fayette, KY",Metro,336,"Lexington-Fayette--Richmond--Frankfort, KY",Outlying
+22001,22,Louisiana,Acadia Parish,29180,"Lafayette, LA",Metro,318,"Lafayette-New Iberia-Opelousas, LA",Outlying
+22005,22,Louisiana,Ascension Parish,12940,"Baton Rouge, LA",Metro,132,"Baton Rouge-Hammond, LA",Central
+22007,22,Louisiana,Assumption Parish,12940,"Baton Rouge, LA",Metro,132,"Baton Rouge-Hammond, LA",Outlying
+22011,22,Louisiana,Beauregard Parish,19760,"DeRidder, LA",Micro,324,"Lake Charles-DeRidder, LA",Central
+22015,22,Louisiana,Bossier Parish,43340,"Shreveport-Bossier City, LA",Metro,508,"Shreveport-Bossier City-Minden, LA",Central
+22017,22,Louisiana,Caddo Parish,43340,"Shreveport-Bossier City, LA",Metro,508,"Shreveport-Bossier City-Minden, LA",Central
+22019,22,Louisiana,Calcasieu Parish,29340,"Lake Charles, LA",Metro,324,"Lake Charles-DeRidder, LA",Central
+22023,22,Louisiana,Cameron Parish,29340,"Lake Charles, LA",Metro,324,"Lake Charles-DeRidder, LA",Outlying
+22029,22,Louisiana,Concordia Parish,35020,"Natchez, MS-LA",Micro,,,Central
+22031,22,Louisiana,De Soto Parish,43340,"Shreveport-Bossier City, LA",Metro,508,"Shreveport-Bossier City-Minden, LA",Outlying
+22033,22,Louisiana,East Baton Rouge Parish,12940,"Baton Rouge, LA",Metro,132,"Baton Rouge-Hammond, LA",Central
+22037,22,Louisiana,East Feliciana Parish,12940,"Baton Rouge, LA",Metro,132,"Baton Rouge-Hammond, LA",Outlying
+22043,22,Louisiana,Grant Parish,10780,"Alexandria, LA",Metro,,,Outlying
+22045,22,Louisiana,Iberia Parish,35340,"New Iberia, LA",Micro,318,"Lafayette-New Iberia-Opelousas, LA",Central
+22047,22,Louisiana,Iberville Parish,12940,"Baton Rouge, LA",Metro,132,"Baton Rouge-Hammond, LA",Central
+22051,22,Louisiana,Jefferson Parish,35380,"New Orleans-Metairie, LA",Metro,406,"New Orleans-Metairie-Slidell, LA-MS",Central
+22053,22,Louisiana,Jefferson Davis Parish,29340,"Lake Charles, LA",Metro,324,"Lake Charles-DeRidder, LA",Outlying
+22055,22,Louisiana,Lafayette Parish,29180,"Lafayette, LA",Metro,318,"Lafayette-New Iberia-Opelousas, LA",Central
+22057,22,Louisiana,Lafourche Parish,26380,"Houma-Bayou Cane-Thibodaux, LA",Metro,,,Central
+22061,22,Louisiana,Lincoln Parish,40820,"Ruston, LA",Micro,384,"Monroe-Ruston, LA",Central
+22063,22,Louisiana,Livingston Parish,12940,"Baton Rouge, LA",Metro,132,"Baton Rouge-Hammond, LA",Central
+22067,22,Louisiana,Morehouse Parish,33740,"Monroe, LA",Metro,384,"Monroe-Ruston, LA",Outlying
+22069,22,Louisiana,Natchitoches Parish,35060,"Natchitoches, LA",Micro,,,Central
+22071,22,Louisiana,Orleans Parish,35380,"New Orleans-Metairie, LA",Metro,406,"New Orleans-Metairie-Slidell, LA-MS",Central
+22073,22,Louisiana,Ouachita Parish,33740,"Monroe, LA",Metro,384,"Monroe-Ruston, LA",Central
+22075,22,Louisiana,Plaquemines Parish,35380,"New Orleans-Metairie, LA",Metro,406,"New Orleans-Metairie-Slidell, LA-MS",Central
+22077,22,Louisiana,Pointe Coupee Parish,12940,"Baton Rouge, LA",Metro,132,"Baton Rouge-Hammond, LA",Outlying
+22079,22,Louisiana,Rapides Parish,10780,"Alexandria, LA",Metro,,,Central
+22083,22,Louisiana,Richland Parish,33740,"Monroe, LA",Metro,384,"Monroe-Ruston, LA",Outlying
+22087,22,Louisiana,St. Bernard Parish,35380,"New Orleans-Metairie, LA",Metro,406,"New Orleans-Metairie-Slidell, LA-MS",Central
+22089,22,Louisiana,St. Charles Parish,35380,"New Orleans-Metairie, LA",Metro,406,"New Orleans-Metairie-Slidell, LA-MS",Central
+22091,22,Louisiana,St. Helena Parish,12940,"Baton Rouge, LA",Metro,132,"Baton Rouge-Hammond, LA",Outlying
+22093,22,Louisiana,St. James Parish,35380,"New Orleans-Metairie, LA",Metro,406,"New Orleans-Metairie-Slidell, LA-MS",Central
+22095,22,Louisiana,St. John the Baptist Parish,35380,"New Orleans-Metairie, LA",Metro,406,"New Orleans-Metairie-Slidell, LA-MS",Central
+22097,22,Louisiana,St. Landry Parish,36660,"Opelousas, LA",Micro,318,"Lafayette-New Iberia-Opelousas, LA",Central
+22099,22,Louisiana,St. Martin Parish,29180,"Lafayette, LA",Metro,318,"Lafayette-New Iberia-Opelousas, LA",Outlying
+22101,22,Louisiana,St. Mary Parish,34020,"Morgan City, LA",Micro,,,Central
+22103,22,Louisiana,St. Tammany Parish,43640,"Slidell-Mandeville-Covington, LA",Metro,406,"New Orleans-Metairie-Slidell, LA-MS",Central
+22105,22,Louisiana,Tangipahoa Parish,25220,"Hammond, LA",Metro,132,"Baton Rouge-Hammond, LA",Central
+22109,22,Louisiana,Terrebonne Parish,26380,"Houma-Bayou Cane-Thibodaux, LA",Metro,,,Central
+22111,22,Louisiana,Union Parish,33740,"Monroe, LA",Metro,384,"Monroe-Ruston, LA",Outlying
+22113,22,Louisiana,Vermilion Parish,29180,"Lafayette, LA",Metro,318,"Lafayette-New Iberia-Opelousas, LA",Outlying
+22117,22,Louisiana,Washington Parish,14220,"Bogalusa, LA",Micro,406,"New Orleans-Metairie-Slidell, LA-MS",Central
+22119,22,Louisiana,Webster Parish,33380,"Minden, LA",Micro,508,"Shreveport-Bossier City-Minden, LA",Central
+22121,22,Louisiana,West Baton Rouge Parish,12940,"Baton Rouge, LA",Metro,132,"Baton Rouge-Hammond, LA",Central
+22125,22,Louisiana,West Feliciana Parish,12940,"Baton Rouge, LA",Metro,132,"Baton Rouge-Hammond, LA",Outlying
+23001,23,Maine,Androscoggin County,30340,"Lewiston-Auburn, ME",Metro,438,"Portland-Lewiston-South Portland, ME",Central
+23005,23,Maine,Cumberland County,38860,"Portland-South Portland, ME",Metro,438,"Portland-Lewiston-South Portland, ME",Central
+23011,23,Maine,Kennebec County,12300,"Augusta-Waterville, ME",Micro,,,Central
+23019,23,Maine,Penobscot County,12620,"Bangor, ME",Metro,,,Central
+23023,23,Maine,Sagadahoc County,38860,"Portland-South Portland, ME",Metro,438,"Portland-Lewiston-South Portland, ME",Outlying
+23031,23,Maine,York County,38860,"Portland-South Portland, ME",Metro,438,"Portland-Lewiston-South Portland, ME",Central
+24001,24,Maryland,Allegany County,19060,"Cumberland, MD-WV",Micro,,,Central
+24003,24,Maryland,Anne Arundel County,12580,"Baltimore-Columbia-Towson, MD",Metro,548,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Central
+24005,24,Maryland,Baltimore County,12580,"Baltimore-Columbia-Towson, MD",Metro,548,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Central
+24009,24,Maryland,Calvert County,30500,"Lexington Park, MD",Metro,548,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Central
+24013,24,Maryland,Carroll County,12580,"Baltimore-Columbia-Towson, MD",Metro,548,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Outlying
+24015,24,Maryland,Cecil County,37980,"Philadelphia-Camden-Wilmington, PA-NJ-DE-MD",Metro,428,"Philadelphia-Reading-Camden, PA-NJ-DE-MD",Central
+24017,24,Maryland,Charles County,47900,"Washington-Arlington-Alexandria, DC-VA-MD-WV",Metro,548,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Outlying
+24019,24,Maryland,Dorchester County,15700,"Cambridge, MD",Micro,548,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Central
+24021,24,Maryland,Frederick County,47900,"Washington-Arlington-Alexandria, DC-VA-MD-WV",Metro,548,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Outlying
+24025,24,Maryland,Harford County,12580,"Baltimore-Columbia-Towson, MD",Metro,548,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Outlying
+24027,24,Maryland,Howard County,12580,"Baltimore-Columbia-Towson, MD",Metro,548,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Central
+24031,24,Maryland,Montgomery County,47900,"Washington-Arlington-Alexandria, DC-VA-MD-WV",Metro,548,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Central
+24033,24,Maryland,Prince George's County,47900,"Washington-Arlington-Alexandria, DC-VA-MD-WV",Metro,548,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Central
+24035,24,Maryland,Queen Anne's County,12580,"Baltimore-Columbia-Towson, MD",Metro,548,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Outlying
+24037,24,Maryland,St. Mary's County,30500,"Lexington Park, MD",Metro,548,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Central
+24039,24,Maryland,Somerset County,41540,"Salisbury, MD",Metro,480,"Salisbury-Ocean Pines, MD",Outlying
+24041,24,Maryland,Talbot County,20660,"Easton, MD",Micro,548,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Central
+24043,24,Maryland,Washington County,25180,"Hagerstown-Martinsburg, MD-WV",Metro,548,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Central
+24045,24,Maryland,Wicomico County,41540,"Salisbury, MD",Metro,480,"Salisbury-Ocean Pines, MD",Central
+24047,24,Maryland,Worcester County,36180,"Ocean Pines, MD",Micro,480,"Salisbury-Ocean Pines, MD",Central
+24510,24,Maryland,Baltimore city,12580,"Baltimore-Columbia-Towson, MD",Metro,548,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Central
+25001,25,Massachusetts,Barnstable County,12700,"Barnstable Town, MA",Metro,148,"Boston-Worcester-Providence, MA-RI-NH",Central
+25003,25,Massachusetts,Berkshire County,38340,"Pittsfield, MA",Metro,,,Central
+25005,25,Massachusetts,Bristol County,39300,"Providence-Warwick, RI-MA",Metro,148,"Boston-Worcester-Providence, MA-RI-NH",Central
+25007,25,Massachusetts,Dukes County,47240,"Vineyard Haven, MA",Micro,,,Central
+25009,25,Massachusetts,Essex County,14460,"Boston-Cambridge-Newton, MA-NH",Metro,148,"Boston-Worcester-Providence, MA-RI-NH",Central
+25011,25,Massachusetts,Franklin County,24640,"Greenfield, MA",Micro,521,"Springfield-Amherst Town-Northampton, MA",Central
+25013,25,Massachusetts,Hampden County,44140,"Springfield, MA",Metro,521,"Springfield-Amherst Town-Northampton, MA",Central
+25015,25,Massachusetts,Hampshire County,11200,"Amherst Town-Northampton, MA",Metro,521,"Springfield-Amherst Town-Northampton, MA",Central
+25017,25,Massachusetts,Middlesex County,14460,"Boston-Cambridge-Newton, MA-NH",Metro,148,"Boston-Worcester-Providence, MA-RI-NH",Central
+25019,25,Massachusetts,Nantucket County,34880,"Nantucket, MA",Micro,,,Central
+25021,25,Massachusetts,Norfolk County,14460,"Boston-Cambridge-Newton, MA-NH",Metro,148,"Boston-Worcester-Providence, MA-RI-NH",Central
+25023,25,Massachusetts,Plymouth County,14460,"Boston-Cambridge-Newton, MA-NH",Metro,148,"Boston-Worcester-Providence, MA-RI-NH",Central
+25025,25,Massachusetts,Suffolk County,14460,"Boston-Cambridge-Newton, MA-NH",Metro,148,"Boston-Worcester-Providence, MA-RI-NH",Central
+25027,25,Massachusetts,Worcester County,49340,"Worcester, MA",Metro,148,"Boston-Worcester-Providence, MA-RI-NH",Central
+26005,26,Michigan,Allegan County,26090,"Holland, MI",Micro,266,"Grand Rapids-Wyoming, MI",Central
+26007,26,Michigan,Alpena County,10980,"Alpena, MI",Micro,,,Central
+26015,26,Michigan,Barry County,24340,"Grand Rapids-Wyoming-Kentwood, MI",Metro,266,"Grand Rapids-Wyoming, MI",Outlying
+26017,26,Michigan,Bay County,13020,"Bay City, MI",Metro,474,"Saginaw-Midland-Bay City, MI",Central
+26019,26,Michigan,Benzie County,45900,"Traverse City, MI",Metro,,,Outlying
+26021,26,Michigan,Berrien County,35660,"Niles, MI",Metro,515,"South Bend-Elkhart-Mishawaka, IN-MI",Central
+26023,26,Michigan,Branch County,17740,"Coldwater, MI",Micro,,,Central
+26025,26,Michigan,Calhoun County,12980,"Battle Creek, MI",Metro,310,"Kalamazoo-Battle Creek-Portage, MI",Central
+26027,26,Michigan,Cass County,43780,"South Bend-Mishawaka, IN-MI",Metro,515,"South Bend-Elkhart-Mishawaka, IN-MI",Central
+26033,26,Michigan,Chippewa County,42300,"Sault Ste. Marie, MI",Micro,,,Central
+26037,26,Michigan,Clinton County,29620,"Lansing-East Lansing, MI",Metro,330,"Lansing-East Lansing-Owosso, MI",Central
+26041,26,Michigan,Delta County,21540,"Escanaba, MI",Micro,,,Central
+26043,26,Michigan,Dickinson County,27020,"Iron Mountain, MI-WI",Micro,361,"Marinette-Iron Mountain, WI-MI",Central
+26045,26,Michigan,Eaton County,29620,"Lansing-East Lansing, MI",Metro,330,"Lansing-East Lansing-Owosso, MI",Central
+26047,26,Michigan,Emmet County,37950,"Petoskey, MI",Micro,,,Central
+26049,26,Michigan,Genesee County,22420,"Flint, MI",Metro,220,"Detroit-Warren-Ann Arbor, MI",Central
+26055,26,Michigan,Grand Traverse County,45900,"Traverse City, MI",Metro,,,Central
+26057,26,Michigan,Gratiot County,10940,"Alma, MI",Micro,394,"Mount Pleasant-Alma, MI",Central
+26059,26,Michigan,Hillsdale County,25880,"Hillsdale, MI",Micro,,,Central
+26061,26,Michigan,Houghton County,26340,"Houghton, MI",Micro,,,Central
+26065,26,Michigan,Ingham County,29620,"Lansing-East Lansing, MI",Metro,330,"Lansing-East Lansing-Owosso, MI",Central
+26067,26,Michigan,Ionia County,24340,"Grand Rapids-Wyoming-Kentwood, MI",Metro,266,"Grand Rapids-Wyoming, MI",Outlying
+26073,26,Michigan,Isabella County,34380,"Mount Pleasant, MI",Micro,394,"Mount Pleasant-Alma, MI",Central
+26075,26,Michigan,Jackson County,27100,"Jackson, MI",Metro,,,Central
+26077,26,Michigan,Kalamazoo County,28020,"Kalamazoo-Portage, MI",Metro,310,"Kalamazoo-Battle Creek-Portage, MI",Central
+26079,26,Michigan,Kalkaska County,45900,"Traverse City, MI",Metro,,,Outlying
+26081,26,Michigan,Kent County,24340,"Grand Rapids-Wyoming-Kentwood, MI",Metro,266,"Grand Rapids-Wyoming, MI",Central
+26083,26,Michigan,Keweenaw County,26340,"Houghton, MI",Micro,,,Outlying
+26087,26,Michigan,Lapeer County,19820,"Detroit-Warren-Dearborn, MI",Metro,220,"Detroit-Warren-Ann Arbor, MI",Outlying
+26089,26,Michigan,Leelanau County,45900,"Traverse City, MI",Metro,,,Outlying
+26091,26,Michigan,Lenawee County,10300,"Adrian, MI",Micro,220,"Detroit-Warren-Ann Arbor, MI",Central
+26093,26,Michigan,Livingston County,19820,"Detroit-Warren-Dearborn, MI",Metro,220,"Detroit-Warren-Ann Arbor, MI",Outlying
+26099,26,Michigan,Macomb County,19820,"Detroit-Warren-Dearborn, MI",Metro,220,"Detroit-Warren-Ann Arbor, MI",Central
+26103,26,Michigan,Marquette County,32100,"Marquette, MI",Micro,,,Central
+26105,26,Michigan,Mason County,31220,"Ludington, MI",Micro,,,Central
+26107,26,Michigan,Mecosta County,13660,"Big Rapids, MI",Micro,266,"Grand Rapids-Wyoming, MI",Central
+26109,26,Michigan,Menominee County,31940,"Marinette, WI-MI",Micro,361,"Marinette-Iron Mountain, WI-MI",Central
+26111,26,Michigan,Midland County,33220,"Midland, MI",Metro,474,"Saginaw-Midland-Bay City, MI",Central
+26113,26,Michigan,Missaukee County,15620,"Cadillac, MI",Micro,,,Outlying
+26115,26,Michigan,Monroe County,33780,"Monroe, MI",Metro,220,"Detroit-Warren-Ann Arbor, MI",Central
+26117,26,Michigan,Montcalm County,24340,"Grand Rapids-Wyoming-Kentwood, MI",Metro,266,"Grand Rapids-Wyoming, MI",Outlying
+26121,26,Michigan,Muskegon County,34740,"Muskegon-Norton Shores, MI",Metro,266,"Grand Rapids-Wyoming, MI",Central
+26125,26,Michigan,Oakland County,19820,"Detroit-Warren-Dearborn, MI",Metro,220,"Detroit-Warren-Ann Arbor, MI",Central
+26139,26,Michigan,Ottawa County,24340,"Grand Rapids-Wyoming-Kentwood, MI",Metro,266,"Grand Rapids-Wyoming, MI",Outlying
+26145,26,Michigan,Saginaw County,40980,"Saginaw, MI",Metro,474,"Saginaw-Midland-Bay City, MI",Central
+26147,26,Michigan,St. Clair County,19820,"Detroit-Warren-Dearborn, MI",Metro,220,"Detroit-Warren-Ann Arbor, MI",Outlying
+26149,26,Michigan,St. Joseph County,44780,"Sturgis, MI",Micro,310,"Kalamazoo-Battle Creek-Portage, MI",Central
+26155,26,Michigan,Shiawassee County,37020,"Owosso, MI",Micro,330,"Lansing-East Lansing-Owosso, MI",Central
+26161,26,Michigan,Washtenaw County,11460,"Ann Arbor, MI",Metro,220,"Detroit-Warren-Ann Arbor, MI",Central
+26163,26,Michigan,Wayne County,19820,"Detroit-Warren-Dearborn, MI",Metro,220,"Detroit-Warren-Ann Arbor, MI",Central
+26165,26,Michigan,Wexford County,15620,"Cadillac, MI",Micro,,,Central
+27003,27,Minnesota,Anoka County,33460,"Minneapolis-St. Paul-Bloomington, MN-WI",Metro,378,"Minneapolis-St. Paul, MN-WI",Central
+27005,27,Minnesota,Becker County,19810,"Detroit Lakes, MN",Micro,,,Central
+27007,27,Minnesota,Beltrami County,13420,"Bemidji, MN",Micro,,,Central
+27009,27,Minnesota,Benton County,41060,"St. Cloud, MN",Metro,378,"Minneapolis-St. Paul, MN-WI",Central
+27013,27,Minnesota,Blue Earth County,31860,"Mankato, MN",Metro,359,"Mankato-New Ulm, MN",Central
+27015,27,Minnesota,Brown County,35580,"New Ulm, MN",Micro,359,"Mankato-New Ulm, MN",Central
+27017,27,Minnesota,Carlton County,20260,"Duluth, MN-WI",Metro,228,"Duluth-Grand Rapids, MN-WI",Outlying
+27019,27,Minnesota,Carver County,33460,"Minneapolis-St. Paul-Bloomington, MN-WI",Metro,378,"Minneapolis-St. Paul, MN-WI",Central
+27021,27,Minnesota,Cass County,14660,"Brainerd, MN",Micro,,,Outlying
+27025,27,Minnesota,Chisago County,33460,"Minneapolis-St. Paul-Bloomington, MN-WI",Metro,378,"Minneapolis-St. Paul, MN-WI",Outlying
+27027,27,Minnesota,Clay County,22020,"Fargo, ND-MN",Metro,244,"Fargo-Wahpeton, ND-MN",Central
+27035,27,Minnesota,Crow Wing County,14660,"Brainerd, MN",Micro,,,Central
+27037,27,Minnesota,Dakota County,33460,"Minneapolis-St. Paul-Bloomington, MN-WI",Metro,378,"Minneapolis-St. Paul, MN-WI",Central
+27039,27,Minnesota,Dodge County,40340,"Rochester, MN",Metro,462,"Rochester-Austin-Winona, MN",Outlying
+27041,27,Minnesota,Douglas County,10820,"Alexandria, MN",Micro,,,Central
+27045,27,Minnesota,Fillmore County,40340,"Rochester, MN",Metro,462,"Rochester-Austin-Winona, MN",Outlying
+27047,27,Minnesota,Freeborn County,10660,"Albert Lea, MN",Micro,,,Central
+27049,27,Minnesota,Goodhue County,39860,"Red Wing, MN",Micro,378,"Minneapolis-St. Paul, MN-WI",Central
+27053,27,Minnesota,Hennepin County,33460,"Minneapolis-St. Paul-Bloomington, MN-WI",Metro,378,"Minneapolis-St. Paul, MN-WI",Central
+27055,27,Minnesota,Houston County,29100,"La Crosse-Onalaska, WI-MN",Metro,317,"La Crosse-Onalaska-Sparta, WI-MN",Central
+27059,27,Minnesota,Isanti County,33460,"Minneapolis-St. Paul-Bloomington, MN-WI",Metro,378,"Minneapolis-St. Paul, MN-WI",Outlying
+27061,27,Minnesota,Itasca County,24330,"Grand Rapids, MN",Micro,228,"Duluth-Grand Rapids, MN-WI",Central
+27067,27,Minnesota,Kandiyohi County,48820,"Willmar, MN",Micro,,,Central
+27079,27,Minnesota,Le Sueur County,33460,"Minneapolis-St. Paul-Bloomington, MN-WI",Metro,378,"Minneapolis-St. Paul, MN-WI",Outlying
+27083,27,Minnesota,Lyon County,32140,"Marshall, MN",Micro,,,Central
+27085,27,Minnesota,McLeod County,26780,"Hutchinson, MN",Micro,378,"Minneapolis-St. Paul, MN-WI",Central
+27091,27,Minnesota,Martin County,21860,"Fairmont, MN",Micro,,,Central
+27095,27,Minnesota,Mille Lacs County,33460,"Minneapolis-St. Paul-Bloomington, MN-WI",Metro,378,"Minneapolis-St. Paul, MN-WI",Outlying
+27099,27,Minnesota,Mower County,12380,"Austin, MN",Micro,462,"Rochester-Austin-Winona, MN",Central
+27103,27,Minnesota,Nicollet County,31860,"Mankato, MN",Metro,359,"Mankato-New Ulm, MN",Central
+27105,27,Minnesota,Nobles County,49380,"Worthington, MN",Micro,,,Central
+27109,27,Minnesota,Olmsted County,40340,"Rochester, MN",Metro,462,"Rochester-Austin-Winona, MN",Central
+27111,27,Minnesota,Otter Tail County,22260,"Fergus Falls, MN",Micro,,,Central
+27119,27,Minnesota,Polk County,24220,"Grand Forks, ND-MN",Metro,,,Central
+27123,27,Minnesota,Ramsey County,33460,"Minneapolis-St. Paul-Bloomington, MN-WI",Metro,378,"Minneapolis-St. Paul, MN-WI",Central
+27131,27,Minnesota,Rice County,22060,"Faribault-Northfield, MN",Micro,378,"Minneapolis-St. Paul, MN-WI",Central
+27133,27,Minnesota,Rock County,43620,"Sioux Falls, SD-MN",Metro,,,Outlying
+27137,27,Minnesota,St. Louis County,20260,"Duluth, MN-WI",Metro,228,"Duluth-Grand Rapids, MN-WI",Central
+27139,27,Minnesota,Scott County,33460,"Minneapolis-St. Paul-Bloomington, MN-WI",Metro,378,"Minneapolis-St. Paul, MN-WI",Central
+27141,27,Minnesota,Sherburne County,33460,"Minneapolis-St. Paul-Bloomington, MN-WI",Metro,378,"Minneapolis-St. Paul, MN-WI",Central
+27145,27,Minnesota,Stearns County,41060,"St. Cloud, MN",Metro,378,"Minneapolis-St. Paul, MN-WI",Central
+27147,27,Minnesota,Steele County,36940,"Owatonna, MN",Micro,378,"Minneapolis-St. Paul, MN-WI",Central
+27157,27,Minnesota,Wabasha County,40340,"Rochester, MN",Metro,462,"Rochester-Austin-Winona, MN",Outlying
+27163,27,Minnesota,Washington County,33460,"Minneapolis-St. Paul-Bloomington, MN-WI",Metro,378,"Minneapolis-St. Paul, MN-WI",Central
+27167,27,Minnesota,Wilkin County,47420,"Wahpeton, ND-MN",Micro,244,"Fargo-Wahpeton, ND-MN",Central
+27169,27,Minnesota,Winona County,49100,"Winona, MN",Micro,462,"Rochester-Austin-Winona, MN",Central
+27171,27,Minnesota,Wright County,33460,"Minneapolis-St. Paul-Bloomington, MN-WI",Metro,378,"Minneapolis-St. Paul, MN-WI",Central
+28001,28,Mississippi,Adams County,35020,"Natchez, MS-LA",Micro,,,Central
+28003,28,Mississippi,Alcorn County,18420,"Corinth, MS",Micro,539,"Tupelo-Corinth, MS",Central
+28009,28,Mississippi,Benton County,32820,"Memphis, TN-MS-AR",Metro,368,"Memphis-Clarksdale-Forrest City, TN-MS-AR",Outlying
+28011,28,Mississippi,Bolivar County,17380,"Cleveland, MS",Micro,,,Central
+28015,28,Mississippi,Carroll County,24900,"Greenwood, MS",Micro,,,Outlying
+28023,28,Mississippi,Clarke County,32940,"Meridian, MS",Micro,,,Outlying
+28027,28,Mississippi,Coahoma County,17260,"Clarksdale, MS",Micro,368,"Memphis-Clarksdale-Forrest City, TN-MS-AR",Central
+28029,28,Mississippi,Copiah County,27140,"Jackson, MS",Metro,298,"Jackson-Vicksburg-Brookhaven, MS",Outlying
+28033,28,Mississippi,DeSoto County,32820,"Memphis, TN-MS-AR",Metro,368,"Memphis-Clarksdale-Forrest City, TN-MS-AR",Central
+28035,28,Mississippi,Forrest County,25620,"Hattiesburg, MS",Metro,279,"Hattiesburg-Laurel, MS",Central
+28043,28,Mississippi,Grenada County,24980,"Grenada, MS",Micro,,,Central
+28045,28,Mississippi,Hancock County,25060,"Gulfport-Biloxi, MS",Metro,,,Central
+28047,28,Mississippi,Harrison County,25060,"Gulfport-Biloxi, MS",Metro,,,Central
+28049,28,Mississippi,Hinds County,27140,"Jackson, MS",Metro,298,"Jackson-Vicksburg-Brookhaven, MS",Central
+28051,28,Mississippi,Holmes County,27140,"Jackson, MS",Metro,298,"Jackson-Vicksburg-Brookhaven, MS",Outlying
+28057,28,Mississippi,Itawamba County,46180,"Tupelo, MS",Micro,539,"Tupelo-Corinth, MS",Outlying
+28059,28,Mississippi,Jackson County,25060,"Gulfport-Biloxi, MS",Metro,,,Outlying
+28061,28,Mississippi,Jasper County,29860,"Laurel, MS",Micro,279,"Hattiesburg-Laurel, MS",Outlying
+28063,28,Mississippi,Jefferson County,35020,"Natchez, MS-LA",Micro,,,Outlying
+28067,28,Mississippi,Jones County,29860,"Laurel, MS",Micro,279,"Hattiesburg-Laurel, MS",Central
+28071,28,Mississippi,Lafayette County,37060,"Oxford, MS",Micro,,,Central
+28073,28,Mississippi,Lamar County,25620,"Hattiesburg, MS",Metro,279,"Hattiesburg-Laurel, MS",Central
+28075,28,Mississippi,Lauderdale County,32940,"Meridian, MS",Micro,,,Central
+28081,28,Mississippi,Lee County,46180,"Tupelo, MS",Micro,539,"Tupelo-Corinth, MS",Central
+28083,28,Mississippi,Leflore County,24900,"Greenwood, MS",Micro,,,Central
+28085,28,Mississippi,Lincoln County,15020,"Brookhaven, MS",Micro,298,"Jackson-Vicksburg-Brookhaven, MS",Central
+28087,28,Mississippi,Lowndes County,18060,"Columbus, MS",Micro,523,"Starkville-Columbus, MS",Central
+28089,28,Mississippi,Madison County,27140,"Jackson, MS",Metro,298,"Jackson-Vicksburg-Brookhaven, MS",Central
+28093,28,Mississippi,Marshall County,32820,"Memphis, TN-MS-AR",Metro,368,"Memphis-Clarksdale-Forrest City, TN-MS-AR",Outlying
+28097,28,Mississippi,Montgomery County,24980,"Grenada, MS",Micro,,,Outlying
+28103,28,Mississippi,Noxubee County,18060,"Columbus, MS",Micro,523,"Starkville-Columbus, MS",Outlying
+28105,28,Mississippi,Oktibbeha County,44260,"Starkville, MS",Micro,523,"Starkville-Columbus, MS",Central
+28109,28,Mississippi,Pearl River County,38100,"Picayune, MS",Micro,406,"New Orleans-Metairie-Slidell, LA-MS",Central
+28111,28,Mississippi,Perry County,25620,"Hattiesburg, MS",Metro,279,"Hattiesburg-Laurel, MS",Outlying
+28113,28,Mississippi,Pike County,32620,"McComb, MS",Micro,,,Central
+28117,28,Mississippi,Prentiss County,46180,"Tupelo, MS",Micro,539,"Tupelo-Corinth, MS",Outlying
+28121,28,Mississippi,Rankin County,27140,"Jackson, MS",Metro,298,"Jackson-Vicksburg-Brookhaven, MS",Central
+28123,28,Mississippi,Scott County,27140,"Jackson, MS",Metro,298,"Jackson-Vicksburg-Brookhaven, MS",Outlying
+28127,28,Mississippi,Simpson County,27140,"Jackson, MS",Metro,298,"Jackson-Vicksburg-Brookhaven, MS",Outlying
+28131,28,Mississippi,Stone County,25060,"Gulfport-Biloxi, MS",Metro,,,Outlying
+28137,28,Mississippi,Tate County,32820,"Memphis, TN-MS-AR",Metro,368,"Memphis-Clarksdale-Forrest City, TN-MS-AR",Outlying
+28143,28,Mississippi,Tunica County,32820,"Memphis, TN-MS-AR",Metro,368,"Memphis-Clarksdale-Forrest City, TN-MS-AR",Outlying
+28147,28,Mississippi,Walthall County,32620,"McComb, MS",Micro,,,Outlying
+28149,28,Mississippi,Warren County,46980,"Vicksburg, MS",Micro,298,"Jackson-Vicksburg-Brookhaven, MS",Central
+28151,28,Mississippi,Washington County,24740,"Greenville, MS",Micro,,,Central
+28155,28,Mississippi,Webster County,44260,"Starkville, MS",Micro,523,"Starkville-Columbus, MS",Outlying
+28161,28,Mississippi,Yalobusha County,37060,"Oxford, MS",Micro,,,Outlying
+28163,28,Mississippi,Yazoo County,27140,"Jackson, MS",Metro,298,"Jackson-Vicksburg-Brookhaven, MS",Outlying
+29001,29,Missouri,Adair County,28860,"Kirksville, MO",Micro,,,Central
+29003,29,Missouri,Andrew County,41140,"St. Joseph, MO-KS",Metro,312,"Kansas City-Overland Park-Kansas City, MO-KS",Outlying
+29007,29,Missouri,Audrain County,33020,"Mexico, MO",Micro,190,"Columbia-Jefferson City-Moberly, MO",Central
+29013,29,Missouri,Bates County,28140,"Kansas City, MO-KS",Metro,312,"Kansas City-Overland Park-Kansas City, MO-KS",Outlying
+29017,29,Missouri,Bollinger County,16020,"Cape Girardeau, MO-IL",Metro,164,"Cape Girardeau-Sikeston, MO-IL",Outlying
+29019,29,Missouri,Boone County,17860,"Columbia, MO",Metro,190,"Columbia-Jefferson City-Moberly, MO",Central
+29021,29,Missouri,Buchanan County,41140,"St. Joseph, MO-KS",Metro,312,"Kansas City-Overland Park-Kansas City, MO-KS",Central
+29023,29,Missouri,Butler County,38740,"Poplar Bluff, MO",Micro,,,Central
+29025,29,Missouri,Caldwell County,28140,"Kansas City, MO-KS",Metro,312,"Kansas City-Overland Park-Kansas City, MO-KS",Outlying
+29027,29,Missouri,Callaway County,27620,"Jefferson City, MO",Metro,190,"Columbia-Jefferson City-Moberly, MO",Outlying
+29031,29,Missouri,Cape Girardeau County,16020,"Cape Girardeau, MO-IL",Metro,164,"Cape Girardeau-Sikeston, MO-IL",Central
+29037,29,Missouri,Cass County,28140,"Kansas City, MO-KS",Metro,312,"Kansas City-Overland Park-Kansas City, MO-KS",Central
+29043,29,Missouri,Christian County,44180,"Springfield, MO",Metro,,,Central
+29047,29,Missouri,Clay County,28140,"Kansas City, MO-KS",Metro,312,"Kansas City-Overland Park-Kansas City, MO-KS",Central
+29049,29,Missouri,Clinton County,28140,"Kansas City, MO-KS",Metro,312,"Kansas City-Overland Park-Kansas City, MO-KS",Outlying
+29051,29,Missouri,Cole County,27620,"Jefferson City, MO",Metro,190,"Columbia-Jefferson City-Moberly, MO",Central
+29053,29,Missouri,Cooper County,17860,"Columbia, MO",Metro,190,"Columbia-Jefferson City-Moberly, MO",Outlying
+29059,29,Missouri,Dallas County,44180,"Springfield, MO",Metro,,,Outlying
+29063,29,Missouri,DeKalb County,41140,"St. Joseph, MO-KS",Metro,312,"Kansas City-Overland Park-Kansas City, MO-KS",Outlying
+29069,29,Missouri,Dunklin County,28380,"Kennett, MO",Micro,,,Central
+29071,29,Missouri,Franklin County,41180,"St. Louis, MO-IL",Metro,476,"St. Louis-St. Charles-Farmington, MO-IL",Outlying
+29077,29,Missouri,Greene County,44180,"Springfield, MO",Metro,,,Central
+29089,29,Missouri,Howard County,17860,"Columbia, MO",Metro,190,"Columbia-Jefferson City-Moberly, MO",Outlying
+29091,29,Missouri,Howell County,48460,"West Plains, MO",Micro,,,Central
+29095,29,Missouri,Jackson County,28140,"Kansas City, MO-KS",Metro,312,"Kansas City-Overland Park-Kansas City, MO-KS",Central
+29097,29,Missouri,Jasper County,27900,"Joplin, MO-KS",Metro,309,"Joplin-Miami, MO-OK-KS",Central
+29099,29,Missouri,Jefferson County,41180,"St. Louis, MO-IL",Metro,476,"St. Louis-St. Charles-Farmington, MO-IL",Central
+29101,29,Missouri,Johnson County,47660,"Warrensburg, MO",Micro,312,"Kansas City-Overland Park-Kansas City, MO-KS",Central
+29105,29,Missouri,Laclede County,30060,"Lebanon, MO",Micro,,,Central
+29107,29,Missouri,Lafayette County,28140,"Kansas City, MO-KS",Metro,312,"Kansas City-Overland Park-Kansas City, MO-KS",Outlying
+29111,29,Missouri,Lewis County,39500,"Quincy, IL-MO",Micro,448,"Quincy-Hannibal, IL-MO",Outlying
+29113,29,Missouri,Lincoln County,41180,"St. Louis, MO-IL",Metro,476,"St. Louis-St. Charles-Farmington, MO-IL",Outlying
+29127,29,Missouri,Marion County,25300,"Hannibal, MO",Micro,448,"Quincy-Hannibal, IL-MO",Central
+29133,29,Missouri,Mississippi County,43460,"Sikeston, MO",Micro,164,"Cape Girardeau-Sikeston, MO-IL",Outlying
+29135,29,Missouri,Moniteau County,27620,"Jefferson City, MO",Metro,190,"Columbia-Jefferson City-Moberly, MO",Outlying
+29145,29,Missouri,Newton County,27900,"Joplin, MO-KS",Metro,309,"Joplin-Miami, MO-OK-KS",Outlying
+29147,29,Missouri,Nodaway County,32340,"Maryville, MO",Micro,,,Central
+29151,29,Missouri,Osage County,27620,"Jefferson City, MO",Metro,190,"Columbia-Jefferson City-Moberly, MO",Outlying
+29159,29,Missouri,Pettis County,42740,"Sedalia, MO",Micro,,,Central
+29161,29,Missouri,Phelps County,40620,"Rolla, MO",Micro,,,Central
+29165,29,Missouri,Platte County,28140,"Kansas City, MO-KS",Metro,312,"Kansas City-Overland Park-Kansas City, MO-KS",Central
+29167,29,Missouri,Polk County,44180,"Springfield, MO",Metro,,,Outlying
+29169,29,Missouri,Pulaski County,22780,"Fort Leonard Wood, MO",Micro,,,Central
+29173,29,Missouri,Ralls County,25300,"Hannibal, MO",Micro,448,"Quincy-Hannibal, IL-MO",Outlying
+29175,29,Missouri,Randolph County,33620,"Moberly, MO",Micro,190,"Columbia-Jefferson City-Moberly, MO",Central
+29177,29,Missouri,Ray County,28140,"Kansas City, MO-KS",Metro,312,"Kansas City-Overland Park-Kansas City, MO-KS",Outlying
+29183,29,Missouri,St. Charles County,41180,"St. Louis, MO-IL",Metro,476,"St. Louis-St. Charles-Farmington, MO-IL",Central
+29187,29,Missouri,St. Francois County,22100,"Farmington, MO",Micro,476,"St. Louis-St. Charles-Farmington, MO-IL",Central
+29189,29,Missouri,St. Louis County,41180,"St. Louis, MO-IL",Metro,476,"St. Louis-St. Charles-Farmington, MO-IL",Central
+29195,29,Missouri,Saline County,32180,"Marshall, MO",Micro,,,Central
+29197,29,Missouri,Schuyler County,28860,"Kirksville, MO",Micro,,,Outlying
+29201,29,Missouri,Scott County,43460,"Sikeston, MO",Micro,164,"Cape Girardeau-Sikeston, MO-IL",Central
+29213,29,Missouri,Taney County,14700,"Branson, MO",Micro,,,Central
+29219,29,Missouri,Warren County,41180,"St. Louis, MO-IL",Metro,476,"St. Louis-St. Charles-Farmington, MO-IL",Outlying
+29225,29,Missouri,Webster County,44180,"Springfield, MO",Metro,,,Outlying
+29510,29,Missouri,St. Louis city,41180,"St. Louis, MO-IL",Metro,476,"St. Louis-St. Charles-Farmington, MO-IL",Central
+30007,30,Montana,Broadwater County,25740,"Helena, MT",Metro,,,Outlying
+30009,30,Montana,Carbon County,13740,"Billings, MT",Metro,,,Outlying
+30013,30,Montana,Cascade County,24500,"Great Falls, MT",Metro,,,Central
+30029,30,Montana,Flathead County,28060,"Kalispell, MT",Micro,,,Central
+30031,30,Montana,Gallatin County,14580,"Bozeman, MT",Metro,,,Central
+30043,30,Montana,Jefferson County,25740,"Helena, MT",Metro,,,Outlying
+30049,30,Montana,Lewis and Clark County,25740,"Helena, MT",Metro,,,Central
+30061,30,Montana,Mineral County,33540,"Missoula, MT",Metro,,,Outlying
+30063,30,Montana,Missoula County,33540,"Missoula, MT",Metro,,,Central
+30093,30,Montana,Silver Bow County,15580,"Butte-Silver Bow, MT",Micro,,,Central
+30095,30,Montana,Stillwater County,13740,"Billings, MT",Metro,,,Outlying
+30111,30,Montana,Yellowstone County,13740,"Billings, MT",Metro,,,Central
+31001,31,Nebraska,Adams County,25580,"Hastings, NE",Micro,,,Central
+31007,31,Nebraska,Banner County,42420,"Scottsbluff, NE",Micro,,,Outlying
+31019,31,Nebraska,Buffalo County,28260,"Kearney, NE",Micro,,,Central
+31025,31,Nebraska,Cass County,36540,"Omaha, NE-IA",Metro,420,"Omaha-Fremont, NE-IA",Outlying
+31035,31,Nebraska,Clay County,25580,"Hastings, NE",Micro,,,Outlying
+31037,31,Nebraska,Colfax County,18100,"Columbus, NE",Micro,,,Outlying
+31043,31,Nebraska,Dakota County,43580,"Sioux City, IA-NE-SD",Metro,512,"Sioux City-Le Mars, IA-NE-SD",Central
+31047,31,Nebraska,Dawson County,30420,"Lexington, NE",Micro,,,Central
+31053,31,Nebraska,Dodge County,23340,"Fremont, NE",Micro,420,"Omaha-Fremont, NE-IA",Central
+31055,31,Nebraska,Douglas County,36540,"Omaha, NE-IA",Metro,420,"Omaha-Fremont, NE-IA",Central
+31067,31,Nebraska,Gage County,13100,"Beatrice, NE",Micro,339,"Lincoln-Beatrice, NE",Central
+31073,31,Nebraska,Gosper County,30420,"Lexington, NE",Micro,,,Outlying
+31079,31,Nebraska,Hall County,24260,"Grand Island, NE",Metro,,,Central
+31093,31,Nebraska,Howard County,24260,"Grand Island, NE",Metro,,,Outlying
+31099,31,Nebraska,Kearney County,28260,"Kearney, NE",Micro,,,Outlying
+31109,31,Nebraska,Lancaster County,30700,"Lincoln, NE",Metro,339,"Lincoln-Beatrice, NE",Central
+31111,31,Nebraska,Lincoln County,35820,"North Platte, NE",Micro,,,Central
+31113,31,Nebraska,Logan County,35820,"North Platte, NE",Micro,,,Outlying
+31119,31,Nebraska,Madison County,35740,"Norfolk, NE",Micro,,,Central
+31121,31,Nebraska,Merrick County,24260,"Grand Island, NE",Metro,,,Outlying
+31139,31,Nebraska,Pierce County,35740,"Norfolk, NE",Micro,,,Outlying
+31141,31,Nebraska,Platte County,18100,"Columbus, NE",Micro,,,Central
+31153,31,Nebraska,Sarpy County,36540,"Omaha, NE-IA",Metro,420,"Omaha-Fremont, NE-IA",Central
+31155,31,Nebraska,Saunders County,36540,"Omaha, NE-IA",Metro,420,"Omaha-Fremont, NE-IA",Outlying
+31157,31,Nebraska,Scotts Bluff County,42420,"Scottsbluff, NE",Micro,,,Central
+31159,31,Nebraska,Seward County,30700,"Lincoln, NE",Metro,339,"Lincoln-Beatrice, NE",Outlying
+31167,31,Nebraska,Stanton County,35740,"Norfolk, NE",Micro,,,Outlying
+31177,31,Nebraska,Washington County,36540,"Omaha, NE-IA",Metro,420,"Omaha-Fremont, NE-IA",Outlying
+31181,31,Nebraska,Webster County,25580,"Hastings, NE",Micro,,,Outlying
+32001,32,Nevada,Churchill County,21980,"Fallon, NV",Micro,456,"Reno-Carson City-Gardnerville Ranchos, NV-CA",Central
+32003,32,Nevada,Clark County,29820,"Las Vegas-Henderson-North Las Vegas, NV",Metro,332,"Las Vegas-Henderson, NV",Central
+32005,32,Nevada,Douglas County,23820,"Gardnerville Ranchos, NV-CA",Micro,456,"Reno-Carson City-Gardnerville Ranchos, NV-CA",Central
+32007,32,Nevada,Elko County,21220,"Elko, NV",Micro,,,Central
+32011,32,Nevada,Eureka County,21220,"Elko, NV",Micro,,,Outlying
+32013,32,Nevada,Humboldt County,49080,"Winnemucca, NV",Micro,,,Central
+32019,32,Nevada,Lyon County,39900,"Reno, NV",Metro,456,"Reno-Carson City-Gardnerville Ranchos, NV-CA",Outlying
+32023,32,Nevada,Nye County,37220,"Pahrump, NV",Micro,332,"Las Vegas-Henderson, NV",Central
+32029,32,Nevada,Storey County,39900,"Reno, NV",Metro,456,"Reno-Carson City-Gardnerville Ranchos, NV-CA",Outlying
+32031,32,Nevada,Washoe County,39900,"Reno, NV",Metro,456,"Reno-Carson City-Gardnerville Ranchos, NV-CA",Central
+32510,32,Nevada,Carson City,16180,"Carson City, NV",Metro,456,"Reno-Carson City-Gardnerville Ranchos, NV-CA",Central
+33001,33,New Hampshire,Belknap County,29060,"Laconia, NH",Micro,148,"Boston-Worcester-Providence, MA-RI-NH",Central
+33005,33,New Hampshire,Cheshire County,28300,"Keene, NH",Micro,313,"Keene-Brattleboro, NH-VT",Central
+33009,33,New Hampshire,Grafton County,30150,"Lebanon-Claremont, NH-VT",Micro,,,Central
+33011,33,New Hampshire,Hillsborough County,31700,"Manchester-Nashua, NH",Metro,148,"Boston-Worcester-Providence, MA-RI-NH",Central
+33013,33,New Hampshire,Merrimack County,18180,"Concord, NH",Micro,148,"Boston-Worcester-Providence, MA-RI-NH",Central
+33015,33,New Hampshire,Rockingham County,14460,"Boston-Cambridge-Newton, MA-NH",Metro,148,"Boston-Worcester-Providence, MA-RI-NH",Central
+33017,33,New Hampshire,Strafford County,14460,"Boston-Cambridge-Newton, MA-NH",Metro,148,"Boston-Worcester-Providence, MA-RI-NH",Outlying
+33019,33,New Hampshire,Sullivan County,30150,"Lebanon-Claremont, NH-VT",Micro,,,Outlying
+34001,34,New Jersey,Atlantic County,12100,"Atlantic City-Hammonton, NJ",Metro,428,"Philadelphia-Reading-Camden, PA-NJ-DE-MD",Central
+34003,34,New Jersey,Bergen County,35620,"New York-Newark-Jersey City, NY-NJ",Metro,408,"New York-Newark, NY-NJ-CT-PA",Central
+34005,34,New Jersey,Burlington County,37980,"Philadelphia-Camden-Wilmington, PA-NJ-DE-MD",Metro,428,"Philadelphia-Reading-Camden, PA-NJ-DE-MD",Central
+34007,34,New Jersey,Camden County,37980,"Philadelphia-Camden-Wilmington, PA-NJ-DE-MD",Metro,428,"Philadelphia-Reading-Camden, PA-NJ-DE-MD",Central
+34009,34,New Jersey,Cape May County,12100,"Atlantic City-Hammonton, NJ",Metro,428,"Philadelphia-Reading-Camden, PA-NJ-DE-MD",Central
+34011,34,New Jersey,Cumberland County,47220,"Vineland, NJ",Metro,428,"Philadelphia-Reading-Camden, PA-NJ-DE-MD",Central
+34013,34,New Jersey,Essex County,35620,"New York-Newark-Jersey City, NY-NJ",Metro,408,"New York-Newark, NY-NJ-CT-PA",Central
+34015,34,New Jersey,Gloucester County,37980,"Philadelphia-Camden-Wilmington, PA-NJ-DE-MD",Metro,428,"Philadelphia-Reading-Camden, PA-NJ-DE-MD",Central
+34017,34,New Jersey,Hudson County,35620,"New York-Newark-Jersey City, NY-NJ",Metro,408,"New York-Newark, NY-NJ-CT-PA",Central
+34019,34,New Jersey,Hunterdon County,35620,"New York-Newark-Jersey City, NY-NJ",Metro,408,"New York-Newark, NY-NJ-CT-PA",Outlying
+34021,34,New Jersey,Mercer County,45940,"Trenton-Princeton, NJ",Metro,408,"New York-Newark, NY-NJ-CT-PA",Central
+34023,34,New Jersey,Middlesex County,35620,"New York-Newark-Jersey City, NY-NJ",Metro,408,"New York-Newark, NY-NJ-CT-PA",Central
+34025,34,New Jersey,Monmouth County,35620,"New York-Newark-Jersey City, NY-NJ",Metro,408,"New York-Newark, NY-NJ-CT-PA",Central
+34027,34,New Jersey,Morris County,35620,"New York-Newark-Jersey City, NY-NJ",Metro,408,"New York-Newark, NY-NJ-CT-PA",Central
+34029,34,New Jersey,Ocean County,35620,"New York-Newark-Jersey City, NY-NJ",Metro,408,"New York-Newark, NY-NJ-CT-PA",Central
+34031,34,New Jersey,Passaic County,35620,"New York-Newark-Jersey City, NY-NJ",Metro,408,"New York-Newark, NY-NJ-CT-PA",Central
+34033,34,New Jersey,Salem County,37980,"Philadelphia-Camden-Wilmington, PA-NJ-DE-MD",Metro,428,"Philadelphia-Reading-Camden, PA-NJ-DE-MD",Central
+34035,34,New Jersey,Somerset County,35620,"New York-Newark-Jersey City, NY-NJ",Metro,408,"New York-Newark, NY-NJ-CT-PA",Central
+34037,34,New Jersey,Sussex County,35620,"New York-Newark-Jersey City, NY-NJ",Metro,408,"New York-Newark, NY-NJ-CT-PA",Outlying
+34039,34,New Jersey,Union County,35620,"New York-Newark-Jersey City, NY-NJ",Metro,408,"New York-Newark, NY-NJ-CT-PA",Central
+34041,34,New Jersey,Warren County,10900,"Allentown-Bethlehem-Easton, PA-NJ",Metro,106,"Allentown-Bethlehem-East Stroudsburg, PA-NJ",Central
+35001,35,New Mexico,Bernalillo County,10740,"Albuquerque, NM",Metro,105,"Albuquerque-Santa Fe-Los Alamos, NM",Central
+35005,35,New Mexico,Chaves County,40740,"Roswell, NM",Micro,,,Central
+35009,35,New Mexico,Curry County,17580,"Clovis, NM",Micro,,,Central
+35013,35,New Mexico,Doña Ana County,29740,"Las Cruces, NM",Metro,238,"El Paso-Las Cruces, TX-NM",Central
+35015,35,New Mexico,Eddy County,16100,"Carlsbad-Artesia, NM",Micro,,,Central
+35017,35,New Mexico,Grant County,43500,"Silver City, NM",Micro,,,Central
+35025,35,New Mexico,Lea County,26020,"Hobbs, NM",Micro,,,Central
+35027,35,New Mexico,Lincoln County,40760,"Ruidoso, NM",Micro,,,Central
+35028,35,New Mexico,Los Alamos County,31060,"Los Alamos, NM",Micro,105,"Albuquerque-Santa Fe-Los Alamos, NM",Central
+35029,35,New Mexico,Luna County,19700,"Deming, NM",Micro,,,Central
+35031,35,New Mexico,McKinley County,23700,"Gallup, NM",Micro,,,Central
+35033,35,New Mexico,Mora County,29780,"Las Vegas, NM",Micro,105,"Albuquerque-Santa Fe-Los Alamos, NM",Outlying
+35035,35,New Mexico,Otero County,10460,"Alamogordo, NM",Micro,,,Central
+35039,35,New Mexico,Rio Arriba County,21580,"Española, NM",Micro,105,"Albuquerque-Santa Fe-Los Alamos, NM",Central
+35041,35,New Mexico,Roosevelt County,17580,"Clovis, NM",Micro,,,Outlying
+35043,35,New Mexico,Sandoval County,10740,"Albuquerque, NM",Metro,105,"Albuquerque-Santa Fe-Los Alamos, NM",Central
+35045,35,New Mexico,San Juan County,22140,"Farmington, NM",Metro,,,Central
+35047,35,New Mexico,San Miguel County,29780,"Las Vegas, NM",Micro,105,"Albuquerque-Santa Fe-Los Alamos, NM",Central
+35049,35,New Mexico,Santa Fe County,42140,"Santa Fe, NM",Metro,105,"Albuquerque-Santa Fe-Los Alamos, NM",Central
+35055,35,New Mexico,Taos County,45340,"Taos, NM",Micro,,,Central
+35057,35,New Mexico,Torrance County,10740,"Albuquerque, NM",Metro,105,"Albuquerque-Santa Fe-Los Alamos, NM",Outlying
+35061,35,New Mexico,Valencia County,10740,"Albuquerque, NM",Metro,105,"Albuquerque-Santa Fe-Los Alamos, NM",Outlying
+36001,36,New York,Albany County,10580,"Albany-Schenectady-Troy, NY",Metro,104,"Albany-Schenectady, NY",Central
+36005,36,New York,Bronx County,35620,"New York-Newark-Jersey City, NY-NJ",Metro,408,"New York-Newark, NY-NJ-CT-PA",Central
+36007,36,New York,Broome County,13780,"Binghamton, NY",Metro,,,Central
+36009,36,New York,Cattaraugus County,36460,"Olean, NY",Micro,160,"Buffalo-Cheektowaga-Olean, NY",Central
+36011,36,New York,Cayuga County,12180,"Auburn, NY",Micro,532,"Syracuse-Auburn, NY",Central
+36013,36,New York,Chautauqua County,27460,"Jamestown-Dunkirk, NY",Micro,,,Central
+36015,36,New York,Chemung County,21300,"Elmira, NY",Metro,236,"Elmira-Corning, NY",Central
+36019,36,New York,Clinton County,38460,"Plattsburgh, NY",Micro,,,Central
+36021,36,New York,Columbia County,26460,"Hudson, NY",Micro,104,"Albany-Schenectady, NY",Central
+36023,36,New York,Cortland County,18660,"Cortland, NY",Micro,296,"Ithaca-Cortland, NY",Central
+36027,36,New York,Dutchess County,28880,"Kiryas Joel-Poughkeepsie-Newburgh, NY",Metro,408,"New York-Newark, NY-NJ-CT-PA",Central
+36029,36,New York,Erie County,15380,"Buffalo-Cheektowaga, NY",Metro,160,"Buffalo-Cheektowaga-Olean, NY",Central
+36035,36,New York,Fulton County,24100,"Gloversville, NY",Micro,104,"Albany-Schenectady, NY",Central
+36037,36,New York,Genesee County,12860,"Batavia, NY",Micro,464,"Rochester-Batavia-Seneca Falls, NY",Central
+36043,36,New York,Herkimer County,46540,"Utica-Rome, NY",Metro,,,Outlying
+36045,36,New York,Jefferson County,48060,"Watertown-Fort Drum, NY",Metro,,,Central
+36047,36,New York,Kings County,35620,"New York-Newark-Jersey City, NY-NJ",Metro,408,"New York-Newark, NY-NJ-CT-PA",Central
+36051,36,New York,Livingston County,40380,"Rochester, NY",Metro,464,"Rochester-Batavia-Seneca Falls, NY",Outlying
+36053,36,New York,Madison County,45060,"Syracuse, NY",Metro,532,"Syracuse-Auburn, NY",Outlying
+36055,36,New York,Monroe County,40380,"Rochester, NY",Metro,464,"Rochester-Batavia-Seneca Falls, NY",Central
+36057,36,New York,Montgomery County,11220,"Amsterdam, NY",Micro,104,"Albany-Schenectady, NY",Central
+36059,36,New York,Nassau County,35620,"New York-Newark-Jersey City, NY-NJ",Metro,408,"New York-Newark, NY-NJ-CT-PA",Central
+36061,36,New York,New York County,35620,"New York-Newark-Jersey City, NY-NJ",Metro,408,"New York-Newark, NY-NJ-CT-PA",Central
+36063,36,New York,Niagara County,15380,"Buffalo-Cheektowaga, NY",Metro,160,"Buffalo-Cheektowaga-Olean, NY",Central
+36065,36,New York,Oneida County,46540,"Utica-Rome, NY",Metro,,,Central
+36067,36,New York,Onondaga County,45060,"Syracuse, NY",Metro,532,"Syracuse-Auburn, NY",Central
+36069,36,New York,Ontario County,40380,"Rochester, NY",Metro,464,"Rochester-Batavia-Seneca Falls, NY",Central
+36071,36,New York,Orange County,28880,"Kiryas Joel-Poughkeepsie-Newburgh, NY",Metro,408,"New York-Newark, NY-NJ-CT-PA",Central
+36073,36,New York,Orleans County,40380,"Rochester, NY",Metro,464,"Rochester-Batavia-Seneca Falls, NY",Outlying
+36075,36,New York,Oswego County,45060,"Syracuse, NY",Metro,532,"Syracuse-Auburn, NY",Outlying
+36077,36,New York,Otsego County,36580,"Oneonta, NY",Micro,,,Central
+36079,36,New York,Putnam County,35620,"New York-Newark-Jersey City, NY-NJ",Metro,408,"New York-Newark, NY-NJ-CT-PA",Central
+36081,36,New York,Queens County,35620,"New York-Newark-Jersey City, NY-NJ",Metro,408,"New York-Newark, NY-NJ-CT-PA",Central
+36083,36,New York,Rensselaer County,10580,"Albany-Schenectady-Troy, NY",Metro,104,"Albany-Schenectady, NY",Central
+36085,36,New York,Richmond County,35620,"New York-Newark-Jersey City, NY-NJ",Metro,408,"New York-Newark, NY-NJ-CT-PA",Central
+36087,36,New York,Rockland County,35620,"New York-Newark-Jersey City, NY-NJ",Metro,408,"New York-Newark, NY-NJ-CT-PA",Central
+36089,36,New York,St. Lawrence County,32390,"Massena-Ogdensburg, NY",Micro,,,Central
+36091,36,New York,Saratoga County,10580,"Albany-Schenectady-Troy, NY",Metro,104,"Albany-Schenectady, NY",Outlying
+36093,36,New York,Schenectady County,10580,"Albany-Schenectady-Troy, NY",Metro,104,"Albany-Schenectady, NY",Central
+36095,36,New York,Schoharie County,10580,"Albany-Schenectady-Troy, NY",Metro,104,"Albany-Schenectady, NY",Outlying
+36099,36,New York,Seneca County,42900,"Seneca Falls, NY",Micro,464,"Rochester-Batavia-Seneca Falls, NY",Central
+36101,36,New York,Steuben County,18500,"Corning, NY",Micro,236,"Elmira-Corning, NY",Central
+36103,36,New York,Suffolk County,35620,"New York-Newark-Jersey City, NY-NJ",Metro,408,"New York-Newark, NY-NJ-CT-PA",Central
+36105,36,New York,Sullivan County,33910,"Monticello, NY",Micro,408,"New York-Newark, NY-NJ-CT-PA",Central
+36107,36,New York,Tioga County,13780,"Binghamton, NY",Metro,,,Central
+36109,36,New York,Tompkins County,27060,"Ithaca, NY",Metro,296,"Ithaca-Cortland, NY",Central
+36111,36,New York,Ulster County,28740,"Kingston, NY",Metro,408,"New York-Newark, NY-NJ-CT-PA",Central
+36113,36,New York,Warren County,24020,"Glens Falls, NY",Metro,104,"Albany-Schenectady, NY",Central
+36115,36,New York,Washington County,24020,"Glens Falls, NY",Metro,104,"Albany-Schenectady, NY",Central
+36117,36,New York,Wayne County,40380,"Rochester, NY",Metro,464,"Rochester-Batavia-Seneca Falls, NY",Outlying
+36119,36,New York,Westchester County,35620,"New York-Newark-Jersey City, NY-NJ",Metro,408,"New York-Newark, NY-NJ-CT-PA",Central
+37001,37,North Carolina,Alamance County,15500,"Burlington, NC",Metro,268,"Greensboro--Winston-Salem--High Point, NC",Central
+37003,37,North Carolina,Alexander County,25860,"Hickory-Lenoir-Morganton, NC",Metro,172,"Charlotte-Concord, NC-SC",Outlying
+37007,37,North Carolina,Anson County,16740,"Charlotte-Concord-Gastonia, NC-SC",Metro,172,"Charlotte-Concord, NC-SC",Outlying
+37013,37,North Carolina,Beaufort County,47820,"Washington, NC",Micro,274,"Greenville-Washington, NC",Central
+37019,37,North Carolina,Brunswick County,48900,"Wilmington, NC",Metro,,,Central
+37021,37,North Carolina,Buncombe County,11700,"Asheville, NC",Metro,120,"Asheville-Waynesville-Brevard, NC",Central
+37023,37,North Carolina,Burke County,25860,"Hickory-Lenoir-Morganton, NC",Metro,172,"Charlotte-Concord, NC-SC",Central
+37025,37,North Carolina,Cabarrus County,16740,"Charlotte-Concord-Gastonia, NC-SC",Metro,172,"Charlotte-Concord, NC-SC",Outlying
+37027,37,North Carolina,Caldwell County,25860,"Hickory-Lenoir-Morganton, NC",Metro,172,"Charlotte-Concord, NC-SC",Central
+37029,37,North Carolina,Camden County,47260,"Virginia Beach-Chesapeake-Norfolk, VA-NC",Metro,545,"Virginia Beach-Chesapeake, VA-NC",Outlying
+37031,37,North Carolina,Carteret County,33980,"Morehead City, NC",Micro,404,"New Bern-Morehead City, NC",Central
+37035,37,North Carolina,Catawba County,25860,"Hickory-Lenoir-Morganton, NC",Metro,172,"Charlotte-Concord, NC-SC",Central
+37037,37,North Carolina,Chatham County,20500,"Durham-Chapel Hill, NC",Metro,450,"Raleigh-Durham-Cary, NC",Central
+37045,37,North Carolina,Cleveland County,43140,"Shelby-Kings Mountain, NC",Micro,172,"Charlotte-Concord, NC-SC",Central
+37049,37,North Carolina,Craven County,35100,"New Bern, NC",Micro,404,"New Bern-Morehead City, NC",Central
+37051,37,North Carolina,Cumberland County,22180,"Fayetteville, NC",Metro,246,"Fayetteville-Lumberton-Pinehurst, NC",Central
+37053,37,North Carolina,Currituck County,47260,"Virginia Beach-Chesapeake-Norfolk, VA-NC",Metro,545,"Virginia Beach-Chesapeake, VA-NC",Outlying
+37055,37,North Carolina,Dare County,28620,"Kill Devil Hills, NC",Micro,545,"Virginia Beach-Chesapeake, VA-NC",Central
+37057,37,North Carolina,Davidson County,49180,"Winston-Salem, NC",Metro,268,"Greensboro--Winston-Salem--High Point, NC",Central
+37059,37,North Carolina,Davie County,49180,"Winston-Salem, NC",Metro,268,"Greensboro--Winston-Salem--High Point, NC",Central
+37063,37,North Carolina,Durham County,20500,"Durham-Chapel Hill, NC",Metro,450,"Raleigh-Durham-Cary, NC",Central
+37065,37,North Carolina,Edgecombe County,40580,"Rocky Mount, NC",Metro,468,"Rocky Mount-Wilson-Roanoke Rapids, NC",Central
+37067,37,North Carolina,Forsyth County,49180,"Winston-Salem, NC",Metro,268,"Greensboro--Winston-Salem--High Point, NC",Central
+37069,37,North Carolina,Franklin County,39580,"Raleigh-Cary, NC",Metro,450,"Raleigh-Durham-Cary, NC",Central
+37071,37,North Carolina,Gaston County,16740,"Charlotte-Concord-Gastonia, NC-SC",Metro,172,"Charlotte-Concord, NC-SC",Outlying
+37073,37,North Carolina,Gates County,47260,"Virginia Beach-Chesapeake-Norfolk, VA-NC",Metro,545,"Virginia Beach-Chesapeake, VA-NC",Outlying
+37081,37,North Carolina,Guilford County,24660,"Greensboro-High Point, NC",Metro,268,"Greensboro--Winston-Salem--High Point, NC",Central
+37083,37,North Carolina,Halifax County,40260,"Roanoke Rapids, NC",Micro,468,"Rocky Mount-Wilson-Roanoke Rapids, NC",Central
+37085,37,North Carolina,Harnett County,11360,"Anderson Creek, NC",Micro,450,"Raleigh-Durham-Cary, NC",Central
+37087,37,North Carolina,Haywood County,48200,"Waynesville, NC",Micro,120,"Asheville-Waynesville-Brevard, NC",Central
+37089,37,North Carolina,Henderson County,11700,"Asheville, NC",Metro,120,"Asheville-Waynesville-Brevard, NC",Central
+37093,37,North Carolina,Hoke County,22180,"Fayetteville, NC",Metro,246,"Fayetteville-Lumberton-Pinehurst, NC",Central
+37097,37,North Carolina,Iredell County,16740,"Charlotte-Concord-Gastonia, NC-SC",Metro,172,"Charlotte-Concord, NC-SC",Central
+37101,37,North Carolina,Johnston County,39580,"Raleigh-Cary, NC",Metro,450,"Raleigh-Durham-Cary, NC",Outlying
+37103,37,North Carolina,Jones County,35100,"New Bern, NC",Micro,404,"New Bern-Morehead City, NC",Outlying
+37105,37,North Carolina,Lee County,41820,"Sanford, NC",Micro,450,"Raleigh-Durham-Cary, NC",Central
+37107,37,North Carolina,Lenoir County,28820,"Kinston, NC",Micro,,,Central
+37109,37,North Carolina,Lincoln County,16740,"Charlotte-Concord-Gastonia, NC-SC",Metro,172,"Charlotte-Concord, NC-SC",Outlying
+37111,37,North Carolina,McDowell County,32000,"Marion, NC",Micro,172,"Charlotte-Concord, NC-SC",Central
+37115,37,North Carolina,Madison County,11700,"Asheville, NC",Metro,120,"Asheville-Waynesville-Brevard, NC",Outlying
+37119,37,North Carolina,Mecklenburg County,16740,"Charlotte-Concord-Gastonia, NC-SC",Metro,172,"Charlotte-Concord, NC-SC",Central
+37125,37,North Carolina,Moore County,38240,"Pinehurst-Southern Pines, NC",Metro,246,"Fayetteville-Lumberton-Pinehurst, NC",Central
+37127,37,North Carolina,Nash County,40580,"Rocky Mount, NC",Metro,468,"Rocky Mount-Wilson-Roanoke Rapids, NC",Central
+37129,37,North Carolina,New Hanover County,48900,"Wilmington, NC",Metro,,,Central
+37131,37,North Carolina,Northampton County,40260,"Roanoke Rapids, NC",Micro,468,"Rocky Mount-Wilson-Roanoke Rapids, NC",Outlying
+37133,37,North Carolina,Onslow County,27340,"Jacksonville, NC",Metro,,,Central
+37135,37,North Carolina,Orange County,20500,"Durham-Chapel Hill, NC",Metro,450,"Raleigh-Durham-Cary, NC",Central
+37137,37,North Carolina,Pamlico County,35100,"New Bern, NC",Micro,404,"New Bern-Morehead City, NC",Outlying
+37139,37,North Carolina,Pasquotank County,21020,"Elizabeth City, NC",Micro,545,"Virginia Beach-Chesapeake, VA-NC",Central
+37141,37,North Carolina,Pender County,48900,"Wilmington, NC",Metro,,,Outlying
+37145,37,North Carolina,Person County,20500,"Durham-Chapel Hill, NC",Metro,450,"Raleigh-Durham-Cary, NC",Outlying
+37147,37,North Carolina,Pitt County,24780,"Greenville, NC",Metro,274,"Greenville-Washington, NC",Central
+37151,37,North Carolina,Randolph County,24660,"Greensboro-High Point, NC",Metro,268,"Greensboro--Winston-Salem--High Point, NC",Outlying
+37153,37,North Carolina,Richmond County,40460,"Rockingham, NC",Micro,246,"Fayetteville-Lumberton-Pinehurst, NC",Central
+37155,37,North Carolina,Robeson County,31300,"Lumberton, NC",Micro,246,"Fayetteville-Lumberton-Pinehurst, NC",Central
+37157,37,North Carolina,Rockingham County,24660,"Greensboro-High Point, NC",Metro,268,"Greensboro--Winston-Salem--High Point, NC",Outlying
+37159,37,North Carolina,Rowan County,16740,"Charlotte-Concord-Gastonia, NC-SC",Metro,172,"Charlotte-Concord, NC-SC",Outlying
+37161,37,North Carolina,Rutherford County,22580,"Forest City, NC",Micro,,,Central
+37165,37,North Carolina,Scotland County,29900,"Laurinburg, NC",Micro,246,"Fayetteville-Lumberton-Pinehurst, NC",Central
+37167,37,North Carolina,Stanly County,10620,"Albemarle, NC",Micro,172,"Charlotte-Concord, NC-SC",Central
+37169,37,North Carolina,Stokes County,49180,"Winston-Salem, NC",Metro,268,"Greensboro--Winston-Salem--High Point, NC",Central
+37171,37,North Carolina,Surry County,34340,"Mount Airy, NC",Micro,268,"Greensboro--Winston-Salem--High Point, NC",Central
+37175,37,North Carolina,Transylvania County,14820,"Brevard, NC",Micro,120,"Asheville-Waynesville-Brevard, NC",Central
+37179,37,North Carolina,Union County,16740,"Charlotte-Concord-Gastonia, NC-SC",Metro,172,"Charlotte-Concord, NC-SC",Central
+37181,37,North Carolina,Vance County,25780,"Henderson, NC",Micro,450,"Raleigh-Durham-Cary, NC",Central
+37183,37,North Carolina,Wake County,39580,"Raleigh-Cary, NC",Metro,450,"Raleigh-Durham-Cary, NC",Central
+37189,37,North Carolina,Watauga County,14380,"Boone, NC",Micro,,,Central
+37191,37,North Carolina,Wayne County,24140,"Goldsboro, NC",Metro,,,Central
+37193,37,North Carolina,Wilkes County,35900,"North Wilkesboro, NC",Micro,,,Central
+37195,37,North Carolina,Wilson County,48980,"Wilson, NC",Micro,468,"Rocky Mount-Wilson-Roanoke Rapids, NC",Central
+37197,37,North Carolina,Yadkin County,49180,"Winston-Salem, NC",Metro,268,"Greensboro--Winston-Salem--High Point, NC",Outlying
+38007,38,North Dakota,Billings County,19860,"Dickinson, ND",Micro,,,Outlying
+38015,38,North Dakota,Burleigh County,13900,"Bismarck, ND",Metro,,,Central
+38017,38,North Dakota,Cass County,22020,"Fargo, ND-MN",Metro,244,"Fargo-Wahpeton, ND-MN",Central
+38025,38,North Dakota,Dunn County,19860,"Dickinson, ND",Micro,,,Outlying
+38035,38,North Dakota,Grand Forks County,24220,"Grand Forks, ND-MN",Metro,,,Central
+38049,38,North Dakota,McHenry County,33500,"Minot, ND",Metro,,,Outlying
+38059,38,North Dakota,Morton County,13900,"Bismarck, ND",Metro,,,Central
+38065,38,North Dakota,Oliver County,13900,"Bismarck, ND",Metro,,,Outlying
+38075,38,North Dakota,Renville County,33500,"Minot, ND",Metro,,,Outlying
+38077,38,North Dakota,Richland County,47420,"Wahpeton, ND-MN",Micro,244,"Fargo-Wahpeton, ND-MN",Central
+38089,38,North Dakota,Stark County,19860,"Dickinson, ND",Micro,,,Central
+38093,38,North Dakota,Stutsman County,27420,"Jamestown, ND",Micro,,,Central
+38101,38,North Dakota,Ward County,33500,"Minot, ND",Metro,,,Central
+38105,38,North Dakota,Williams County,48780,"Williston, ND",Micro,,,Central
+39003,39,Ohio,Allen County,30620,"Lima, OH",Metro,338,"Lima-Van Wert-Celina, OH",Central
+39005,39,Ohio,Ashland County,11740,"Ashland, OH",Micro,360,"Mansfield-Ashland-Bucyrus, OH",Central
+39007,39,Ohio,Ashtabula County,17410,"Cleveland, OH",Metro,184,"Cleveland-Akron-Canton, OH",Outlying
+39009,39,Ohio,Athens County,11900,"Athens, OH",Micro,198,"Columbus-Marion-Zanesville, OH",Central
+39011,39,Ohio,Auglaize County,47540,"Wapakoneta, OH",Micro,338,"Lima-Van Wert-Celina, OH",Central
+39013,39,Ohio,Belmont County,48540,"Wheeling, WV-OH",Metro,,,Central
+39015,39,Ohio,Brown County,17140,"Cincinnati, OH-KY-IN",Metro,178,"Cincinnati-Wilmington, OH-KY-IN",Outlying
+39017,39,Ohio,Butler County,17140,"Cincinnati, OH-KY-IN",Metro,178,"Cincinnati-Wilmington, OH-KY-IN",Central
+39019,39,Ohio,Carroll County,15940,"Canton-Massillon, OH",Metro,184,"Cleveland-Akron-Canton, OH",Outlying
+39021,39,Ohio,Champaign County,46500,"Urbana, OH",Micro,212,"Dayton-Springfield-Kettering, OH",Central
+39023,39,Ohio,Clark County,44220,"Springfield, OH",Metro,212,"Dayton-Springfield-Kettering, OH",Central
+39025,39,Ohio,Clermont County,17140,"Cincinnati, OH-KY-IN",Metro,178,"Cincinnati-Wilmington, OH-KY-IN",Central
+39027,39,Ohio,Clinton County,48940,"Wilmington, OH",Micro,178,"Cincinnati-Wilmington, OH-KY-IN",Central
+39029,39,Ohio,Columbiana County,41400,"Salem, OH",Micro,566,"Youngstown-Warren-Salem, OH",Central
+39031,39,Ohio,Coshocton County,18740,"Coshocton, OH",Micro,184,"Cleveland-Akron-Canton, OH",Central
+39033,39,Ohio,Crawford County,15340,"Bucyrus, OH",Micro,360,"Mansfield-Ashland-Bucyrus, OH",Central
+39035,39,Ohio,Cuyahoga County,17410,"Cleveland, OH",Metro,184,"Cleveland-Akron-Canton, OH",Central
+39037,39,Ohio,Darke County,24820,"Greenville, OH",Micro,212,"Dayton-Springfield-Kettering, OH",Central
+39039,39,Ohio,Defiance County,19580,"Defiance, OH",Micro,,,Central
+39041,39,Ohio,Delaware County,18140,"Columbus, OH",Metro,198,"Columbus-Marion-Zanesville, OH",Central
+39043,39,Ohio,Erie County,41780,"Sandusky, OH",Metro,184,"Cleveland-Akron-Canton, OH",Central
+39045,39,Ohio,Fairfield County,18140,"Columbus, OH",Metro,198,"Columbus-Marion-Zanesville, OH",Central
+39047,39,Ohio,Fayette County,47920,"Washington Court House, OH",Micro,198,"Columbus-Marion-Zanesville, OH",Central
+39049,39,Ohio,Franklin County,18140,"Columbus, OH",Metro,198,"Columbus-Marion-Zanesville, OH",Central
+39051,39,Ohio,Fulton County,45780,"Toledo, OH",Metro,,,Outlying
+39053,39,Ohio,Gallia County,23680,"Gallipolis, OH",Micro,,,Central
+39055,39,Ohio,Geauga County,17410,"Cleveland, OH",Metro,184,"Cleveland-Akron-Canton, OH",Central
+39057,39,Ohio,Greene County,19430,"Dayton-Kettering-Beavercreek, OH",Metro,212,"Dayton-Springfield-Kettering, OH",Central
+39059,39,Ohio,Guernsey County,15740,"Cambridge, OH",Micro,198,"Columbus-Marion-Zanesville, OH",Central
+39061,39,Ohio,Hamilton County,17140,"Cincinnati, OH-KY-IN",Metro,178,"Cincinnati-Wilmington, OH-KY-IN",Central
+39063,39,Ohio,Hancock County,22300,"Findlay, OH",Micro,248,"Findlay-Tiffin, OH",Central
+39073,39,Ohio,Hocking County,18140,"Columbus, OH",Metro,198,"Columbus-Marion-Zanesville, OH",Outlying
+39077,39,Ohio,Huron County,35940,"Norwalk, OH",Micro,184,"Cleveland-Akron-Canton, OH",Central
+39081,39,Ohio,Jefferson County,48260,"Weirton-Steubenville, WV-OH",Metro,430,"Pittsburgh-Weirton-Steubenville, PA-OH-WV",Central
+39083,39,Ohio,Knox County,34540,"Mount Vernon, OH",Micro,198,"Columbus-Marion-Zanesville, OH",Central
+39085,39,Ohio,Lake County,17410,"Cleveland, OH",Metro,184,"Cleveland-Akron-Canton, OH",Central
+39087,39,Ohio,Lawrence County,26580,"Huntington-Ashland, WV-KY-OH",Metro,170,"Charleston-Huntington-Ashland, WV-OH-KY",Central
+39089,39,Ohio,Licking County,18140,"Columbus, OH",Metro,198,"Columbus-Marion-Zanesville, OH",Outlying
+39091,39,Ohio,Logan County,13340,"Bellefontaine, OH",Micro,198,"Columbus-Marion-Zanesville, OH",Central
+39093,39,Ohio,Lorain County,17410,"Cleveland, OH",Metro,184,"Cleveland-Akron-Canton, OH",Outlying
+39095,39,Ohio,Lucas County,45780,"Toledo, OH",Metro,,,Central
+39097,39,Ohio,Madison County,18140,"Columbus, OH",Metro,198,"Columbus-Marion-Zanesville, OH",Outlying
+39099,39,Ohio,Mahoning County,49660,"Youngstown-Warren, OH",Metro,566,"Youngstown-Warren-Salem, OH",Central
+39101,39,Ohio,Marion County,32020,"Marion, OH",Micro,198,"Columbus-Marion-Zanesville, OH",Central
+39103,39,Ohio,Medina County,17410,"Cleveland, OH",Metro,184,"Cleveland-Akron-Canton, OH",Central
+39107,39,Ohio,Mercer County,16380,"Celina, OH",Micro,338,"Lima-Van Wert-Celina, OH",Central
+39109,39,Ohio,Miami County,19430,"Dayton-Kettering-Beavercreek, OH",Metro,212,"Dayton-Springfield-Kettering, OH",Outlying
+39113,39,Ohio,Montgomery County,19430,"Dayton-Kettering-Beavercreek, OH",Metro,212,"Dayton-Springfield-Kettering, OH",Central
+39117,39,Ohio,Morrow County,18140,"Columbus, OH",Metro,198,"Columbus-Marion-Zanesville, OH",Outlying
+39119,39,Ohio,Muskingum County,49780,"Zanesville, OH",Micro,198,"Columbus-Marion-Zanesville, OH",Central
+39123,39,Ohio,Ottawa County,41780,"Sandusky, OH",Metro,184,"Cleveland-Akron-Canton, OH",Central
+39127,39,Ohio,Perry County,18140,"Columbus, OH",Metro,198,"Columbus-Marion-Zanesville, OH",Outlying
+39129,39,Ohio,Pickaway County,18140,"Columbus, OH",Metro,198,"Columbus-Marion-Zanesville, OH",Outlying
+39133,39,Ohio,Portage County,10420,"Akron, OH",Metro,184,"Cleveland-Akron-Canton, OH",Central
+39139,39,Ohio,Richland County,31900,"Mansfield, OH",Metro,360,"Mansfield-Ashland-Bucyrus, OH",Central
+39141,39,Ohio,Ross County,17060,"Chillicothe, OH",Micro,198,"Columbus-Marion-Zanesville, OH",Central
+39143,39,Ohio,Sandusky County,23380,"Fremont, OH",Micro,184,"Cleveland-Akron-Canton, OH",Central
+39145,39,Ohio,Scioto County,39020,"Portsmouth, OH",Micro,170,"Charleston-Huntington-Ashland, WV-OH-KY",Central
+39147,39,Ohio,Seneca County,45660,"Tiffin, OH",Micro,248,"Findlay-Tiffin, OH",Central
+39149,39,Ohio,Shelby County,43380,"Sidney, OH",Micro,212,"Dayton-Springfield-Kettering, OH",Central
+39151,39,Ohio,Stark County,15940,"Canton-Massillon, OH",Metro,184,"Cleveland-Akron-Canton, OH",Central
+39153,39,Ohio,Summit County,10420,"Akron, OH",Metro,184,"Cleveland-Akron-Canton, OH",Central
+39155,39,Ohio,Trumbull County,49660,"Youngstown-Warren, OH",Metro,566,"Youngstown-Warren-Salem, OH",Central
+39157,39,Ohio,Tuscarawas County,35420,"New Philadelphia-Dover, OH",Micro,184,"Cleveland-Akron-Canton, OH",Central
+39159,39,Ohio,Union County,18140,"Columbus, OH",Metro,198,"Columbus-Marion-Zanesville, OH",Outlying
+39161,39,Ohio,Van Wert County,46780,"Van Wert, OH",Micro,338,"Lima-Van Wert-Celina, OH",Central
+39165,39,Ohio,Warren County,17140,"Cincinnati, OH-KY-IN",Metro,178,"Cincinnati-Wilmington, OH-KY-IN",Central
+39167,39,Ohio,Washington County,31930,"Marietta, OH",Micro,425,"Parkersburg-Marietta-Vienna, WV-OH",Central
+39169,39,Ohio,Wayne County,49300,"Wooster, OH",Micro,184,"Cleveland-Akron-Canton, OH",Central
+39173,39,Ohio,Wood County,45780,"Toledo, OH",Metro,,,Central
+40009,40,Oklahoma,Beckham County,21120,"Elk City, OK",Micro,555,"Weatherford-Elk City, OK",Central
+40013,40,Oklahoma,Bryan County,20460,"Durant, OK",Micro,206,"Dallas-Fort Worth, TX-OK",Central
+40017,40,Oklahoma,Canadian County,36420,"Oklahoma City, OK",Metro,416,"Oklahoma City-Shawnee, OK",Central
+40019,40,Oklahoma,Carter County,11620,"Ardmore, OK",Micro,,,Central
+40021,40,Oklahoma,Cherokee County,45140,"Tahlequah, OK",Micro,,,Central
+40027,40,Oklahoma,Cleveland County,36420,"Oklahoma City, OK",Metro,416,"Oklahoma City-Shawnee, OK",Central
+40031,40,Oklahoma,Comanche County,30020,"Lawton, OK",Metro,334,"Lawton-Duncan, OK",Central
+40033,40,Oklahoma,Cotton County,30020,"Lawton, OK",Metro,334,"Lawton-Duncan, OK",Outlying
+40037,40,Oklahoma,Creek County,46140,"Tulsa, OK",Metro,538,"Tulsa-Bartlesville-Muskogee, OK",Central
+40039,40,Oklahoma,Custer County,48220,"Weatherford, OK",Micro,555,"Weatherford-Elk City, OK",Central
+40047,40,Oklahoma,Garfield County,21420,"Enid, OK",Metro,,,Central
+40051,40,Oklahoma,Grady County,36420,"Oklahoma City, OK",Metro,416,"Oklahoma City-Shawnee, OK",Outlying
+40065,40,Oklahoma,Jackson County,11060,"Altus, OK",Micro,,,Central
+40071,40,Oklahoma,Kay County,38620,"Ponca City, OK",Micro,,,Central
+40081,40,Oklahoma,Lincoln County,36420,"Oklahoma City, OK",Metro,416,"Oklahoma City-Shawnee, OK",Outlying
+40083,40,Oklahoma,Logan County,36420,"Oklahoma City, OK",Metro,416,"Oklahoma City-Shawnee, OK",Central
+40087,40,Oklahoma,McClain County,36420,"Oklahoma City, OK",Metro,416,"Oklahoma City-Shawnee, OK",Outlying
+40101,40,Oklahoma,Muskogee County,34780,"Muskogee, OK",Micro,538,"Tulsa-Bartlesville-Muskogee, OK",Central
+40109,40,Oklahoma,Oklahoma County,36420,"Oklahoma City, OK",Metro,416,"Oklahoma City-Shawnee, OK",Central
+40111,40,Oklahoma,Okmulgee County,46140,"Tulsa, OK",Metro,538,"Tulsa-Bartlesville-Muskogee, OK",Outlying
+40113,40,Oklahoma,Osage County,46140,"Tulsa, OK",Metro,538,"Tulsa-Bartlesville-Muskogee, OK",Central
+40115,40,Oklahoma,Ottawa County,33060,"Miami, OK",Micro,309,"Joplin-Miami, MO-OK-KS",Central
+40117,40,Oklahoma,Pawnee County,46140,"Tulsa, OK",Metro,538,"Tulsa-Bartlesville-Muskogee, OK",Outlying
+40119,40,Oklahoma,Payne County,44660,"Stillwater, OK",Micro,,,Central
+40121,40,Oklahoma,Pittsburg County,32540,"McAlester, OK",Micro,,,Central
+40123,40,Oklahoma,Pontotoc County,10220,"Ada, OK",Micro,,,Central
+40125,40,Oklahoma,Pottawatomie County,43060,"Shawnee, OK",Micro,416,"Oklahoma City-Shawnee, OK",Central
+40131,40,Oklahoma,Rogers County,46140,"Tulsa, OK",Metro,538,"Tulsa-Bartlesville-Muskogee, OK",Outlying
+40135,40,Oklahoma,Sequoyah County,22900,"Fort Smith, AR-OK",Metro,,,Outlying
+40137,40,Oklahoma,Stephens County,20340,"Duncan, OK",Micro,334,"Lawton-Duncan, OK",Central
+40139,40,Oklahoma,Texas County,25100,"Guymon, OK",Micro,,,Central
+40143,40,Oklahoma,Tulsa County,46140,"Tulsa, OK",Metro,538,"Tulsa-Bartlesville-Muskogee, OK",Central
+40145,40,Oklahoma,Wagoner County,46140,"Tulsa, OK",Metro,538,"Tulsa-Bartlesville-Muskogee, OK",Central
+40147,40,Oklahoma,Washington County,12780,"Bartlesville, OK",Micro,538,"Tulsa-Bartlesville-Muskogee, OK",Central
+40149,40,Oklahoma,Washita County,48220,"Weatherford, OK",Micro,555,"Weatherford-Elk City, OK",Outlying
+40153,40,Oklahoma,Woodward County,49260,"Woodward, OK",Micro,,,Central
+41001,41,Oregon,Baker County,12520,"Baker City, OR",Micro,,,Central
+41003,41,Oregon,Benton County,18700,"Corvallis, OR",Metro,440,"Portland-Vancouver-Salem, OR-WA",Central
+41005,41,Oregon,Clackamas County,38900,"Portland-Vancouver-Hillsboro, OR-WA",Metro,440,"Portland-Vancouver-Salem, OR-WA",Central
+41007,41,Oregon,Clatsop County,11820,"Astoria, OR",Micro,,,Central
+41009,41,Oregon,Columbia County,38900,"Portland-Vancouver-Hillsboro, OR-WA",Metro,440,"Portland-Vancouver-Salem, OR-WA",Outlying
+41011,41,Oregon,Coos County,18300,"Coos Bay-North Bend, OR",Micro,,,Central
+41013,41,Oregon,Crook County,13460,"Bend, OR",Metro,,,Outlying
+41015,41,Oregon,Curry County,15060,"Brookings, OR",Micro,152,"Brookings-Crescent City, OR-CA",Central
+41017,41,Oregon,Deschutes County,13460,"Bend, OR",Metro,,,Central
+41019,41,Oregon,Douglas County,40700,"Roseburg, OR",Micro,,,Central
+41027,41,Oregon,Hood River County,26220,"Hood River, OR",Micro,,,Central
+41029,41,Oregon,Jackson County,32780,"Medford, OR",Metro,366,"Medford-Grants Pass, OR",Central
+41031,41,Oregon,Jefferson County,13460,"Bend, OR",Metro,,,Outlying
+41033,41,Oregon,Josephine County,24420,"Grants Pass, OR",Metro,366,"Medford-Grants Pass, OR",Central
+41035,41,Oregon,Klamath County,28900,"Klamath Falls, OR",Micro,,,Central
+41039,41,Oregon,Lane County,21660,"Eugene-Springfield, OR",Metro,,,Central
+41041,41,Oregon,Lincoln County,35440,"Newport, OR",Micro,,,Central
+41043,41,Oregon,Linn County,10540,"Albany, OR",Metro,440,"Portland-Vancouver-Salem, OR-WA",Central
+41045,41,Oregon,Malheur County,36620,"Ontario, OR-ID",Micro,147,"Boise City-Mountain Home-Ontario, ID-OR",Central
+41047,41,Oregon,Marion County,41420,"Salem, OR",Metro,440,"Portland-Vancouver-Salem, OR-WA",Central
+41049,41,Oregon,Morrow County,25840,"Hermiston-Pendleton, OR",Micro,,,Outlying
+41051,41,Oregon,Multnomah County,38900,"Portland-Vancouver-Hillsboro, OR-WA",Metro,440,"Portland-Vancouver-Salem, OR-WA",Central
+41053,41,Oregon,Polk County,41420,"Salem, OR",Metro,440,"Portland-Vancouver-Salem, OR-WA",Central
+41059,41,Oregon,Umatilla County,25840,"Hermiston-Pendleton, OR",Micro,,,Central
+41061,41,Oregon,Union County,29260,"La Grande, OR",Micro,,,Central
+41065,41,Oregon,Wasco County,45520,"The Dalles, OR",Micro,,,Central
+41067,41,Oregon,Washington County,38900,"Portland-Vancouver-Hillsboro, OR-WA",Metro,440,"Portland-Vancouver-Salem, OR-WA",Central
+41071,41,Oregon,Yamhill County,38900,"Portland-Vancouver-Hillsboro, OR-WA",Metro,440,"Portland-Vancouver-Salem, OR-WA",Outlying
+42001,42,Pennsylvania,Adams County,23900,"Gettysburg, PA",Metro,276,"Harrisburg-York-Lebanon, PA",Central
+42003,42,Pennsylvania,Allegheny County,38300,"Pittsburgh, PA",Metro,430,"Pittsburgh-Weirton-Steubenville, PA-OH-WV",Central
+42005,42,Pennsylvania,Armstrong County,38300,"Pittsburgh, PA",Metro,430,"Pittsburgh-Weirton-Steubenville, PA-OH-WV",Outlying
+42007,42,Pennsylvania,Beaver County,38300,"Pittsburgh, PA",Metro,430,"Pittsburgh-Weirton-Steubenville, PA-OH-WV",Central
+42011,42,Pennsylvania,Berks County,39740,"Reading, PA",Metro,428,"Philadelphia-Reading-Camden, PA-NJ-DE-MD",Central
+42013,42,Pennsylvania,Blair County,11020,"Altoona, PA",Metro,107,"Altoona-Huntingdon, PA",Central
+42015,42,Pennsylvania,Bradford County,42380,"Sayre, PA",Micro,,,Central
+42017,42,Pennsylvania,Bucks County,37980,"Philadelphia-Camden-Wilmington, PA-NJ-DE-MD",Metro,428,"Philadelphia-Reading-Camden, PA-NJ-DE-MD",Central
+42019,42,Pennsylvania,Butler County,38300,"Pittsburgh, PA",Metro,430,"Pittsburgh-Weirton-Steubenville, PA-OH-WV",Central
+42021,42,Pennsylvania,Cambria County,27780,"Johnstown, PA",Metro,306,"Johnstown-Somerset, PA",Central
+42025,42,Pennsylvania,Carbon County,10900,"Allentown-Bethlehem-Easton, PA-NJ",Metro,106,"Allentown-Bethlehem-East Stroudsburg, PA-NJ",Outlying
+42027,42,Pennsylvania,Centre County,44300,"State College, PA",Metro,524,"State College-DuBois, PA",Central
+42029,42,Pennsylvania,Chester County,37980,"Philadelphia-Camden-Wilmington, PA-NJ-DE-MD",Metro,428,"Philadelphia-Reading-Camden, PA-NJ-DE-MD",Central
+42033,42,Pennsylvania,Clearfield County,20180,"DuBois, PA",Micro,524,"State College-DuBois, PA",Central
+42035,42,Pennsylvania,Clinton County,30820,"Lock Haven, PA",Micro,558,"Williamsport-Lock Haven, PA",Central
+42037,42,Pennsylvania,Columbia County,14100,"Bloomsburg-Berwick, PA",Micro,146,"Bloomsburg-Berwick-Sunbury, PA",Central
+42039,42,Pennsylvania,Crawford County,32740,"Meadville, PA",Micro,240,"Erie-Meadville, PA",Central
+42041,42,Pennsylvania,Cumberland County,25420,"Harrisburg-Carlisle, PA",Metro,276,"Harrisburg-York-Lebanon, PA",Central
+42043,42,Pennsylvania,Dauphin County,25420,"Harrisburg-Carlisle, PA",Metro,276,"Harrisburg-York-Lebanon, PA",Central
+42045,42,Pennsylvania,Delaware County,37980,"Philadelphia-Camden-Wilmington, PA-NJ-DE-MD",Metro,428,"Philadelphia-Reading-Camden, PA-NJ-DE-MD",Central
+42047,42,Pennsylvania,Elk County,41260,"St. Marys, PA",Micro,,,Central
+42049,42,Pennsylvania,Erie County,21500,"Erie, PA",Metro,240,"Erie-Meadville, PA",Central
+42051,42,Pennsylvania,Fayette County,38300,"Pittsburgh, PA",Metro,430,"Pittsburgh-Weirton-Steubenville, PA-OH-WV",Outlying
+42055,42,Pennsylvania,Franklin County,16540,"Chambersburg, PA",Metro,548,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Central
+42061,42,Pennsylvania,Huntingdon County,26500,"Huntingdon, PA",Micro,107,"Altoona-Huntingdon, PA",Central
+42063,42,Pennsylvania,Indiana County,26860,"Indiana, PA",Micro,430,"Pittsburgh-Weirton-Steubenville, PA-OH-WV",Central
+42069,42,Pennsylvania,Lackawanna County,42540,"Scranton--Wilkes-Barre, PA",Metro,,,Central
+42071,42,Pennsylvania,Lancaster County,29540,"Lancaster, PA",Metro,,,Central
+42073,42,Pennsylvania,Lawrence County,38300,"Pittsburgh, PA",Metro,430,"Pittsburgh-Weirton-Steubenville, PA-OH-WV",Outlying
+42075,42,Pennsylvania,Lebanon County,30140,"Lebanon, PA",Metro,276,"Harrisburg-York-Lebanon, PA",Central
+42077,42,Pennsylvania,Lehigh County,10900,"Allentown-Bethlehem-Easton, PA-NJ",Metro,106,"Allentown-Bethlehem-East Stroudsburg, PA-NJ",Central
+42079,42,Pennsylvania,Luzerne County,42540,"Scranton--Wilkes-Barre, PA",Metro,,,Central
+42081,42,Pennsylvania,Lycoming County,48700,"Williamsport, PA",Metro,558,"Williamsport-Lock Haven, PA",Central
+42083,42,Pennsylvania,McKean County,14620,"Bradford, PA",Micro,,,Central
+42085,42,Pennsylvania,Mercer County,25850,"Hermitage, PA",Micro,430,"Pittsburgh-Weirton-Steubenville, PA-OH-WV",Central
+42087,42,Pennsylvania,Mifflin County,30380,"Lewistown, PA",Micro,,,Central
+42089,42,Pennsylvania,Monroe County,20700,"East Stroudsburg, PA",Micro,106,"Allentown-Bethlehem-East Stroudsburg, PA-NJ",Central
+42091,42,Pennsylvania,Montgomery County,37980,"Philadelphia-Camden-Wilmington, PA-NJ-DE-MD",Metro,428,"Philadelphia-Reading-Camden, PA-NJ-DE-MD",Central
+42093,42,Pennsylvania,Montour County,44980,"Sunbury, PA",Micro,146,"Bloomsburg-Berwick-Sunbury, PA",Outlying
+42095,42,Pennsylvania,Northampton County,10900,"Allentown-Bethlehem-Easton, PA-NJ",Metro,106,"Allentown-Bethlehem-East Stroudsburg, PA-NJ",Central
+42097,42,Pennsylvania,Northumberland County,44980,"Sunbury, PA",Micro,146,"Bloomsburg-Berwick-Sunbury, PA",Central
+42099,42,Pennsylvania,Perry County,25420,"Harrisburg-Carlisle, PA",Metro,276,"Harrisburg-York-Lebanon, PA",Outlying
+42101,42,Pennsylvania,Philadelphia County,37980,"Philadelphia-Camden-Wilmington, PA-NJ-DE-MD",Metro,428,"Philadelphia-Reading-Camden, PA-NJ-DE-MD",Central
+42103,42,Pennsylvania,Pike County,25770,"Hemlock Farms, PA",Micro,408,"New York-Newark, NY-NJ-CT-PA",Central
+42107,42,Pennsylvania,Schuylkill County,39060,"Pottsville, PA",Micro,,,Central
+42109,42,Pennsylvania,Snyder County,42780,"Selinsgrove, PA",Micro,146,"Bloomsburg-Berwick-Sunbury, PA",Central
+42111,42,Pennsylvania,Somerset County,43740,"Somerset, PA",Micro,306,"Johnstown-Somerset, PA",Central
+42119,42,Pennsylvania,Union County,30260,"Lewisburg, PA",Micro,146,"Bloomsburg-Berwick-Sunbury, PA",Central
+42121,42,Pennsylvania,Venango County,36340,"Oil City, PA",Micro,,,Central
+42123,42,Pennsylvania,Warren County,47620,"Warren, PA",Micro,,,Central
+42125,42,Pennsylvania,Washington County,38300,"Pittsburgh, PA",Metro,430,"Pittsburgh-Weirton-Steubenville, PA-OH-WV",Central
+42129,42,Pennsylvania,Westmoreland County,38300,"Pittsburgh, PA",Metro,430,"Pittsburgh-Weirton-Steubenville, PA-OH-WV",Central
+42131,42,Pennsylvania,Wyoming County,42540,"Scranton--Wilkes-Barre, PA",Metro,,,Outlying
+42133,42,Pennsylvania,York County,49620,"York-Hanover, PA",Metro,276,"Harrisburg-York-Lebanon, PA",Central
+44001,44,Rhode Island,Bristol County,39300,"Providence-Warwick, RI-MA",Metro,148,"Boston-Worcester-Providence, MA-RI-NH",Central
+44003,44,Rhode Island,Kent County,39300,"Providence-Warwick, RI-MA",Metro,148,"Boston-Worcester-Providence, MA-RI-NH",Central
+44005,44,Rhode Island,Newport County,39300,"Providence-Warwick, RI-MA",Metro,148,"Boston-Worcester-Providence, MA-RI-NH",Central
+44007,44,Rhode Island,Providence County,39300,"Providence-Warwick, RI-MA",Metro,148,"Boston-Worcester-Providence, MA-RI-NH",Central
+44009,44,Rhode Island,Washington County,39300,"Providence-Warwick, RI-MA",Metro,148,"Boston-Worcester-Providence, MA-RI-NH",Central
+45001,45,South Carolina,Abbeville County,24940,"Greenwood, SC",Micro,273,"Greenville-Spartanburg-Anderson, SC",Outlying
+45003,45,South Carolina,Aiken County,12260,"Augusta-Richmond County, GA-SC",Metro,,,Central
+45007,45,South Carolina,Anderson County,24860,"Greenville-Anderson-Greer, SC",Metro,273,"Greenville-Spartanburg-Anderson, SC",Outlying
+45013,45,South Carolina,Beaufort County,25940,"Hilton Head Island-Bluffton-Port Royal, SC",Metro,,,Central
+45015,45,South Carolina,Berkeley County,16700,"Charleston-North Charleston, SC",Metro,,,Central
+45017,45,South Carolina,Calhoun County,17900,"Columbia, SC",Metro,192,"Columbia-Sumter-Orangeburg, SC",Outlying
+45019,45,South Carolina,Charleston County,16700,"Charleston-North Charleston, SC",Metro,,,Central
+45021,45,South Carolina,Cherokee County,23500,"Gaffney, SC",Micro,273,"Greenville-Spartanburg-Anderson, SC",Central
+45023,45,South Carolina,Chester County,16740,"Charlotte-Concord-Gastonia, NC-SC",Metro,172,"Charlotte-Concord, NC-SC",Outlying
+45031,45,South Carolina,Darlington County,22500,"Florence, SC",Metro,,,Outlying
+45035,45,South Carolina,Dorchester County,16700,"Charleston-North Charleston, SC",Metro,,,Central
+45037,45,South Carolina,Edgefield County,12260,"Augusta-Richmond County, GA-SC",Metro,,,Outlying
+45039,45,South Carolina,Fairfield County,17900,"Columbia, SC",Metro,192,"Columbia-Sumter-Orangeburg, SC",Outlying
+45041,45,South Carolina,Florence County,22500,"Florence, SC",Metro,,,Central
+45043,45,South Carolina,Georgetown County,34680,"Murrells Inlet, SC",Micro,396,"Myrtle Beach-Conway, SC",Central
+45045,45,South Carolina,Greenville County,24860,"Greenville-Anderson-Greer, SC",Metro,273,"Greenville-Spartanburg-Anderson, SC",Central
+45047,45,South Carolina,Greenwood County,24940,"Greenwood, SC",Micro,273,"Greenville-Spartanburg-Anderson, SC",Central
+45051,45,South Carolina,Horry County,34820,"Myrtle Beach-Conway-North Myrtle Beach, SC",Metro,396,"Myrtle Beach-Conway, SC",Central
+45053,45,South Carolina,Jasper County,25940,"Hilton Head Island-Bluffton-Port Royal, SC",Metro,,,Outlying
+45055,45,South Carolina,Kershaw County,17900,"Columbia, SC",Metro,192,"Columbia-Sumter-Orangeburg, SC",Outlying
+45057,45,South Carolina,Lancaster County,16740,"Charlotte-Concord-Gastonia, NC-SC",Metro,172,"Charlotte-Concord, NC-SC",Outlying
+45059,45,South Carolina,Laurens County,24860,"Greenville-Anderson-Greer, SC",Metro,273,"Greenville-Spartanburg-Anderson, SC",Outlying
+45063,45,South Carolina,Lexington County,17900,"Columbia, SC",Metro,192,"Columbia-Sumter-Orangeburg, SC",Central
+45071,45,South Carolina,Newberry County,35140,"Newberry, SC",Micro,192,"Columbia-Sumter-Orangeburg, SC",Central
+45073,45,South Carolina,Oconee County,42860,"Seneca, SC",Micro,273,"Greenville-Spartanburg-Anderson, SC",Central
+45075,45,South Carolina,Orangeburg County,36700,"Orangeburg, SC",Micro,192,"Columbia-Sumter-Orangeburg, SC",Central
+45077,45,South Carolina,Pickens County,24860,"Greenville-Anderson-Greer, SC",Metro,273,"Greenville-Spartanburg-Anderson, SC",Central
+45079,45,South Carolina,Richland County,17900,"Columbia, SC",Metro,192,"Columbia-Sumter-Orangeburg, SC",Central
+45081,45,South Carolina,Saluda County,17900,"Columbia, SC",Metro,192,"Columbia-Sumter-Orangeburg, SC",Outlying
+45083,45,South Carolina,Spartanburg County,43900,"Spartanburg, SC",Metro,273,"Greenville-Spartanburg-Anderson, SC",Central
+45085,45,South Carolina,Sumter County,44940,"Sumter, SC",Metro,192,"Columbia-Sumter-Orangeburg, SC",Central
+45087,45,South Carolina,Union County,43900,"Spartanburg, SC",Metro,273,"Greenville-Spartanburg-Anderson, SC",Outlying
+45091,45,South Carolina,York County,16740,"Charlotte-Concord-Gastonia, NC-SC",Metro,172,"Charlotte-Concord, NC-SC",Outlying
+46005,46,South Dakota,Beadle County,26700,"Huron, SD",Micro,,,Central
+46011,46,South Dakota,Brookings County,15100,"Brookings, SD",Micro,,,Central
+46013,46,South Dakota,Brown County,10100,"Aberdeen, SD",Micro,,,Central
+46027,46,South Dakota,Clay County,46820,"Vermillion, SD",Micro,,,Central
+46029,46,South Dakota,Codington County,47980,"Watertown, SD",Micro,,,Central
+46033,46,South Dakota,Custer County,39660,"Rapid City, SD",Metro,452,"Rapid City-Spearfish, SD",Outlying
+46035,46,South Dakota,Davison County,33580,"Mitchell, SD",Micro,,,Central
+46045,46,South Dakota,Edmunds County,10100,"Aberdeen, SD",Micro,,,Outlying
+46061,46,South Dakota,Hanson County,33580,"Mitchell, SD",Micro,,,Outlying
+46065,46,South Dakota,Hughes County,38180,"Pierre, SD",Micro,,,Central
+46081,46,South Dakota,Lawrence County,43940,"Spearfish, SD",Micro,452,"Rapid City-Spearfish, SD",Central
+46083,46,South Dakota,Lincoln County,43620,"Sioux Falls, SD-MN",Metro,,,Central
+46087,46,South Dakota,McCook County,43620,"Sioux Falls, SD-MN",Metro,,,Outlying
+46093,46,South Dakota,Meade County,39660,"Rapid City, SD",Metro,452,"Rapid City-Spearfish, SD",Outlying
+46099,46,South Dakota,Minnehaha County,43620,"Sioux Falls, SD-MN",Metro,,,Central
+46103,46,South Dakota,Pennington County,39660,"Rapid City, SD",Metro,452,"Rapid City-Spearfish, SD",Central
+46111,46,South Dakota,Sanborn County,33580,"Mitchell, SD",Micro,,,Outlying
+46117,46,South Dakota,Stanley County,38180,"Pierre, SD",Micro,,,Central
+46125,46,South Dakota,Turner County,43620,"Sioux Falls, SD-MN",Metro,,,Outlying
+46127,46,South Dakota,Union County,43580,"Sioux City, IA-NE-SD",Metro,512,"Sioux City-Le Mars, IA-NE-SD",Central
+46135,46,South Dakota,Yankton County,49460,"Yankton, SD",Micro,,,Central
+47001,47,Tennessee,Anderson County,28940,"Knoxville, TN",Metro,315,"Knoxville-Morristown-Sevierville, TN",Central
+47003,47,Tennessee,Bedford County,43180,"Shelbyville, TN",Micro,400,"Nashville-Davidson--Murfreesboro, TN",Central
+47009,47,Tennessee,Blount County,28940,"Knoxville, TN",Metro,315,"Knoxville-Morristown-Sevierville, TN",Central
+47011,47,Tennessee,Bradley County,17420,"Cleveland, TN",Metro,174,"Chattanooga-Cleveland-Dalton, TN-GA-AL",Central
+47013,47,Tennessee,Campbell County,28940,"Knoxville, TN",Metro,315,"Knoxville-Morristown-Sevierville, TN",Outlying
+47015,47,Tennessee,Cannon County,34980,"Nashville-Davidson--Murfreesboro--Franklin, TN",Metro,400,"Nashville-Davidson--Murfreesboro, TN",Outlying
+47019,47,Tennessee,Carter County,27740,"Johnson City, TN",Metro,304,"Johnson City-Kingsport-Bristol, TN-VA",Central
+47021,47,Tennessee,Cheatham County,34980,"Nashville-Davidson--Murfreesboro--Franklin, TN",Metro,400,"Nashville-Davidson--Murfreesboro, TN",Outlying
+47023,47,Tennessee,Chester County,27180,"Jackson, TN",Metro,,,Outlying
+47029,47,Tennessee,Cocke County,35460,"Newport, TN",Micro,315,"Knoxville-Morristown-Sevierville, TN",Central
+47031,47,Tennessee,Coffee County,46100,"Tullahoma-Manchester, TN",Micro,400,"Nashville-Davidson--Murfreesboro, TN",Central
+47033,47,Tennessee,Crockett County,27180,"Jackson, TN",Metro,,,Outlying
+47035,47,Tennessee,Cumberland County,18900,"Crossville, TN",Micro,,,Central
+47037,47,Tennessee,Davidson County,34980,"Nashville-Davidson--Murfreesboro--Franklin, TN",Metro,400,"Nashville-Davidson--Murfreesboro, TN",Central
+47043,47,Tennessee,Dickson County,34980,"Nashville-Davidson--Murfreesboro--Franklin, TN",Metro,400,"Nashville-Davidson--Murfreesboro, TN",Outlying
+47045,47,Tennessee,Dyer County,20540,"Dyersburg, TN",Micro,,,Central
+47047,47,Tennessee,Fayette County,32820,"Memphis, TN-MS-AR",Metro,368,"Memphis-Clarksdale-Forrest City, TN-MS-AR",Outlying
+47051,47,Tennessee,Franklin County,49010,"Winchester, TN",Micro,400,"Nashville-Davidson--Murfreesboro, TN",Central
+47053,47,Tennessee,Gibson County,27180,"Jackson, TN",Metro,,,Outlying
+47057,47,Tennessee,Grainger County,28940,"Knoxville, TN",Metro,315,"Knoxville-Morristown-Sevierville, TN",Outlying
+47059,47,Tennessee,Greene County,24620,"Greeneville, TN",Micro,304,"Johnson City-Kingsport-Bristol, TN-VA",Central
+47063,47,Tennessee,Hamblen County,34100,"Morristown, TN",Metro,315,"Knoxville-Morristown-Sevierville, TN",Central
+47065,47,Tennessee,Hamilton County,16860,"Chattanooga, TN-GA",Metro,174,"Chattanooga-Cleveland-Dalton, TN-GA-AL",Central
+47073,47,Tennessee,Hawkins County,28700,"Kingsport-Bristol, TN-VA",Metro,304,"Johnson City-Kingsport-Bristol, TN-VA",Central
+47079,47,Tennessee,Henry County,37540,"Paris, TN",Micro,,,Central
+47081,47,Tennessee,Hickman County,34980,"Nashville-Davidson--Murfreesboro--Franklin, TN",Metro,400,"Nashville-Davidson--Murfreesboro, TN",Outlying
+47087,47,Tennessee,Jackson County,18260,"Cookeville, TN",Micro,,,Outlying
+47089,47,Tennessee,Jefferson County,34100,"Morristown, TN",Metro,315,"Knoxville-Morristown-Sevierville, TN",Central
+47093,47,Tennessee,Knox County,28940,"Knoxville, TN",Metro,315,"Knoxville-Morristown-Sevierville, TN",Central
+47099,47,Tennessee,Lawrence County,29980,"Lawrenceburg, TN",Micro,400,"Nashville-Davidson--Murfreesboro, TN",Central
+47103,47,Tennessee,Lincoln County,22190,"Fayetteville, TN",Micro,290,"Huntsville-Decatur-Albertville, AL-TN",Central
+47105,47,Tennessee,Loudon County,28940,"Knoxville, TN",Metro,315,"Knoxville-Morristown-Sevierville, TN",Central
+47107,47,Tennessee,McMinn County,11940,"Athens, TN",Micro,174,"Chattanooga-Cleveland-Dalton, TN-GA-AL",Central
+47111,47,Tennessee,Macon County,34980,"Nashville-Davidson--Murfreesboro--Franklin, TN",Metro,400,"Nashville-Davidson--Murfreesboro, TN",Outlying
+47113,47,Tennessee,Madison County,27180,"Jackson, TN",Metro,,,Central
+47115,47,Tennessee,Marion County,16860,"Chattanooga, TN-GA",Metro,174,"Chattanooga-Cleveland-Dalton, TN-GA-AL",Outlying
+47117,47,Tennessee,Marshall County,30280,"Lewisburg, TN",Micro,400,"Nashville-Davidson--Murfreesboro, TN",Central
+47119,47,Tennessee,Maury County,34980,"Nashville-Davidson--Murfreesboro--Franklin, TN",Metro,400,"Nashville-Davidson--Murfreesboro, TN",Outlying
+47121,47,Tennessee,Meigs County,11940,"Athens, TN",Micro,174,"Chattanooga-Cleveland-Dalton, TN-GA-AL",Outlying
+47125,47,Tennessee,Montgomery County,17300,"Clarksville, TN-KY",Metro,,,Central
+47127,47,Tennessee,Moore County,46100,"Tullahoma-Manchester, TN",Micro,400,"Nashville-Davidson--Murfreesboro, TN",Outlying
+47129,47,Tennessee,Morgan County,28940,"Knoxville, TN",Metro,315,"Knoxville-Morristown-Sevierville, TN",Outlying
+47131,47,Tennessee,Obion County,46460,"Union City, TN",Micro,542,"Union City-Martin, TN",Central
+47133,47,Tennessee,Overton County,18260,"Cookeville, TN",Micro,,,Outlying
+47139,47,Tennessee,Polk County,17420,"Cleveland, TN",Metro,174,"Chattanooga-Cleveland-Dalton, TN-GA-AL",Outlying
+47141,47,Tennessee,Putnam County,18260,"Cookeville, TN",Micro,,,Central
+47145,47,Tennessee,Roane County,28940,"Knoxville, TN",Metro,315,"Knoxville-Morristown-Sevierville, TN",Outlying
+47147,47,Tennessee,Robertson County,34980,"Nashville-Davidson--Murfreesboro--Franklin, TN",Metro,400,"Nashville-Davidson--Murfreesboro, TN",Outlying
+47149,47,Tennessee,Rutherford County,34980,"Nashville-Davidson--Murfreesboro--Franklin, TN",Metro,400,"Nashville-Davidson--Murfreesboro, TN",Outlying
+47153,47,Tennessee,Sequatchie County,16860,"Chattanooga, TN-GA",Metro,174,"Chattanooga-Cleveland-Dalton, TN-GA-AL",Outlying
+47155,47,Tennessee,Sevier County,42940,"Sevierville, TN",Micro,315,"Knoxville-Morristown-Sevierville, TN",Central
+47157,47,Tennessee,Shelby County,32820,"Memphis, TN-MS-AR",Metro,368,"Memphis-Clarksdale-Forrest City, TN-MS-AR",Central
+47159,47,Tennessee,Smith County,34980,"Nashville-Davidson--Murfreesboro--Franklin, TN",Metro,400,"Nashville-Davidson--Murfreesboro, TN",Outlying
+47161,47,Tennessee,Stewart County,17300,"Clarksville, TN-KY",Metro,,,Outlying
+47163,47,Tennessee,Sullivan County,28700,"Kingsport-Bristol, TN-VA",Metro,304,"Johnson City-Kingsport-Bristol, TN-VA",Central
+47165,47,Tennessee,Sumner County,34980,"Nashville-Davidson--Murfreesboro--Franklin, TN",Metro,400,"Nashville-Davidson--Murfreesboro, TN",Central
+47167,47,Tennessee,Tipton County,32820,"Memphis, TN-MS-AR",Metro,368,"Memphis-Clarksdale-Forrest City, TN-MS-AR",Outlying
+47169,47,Tennessee,Trousdale County,34980,"Nashville-Davidson--Murfreesboro--Franklin, TN",Metro,400,"Nashville-Davidson--Murfreesboro, TN",Outlying
+47171,47,Tennessee,Unicoi County,27740,"Johnson City, TN",Metro,304,"Johnson City-Kingsport-Bristol, TN-VA",Outlying
+47173,47,Tennessee,Union County,28940,"Knoxville, TN",Metro,315,"Knoxville-Morristown-Sevierville, TN",Outlying
+47177,47,Tennessee,Warren County,32660,"McMinnville, TN",Micro,,,Central
+47179,47,Tennessee,Washington County,27740,"Johnson City, TN",Metro,304,"Johnson City-Kingsport-Bristol, TN-VA",Central
+47183,47,Tennessee,Weakley County,32280,"Martin, TN",Micro,542,"Union City-Martin, TN",Central
+47185,47,Tennessee,White County,18260,"Cookeville, TN",Micro,,,Outlying
+47187,47,Tennessee,Williamson County,34980,"Nashville-Davidson--Murfreesboro--Franklin, TN",Metro,400,"Nashville-Davidson--Murfreesboro, TN",Central
+47189,47,Tennessee,Wilson County,34980,"Nashville-Davidson--Murfreesboro--Franklin, TN",Metro,400,"Nashville-Davidson--Murfreesboro, TN",Central
+48001,48,Texas,Anderson County,37300,"Palestine, TX",Micro,,,Central
+48003,48,Texas,Andrews County,11380,"Andrews, TX",Micro,372,"Midland-Odessa-Andrews, TX",Central
+48005,48,Texas,Angelina County,31260,"Lufkin, TX",Micro,,,Central
+48007,48,Texas,Aransas County,18580,"Corpus Christi, TX",Metro,204,"Corpus Christi-Kingsville-Alice, TX",Outlying
+48009,48,Texas,Archer County,48660,"Wichita Falls, TX",Metro,,,Outlying
+48011,48,Texas,Armstrong County,11100,"Amarillo, TX",Metro,108,"Amarillo-Borger, TX",Outlying
+48013,48,Texas,Atascosa County,41700,"San Antonio-New Braunfels, TX",Metro,484,"San Antonio-New Braunfels-Kerrville, TX",Outlying
+48015,48,Texas,Austin County,26420,"Houston-Pasadena-The Woodlands, TX",Metro,288,"Houston-Pasadena, TX",Outlying
+48019,48,Texas,Bandera County,41700,"San Antonio-New Braunfels, TX",Metro,484,"San Antonio-New Braunfels-Kerrville, TX",Outlying
+48021,48,Texas,Bastrop County,12420,"Austin-Round Rock-San Marcos, TX",Metro,,,Outlying
+48025,48,Texas,Bee County,13300,"Beeville, TX",Micro,,,Central
+48027,48,Texas,Bell County,28660,"Killeen-Temple, TX",Metro,,,Central
+48029,48,Texas,Bexar County,41700,"San Antonio-New Braunfels, TX",Metro,484,"San Antonio-New Braunfels-Kerrville, TX",Central
+48035,48,Texas,Bosque County,47380,"Waco, TX",Metro,,,Outlying
+48037,48,Texas,Bowie County,45500,"Texarkana, TX-AR",Metro,,,Central
+48039,48,Texas,Brazoria County,26420,"Houston-Pasadena-The Woodlands, TX",Metro,288,"Houston-Pasadena, TX",Central
+48041,48,Texas,Brazos County,17780,"College Station-Bryan, TX",Metro,,,Central
+48047,48,Texas,Brooks County,10860,"Alice, TX",Micro,204,"Corpus Christi-Kingsville-Alice, TX",Outlying
+48049,48,Texas,Brown County,15220,"Brownwood, TX",Micro,,,Central
+48051,48,Texas,Burleson County,17780,"College Station-Bryan, TX",Metro,,,Outlying
+48055,48,Texas,Caldwell County,12420,"Austin-Round Rock-San Marcos, TX",Metro,,,Outlying
+48057,48,Texas,Calhoun County,38920,"Port Lavaca, TX",Micro,544,"Victoria-Port Lavaca, TX",Central
+48059,48,Texas,Callahan County,10180,"Abilene, TX",Metro,101,"Abilene-Sweetwater, TX",Outlying
+48061,48,Texas,Cameron County,15180,"Brownsville-Harlingen, TX",Metro,154,"Brownsville-Harlingen-Raymondville, TX",Central
+48063,48,Texas,Camp County,34420,"Mount Pleasant, TX",Micro,,,Outlying
+48065,48,Texas,Carson County,11100,"Amarillo, TX",Metro,108,"Amarillo-Borger, TX",Outlying
+48071,48,Texas,Chambers County,26420,"Houston-Pasadena-The Woodlands, TX",Metro,288,"Houston-Pasadena, TX",Outlying
+48073,48,Texas,Cherokee County,27380,"Jacksonville, TX",Micro,540,"Tyler-Jacksonville, TX",Central
+48077,48,Texas,Clay County,48660,"Wichita Falls, TX",Metro,,,Outlying
+48079,48,Texas,Cochran County,31180,"Lubbock, TX",Metro,352,"Lubbock-Plainview, TX",Outlying
+48085,48,Texas,Collin County,19100,"Dallas-Fort Worth-Arlington, TX",Metro,206,"Dallas-Fort Worth, TX-OK",Central
+48091,48,Texas,Comal County,41700,"San Antonio-New Braunfels, TX",Metro,484,"San Antonio-New Braunfels-Kerrville, TX",Outlying
+48097,48,Texas,Cooke County,23620,"Gainesville, TX",Micro,206,"Dallas-Fort Worth, TX-OK",Central
+48099,48,Texas,Coryell County,28660,"Killeen-Temple, TX",Metro,,,Central
+48107,48,Texas,Crosby County,31180,"Lubbock, TX",Metro,352,"Lubbock-Plainview, TX",Outlying
+48113,48,Texas,Dallas County,19100,"Dallas-Fort Worth-Arlington, TX",Metro,206,"Dallas-Fort Worth, TX-OK",Central
+48117,48,Texas,Deaf Smith County,25820,"Hereford, TX",Micro,,,Central
+48121,48,Texas,Denton County,19100,"Dallas-Fort Worth-Arlington, TX",Metro,206,"Dallas-Fort Worth, TX-OK",Outlying
+48135,48,Texas,Ector County,36220,"Odessa, TX",Metro,372,"Midland-Odessa-Andrews, TX",Central
+48139,48,Texas,Ellis County,19100,"Dallas-Fort Worth-Arlington, TX",Metro,206,"Dallas-Fort Worth, TX-OK",Central
+48141,48,Texas,El Paso County,21340,"El Paso, TX",Metro,238,"El Paso-Las Cruces, TX-NM",Central
+48143,48,Texas,Erath County,44500,"Stephenville, TX",Micro,,,Central
+48145,48,Texas,Falls County,47380,"Waco, TX",Metro,,,Outlying
+48147,48,Texas,Fannin County,14300,"Bonham, TX",Micro,206,"Dallas-Fort Worth, TX-OK",Central
+48153,48,Texas,Floyd County,38380,"Plainview, TX",Micro,352,"Lubbock-Plainview, TX",Outlying
+48157,48,Texas,Fort Bend County,26420,"Houston-Pasadena-The Woodlands, TX",Metro,288,"Houston-Pasadena, TX",Central
+48167,48,Texas,Galveston County,26420,"Houston-Pasadena-The Woodlands, TX",Metro,288,"Houston-Pasadena, TX",Outlying
+48169,48,Texas,Garza County,31180,"Lubbock, TX",Metro,352,"Lubbock-Plainview, TX",Outlying
+48171,48,Texas,Gillespie County,23240,"Fredericksburg, TX",Micro,484,"San Antonio-New Braunfels-Kerrville, TX",Central
+48175,48,Texas,Goliad County,47020,"Victoria, TX",Metro,544,"Victoria-Port Lavaca, TX",Outlying
+48179,48,Texas,Gray County,37420,"Pampa, TX",Micro,,,Central
+48181,48,Texas,Grayson County,43300,"Sherman-Denison, TX",Metro,206,"Dallas-Fort Worth, TX-OK",Central
+48183,48,Texas,Gregg County,30980,"Longview, TX",Metro,,,Central
+48187,48,Texas,Guadalupe County,41700,"San Antonio-New Braunfels, TX",Metro,484,"San Antonio-New Braunfels-Kerrville, TX",Central
+48189,48,Texas,Hale County,38380,"Plainview, TX",Micro,352,"Lubbock-Plainview, TX",Central
+48199,48,Texas,Hardin County,13140,"Beaumont-Port Arthur, TX",Metro,,,Outlying
+48201,48,Texas,Harris County,26420,"Houston-Pasadena-The Woodlands, TX",Metro,288,"Houston-Pasadena, TX",Central
+48203,48,Texas,Harrison County,30980,"Longview, TX",Metro,,,Outlying
+48209,48,Texas,Hays County,12420,"Austin-Round Rock-San Marcos, TX",Metro,,,Central
+48213,48,Texas,Henderson County,11980,"Athens, TX",Micro,206,"Dallas-Fort Worth, TX-OK",Central
+48215,48,Texas,Hidalgo County,32580,"McAllen-Edinburg-Mission, TX",Metro,365,"McAllen-Edinburg, TX",Central
+48219,48,Texas,Hockley County,31180,"Lubbock, TX",Metro,352,"Lubbock-Plainview, TX",Outlying
+48221,48,Texas,Hood County,24180,"Granbury, TX",Micro,206,"Dallas-Fort Worth, TX-OK",Central
+48223,48,Texas,Hopkins County,44860,"Sulphur Springs, TX",Micro,206,"Dallas-Fort Worth, TX-OK",Central
+48227,48,Texas,Howard County,13700,"Big Spring, TX",Micro,,,Central
+48229,48,Texas,Hudspeth County,21340,"El Paso, TX",Metro,238,"El Paso-Las Cruces, TX-NM",Outlying
+48231,48,Texas,Hunt County,19100,"Dallas-Fort Worth-Arlington, TX",Metro,206,"Dallas-Fort Worth, TX-OK",Outlying
+48233,48,Texas,Hutchinson County,14420,"Borger, TX",Micro,108,"Amarillo-Borger, TX",Central
+48235,48,Texas,Irion County,41660,"San Angelo, TX",Metro,,,Outlying
+48245,48,Texas,Jefferson County,13140,"Beaumont-Port Arthur, TX",Metro,,,Central
+48249,48,Texas,Jim Wells County,10860,"Alice, TX",Micro,204,"Corpus Christi-Kingsville-Alice, TX",Central
+48251,48,Texas,Johnson County,19100,"Dallas-Fort Worth-Arlington, TX",Metro,206,"Dallas-Fort Worth, TX-OK",Central
+48253,48,Texas,Jones County,10180,"Abilene, TX",Metro,101,"Abilene-Sweetwater, TX",Outlying
+48257,48,Texas,Kaufman County,19100,"Dallas-Fort Worth-Arlington, TX",Metro,206,"Dallas-Fort Worth, TX-OK",Outlying
+48259,48,Texas,Kendall County,41700,"San Antonio-New Braunfels, TX",Metro,484,"San Antonio-New Braunfels-Kerrville, TX",Outlying
+48265,48,Texas,Kerr County,28500,"Kerrville, TX",Micro,484,"San Antonio-New Braunfels-Kerrville, TX",Central
+48273,48,Texas,Kleberg County,28780,"Kingsville, TX",Micro,204,"Corpus Christi-Kingsville-Alice, TX",Central
+48277,48,Texas,Lamar County,37580,"Paris, TX",Micro,,,Central
+48281,48,Texas,Lampasas County,28660,"Killeen-Temple, TX",Metro,,,Outlying
+48291,48,Texas,Liberty County,26420,"Houston-Pasadena-The Woodlands, TX",Metro,288,"Houston-Pasadena, TX",Outlying
+48303,48,Texas,Lubbock County,31180,"Lubbock, TX",Metro,352,"Lubbock-Plainview, TX",Central
+48305,48,Texas,Lynn County,31180,"Lubbock, TX",Metro,352,"Lubbock-Plainview, TX",Outlying
+48309,48,Texas,McLennan County,47380,"Waco, TX",Metro,,,Central
+48317,48,Texas,Martin County,33260,"Midland, TX",Metro,372,"Midland-Odessa-Andrews, TX",Outlying
+48321,48,Texas,Matagorda County,13060,"Bay City, TX",Micro,288,"Houston-Pasadena, TX",Central
+48323,48,Texas,Maverick County,20580,"Eagle Pass, TX",Metro,,,Central
+48325,48,Texas,Medina County,41700,"San Antonio-New Braunfels, TX",Metro,484,"San Antonio-New Braunfels-Kerrville, TX",Outlying
+48329,48,Texas,Midland County,33260,"Midland, TX",Metro,372,"Midland-Odessa-Andrews, TX",Central
+48339,48,Texas,Montgomery County,26420,"Houston-Pasadena-The Woodlands, TX",Metro,288,"Houston-Pasadena, TX",Outlying
+48341,48,Texas,Moore County,20300,"Dumas, TX",Micro,,,Central
+48343,48,Texas,Morris County,34420,"Mount Pleasant, TX",Micro,,,Outlying
+48347,48,Texas,Nacogdoches County,34860,"Nacogdoches, TX",Micro,,,Central
+48349,48,Texas,Navarro County,18620,"Corsicana, TX",Micro,206,"Dallas-Fort Worth, TX-OK",Central
+48353,48,Texas,Nolan County,45020,"Sweetwater, TX",Micro,101,"Abilene-Sweetwater, TX",Central
+48355,48,Texas,Nueces County,18580,"Corpus Christi, TX",Metro,204,"Corpus Christi-Kingsville-Alice, TX",Central
+48359,48,Texas,Oldham County,11100,"Amarillo, TX",Metro,108,"Amarillo-Borger, TX",Outlying
+48361,48,Texas,Orange County,13140,"Beaumont-Port Arthur, TX",Metro,,,Outlying
+48363,48,Texas,Palo Pinto County,33420,"Mineral Wells, TX",Micro,206,"Dallas-Fort Worth, TX-OK",Central
+48367,48,Texas,Parker County,19100,"Dallas-Fort Worth-Arlington, TX",Metro,206,"Dallas-Fort Worth, TX-OK",Outlying
+48375,48,Texas,Potter County,11100,"Amarillo, TX",Metro,108,"Amarillo-Borger, TX",Central
+48381,48,Texas,Randall County,11100,"Amarillo, TX",Metro,108,"Amarillo-Borger, TX",Central
+48387,48,Texas,Red River County,37580,"Paris, TX",Micro,,,Outlying
+48389,48,Texas,Reeves County,45880,"Town of Pecos, TX",Micro,,,Central
+48393,48,Texas,Roberts County,37420,"Pampa, TX",Micro,,,Outlying
+48395,48,Texas,Robertson County,17780,"College Station-Bryan, TX",Metro,,,Outlying
+48397,48,Texas,Rockwall County,19100,"Dallas-Fort Worth-Arlington, TX",Metro,206,"Dallas-Fort Worth, TX-OK",Central
+48401,48,Texas,Rusk County,30980,"Longview, TX",Metro,,,Outlying
+48407,48,Texas,San Jacinto County,26420,"Houston-Pasadena-The Woodlands, TX",Metro,288,"Houston-Pasadena, TX",Outlying
+48409,48,Texas,San Patricio County,18580,"Corpus Christi, TX",Metro,204,"Corpus Christi-Kingsville-Alice, TX",Central
+48415,48,Texas,Scurry County,43660,"Snyder, TX",Micro,,,Central
+48423,48,Texas,Smith County,46340,"Tyler, TX",Metro,540,"Tyler-Jacksonville, TX",Central
+48427,48,Texas,Starr County,40100,"Rio Grande City-Roma, TX",Micro,365,"McAllen-Edinburg, TX",Central
+48439,48,Texas,Tarrant County,19100,"Dallas-Fort Worth-Arlington, TX",Metro,206,"Dallas-Fort Worth, TX-OK",Central
+48441,48,Texas,Taylor County,10180,"Abilene, TX",Metro,101,"Abilene-Sweetwater, TX",Central
+48449,48,Texas,Titus County,34420,"Mount Pleasant, TX",Micro,,,Central
+48451,48,Texas,Tom Green County,41660,"San Angelo, TX",Metro,,,Central
+48453,48,Texas,Travis County,12420,"Austin-Round Rock-San Marcos, TX",Metro,,,Central
+48459,48,Texas,Upshur County,30980,"Longview, TX",Metro,,,Outlying
+48463,48,Texas,Uvalde County,46620,"Uvalde, TX",Micro,,,Central
+48465,48,Texas,Val Verde County,19620,"Del Rio, TX",Micro,,,Central
+48469,48,Texas,Victoria County,47020,"Victoria, TX",Metro,544,"Victoria-Port Lavaca, TX",Central
+48471,48,Texas,Walker County,26660,"Huntsville, TX",Micro,288,"Houston-Pasadena, TX",Central
+48473,48,Texas,Waller County,26420,"Houston-Pasadena-The Woodlands, TX",Metro,288,"Houston-Pasadena, TX",Central
+48477,48,Texas,Washington County,14780,"Brenham, TX",Micro,288,"Houston-Pasadena, TX",Central
+48479,48,Texas,Webb County,29700,"Laredo, TX",Metro,,,Central
+48481,48,Texas,Wharton County,20900,"El Campo, TX",Micro,288,"Houston-Pasadena, TX",Central
+48485,48,Texas,Wichita County,48660,"Wichita Falls, TX",Metro,,,Central
+48487,48,Texas,Wilbarger County,46900,"Vernon, TX",Micro,,,Central
+48489,48,Texas,Willacy County,39700,"Raymondville, TX",Micro,154,"Brownsville-Harlingen-Raymondville, TX",Central
+48491,48,Texas,Williamson County,12420,"Austin-Round Rock-San Marcos, TX",Metro,,,Central
+48493,48,Texas,Wilson County,41700,"San Antonio-New Braunfels, TX",Metro,484,"San Antonio-New Braunfels-Kerrville, TX",Outlying
+48497,48,Texas,Wise County,19100,"Dallas-Fort Worth-Arlington, TX",Metro,206,"Dallas-Fort Worth, TX-OK",Outlying
+48505,48,Texas,Zapata County,49820,"Zapata, TX",Micro,,,Central
+49003,49,Utah,Box Elder County,14940,"Brigham City, UT-ID",Micro,482,"Salt Lake City-Provo-Orem, UT-ID",Central
+49005,49,Utah,Cache County,30860,"Logan, UT-ID",Metro,,,Central
+49007,49,Utah,Carbon County,39220,"Price, UT",Micro,,,Central
+49011,49,Utah,Davis County,36260,"Ogden, UT",Metro,482,"Salt Lake City-Provo-Orem, UT-ID",Central
+49021,49,Utah,Iron County,16260,"Cedar City, UT",Micro,,,Central
+49023,49,Utah,Juab County,39340,"Provo-Orem-Lehi, UT",Metro,482,"Salt Lake City-Provo-Orem, UT-ID",Outlying
+49029,49,Utah,Morgan County,36260,"Ogden, UT",Metro,482,"Salt Lake City-Provo-Orem, UT-ID",Outlying
+49033,49,Utah,Rich County,21740,"Evanston, WY-UT",Micro,,,Outlying
+49035,49,Utah,Salt Lake County,41620,"Salt Lake City-Murray, UT",Metro,482,"Salt Lake City-Provo-Orem, UT-ID",Central
+49043,49,Utah,Summit County,25720,"Heber, UT",Micro,482,"Salt Lake City-Provo-Orem, UT-ID",Central
+49045,49,Utah,Tooele County,41620,"Salt Lake City-Murray, UT",Metro,482,"Salt Lake City-Provo-Orem, UT-ID",Outlying
+49047,49,Utah,Uintah County,46860,"Vernal, UT",Micro,,,Central
+49049,49,Utah,Utah County,39340,"Provo-Orem-Lehi, UT",Metro,482,"Salt Lake City-Provo-Orem, UT-ID",Central
+49051,49,Utah,Wasatch County,25720,"Heber, UT",Micro,482,"Salt Lake City-Provo-Orem, UT-ID",Outlying
+49053,49,Utah,Washington County,41100,"St. George, UT",Metro,,,Central
+49057,49,Utah,Weber County,36260,"Ogden, UT",Metro,482,"Salt Lake City-Provo-Orem, UT-ID",Central
+50003,50,Vermont,Bennington County,13540,"Bennington, VT",Micro,,,Central
+50007,50,Vermont,Chittenden County,15540,"Burlington-South Burlington, VT",Metro,162,"Burlington-South Burlington-Barre, VT",Central
+50011,50,Vermont,Franklin County,15540,"Burlington-South Burlington, VT",Metro,162,"Burlington-South Burlington-Barre, VT",Outlying
+50013,50,Vermont,Grand Isle County,15540,"Burlington-South Burlington, VT",Metro,162,"Burlington-South Burlington-Barre, VT",Outlying
+50017,50,Vermont,Orange County,30150,"Lebanon-Claremont, NH-VT",Micro,,,Outlying
+50021,50,Vermont,Rutland County,40860,"Rutland, VT",Micro,,,Central
+50023,50,Vermont,Washington County,12740,"Barre, VT",Micro,162,"Burlington-South Burlington-Barre, VT",Central
+50025,50,Vermont,Windham County,14710,"Brattleboro, VT",Micro,313,"Keene-Brattleboro, NH-VT",Central
+50027,50,Vermont,Windsor County,30150,"Lebanon-Claremont, NH-VT",Micro,,,Central
+51003,51,Virginia,Albemarle County,16820,"Charlottesville, VA",Metro,,,Central
+51007,51,Virginia,Amelia County,40060,"Richmond, VA",Metro,,,Outlying
+51009,51,Virginia,Amherst County,31340,"Lynchburg, VA",Metro,,,Central
+51011,51,Virginia,Appomattox County,31340,"Lynchburg, VA",Metro,,,Outlying
+51013,51,Virginia,Arlington County,47900,"Washington-Arlington-Alexandria, DC-VA-MD-WV",Metro,548,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Central
+51015,51,Virginia,Augusta County,44420,"Staunton-Stuarts Draft, VA",Metro,277,"Harrisonburg-Staunton-Stuarts Draft, VA",Central
+51019,51,Virginia,Bedford County,31340,"Lynchburg, VA",Metro,,,Central
+51023,51,Virginia,Botetourt County,40220,"Roanoke, VA",Metro,,,Central
+51031,51,Virginia,Campbell County,31340,"Lynchburg, VA",Metro,,,Central
+51036,51,Virginia,Charles City County,40060,"Richmond, VA",Metro,,,Outlying
+51041,51,Virginia,Chesterfield County,40060,"Richmond, VA",Metro,,,Central
+51043,51,Virginia,Clarke County,47900,"Washington-Arlington-Alexandria, DC-VA-MD-WV",Metro,548,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Outlying
+51045,51,Virginia,Craig County,40220,"Roanoke, VA",Metro,,,Outlying
+51047,51,Virginia,Culpeper County,47900,"Washington-Arlington-Alexandria, DC-VA-MD-WV",Metro,548,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Outlying
+51053,51,Virginia,Dinwiddie County,40060,"Richmond, VA",Metro,,,Central
+51059,51,Virginia,Fairfax County,47900,"Washington-Arlington-Alexandria, DC-VA-MD-WV",Metro,548,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Central
+51061,51,Virginia,Fauquier County,47900,"Washington-Arlington-Alexandria, DC-VA-MD-WV",Metro,548,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Outlying
+51063,51,Virginia,Floyd County,13980,"Blacksburg-Christiansburg-Radford, VA",Metro,,,Outlying
+51065,51,Virginia,Fluvanna County,16820,"Charlottesville, VA",Metro,,,Outlying
+51067,51,Virginia,Franklin County,40220,"Roanoke, VA",Metro,,,Outlying
+51069,51,Virginia,Frederick County,49020,"Winchester, VA-WV",Metro,548,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Central
+51071,51,Virginia,Giles County,13980,"Blacksburg-Christiansburg-Radford, VA",Metro,,,Outlying
+51073,51,Virginia,Gloucester County,47260,"Virginia Beach-Chesapeake-Norfolk, VA-NC",Metro,545,"Virginia Beach-Chesapeake, VA-NC",Central
+51075,51,Virginia,Goochland County,40060,"Richmond, VA",Metro,,,Outlying
+51079,51,Virginia,Greene County,16820,"Charlottesville, VA",Metro,,,Outlying
+51085,51,Virginia,Hanover County,40060,"Richmond, VA",Metro,,,Central
+51087,51,Virginia,Henrico County,40060,"Richmond, VA",Metro,,,Central
+51089,51,Virginia,Henry County,32300,"Martinsville, VA",Micro,,,Central
+51093,51,Virginia,Isle of Wight County,47260,"Virginia Beach-Chesapeake-Norfolk, VA-NC",Metro,545,"Virginia Beach-Chesapeake, VA-NC",Central
+51095,51,Virginia,James City County,47260,"Virginia Beach-Chesapeake-Norfolk, VA-NC",Metro,545,"Virginia Beach-Chesapeake, VA-NC",Outlying
+51097,51,Virginia,King and Queen County,40060,"Richmond, VA",Metro,,,Outlying
+51101,51,Virginia,King William County,40060,"Richmond, VA",Metro,,,Outlying
+51107,51,Virginia,Loudoun County,47900,"Washington-Arlington-Alexandria, DC-VA-MD-WV",Metro,548,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Central
+51115,51,Virginia,Mathews County,47260,"Virginia Beach-Chesapeake-Norfolk, VA-NC",Metro,545,"Virginia Beach-Chesapeake, VA-NC",Outlying
+51121,51,Virginia,Montgomery County,13980,"Blacksburg-Christiansburg-Radford, VA",Metro,,,Central
+51125,51,Virginia,Nelson County,16820,"Charlottesville, VA",Metro,,,Outlying
+51127,51,Virginia,New Kent County,40060,"Richmond, VA",Metro,,,Outlying
+51137,51,Virginia,Orange County,29470,"Lake of the Woods, VA",Micro,548,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Central
+51143,51,Virginia,Pittsylvania County,19260,"Danville, VA",Micro,,,Central
+51145,51,Virginia,Powhatan County,40060,"Richmond, VA",Metro,,,Outlying
+51149,51,Virginia,Prince George County,40060,"Richmond, VA",Metro,,,Central
+51153,51,Virginia,Prince William County,47900,"Washington-Arlington-Alexandria, DC-VA-MD-WV",Metro,548,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Central
+51155,51,Virginia,Pulaski County,13980,"Blacksburg-Christiansburg-Radford, VA",Metro,,,Outlying
+51157,51,Virginia,Rappahannock County,47900,"Washington-Arlington-Alexandria, DC-VA-MD-WV",Metro,548,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Outlying
+51161,51,Virginia,Roanoke County,40220,"Roanoke, VA",Metro,,,Central
+51165,51,Virginia,Rockingham County,25500,"Harrisonburg, VA",Metro,277,"Harrisonburg-Staunton-Stuarts Draft, VA",Central
+51169,51,Virginia,Scott County,28700,"Kingsport-Bristol, TN-VA",Metro,304,"Johnson City-Kingsport-Bristol, TN-VA",Outlying
+51177,51,Virginia,Spotsylvania County,47900,"Washington-Arlington-Alexandria, DC-VA-MD-WV",Metro,548,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Outlying
+51179,51,Virginia,Stafford County,47900,"Washington-Arlington-Alexandria, DC-VA-MD-WV",Metro,548,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Central
+51181,51,Virginia,Surry County,47260,"Virginia Beach-Chesapeake-Norfolk, VA-NC",Metro,545,"Virginia Beach-Chesapeake, VA-NC",Outlying
+51183,51,Virginia,Sussex County,40060,"Richmond, VA",Metro,,,Outlying
+51185,51,Virginia,Tazewell County,14140,"Bluefield, WV-VA",Micro,,,Central
+51187,51,Virginia,Warren County,47900,"Washington-Arlington-Alexandria, DC-VA-MD-WV",Metro,548,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Outlying
+51191,51,Virginia,Washington County,28700,"Kingsport-Bristol, TN-VA",Metro,304,"Johnson City-Kingsport-Bristol, TN-VA",Outlying
+51199,51,Virginia,York County,47260,"Virginia Beach-Chesapeake-Norfolk, VA-NC",Metro,545,"Virginia Beach-Chesapeake, VA-NC",Central
+51510,51,Virginia,Alexandria city,47900,"Washington-Arlington-Alexandria, DC-VA-MD-WV",Metro,548,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Central
+51520,51,Virginia,Bristol city,28700,"Kingsport-Bristol, TN-VA",Metro,304,"Johnson City-Kingsport-Bristol, TN-VA",Outlying
+51540,51,Virginia,Charlottesville city,16820,"Charlottesville, VA",Metro,,,Central
+51550,51,Virginia,Chesapeake city,47260,"Virginia Beach-Chesapeake-Norfolk, VA-NC",Metro,545,"Virginia Beach-Chesapeake, VA-NC",Central
+51570,51,Virginia,Colonial Heights city,40060,"Richmond, VA",Metro,,,Central
+51590,51,Virginia,Danville city,19260,"Danville, VA",Micro,,,Central
+51600,51,Virginia,Fairfax city,47900,"Washington-Arlington-Alexandria, DC-VA-MD-WV",Metro,548,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Central
+51610,51,Virginia,Falls Church city,47900,"Washington-Arlington-Alexandria, DC-VA-MD-WV",Metro,548,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Central
+51630,51,Virginia,Fredericksburg city,47900,"Washington-Arlington-Alexandria, DC-VA-MD-WV",Metro,548,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Outlying
+51650,51,Virginia,Hampton city,47260,"Virginia Beach-Chesapeake-Norfolk, VA-NC",Metro,545,"Virginia Beach-Chesapeake, VA-NC",Central
+51660,51,Virginia,Harrisonburg city,25500,"Harrisonburg, VA",Metro,277,"Harrisonburg-Staunton-Stuarts Draft, VA",Central
+51670,51,Virginia,Hopewell city,40060,"Richmond, VA",Metro,,,Central
+51680,51,Virginia,Lynchburg city,31340,"Lynchburg, VA",Metro,,,Central
+51683,51,Virginia,Manassas city,47900,"Washington-Arlington-Alexandria, DC-VA-MD-WV",Metro,548,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Central
+51685,51,Virginia,Manassas Park city,47900,"Washington-Arlington-Alexandria, DC-VA-MD-WV",Metro,548,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Central
+51690,51,Virginia,Martinsville city,32300,"Martinsville, VA",Micro,,,Central
+51700,51,Virginia,Newport News city,47260,"Virginia Beach-Chesapeake-Norfolk, VA-NC",Metro,545,"Virginia Beach-Chesapeake, VA-NC",Central
+51710,51,Virginia,Norfolk city,47260,"Virginia Beach-Chesapeake-Norfolk, VA-NC",Metro,545,"Virginia Beach-Chesapeake, VA-NC",Central
+51730,51,Virginia,Petersburg city,40060,"Richmond, VA",Metro,,,Central
+51735,51,Virginia,Poquoson city,47260,"Virginia Beach-Chesapeake-Norfolk, VA-NC",Metro,545,"Virginia Beach-Chesapeake, VA-NC",Central
+51740,51,Virginia,Portsmouth city,47260,"Virginia Beach-Chesapeake-Norfolk, VA-NC",Metro,545,"Virginia Beach-Chesapeake, VA-NC",Central
+51750,51,Virginia,Radford city,13980,"Blacksburg-Christiansburg-Radford, VA",Metro,,,Central
+51760,51,Virginia,Richmond city,40060,"Richmond, VA",Metro,,,Central
+51770,51,Virginia,Roanoke city,40220,"Roanoke, VA",Metro,,,Central
+51775,51,Virginia,Salem city,40220,"Roanoke, VA",Metro,,,Central
+51790,51,Virginia,Staunton city,44420,"Staunton-Stuarts Draft, VA",Metro,277,"Harrisonburg-Staunton-Stuarts Draft, VA",Central
+51800,51,Virginia,Suffolk city,47260,"Virginia Beach-Chesapeake-Norfolk, VA-NC",Metro,545,"Virginia Beach-Chesapeake, VA-NC",Outlying
+51810,51,Virginia,Virginia Beach city,47260,"Virginia Beach-Chesapeake-Norfolk, VA-NC",Metro,545,"Virginia Beach-Chesapeake, VA-NC",Central
+51820,51,Virginia,Waynesboro city,44420,"Staunton-Stuarts Draft, VA",Metro,277,"Harrisonburg-Staunton-Stuarts Draft, VA",Central
+51830,51,Virginia,Williamsburg city,47260,"Virginia Beach-Chesapeake-Norfolk, VA-NC",Metro,545,"Virginia Beach-Chesapeake, VA-NC",Outlying
+51840,51,Virginia,Winchester city,49020,"Winchester, VA-WV",Metro,548,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Central
+53001,53,Washington,Adams County,36830,"Othello, WA",Micro,393,"Moses Lake-Othello, WA",Central
+53003,53,Washington,Asotin County,30300,"Lewiston, ID-WA",Metro,,,Central
+53005,53,Washington,Benton County,28420,"Kennewick-Richland, WA",Metro,314,"Kennewick-Richland-Walla Walla, WA",Central
+53007,53,Washington,Chelan County,48300,"Wenatchee-East Wenatchee, WA",Metro,,,Central
+53009,53,Washington,Clallam County,38820,"Port Angeles, WA",Micro,,,Central
+53011,53,Washington,Clark County,38900,"Portland-Vancouver-Hillsboro, OR-WA",Metro,440,"Portland-Vancouver-Salem, OR-WA",Central
+53015,53,Washington,Cowlitz County,31020,"Longview-Kelso, WA",Metro,440,"Portland-Vancouver-Salem, OR-WA",Central
+53017,53,Washington,Douglas County,48300,"Wenatchee-East Wenatchee, WA",Metro,,,Central
+53021,53,Washington,Franklin County,28420,"Kennewick-Richland, WA",Metro,314,"Kennewick-Richland-Walla Walla, WA",Central
+53025,53,Washington,Grant County,34180,"Moses Lake, WA",Micro,393,"Moses Lake-Othello, WA",Central
+53027,53,Washington,Grays Harbor County,10140,"Aberdeen, WA",Micro,,,Central
+53029,53,Washington,Island County,36020,"Oak Harbor, WA",Micro,500,"Seattle-Tacoma, WA",Central
+53031,53,Washington,Jefferson County,39040,"Port Townsend, WA",Micro,,,Central
+53033,53,Washington,King County,42660,"Seattle-Tacoma-Bellevue, WA",Metro,500,"Seattle-Tacoma, WA",Central
+53035,53,Washington,Kitsap County,14740,"Bremerton-Silverdale-Port Orchard, WA",Metro,500,"Seattle-Tacoma, WA",Central
+53037,53,Washington,Kittitas County,21260,"Ellensburg, WA",Micro,,,Central
+53041,53,Washington,Lewis County,16500,"Centralia, WA",Micro,500,"Seattle-Tacoma, WA",Central
+53045,53,Washington,Mason County,43220,"Shelton, WA",Micro,500,"Seattle-Tacoma, WA",Central
+53053,53,Washington,Pierce County,42660,"Seattle-Tacoma-Bellevue, WA",Metro,500,"Seattle-Tacoma, WA",Central
+53057,53,Washington,Skagit County,34580,"Mount Vernon-Anacortes, WA",Metro,500,"Seattle-Tacoma, WA",Central
+53059,53,Washington,Skamania County,38900,"Portland-Vancouver-Hillsboro, OR-WA",Metro,440,"Portland-Vancouver-Salem, OR-WA",Outlying
+53061,53,Washington,Snohomish County,42660,"Seattle-Tacoma-Bellevue, WA",Metro,500,"Seattle-Tacoma, WA",Central
+53063,53,Washington,Spokane County,44060,"Spokane-Spokane Valley, WA",Metro,518,"Spokane-Spokane Valley-Coeur d'Alene, WA-ID",Central
+53065,53,Washington,Stevens County,44060,"Spokane-Spokane Valley, WA",Metro,518,"Spokane-Spokane Valley-Coeur d'Alene, WA-ID",Outlying
+53067,53,Washington,Thurston County,36500,"Olympia-Lacey-Tumwater, WA",Metro,500,"Seattle-Tacoma, WA",Central
+53071,53,Washington,Walla Walla County,47460,"Walla Walla, WA",Metro,314,"Kennewick-Richland-Walla Walla, WA",Central
+53073,53,Washington,Whatcom County,13380,"Bellingham, WA",Metro,,,Central
+53075,53,Washington,Whitman County,39420,"Pullman, WA",Micro,446,"Pullman-Moscow, WA-ID",Central
+53077,53,Washington,Yakima County,49420,"Yakima, WA",Metro,,,Central
+54003,54,West Virginia,Berkeley County,25180,"Hagerstown-Martinsburg, MD-WV",Metro,548,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Central
+54005,54,West Virginia,Boone County,16620,"Charleston, WV",Metro,170,"Charleston-Huntington-Ashland, WV-OH-KY",Outlying
+54009,54,West Virginia,Brooke County,48260,"Weirton-Steubenville, WV-OH",Metro,430,"Pittsburgh-Weirton-Steubenville, PA-OH-WV",Central
+54011,54,West Virginia,Cabell County,26580,"Huntington-Ashland, WV-KY-OH",Metro,170,"Charleston-Huntington-Ashland, WV-OH-KY",Central
+54015,54,West Virginia,Clay County,16620,"Charleston, WV",Metro,170,"Charleston-Huntington-Ashland, WV-OH-KY",Outlying
+54017,54,West Virginia,Doddridge County,17220,"Clarksburg, WV",Micro,242,"Fairmont-Clarksburg, WV",Outlying
+54019,54,West Virginia,Fayette County,13220,"Beckley, WV",Metro,,,Central
+54027,54,West Virginia,Hampshire County,49020,"Winchester, VA-WV",Metro,548,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Outlying
+54029,54,West Virginia,Hancock County,48260,"Weirton-Steubenville, WV-OH",Metro,430,"Pittsburgh-Weirton-Steubenville, PA-OH-WV",Central
+54033,54,West Virginia,Harrison County,17220,"Clarksburg, WV",Micro,242,"Fairmont-Clarksburg, WV",Central
+54037,54,West Virginia,Jefferson County,47900,"Washington-Arlington-Alexandria, DC-VA-MD-WV",Metro,548,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Outlying
+54039,54,West Virginia,Kanawha County,16620,"Charleston, WV",Metro,170,"Charleston-Huntington-Ashland, WV-OH-KY",Central
+54049,54,West Virginia,Marion County,21900,"Fairmont, WV",Micro,242,"Fairmont-Clarksburg, WV",Central
+54051,54,West Virginia,Marshall County,48540,"Wheeling, WV-OH",Metro,,,Outlying
+54055,54,West Virginia,Mercer County,14140,"Bluefield, WV-VA",Micro,,,Central
+54057,54,West Virginia,Mineral County,19060,"Cumberland, MD-WV",Micro,,,Outlying
+54061,54,West Virginia,Monongalia County,34060,"Morgantown, WV",Metro,,,Central
+54065,54,West Virginia,Morgan County,25180,"Hagerstown-Martinsburg, MD-WV",Metro,548,"Washington-Baltimore-Arlington, DC-MD-VA-WV-PA",Outlying
+54069,54,West Virginia,Ohio County,48540,"Wheeling, WV-OH",Metro,,,Central
+54077,54,West Virginia,Preston County,34060,"Morgantown, WV",Metro,,,Outlying
+54079,54,West Virginia,Putnam County,26580,"Huntington-Ashland, WV-KY-OH",Metro,170,"Charleston-Huntington-Ashland, WV-OH-KY",Central
+54081,54,West Virginia,Raleigh County,13220,"Beckley, WV",Metro,,,Central
+54083,54,West Virginia,Randolph County,21180,"Elkins, WV",Micro,,,Central
+54091,54,West Virginia,Taylor County,17220,"Clarksburg, WV",Micro,242,"Fairmont-Clarksburg, WV",Outlying
+54099,54,West Virginia,Wayne County,26580,"Huntington-Ashland, WV-KY-OH",Metro,170,"Charleston-Huntington-Ashland, WV-OH-KY",Central
+54105,54,West Virginia,Wirt County,37620,"Parkersburg-Vienna, WV",Metro,425,"Parkersburg-Marietta-Vienna, WV-OH",Outlying
+54107,54,West Virginia,Wood County,37620,"Parkersburg-Vienna, WV",Metro,425,"Parkersburg-Marietta-Vienna, WV-OH",Central
+55005,55,Wisconsin,Barron County,39960,"Rice Lake, WI",Micro,,,Central
+55009,55,Wisconsin,Brown County,24580,"Green Bay, WI",Metro,267,"Green Bay-Shawano, WI",Central
+55015,55,Wisconsin,Calumet County,11540,"Appleton, WI",Metro,118,"Appleton-Oshkosh-Neenah, WI",Central
+55017,55,Wisconsin,Chippewa County,20740,"Eau Claire, WI",Metro,232,"Eau Claire-Menomonie, WI",Central
+55021,55,Wisconsin,Columbia County,31540,"Madison, WI",Metro,357,"Madison-Janesville-Beloit, WI",Outlying
+55025,55,Wisconsin,Dane County,31540,"Madison, WI",Metro,357,"Madison-Janesville-Beloit, WI",Central
+55027,55,Wisconsin,Dodge County,13180,"Beaver Dam, WI",Micro,376,"Milwaukee-Racine-Waukesha, WI",Central
+55031,55,Wisconsin,Douglas County,20260,"Duluth, MN-WI",Metro,228,"Duluth-Grand Rapids, MN-WI",Central
+55033,55,Wisconsin,Dunn County,32860,"Menomonie, WI",Micro,232,"Eau Claire-Menomonie, WI",Central
+55035,55,Wisconsin,Eau Claire County,20740,"Eau Claire, WI",Metro,232,"Eau Claire-Menomonie, WI",Central
+55037,55,Wisconsin,Florence County,27020,"Iron Mountain, MI-WI",Micro,361,"Marinette-Iron Mountain, WI-MI",Outlying
+55039,55,Wisconsin,Fond du Lac County,22540,"Fond du Lac, WI",Metro,,,Central
+55043,55,Wisconsin,Grant County,38420,"Platteville, WI",Micro,,,Central
+55045,55,Wisconsin,Green County,31540,"Madison, WI",Metro,357,"Madison-Janesville-Beloit, WI",Outlying
+55049,55,Wisconsin,Iowa County,31540,"Madison, WI",Metro,357,"Madison-Janesville-Beloit, WI",Outlying
+55055,55,Wisconsin,Jefferson County,48020,"Watertown-Fort Atkinson, WI",Micro,376,"Milwaukee-Racine-Waukesha, WI",Central
+55059,55,Wisconsin,Kenosha County,28450,"Kenosha, WI",Metro,176,"Chicago-Naperville, IL-IN-WI",Central
+55061,55,Wisconsin,Kewaunee County,24580,"Green Bay, WI",Metro,267,"Green Bay-Shawano, WI",Outlying
+55063,55,Wisconsin,La Crosse County,29100,"La Crosse-Onalaska, WI-MN",Metro,317,"La Crosse-Onalaska-Sparta, WI-MN",Central
+55071,55,Wisconsin,Manitowoc County,31820,"Manitowoc, WI",Micro,,,Central
+55073,55,Wisconsin,Marathon County,48140,"Wausau, WI",Metro,554,"Wausau-Stevens Point-Wisconsin Rapids, WI",Central
+55075,55,Wisconsin,Marinette County,31940,"Marinette, WI-MI",Micro,361,"Marinette-Iron Mountain, WI-MI",Central
+55078,55,Wisconsin,Menominee County,43020,"Shawano, WI",Micro,267,"Green Bay-Shawano, WI",Outlying
+55079,55,Wisconsin,Milwaukee County,33340,"Milwaukee-Waukesha, WI",Metro,376,"Milwaukee-Racine-Waukesha, WI",Central
+55081,55,Wisconsin,Monroe County,43890,"Sparta, WI",Micro,317,"La Crosse-Onalaska-Sparta, WI-MN",Central
+55083,55,Wisconsin,Oconto County,24580,"Green Bay, WI",Metro,267,"Green Bay-Shawano, WI",Outlying
+55087,55,Wisconsin,Outagamie County,11540,"Appleton, WI",Metro,118,"Appleton-Oshkosh-Neenah, WI",Central
+55089,55,Wisconsin,Ozaukee County,33340,"Milwaukee-Waukesha, WI",Metro,376,"Milwaukee-Racine-Waukesha, WI",Outlying
+55093,55,Wisconsin,Pierce County,33460,"Minneapolis-St. Paul-Bloomington, MN-WI",Metro,378,"Minneapolis-St. Paul, MN-WI",Outlying
+55097,55,Wisconsin,Portage County,44620,"Stevens Point-Plover, WI",Micro,554,"Wausau-Stevens Point-Wisconsin Rapids, WI",Central
+55101,55,Wisconsin,Racine County,39540,"Racine-Mount Pleasant, WI",Metro,376,"Milwaukee-Racine-Waukesha, WI",Central
+55105,55,Wisconsin,Rock County,27500,"Janesville-Beloit, WI",Metro,357,"Madison-Janesville-Beloit, WI",Central
+55109,55,Wisconsin,St. Croix County,33460,"Minneapolis-St. Paul-Bloomington, MN-WI",Metro,378,"Minneapolis-St. Paul, MN-WI",Outlying
+55111,55,Wisconsin,Sauk County,12660,"Baraboo, WI",Micro,357,"Madison-Janesville-Beloit, WI",Central
+55115,55,Wisconsin,Shawano County,43020,"Shawano, WI",Micro,267,"Green Bay-Shawano, WI",Central
+55117,55,Wisconsin,Sheboygan County,43100,"Sheboygan, WI",Metro,,,Central
+55123,55,Wisconsin,Vernon County,29100,"La Crosse-Onalaska, WI-MN",Metro,317,"La Crosse-Onalaska-Sparta, WI-MN",Outlying
+55127,55,Wisconsin,Walworth County,48580,"Whitewater-Elkhorn, WI",Micro,376,"Milwaukee-Racine-Waukesha, WI",Central
+55131,55,Wisconsin,Washington County,33340,"Milwaukee-Waukesha, WI",Metro,376,"Milwaukee-Racine-Waukesha, WI",Outlying
+55133,55,Wisconsin,Waukesha County,33340,"Milwaukee-Waukesha, WI",Metro,376,"Milwaukee-Racine-Waukesha, WI",Central
+55139,55,Wisconsin,Winnebago County,36780,"Oshkosh-Neenah, WI",Metro,118,"Appleton-Oshkosh-Neenah, WI",Central
+55141,55,Wisconsin,Wood County,49220,"Wisconsin Rapids-Marshfield, WI",Micro,554,"Wausau-Stevens Point-Wisconsin Rapids, WI",Central
+56001,56,Wyoming,Albany County,29660,"Laramie, WY",Micro,,,Central
+56005,56,Wyoming,Campbell County,23940,"Gillette, WY",Micro,,,Central
+56013,56,Wyoming,Fremont County,40180,"Riverton, WY",Micro,,,Central
+56021,56,Wyoming,Laramie County,16940,"Cheyenne, WY",Metro,,,Central
+56025,56,Wyoming,Natrona County,16220,"Casper, WY",Metro,,,Central
+56029,56,Wyoming,Park County,17650,"Cody, WY",Micro,,,Central
+56033,56,Wyoming,Sheridan County,43260,"Sheridan, WY",Micro,,,Central
+56037,56,Wyoming,Sweetwater County,40540,"Rock Springs, WY",Micro,,,Central
+56039,56,Wyoming,Teton County,27220,"Jackson, WY-ID",Micro,,,Central
+56041,56,Wyoming,Uinta County,21740,"Evanston, WY-UT",Micro,,,Central
+72003,72,Puerto Rico,Aguada Municipio,10380,"Aguadilla, PR",Metro,364,"Mayagüez-Aguadilla, PR",Central
+72005,72,Puerto Rico,Aguadilla Municipio,10380,"Aguadilla, PR",Metro,364,"Mayagüez-Aguadilla, PR",Central
+72007,72,Puerto Rico,Aguas Buenas Municipio,41980,"San Juan-Bayamón-Caguas, PR",Metro,490,"San Juan-Bayamón, PR",Central
+72009,72,Puerto Rico,Aibonito Municipio,41980,"San Juan-Bayamón-Caguas, PR",Metro,490,"San Juan-Bayamón, PR",Outlying
+72011,72,Puerto Rico,Añasco Municipio,10380,"Aguadilla, PR",Metro,364,"Mayagüez-Aguadilla, PR",Central
+72013,72,Puerto Rico,Arecibo Municipio,11640,"Arecibo, PR",Metro,490,"San Juan-Bayamón, PR",Central
+72015,72,Puerto Rico,Arroyo Municipio,25020,"Guayama, PR",Metro,490,"San Juan-Bayamón, PR",Central
+72017,72,Puerto Rico,Barceloneta Municipio,41980,"San Juan-Bayamón-Caguas, PR",Metro,490,"San Juan-Bayamón, PR",Outlying
+72019,72,Puerto Rico,Barranquitas Municipio,41980,"San Juan-Bayamón-Caguas, PR",Metro,490,"San Juan-Bayamón, PR",Central
+72021,72,Puerto Rico,Bayamón Municipio,41980,"San Juan-Bayamón-Caguas, PR",Metro,490,"San Juan-Bayamón, PR",Central
+72023,72,Puerto Rico,Cabo Rojo Municipio,32420,"Mayagüez, PR",Metro,364,"Mayagüez-Aguadilla, PR",Central
+72025,72,Puerto Rico,Caguas Municipio,41980,"San Juan-Bayamón-Caguas, PR",Metro,490,"San Juan-Bayamón, PR",Central
+72027,72,Puerto Rico,Camuy Municipio,11640,"Arecibo, PR",Metro,490,"San Juan-Bayamón, PR",Central
+72029,72,Puerto Rico,Canóvanas Municipio,41980,"San Juan-Bayamón-Caguas, PR",Metro,490,"San Juan-Bayamón, PR",Central
+72031,72,Puerto Rico,Carolina Municipio,41980,"San Juan-Bayamón-Caguas, PR",Metro,490,"San Juan-Bayamón, PR",Central
+72033,72,Puerto Rico,Cataño Municipio,41980,"San Juan-Bayamón-Caguas, PR",Metro,490,"San Juan-Bayamón, PR",Central
+72035,72,Puerto Rico,Cayey Municipio,41980,"San Juan-Bayamón-Caguas, PR",Metro,490,"San Juan-Bayamón, PR",Central
+72037,72,Puerto Rico,Ceiba Municipio,41980,"San Juan-Bayamón-Caguas, PR",Metro,490,"San Juan-Bayamón, PR",Outlying
+72039,72,Puerto Rico,Ciales Municipio,41980,"San Juan-Bayamón-Caguas, PR",Metro,490,"San Juan-Bayamón, PR",Outlying
+72041,72,Puerto Rico,Cidra Municipio,41980,"San Juan-Bayamón-Caguas, PR",Metro,490,"San Juan-Bayamón, PR",Central
+72043,72,Puerto Rico,Coamo Municipio,17620,"Coamo, PR",Micro,434,"Ponce-Coamo, PR",Central
+72045,72,Puerto Rico,Comerío Municipio,41980,"San Juan-Bayamón-Caguas, PR",Metro,490,"San Juan-Bayamón, PR",Central
+72047,72,Puerto Rico,Corozal Municipio,41980,"San Juan-Bayamón-Caguas, PR",Metro,490,"San Juan-Bayamón, PR",Central
+72051,72,Puerto Rico,Dorado Municipio,41980,"San Juan-Bayamón-Caguas, PR",Metro,490,"San Juan-Bayamón, PR",Central
+72053,72,Puerto Rico,Fajardo Municipio,41980,"San Juan-Bayamón-Caguas, PR",Metro,490,"San Juan-Bayamón, PR",Outlying
+72054,72,Puerto Rico,Florida Municipio,41980,"San Juan-Bayamón-Caguas, PR",Metro,490,"San Juan-Bayamón, PR",Outlying
+72057,72,Puerto Rico,Guayama Municipio,25020,"Guayama, PR",Metro,490,"San Juan-Bayamón, PR",Central
+72059,72,Puerto Rico,Guayanilla Municipio,38660,"Ponce, PR",Metro,434,"Ponce-Coamo, PR",Outlying
+72061,72,Puerto Rico,Guaynabo Municipio,41980,"San Juan-Bayamón-Caguas, PR",Metro,490,"San Juan-Bayamón, PR",Central
+72063,72,Puerto Rico,Gurabo Municipio,41980,"San Juan-Bayamón-Caguas, PR",Metro,490,"San Juan-Bayamón, PR",Central
+72065,72,Puerto Rico,Hatillo Municipio,11640,"Arecibo, PR",Metro,490,"San Juan-Bayamón, PR",Central
+72067,72,Puerto Rico,Hormigueros Municipio,32420,"Mayagüez, PR",Metro,364,"Mayagüez-Aguadilla, PR",Outlying
+72069,72,Puerto Rico,Humacao Municipio,41980,"San Juan-Bayamón-Caguas, PR",Metro,490,"San Juan-Bayamón, PR",Central
+72071,72,Puerto Rico,Isabela Municipio,10380,"Aguadilla, PR",Metro,364,"Mayagüez-Aguadilla, PR",Central
+72075,72,Puerto Rico,Juana Díaz Municipio,38660,"Ponce, PR",Metro,434,"Ponce-Coamo, PR",Outlying
+72077,72,Puerto Rico,Juncos Municipio,41980,"San Juan-Bayamón-Caguas, PR",Metro,490,"San Juan-Bayamón, PR",Central
+72079,72,Puerto Rico,Lajas Municipio,32420,"Mayagüez, PR",Metro,364,"Mayagüez-Aguadilla, PR",Central
+72081,72,Puerto Rico,Lares Municipio,29720,"Lares, PR",Micro,490,"San Juan-Bayamón, PR",Central
+72085,72,Puerto Rico,Las Piedras Municipio,41980,"San Juan-Bayamón-Caguas, PR",Metro,490,"San Juan-Bayamón, PR",Central
+72087,72,Puerto Rico,Loíza Municipio,41980,"San Juan-Bayamón-Caguas, PR",Metro,490,"San Juan-Bayamón, PR",Outlying
+72089,72,Puerto Rico,Luquillo Municipio,41980,"San Juan-Bayamón-Caguas, PR",Metro,490,"San Juan-Bayamón, PR",Outlying
+72091,72,Puerto Rico,Manatí Municipio,41980,"San Juan-Bayamón-Caguas, PR",Metro,490,"San Juan-Bayamón, PR",Central
+72095,72,Puerto Rico,Maunabo Municipio,41980,"San Juan-Bayamón-Caguas, PR",Metro,490,"San Juan-Bayamón, PR",Central
+72097,72,Puerto Rico,Mayagüez Municipio,32420,"Mayagüez, PR",Metro,364,"Mayagüez-Aguadilla, PR",Outlying
+72099,72,Puerto Rico,Moca Municipio,10380,"Aguadilla, PR",Metro,364,"Mayagüez-Aguadilla, PR",Central
+72101,72,Puerto Rico,Morovis Municipio,41980,"San Juan-Bayamón-Caguas, PR",Metro,490,"San Juan-Bayamón, PR",Central
+72103,72,Puerto Rico,Naguabo Municipio,41980,"San Juan-Bayamón-Caguas, PR",Metro,490,"San Juan-Bayamón, PR",Outlying
+72105,72,Puerto Rico,Naranjito Municipio,41980,"San Juan-Bayamón-Caguas, PR",Metro,490,"San Juan-Bayamón, PR",Central
+72107,72,Puerto Rico,Orocovis Municipio,41980,"San Juan-Bayamón-Caguas, PR",Metro,490,"San Juan-Bayamón, PR",Central
+72109,72,Puerto Rico,Patillas Municipio,25020,"Guayama, PR",Metro,490,"San Juan-Bayamón, PR",Central
+72111,72,Puerto Rico,Peñuelas Municipio,38660,"Ponce, PR",Metro,434,"Ponce-Coamo, PR",Outlying
+72113,72,Puerto Rico,Ponce Municipio,38660,"Ponce, PR",Metro,434,"Ponce-Coamo, PR",Central
+72115,72,Puerto Rico,Quebradillas Municipio,11640,"Arecibo, PR",Metro,490,"San Juan-Bayamón, PR",Central
+72117,72,Puerto Rico,Rincón Municipio,10380,"Aguadilla, PR",Metro,364,"Mayagüez-Aguadilla, PR",Central
+72119,72,Puerto Rico,Río Grande Municipio,41980,"San Juan-Bayamón-Caguas, PR",Metro,490,"San Juan-Bayamón, PR",Central
+72121,72,Puerto Rico,Sabana Grande Municipio,32420,"Mayagüez, PR",Metro,364,"Mayagüez-Aguadilla, PR",Central
+72123,72,Puerto Rico,Salinas Municipio,17640,"Coco, PR",Micro,490,"San Juan-Bayamón, PR",Central
+72125,72,Puerto Rico,San Germán Municipio,32420,"Mayagüez, PR",Metro,364,"Mayagüez-Aguadilla, PR",Central
+72127,72,Puerto Rico,San Juan Municipio,41980,"San Juan-Bayamón-Caguas, PR",Metro,490,"San Juan-Bayamón, PR",Central
+72129,72,Puerto Rico,San Lorenzo Municipio,41980,"San Juan-Bayamón-Caguas, PR",Metro,490,"San Juan-Bayamón, PR",Central
+72131,72,Puerto Rico,San Sebastián Municipio,10380,"Aguadilla, PR",Metro,364,"Mayagüez-Aguadilla, PR",Central
+72133,72,Puerto Rico,Santa Isabel Municipio,17620,"Coamo, PR",Micro,434,"Ponce-Coamo, PR",Central
+72135,72,Puerto Rico,Toa Alta Municipio,41980,"San Juan-Bayamón-Caguas, PR",Metro,490,"San Juan-Bayamón, PR",Central
+72137,72,Puerto Rico,Toa Baja Municipio,41980,"San Juan-Bayamón-Caguas, PR",Metro,490,"San Juan-Bayamón, PR",Central
+72139,72,Puerto Rico,Trujillo Alto Municipio,41980,"San Juan-Bayamón-Caguas, PR",Metro,490,"San Juan-Bayamón, PR",Central
+72141,72,Puerto Rico,Utuado Municipio,46580,"Utuado, PR",Micro,490,"San Juan-Bayamón, PR",Central
+72143,72,Puerto Rico,Vega Alta Municipio,41980,"San Juan-Bayamón-Caguas, PR",Metro,490,"San Juan-Bayamón, PR",Central
+72145,72,Puerto Rico,Vega Baja Municipio,41980,"San Juan-Bayamón-Caguas, PR",Metro,490,"San Juan-Bayamón, PR",Central
+72149,72,Puerto Rico,Villalba Municipio,38660,"Ponce, PR",Metro,434,"Ponce-Coamo, PR",Outlying
+72151,72,Puerto Rico,Yabucoa Municipio,41980,"San Juan-Bayamón-Caguas, PR",Metro,490,"San Juan-Bayamón, PR",Central
+72153,72,Puerto Rico,Yauco Municipio,38660,"Ponce, PR",Metro,434,"Ponce-Coamo, PR",Outlying
+,,,,,,Micro,,,
+,,,,Note: The Office of Management and Budget's (OMB's) 2020 Standards for Delineating Core Based Statistical Areas are at <https://www.federalregister.gov/documents/2021/07/16/2021-15159/2020-standards-for-delineating-core-based-statistical-areas>.,,Micro,,,
+,,,,"Source: File prepared by U.S. Census Bureau, Population Division, based on OMB, July 2023 delineations <https://www.whitehouse.gov/wp-content/uploads/2023/07/OMB-Bulletin-23-01.pdf>.",,Micro,,,
