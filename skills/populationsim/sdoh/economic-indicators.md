@@ -44,6 +44,40 @@ The economic-indicators skill provides detailed analysis of economic factors tha
 
 ---
 
+## Data Sources (Embedded v2.0)
+
+Economic indicators are available in embedded SVI data:
+
+| Indicator | File | Column |
+|-----------|------|--------|
+| Below 150% Poverty (%) | `data/county/svi_county_2022.csv` | EP_POV150 |
+| Below 150% Poverty (count) | `data/tract/svi_tract_2022.csv` | E_POV150 |
+| Unemployment (%) | `data/tract/svi_tract_2022.csv` | EP_UNEMP |
+| Unemployment (count) | `data/tract/svi_tract_2022.csv` | E_UNEMP |
+| Housing Cost Burden (%) | `data/tract/svi_tract_2022.csv` | EP_HBURD |
+| No Health Insurance (%) | `data/tract/svi_tract_2022.csv` | EP_UNINSUR |
+
+### ADI Economic Context
+The Area Deprivation Index (`data/block_group/adi_blockgroup_2023.csv`) incorporates:
+- Median family income
+- Income disparity ratio
+- Unemployment rate
+- Poverty rate
+
+### Data Lookup Pattern
+
+```
+1. Identify geography type and FIPS code
+2. Read SVI file for economic indicators
+3. Read ADI for neighborhood-level deprivation
+4. Compare to national/state benchmarks
+5. Return with source citations
+```
+
+**Note**: Detailed income distributions require ACS microdata not in embedded package. SVI provides key economic indicators for SDOH profiling.
+
+---
+
 ## Key Economic Indicators
 
 ### Income Measures (ACS)

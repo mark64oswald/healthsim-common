@@ -45,6 +45,28 @@ The health-behavior-patterns skill analyzes modifiable health risk behaviors acr
 
 ---
 
+## Data Sources (Embedded v2.0)
+
+Health behavior data comes from CDC PLACES in the embedded data package:
+
+| Level | File | Key Columns |
+|-------|------|-------------|
+| County | `data/county/places_county_2024.csv` | CSMOKING_CrudePrev, OBESITY_CrudePrev, LPA_CrudePrev, BINGE_CrudePrev, SLEEP_CrudePrev |
+| Tract | `data/tract/places_tract_2024.csv` | Same columns as county |
+
+### Data Lookup Pattern
+
+```
+1. Identify geography (county FIPS or tract FIPS)
+2. Read appropriate PLACES file
+3. Filter by CountyFIPS or LocationID
+4. Extract behavior columns ([BEHAVIOR]_CrudePrev)
+5. Compare to national averages
+6. Return with CDC PLACES 2024 source citation
+```
+
+---
+
 ## Available Behaviors
 
 ### CDC PLACES Health Behaviors

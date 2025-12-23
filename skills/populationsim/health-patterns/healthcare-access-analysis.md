@@ -46,6 +46,34 @@ The healthcare-access-analysis skill evaluates healthcare access across geograph
 
 ---
 
+## Data Sources (Embedded v2.0)
+
+Healthcare access data comes from multiple embedded sources:
+
+| Metric | File | Key Columns |
+|--------|------|-------------|
+| Uninsured Rate | `data/county/svi_county_2022.csv` | EP_UNINSUR |
+| Uninsured Rate (tract) | `data/tract/svi_tract_2022.csv` | EP_UNINSUR, E_UNINSUR |
+| Annual Checkup | `data/county/places_county_2024.csv` | CHECKUP_CrudePrev |
+| Dental Visit | `data/county/places_county_2024.csv` | DENTAL_CrudePrev |
+| Cholesterol Screening | `data/county/places_county_2024.csv` | CHOLSCREEN_CrudePrev |
+| Colorectal Screening | `data/county/places_county_2024.csv` | COLON_SCREEN_CrudePrev |
+| Mammography | `data/county/places_county_2024.csv` | MAMMOUSE_CrudePrev |
+
+### Data Lookup Pattern
+
+```
+1. Identify geography type and FIPS code
+2. Read SVI file for insurance coverage (EP_UNINSUR)
+3. Read PLACES file for preventive care utilization
+4. Compare to national/state benchmarks
+5. Return with source citations
+```
+
+**Note**: Provider ratios require external data (AHRF, NPPES) not included in embedded package.
+
+---
+
 ## Access Dimensions
 
 ### Insurance Coverage (ACS)

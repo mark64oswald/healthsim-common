@@ -43,6 +43,31 @@ The sdoh-profile-builder skill creates comprehensive SDOH profiles for cohorts b
 
 ---
 
+## Data Sources (Embedded v2.0)
+
+SDOH profiles are built from embedded data files:
+
+| Data Type | File | Key Columns |
+|-----------|------|-------------|
+| SVI Themes | `data/county/svi_county_2022.csv` | RPL_THEMES, RPL_THEME1-4 |
+| SVI Variables | `data/tract/svi_tract_2022.csv` | EP_POV150, EP_UNINSUR, EP_MINRTY |
+| ADI Rankings | `data/block_group/adi_blockgroup_2023.csv` | ADI_NATRANK, ADI_STATERNK |
+| Food Insecurity | `data/county/places_county_2024.csv` | FOODINSECU_CrudePrev |
+| Housing Insecurity | `data/county/places_county_2024.csv` | HOUSINSECU_CrudePrev |
+| Transportation | `data/county/places_county_2024.csv` | LACKTRPT_CrudePrev |
+
+### Data Lookup Pattern
+
+```
+1. Look up SVI for geography (county or tract)
+2. Look up CDC PLACES social needs measures (county)
+3. Look up ADI for block groups (aggregate to tract/county if needed)
+4. Apply Z-code assignment logic based on rates
+5. Return SDOH profile with source citations
+```
+
+---
+
 ## SDOH to Z-Code Mapping
 
 ### Economic Stability (Z59)

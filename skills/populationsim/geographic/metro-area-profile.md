@@ -51,6 +51,36 @@ The metro-area-profile skill generates PopulationProfile objects for Metropolita
 
 ---
 
+## Data Sources (Embedded v2.0)
+
+Metro area profiles aggregate data from embedded files:
+
+| Data Type | File | Usage |
+|-----------|------|-------|
+| CBSA Definitions | `data/crosswalks/cbsa_definitions.csv` | Map metro to counties |
+| Health Indicators | `data/county/places_county_2024.csv` | Per-county health data |
+| SVI Scores | `data/county/svi_county_2022.csv` | Per-county vulnerability |
+| County FIPS | `data/crosswalks/fips_county.csv` | County name lookups |
+
+### Metro Aggregation Pattern
+
+```
+1. Look up CBSA code from metro name in cbsa_definitions.csv
+2. Get all county FIPS codes for that CBSA
+3. For each county, read PLACES and SVI data
+4. Aggregate using population-weighted averages
+5. Return with source citations
+```
+
+### Key CBSA Columns
+- `cbsa_code`: 5-digit CBSA identifier
+- `cbsa_title`: Full metro name (e.g., "Houston-The Woodlands-Sugar Land, TX")
+- `cbsa_type`: "Metropolitan" or "Micropolitan"
+- `county_fips`: 5-digit county FIPS
+- `central_outlying`: County role in the metro
+
+---
+
 ## Generation Patterns
 
 ### Pattern 1: Single Metro Profile

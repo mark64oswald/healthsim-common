@@ -44,6 +44,37 @@ The clinical-prevalence-profile skill creates comprehensive clinical profiles fo
 
 ---
 
+## Data Sources (Embedded v2.0)
+
+Clinical prevalence data comes from embedded CDC PLACES files:
+
+| Condition | File | Column |
+|-----------|------|--------|
+| Diabetes | `data/county/places_county_2024.csv` | DIABETES_CrudePrev |
+| Obesity | `data/county/places_county_2024.csv` | OBESITY_CrudePrev |
+| Hypertension | `data/county/places_county_2024.csv` | BPHIGH_CrudePrev |
+| High Cholesterol | `data/county/places_county_2024.csv` | HIGHCHOL_CrudePrev |
+| CHD | `data/county/places_county_2024.csv` | CHD_CrudePrev |
+| Stroke | `data/county/places_county_2024.csv` | STROKE_CrudePrev |
+| COPD | `data/county/places_county_2024.csv` | COPD_CrudePrev |
+| Asthma | `data/county/places_county_2024.csv` | CASTHMA_CrudePrev |
+| CKD | `data/county/places_county_2024.csv` | KIDNEY_CrudePrev |
+| Arthritis | `data/county/places_county_2024.csv` | ARTHRITIS_CrudePrev |
+| Depression | `data/county/places_county_2024.csv` | DEPRESSION_CrudePrev |
+| Cancer | `data/county/places_county_2024.csv` | CANCER_CrudePrev |
+
+### Data-First Clinical Profile Pattern
+
+```
+1. Look up geographic prevalence from PLACES for primary condition
+2. Apply comorbidity rates from clinical knowledge (below)
+3. Adjust comorbidities based on geographic health profile
+4. Calculate severity distribution from epidemiological patterns
+5. Return profile with PLACES source citation
+```
+
+---
+
 ## Core Comorbidity Patterns
 
 ### Type 2 Diabetes (E11)

@@ -47,6 +47,31 @@ The health-outcome-disparities skill analyzes differences in health outcomes acr
 
 ---
 
+## Data Sources (Embedded v2.0)
+
+Disparity analysis uses embedded data with geographic stratification:
+
+| Data Type | File | Key Columns |
+|-----------|------|-------------|
+| Health Outcomes | `data/county/places_county_2024.csv` | [CONDITION]_CrudePrev |
+| Demographics | `data/tract/svi_tract_2022.csv` | EP_MINRTY, E_AFAM, E_HISP, E_ASIAN |
+| SVI by Theme | `data/tract/svi_tract_2022.csv` | RPL_THEME3 (Minority/Language) |
+| Socioeconomic | `data/tract/svi_tract_2022.csv` | EP_POV150, EP_NOHSDP |
+
+### Disparity Analysis Pattern
+
+```
+1. Identify high-minority vs low-minority tracts using EP_MINRTY
+2. Compare health outcomes between tract groups
+3. Calculate disparity ratios and absolute differences
+4. Correlate with SVI themes to identify drivers
+5. Return with source citations
+```
+
+**Note**: Race-specific health data requires BRFSS microdata or stratified estimates not in embedded package. Use SVI demographic composition as proxy for geographic disparity analysis.
+
+---
+
 ## Disparity Dimensions
 
 ### Race/Ethnicity Categories
