@@ -9,6 +9,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **[PopulationSim]** Phase 2 - Skills Integration with Embedded Data (2024-12-23)
+  - Created new `data-access/` skill category:
+    - `data-access/README.md` - Category overview and data provenance principles
+    - `data-access/data-lookup.md` - Direct data file access patterns for PLACES, SVI, ADI
+    - `data-access/geography-lookup.md` - FIPS code resolution and crosswalk queries
+    - `data-access/data-aggregation.md` - Tract→county, county→metro aggregation patterns
+  - Updated master `SKILL.md` with:
+    - New data-access category in Quick Reference table
+    - Data Access trigger phrases
+    - Embedded data package in Data Sources section
+    - Updated directory structure with data/ and data-access/ folders
+  - Updated geographic skills:
+    - `geographic/county-profile.md` - Added Data Sources section with column mappings and lookup patterns
+  - Updated SDOH skills:
+    - `sdoh/svi-analysis.md` - Added embedded data source section with column reference
+    - `sdoh/adi-analysis.md` - Added embedded data source section with suppression code handling
+  - Updated cohort skills:
+    - `cohorts/cohort-specification.md` - Added data-first specification pattern
+  - All skills now reference exact file paths and column names for embedded data package
+
 - **[PopulationSim]** Embedded Data Package v2.0 - Phase 1 Complete (2024-12-23)
   - Created `skills/populationsim/data/` directory with real-world datasets:
     - **CDC PLACES 2024**: County (3,143 records, 4.8 MB) and Tract (83,522 records, 67 MB)

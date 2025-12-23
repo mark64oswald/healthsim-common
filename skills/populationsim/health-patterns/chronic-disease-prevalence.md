@@ -48,16 +48,44 @@ The chronic-disease-prevalence skill analyzes disease prevalence rates across ge
 
 ---
 
+## Data Sources (Embedded v2.0)
+
+This skill reads from PopulationSim's embedded CDC PLACES data:
+
+| Level | File | Records | Data Year |
+|-------|------|---------|-----------|
+| County | `data/county/places_county_2024.csv` | 3,143 | 2022 BRFSS |
+| Tract | `data/tract/places_tract_2024.csv` | 83,522 | 2022 BRFSS |
+
+### Key Columns
+
+The PLACES files use a **wide format** with columns for each measure:
+- `[MEASURE]_CrudePrev`: Crude prevalence percentage
+- `[MEASURE]_AdjPrev`: Age-adjusted prevalence percentage
+- `[MEASURE]_Crude95CI`: 95% confidence interval for crude estimate
+
+### Data Lookup Pattern
+
+```
+1. Identify geography level (county or tract)
+2. Read appropriate PLACES file
+3. Filter by CountyFIPS or LocationID
+4. Extract [MEASURE]_CrudePrev columns
+5. Return with source citation
+```
+
+---
+
 ## Available Conditions
 
-### CDC PLACES Chronic Conditions
+### CDC PLACES Health Outcomes (from embedded data)
 
-| Condition | Variable | ICD-10 | National Rate |
-|-----------|----------|--------|---------------|
-| Diabetes | DIABETES | E11 | 10.1% |
-| Obesity | OBESITY | E66 | 32.1% |
-| Hypertension | BPHIGH | I10 | 32.4% |
-| High Cholesterol | HIGHCHOL | E78 | 31.2% |
+| Condition | Column Prefix | National Avg |
+|-----------|---------------|--------------|
+| Diabetes | DIABETES | 10.1% |
+| Obesity | OBESITY | 32.1% |
+| Hypertension | BPHIGH | 32.4% |
+| High Cholesterol | HIGHCHOL | 29.8% |
 | Coronary Heart Disease | CHD | I25 | 5.4% |
 | Stroke | STROKE | I63 | 3.0% |
 | COPD | COPD | J44 | 6.2% |

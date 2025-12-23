@@ -24,27 +24,43 @@ PopulationSim provides population-level intelligence using public data sources (
 
 | I want to... | Use This Skill | Key Triggers |
 |--------------|----------------|--------------|
+| **Data Access (v2.0)** | | |
+| Look up exact data values | `data-access/data-lookup.md` | "what is the exact", "look up", "from PLACES" |
+| Resolve FIPS codes | `data-access/geography-lookup.md` | "FIPS for", "which county is", "list counties in MSA" |
+| Aggregate geographic data | `data-access/data-aggregation.md` | "aggregate tracts", "metro total", "combine counties" |
+| **Geographic Intelligence** | | |
 | Profile a county or region | `geographic/county-profile.md` | "county profile", "demographics for", "health indicators" |
 | Analyze census tracts | `geographic/census-tract-analysis.md` | "tract level", "granular", "hotspots" |
 | Profile a metro area | `geographic/metro-area-profile.md` | "metro", "MSA", "metropolitan" |
 | Define custom region | `geographic/custom-region-builder.md` | "service area", "combine", "custom region" |
+| **Health Patterns** | | |
 | Analyze disease prevalence | `health-patterns/chronic-disease-prevalence.md` | "diabetes rate", "prevalence", "CDC PLACES" |
 | Analyze health behaviors | `health-patterns/health-behavior-patterns.md` | "smoking rate", "obesity", "physical activity" |
 | Assess healthcare access | `health-patterns/healthcare-access-analysis.md` | "uninsured", "provider ratio", "access" |
 | Identify health disparities | `health-patterns/health-outcome-disparities.md` | "disparities", "equity", "by race" |
+| **SDOH Analysis** | | |
 | Analyze SVI | `sdoh/svi-analysis.md` | "SVI", "social vulnerability", "vulnerable" |
 | Analyze ADI | `sdoh/adi-analysis.md` | "ADI", "area deprivation", "deprived" |
 | Analyze economics | `sdoh/economic-indicators.md` | "poverty", "income", "unemployment" |
 | Analyze community factors | `sdoh/community-factors.md` | "housing", "transportation", "food access" |
+| **Cohort Definition** | | |
 | Define a cohort | `cohorts/cohort-specification.md` | "define cohort", "cohort spec", "population segment" |
 | Build demographics | `cohorts/demographic-distribution.md` | "age distribution", "demographics for cohort" |
 | Build clinical profile | `cohorts/clinical-prevalence-profile.md` | "comorbidity rates", "clinical profile" |
 | Build SDOH profile | `cohorts/sdoh-profile-builder.md` | "SDOH profile", "Z-code rates" |
+| **Trial Support** | | |
 | Estimate trial feasibility | `trial-support/feasibility-estimation.md` | "feasibility", "eligible population" |
 | Select trial sites | `trial-support/site-selection-support.md` | "site selection", "best locations" |
 | Project enrollment | `trial-support/enrollment-projection.md` | "enrollment timeline", "recruitment rate" |
 
 ## Trigger Phrases
+
+### Data Access (v2.0)
+- "What is the exact [measure] in [geography]?"
+- "Look up [measure] from CDC PLACES"
+- "What's the FIPS code for [county]?"
+- "Which counties are in the [metro] MSA?"
+- "Aggregate tract data for [county]"
 
 ### Geographic Intelligence
 - "What's the population profile for [county/region]?"
@@ -230,14 +246,18 @@ Generation input for other HealthSim products:
 | CohortSpecification | TrialSim | Diverse trial subjects meeting FDA guidance |
 | PopulationProfile | NetworkSim | Service area provider network design |
 
-## Data Sources
+## Data Sources (Embedded v2.0)
 
-| Source | Provider | Data Type | Update Frequency |
-|--------|----------|-----------|------------------|
-| American Community Survey | Census Bureau | Demographics, economics | Annual |
-| CDC PLACES | CDC | Health indicators (27 measures) | Annual |
-| Social Vulnerability Index | CDC/ATSDR | SDOH composite (16 variables) | Biennial |
-| Area Deprivation Index | HRSAdmin | Neighborhood deprivation | Annual |
+PopulationSim includes an embedded data package (148 MB) with 100% US coverage:
+
+| Source | File | Records | Data Year |
+|--------|------|---------|-----------|
+| CDC PLACES (County) | `data/county/places_county_2024.csv` | 3,143 | 2022 BRFSS |
+| CDC PLACES (Tract) | `data/tract/places_tract_2024.csv` | 83,522 | 2022 BRFSS |
+| SVI (County) | `data/county/svi_county_2022.csv` | 3,144 | 2018-2022 ACS |
+| SVI (Tract) | `data/tract/svi_tract_2022.csv` | 84,120 | 2018-2022 ACS |
+| ADI (Block Group) | `data/block_group/adi_blockgroup_2023.csv` | 242,336 | 2019-2023 ACS |
+| Geography Crosswalks | `data/crosswalks/*.csv` | Various | 2023 Census |
 
 ## Directory Structure
 
@@ -247,35 +267,48 @@ skills/populationsim/
 ├── README.md                          # Product overview
 ├── population-intelligence-domain.md  # Core domain knowledge
 │
-├── geographic/                        # Geographic Intelligence (Phase 2)
+├── data/                              # Embedded Data Package (v2.0)
+│   ├── README.md                      # Data dictionary
+│   ├── county/                        # County-level files
+│   ├── tract/                         # Tract-level files
+│   ├── block_group/                   # Block group files (ADI)
+│   └── crosswalks/                    # FIPS and CBSA mappings
+│
+├── data-access/                       # Data Access Skills (v2.0)
+│   ├── README.md                      # Category overview
+│   ├── data-lookup.md                 # Direct value lookups
+│   ├── geography-lookup.md            # FIPS code resolution
+│   └── data-aggregation.md            # Geographic aggregation
+│
+├── geographic/                        # Geographic Intelligence
 │   ├── README.md                      # Category overview
 │   ├── county-profile.md              # County-level profiles
 │   ├── census-tract-analysis.md       # Tract-level analysis
 │   ├── metro-area-profile.md          # MSA/CBSA profiles
 │   └── custom-region-builder.md       # Custom region aggregation
 │
-├── health-patterns/                   # Health Analysis (Phase 3)
+├── health-patterns/                   # Health Analysis
 │   ├── README.md                      # Category overview
 │   ├── chronic-disease-prevalence.md  # Disease burden analysis
 │   ├── health-behavior-patterns.md    # Risk factor analysis
 │   ├── healthcare-access-analysis.md  # Coverage and access
 │   └── health-outcome-disparities.md  # Disparity analysis
 │
-├── sdoh/                              # Social Determinants (Phase 4)
+├── sdoh/                              # Social Determinants
 │   ├── README.md                      # SDOH framework overview
 │   ├── svi-analysis.md                # Social Vulnerability Index
 │   ├── adi-analysis.md                # Area Deprivation Index
 │   ├── economic-indicators.md         # Income, poverty, employment
 │   └── community-factors.md           # Housing, transportation, food
 │
-├── cohorts/                           # Cohort Definition (Phase 5)
+├── cohorts/                           # Cohort Definition
 │   ├── README.md                      # CohortSpecification schema
 │   ├── cohort-specification.md        # Complete cohort definition
 │   ├── demographic-distribution.md    # Age, sex, race distributions
 │   ├── clinical-prevalence-profile.md # Comorbidity patterns
 │   └── sdoh-profile-builder.md        # SDOH and Z-code rates
 │
-└── trial-support/                     # Clinical Trial Support (Phase 6)
+└── trial-support/                     # Clinical Trial Support
     ├── README.md                      # Trial integration overview
     ├── feasibility-estimation.md      # Eligible population modeling
     ├── site-selection-support.md      # Site network optimization
