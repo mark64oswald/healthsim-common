@@ -20,14 +20,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - Data Access trigger phrases
     - Embedded data package in Data Sources section
     - Updated directory structure with data/ and data-access/ folders
-  - Updated geographic skills:
-    - `geographic/county-profile.md` - Added Data Sources section with column mappings and lookup patterns
-  - Updated SDOH skills:
-    - `sdoh/svi-analysis.md` - Added embedded data source section with column reference
-    - `sdoh/adi-analysis.md` - Added embedded data source section with suppression code handling
-  - Updated cohort skills:
-    - `cohorts/cohort-specification.md` - Added data-first specification pattern
+  - Updated skills with "Data Sources (Embedded v2.0)" sections:
+    - `geographic/county-profile.md` - Column mappings and lookup patterns
+    - `sdoh/svi-analysis.md` - SVI column reference and lookup pattern
+    - `sdoh/adi-analysis.md` - ADI suppression code handling
+    - `cohorts/cohort-specification.md` - Data-first specification pattern
+    - `cohorts/sdoh-profile-builder.md` - SDOH data sources and Z-code mapping
+  - Created/updated reference documentation:
+    - `references/data-sources.md` - NEW: Consolidated data source reference (212 lines)
+    - `references/cdc-places-measures.md` - Added embedded file locations and column conventions
+    - `references/svi-variables.md` - Added embedded file locations and column conventions
   - All skills now reference exact file paths and column names for embedded data package
+  - Verified with 6 test queries confirming data-first generation works
 
 - **[PopulationSim]** Embedded Data Package v2.0 - Phase 1 Complete (2024-12-23)
   - Created `skills/populationsim/data/` directory with real-world datasets:

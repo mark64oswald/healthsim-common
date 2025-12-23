@@ -18,6 +18,30 @@ CDC PLACES (Population Level Analysis and Community Estimates) provides model-ba
 
 ---
 
+## Embedded Data Files (v2.0)
+
+| Level | File | Records |
+|-------|------|---------|
+| County | `data/county/places_county_2024.csv` | 3,143 |
+| Tract | `data/tract/places_tract_2024.csv` | 83,522 |
+
+### Column Naming Convention
+
+The PLACES files use a **wide format** with multiple columns per measure:
+- `[MEASURE]_CrudePrev`: Crude prevalence percentage (e.g., `DIABETES_CrudePrev`)
+- `[MEASURE]_AdjPrev`: Age-adjusted prevalence percentage
+- `[MEASURE]_Crude95CI`: 95% confidence interval for crude estimate
+- `[MEASURE]_Adj95CI`: 95% confidence interval for adjusted estimate
+
+### Key Geography Columns
+- `StateAbbr`: State abbreviation (e.g., "TX")
+- `CountyName`: County name
+- `CountyFIPS`: 5-digit county FIPS code
+- `LocationID`: 11-digit tract FIPS (tract file only)
+- `TotalPopulation`: Population 18+
+
+---
+
 ## Health Outcomes (13 measures)
 
 ### Chronic Diseases

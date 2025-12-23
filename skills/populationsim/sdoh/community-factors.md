@@ -43,6 +43,37 @@ The community-factors skill analyzes neighborhood and community-level factors th
 
 ---
 
+## Data Sources (Embedded v2.0)
+
+Community factor data comes from embedded SVI and CDC PLACES files:
+
+| Category | File | Key Columns |
+|----------|------|-------------|
+| **Housing** | | |
+| Multi-unit structures | `data/tract/svi_tract_2022.csv` | E_MUNIT, EP_MUNIT |
+| Mobile homes | `data/tract/svi_tract_2022.csv` | E_MOBILE, EP_MOBILE |
+| Crowding | `data/tract/svi_tract_2022.csv` | E_CROWD, EP_CROWD |
+| Housing cost burden | `data/tract/svi_tract_2022.csv` | E_HBURD, EP_HBURD |
+| **Transportation** | | |
+| No vehicle | `data/tract/svi_tract_2022.csv` | E_NOVEH, EP_NOVEH |
+| Lack of transportation | `data/county/places_county_2024.csv` | LACKTRPT_CrudePrev |
+| **Social Needs** | | |
+| Food insecurity | `data/county/places_county_2024.csv` | FOODINSECU_CrudePrev |
+| Housing insecurity | `data/county/places_county_2024.csv` | HOUSINSECU_CrudePrev |
+| Utility shutoff threat | `data/county/places_county_2024.csv` | SHUTUTILITY_CrudePrev |
+
+### Data Lookup Pattern
+
+```
+1. Identify geography type and FIPS code
+2. Read SVI tract file for housing/transportation indicators
+3. Read PLACES county file for social needs measures
+4. Combine into community factor profile
+5. Return with source citations
+```
+
+---
+
 ## Community Factor Categories
 
 ### Housing Factors

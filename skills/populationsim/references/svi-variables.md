@@ -18,6 +18,41 @@ The Social Vulnerability Index (SVI) uses 16 U.S. Census variables to identify c
 
 ---
 
+## Embedded Data Files (v2.0)
+
+| Level | File | Records |
+|-------|------|---------|
+| County | `data/county/svi_county_2022.csv` | 3,144 |
+| Tract | `data/tract/svi_tract_2022.csv` | 84,120 |
+
+### Column Naming Convention
+
+**Estimate Columns (E_*):** Raw counts
+- `E_TOTPOP`: Total population
+- `E_POV150`: Persons below 150% poverty
+- `E_UNINSUR`: Uninsured persons
+
+**Percentage Columns (EP_*):** Percentages
+- `EP_POV150`: % below 150% poverty
+- `EP_UNINSUR`: % uninsured
+
+**Ranking Columns (RPL_*):** Percentile rankings (0-1, higher = more vulnerable)
+- `RPL_THEMES`: Overall SVI ranking
+- `RPL_THEME1`: Socioeconomic Status ranking
+- `RPL_THEME2`: Household Characteristics ranking
+- `RPL_THEME3`: Minority/Language ranking
+- `RPL_THEME4`: Housing/Transportation ranking
+
+**Geography Columns:**
+- `ST_ABBR`: State abbreviation
+- `STCNTY`: 5-digit county FIPS
+- `FIPS`: 11-digit tract FIPS (tract file only)
+- `COUNTY`: County name
+
+**Missing Values:** -999 indicates suppressed/unavailable data
+
+---
+
 ## Theme 1: Socioeconomic Status
 
 | Variable | Definition | ACS Table | National Mean |

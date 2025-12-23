@@ -42,6 +42,35 @@ The demographic-distribution skill creates accurate demographic profiles for coh
 
 ---
 
+## Data Sources (Embedded v2.0)
+
+Demographic data comes from embedded SVI files:
+
+| Metric | File | Columns |
+|--------|------|---------|
+| Total Population | `data/tract/svi_tract_2022.csv` | E_TOTPOP |
+| Age 65+ | `data/tract/svi_tract_2022.csv` | E_AGE65, EP_AGE65 |
+| Age Under 18 | `data/tract/svi_tract_2022.csv` | E_AGE17, EP_AGE17 |
+| Minority Status | `data/tract/svi_tract_2022.csv` | E_MINRTY, EP_MINRTY |
+| African American | `data/tract/svi_tract_2022.csv` | E_AFAM, EP_AFAM |
+| Hispanic | `data/tract/svi_tract_2022.csv` | E_HISP, EP_HISP |
+| Asian | `data/tract/svi_tract_2022.csv` | E_ASIAN, EP_ASIAN |
+
+### Data Lookup Pattern
+
+```
+1. Identify geography FIPS code
+2. Read SVI tract file for demographic indicators
+3. Calculate demographic proportions from E_* and EP_* columns
+4. Aggregate across tracts if county/metro level
+5. Apply condition-specific adjustments from domain knowledge
+6. Return distributions with source citation
+```
+
+**Note**: Detailed age breakdowns (5-year groups) require ACS S0101 not in embedded package. SVI provides key demographic segments.
+
+---
+
 ## Standard Age Brackets
 
 ### General Population
