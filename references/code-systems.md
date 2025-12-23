@@ -5,6 +5,8 @@ Standard medical codes for generating realistic healthcare data.
 ## Table of Contents
 
 - [Code System URIs](#code-system-uris)
+- [Geographic Code Systems](#geographic-code-systems)
+- [Population and SDOH Codes](#population-and-sdoh-codes)
 - [ICD-10-CM Diagnosis Codes](#icd-10-cm-diagnosis-codes)
 - [CPT Procedure Codes](#cpt-procedure-codes)
 - [LOINC Lab Codes](#loinc-lab-codes)
@@ -31,6 +33,106 @@ Standard medical codes for generating realistic healthcare data.
 | NDC | `http://hl7.org/fhir/sid/ndc` | - |
 | SNOMED CT | `http://snomed.info/sct` | US Edition |
 | CVX | `http://hl7.org/fhir/sid/cvx` | - |
+
+---
+
+## Geographic Code Systems
+
+### FIPS Codes
+
+| Level | Digits | Example | Description |
+|-------|--------|---------|-------------|
+| State | 2 | 48 | Texas |
+| County | 5 | 48201 | Harris County, TX |
+| Tract | 11 | 48201311500 | Census tract in Harris County |
+| Block Group | 12 | 482013115001 | Block group within tract |
+
+### CBSA Codes (Metropolitan/Micropolitan Areas)
+
+| Code | Name | Type | Population |
+|------|------|------|------------|
+| 35620 | New York-Newark-Jersey City | Metro | 19.8M |
+| 31080 | Los Angeles-Long Beach-Anaheim | Metro | 13.0M |
+| 16980 | Chicago-Naperville-Elgin | Metro | 9.5M |
+| 19100 | Dallas-Fort Worth-Arlington | Metro | 7.6M |
+| 26420 | Houston-The Woodlands-Sugar Land | Metro | 7.1M |
+
+### Census Region/Division Codes
+
+| Region | Division | Code | States |
+|--------|----------|------|--------|
+| Northeast | New England | 1 | CT, ME, MA, NH, RI, VT |
+| Northeast | Middle Atlantic | 2 | NJ, NY, PA |
+| Midwest | East North Central | 3 | IL, IN, MI, OH, WI |
+| Midwest | West North Central | 4 | IA, KS, MN, MO, NE, ND, SD |
+| South | South Atlantic | 5 | DE, DC, FL, GA, MD, NC, SC, VA, WV |
+| South | East South Central | 6 | AL, KY, MS, TN |
+| South | West South Central | 7 | AR, LA, OK, TX |
+| West | Mountain | 8 | AZ, CO, ID, MT, NV, NM, UT, WY |
+| West | Pacific | 9 | AK, CA, HI, OR, WA |
+
+**Reference**: [Geography Codes](geography-codes.md)
+
+---
+
+## Population and SDOH Codes
+
+### ICD-10-CM Z-Codes for Social Determinants
+
+| Category | Code Range | Description |
+|----------|------------|-------------|
+| Education/Literacy | Z55.x | Problems related to education and literacy |
+| Employment | Z56.x | Problems related to employment and unemployment |
+| Housing/Economic | Z59.x | Problems related to housing and economic circumstances |
+| Social Environment | Z60.x | Problems related to social environment |
+| Upbringing | Z62.x | Problems related to upbringing |
+| Family Circumstances | Z63.x | Problems related to primary support group |
+| Psychosocial | Z65.x | Problems related to psychosocial circumstances |
+| Healthcare Access | Z75.x | Problems related to medical facilities and care |
+
+### Common SDOH Z-Codes
+
+| Code | Description | SDOH Domain |
+|------|-------------|-------------|
+| Z55.0 | Illiteracy and low-level literacy | Education |
+| Z55.9 | Problems related to education, unspecified | Education |
+| Z56.0 | Unemployment, unspecified | Employment |
+| Z56.9 | Problems related to employment, unspecified | Employment |
+| Z59.00 | Homelessness, unspecified | Housing |
+| Z59.1 | Inadequate housing | Housing |
+| Z59.41 | Food insecurity | Food |
+| Z59.6 | Low income | Economic |
+| Z59.7 | Insufficient social insurance and welfare support | Insurance |
+| Z59.81 | Housing instability | Housing |
+| Z59.82 | Transportation insecurity | Transportation |
+| Z59.89 | Other problems related to housing and economic circumstances | Economic |
+| Z60.2 | Problems related to living alone | Social |
+| Z60.3 | Acculturation difficulty | Cultural |
+| Z60.4 | Social exclusion and rejection | Social |
+| Z63.0 | Problems in relationship with spouse or partner | Family |
+| Z63.5 | Disruption of family by separation and divorce | Family |
+| Z75.3 | Unavailability and inaccessibility of healthcare facilities | Access |
+
+### SVI Theme Codes (CDC/ATSDR)
+
+| Theme | Name | Variables |
+|-------|------|----------|
+| 1 | Socioeconomic Status | Poverty, Unemployment, Per capita income, No HS diploma |
+| 2 | Household Composition & Disability | Age 65+, Age 17-, Disability, Single parent |
+| 3 | Minority Status & Language | Minority, Limited English |
+| 4 | Housing Type & Transportation | Multi-unit, Mobile home, Crowding, No vehicle, Group quarters |
+
+### ADI Components
+
+| Domain | Variables |
+|--------|----------|
+| Income | Median family income, Income disparity, Median home value |
+| Poverty | Below 150% FPL, Single-parent families, Public assistance |
+| Education | No HS diploma, HS or higher |
+| Employment | Unemployment rate, Not in labor force |
+| Housing | Crowding, No vehicle, No telephone, No plumbing, No kitchen |
+
+**Reference**: [SVI Methodology](svi-methodology.md), [ADI Methodology](adi-methodology.md)
 
 ---
 
