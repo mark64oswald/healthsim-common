@@ -8,8 +8,9 @@ This directory contains embedded reference datasets for PopulationSim v2.0, prov
 |----------|-------|---------|------|
 | County-level | 2 files | ~3,144 counties | ~5 MB |
 | Tract-level | 2 files | ~84,000 tracts | ~122 MB |
+| Block Group-level | 1 file | ~242,000 block groups | ~12 MB |
 | Crosswalks | 4 files | Various | ~7 MB |
-| **Total** | **8 files** | - | **~134 MB** |
+| **Total** | **9 files** | - | **~146 MB** |
 
 ## Data Sources & Vintages
 
@@ -17,6 +18,7 @@ This directory contains embedded reference datasets for PopulationSim v2.0, prov
 |---------|--------|---------|-----------|------------------|
 | CDC PLACES | CDC Division of Population Health | 2024 Release | 2022 BRFSS | County, Tract |
 | SVI | CDC/ATSDR GRASP | 2022 | 2018-2022 ACS | County, Tract |
+| ADI | UW-Madison Neighborhood Atlas | 2023 v4.0.1 | 2019-2023 ACS | Block Group |
 | Geography | US Census Bureau | 2023 | - | State, County, Tract, CBSA |
 
 ## Directory Structure
@@ -30,6 +32,9 @@ data/
 ├── tract/
 │   ├── places_tract_2024.csv    # CDC PLACES health measures (GIS-friendly format)
 │   └── svi_tract_2022.csv       # CDC/ATSDR Social Vulnerability Index
+├── block_group/
+│   ├── adi_blockgroup_2023.csv  # Area Deprivation Index (Neighborhood Atlas)
+│   └── adi_readme.txt           # ADI documentation from source
 └── crosswalks/
     ├── fips_state.csv           # State FIPS codes
     ├── fips_county.csv          # County FIPS codes
@@ -169,6 +174,40 @@ CDC/ATSDR Social Vulnerability Index - Full tract-level dataset (158 columns).
 - **Theme 3 (Racial/Ethnic Minority Status):** Racial/ethnic minority population
 - **Theme 4 (Housing/Transportation):** Multi-unit structures, Mobile homes, Crowding, No vehicle, Group quarters
 
+
+### Block Group-Level Data
+
+#### adi_blockgroup_2023.csv
+Area Deprivation Index from UW-Madison Neighborhood Atlas (v4.0.1) - Block group-level socioeconomic disadvantage rankings.
+
+| Column | Description | Example |
+|--------|-------------|---------|
+| GISJOIN | NHGIS linkage key | G48020121110011 |
+| FIPS | 12-digit block group FIPS | 482012111001 |
+| ADI_NATRANK | National percentile (1-100) | 45 |
+| ADI_STATERNK | State decile (1-10) | 3 |
+
+**ADI Rankings:**
+- **National Rank (1-100):** Percentile ranking compared to all US block groups. Higher = more disadvantaged.
+- **State Rank (1-10):** Decile ranking within the state. Higher = more disadvantaged.
+
+**Suppression Codes (instead of numeric values):**
+| Code | Meaning |
+|------|---------|
+| GQ | >33.3% of housing units are group quarters |
+| PH | Population <100 or <30 housing units |
+| GQ-PH | Both GQ and PH conditions |
+| QDI | Missing key demographic factor in ACS data |
+
+**Coverage:** 242,336 block groups (all 50 states + DC + Puerto Rico)
+
+**ADI Components (17 factors):**
+- Income: Median family income, income disparity, % families below poverty, % population below 150% poverty
+- Education: % population 25+ with <9 years education, % with <high school diploma
+- Employment: % civilian labor force unemployed
+- Housing Quality: Median home value, median gross rent, median monthly mortgage
+- Housing Characteristics: % owner-occupied, % occupied units without complete plumbing, % occupied without telephone, % crowded (>1 person/room)
+- Household: % single-parent households with children, % households without motor vehicle
 
 ### Crosswalk Files
 
