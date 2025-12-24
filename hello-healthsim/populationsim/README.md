@@ -2,6 +2,18 @@
 
 Welcome to PopulationSim! This directory contains example prompts and outputs to help you get started with population demographics, health indicators, and SDOH analysis.
 
+## v2.0 Data-First Approach
+
+PopulationSim v2.0 includes an **embedded data package** with real-world reference data:
+
+| Dataset | Coverage | Records |
+|---------|----------|---------|
+| CDC PLACES 2024 | 40 health measures | 3,144 counties, 84,000 tracts |
+| CDC SVI 2022 | 16 vulnerability indicators | 3,144 counties, 84,000 tracts |
+| ADI 2023 | Area deprivation | 242,000 block groups |
+
+**Key difference**: Values are **looked up from real data**, not estimated. When you request a profile for Harris County, Claude reads the actual diabetes rate (12.1%) from CDC PLACES data.
+
 ## Examples
 
 | Example | Description | Key Concepts |

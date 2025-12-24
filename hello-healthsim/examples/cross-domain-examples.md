@@ -796,6 +796,69 @@ ORDER BY orr_pct DESC;
 
 These cross-domain examples show how HealthSim maintains consistency across products. Use them as templates for your own complex scenarios.
 
+---
+
+## Example: v2.0 Data-Driven Cross-Product Generation
+
+### Prompt
+```
+Generate 10 diabetic patients in Harris County, TX with their medical and pharmacy claims.
+Use real population data for realistic demographics and prevalence rates.
+```
+
+### Data Lookup (Behind the Scenes)
+```
+# PopulationSim reads embedded data:
+From data/county/places_county_2024.csv (FIPS 48201):
+  DIABETES_CrudePrev: 12.1%
+  OBESITY_CrudePrev: 32.8%
+  BPHIGH_CrudePrev: 32.4%
+
+From data/county/svi_county_2022.csv (FIPS 48201):
+  RPL_THEMES: 0.68 (high vulnerability)
+  EP_MINRTY: 72.1%
+  EP_UNINSUR: 22.1%
+```
+
+### Applied Generation Logic
+```json
+{
+  "generation_context": {
+    "geography": "Harris County, TX (48201)",
+    "applied_rates": {
+      "comorbidity_obesity": 0.328,
+      "comorbidity_hypertension": 0.324,
+      "minority_demographics": 0.721,
+      "adherence_modifier": -0.15
+    },
+    "data_sources": ["CDC_PLACES_2024", "CDC_SVI_2022"]
+  }
+}
+```
+
+### Expected Outputs
+
+**PatientSim**: 10 patients with realistic:
+- Demographics matching 72% minority population
+- Comorbidities: ~80% with hypertension, ~85% with obesity
+- A1C values reflecting high-SVI adherence patterns
+
+**MemberSim**: 10 medical claims with:
+- E&M codes (99213/99214)
+- Diabetes-related CPTs (83036 A1c, etc.)
+- Cost-sharing reflecting plan mix
+
+**RxMemberSim**: Pharmacy claims with:
+- Metformin (70%+ of patients)
+- GLP-1/SGLT2 inhibitors (20-30%)
+- Adherence rates ~70% (high SVI modifier)
+
+### Key Insight
+
+With v2.0 data integration, cross-product generation is **grounded in real population data**. The 10 patients aren't generic—they reflect actual Harris County health patterns from CDC data.
+
+---
+
 See also:
 - [Format Examples](format-examples.md) - Transform cross-domain data to standards
 - [Oncology Examples](oncology-examples.md) - Detailed oncology patient scenarios
