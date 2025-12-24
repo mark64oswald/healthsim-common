@@ -71,6 +71,45 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - Validation rules tables
   - Total Phase 2: ~3,000 lines of content
 
+- **[NetworkSim]** Phase 4 Complete - Integration Skills (2024-12-24)
+  - Created `skills/networksim/integration/` directory with 5 integration skills:
+    - `README.md` - Integration architecture and usage guide
+    - `provider-for-encounter.md` (~450 lines) - PatientSim/TrialSim provider generation
+      - Diagnosis-to-specialty mapping
+      - Procedure-to-specialty mapping
+      - Provider role assignment (Attending, Consulting, Proceduralist)
+      - Examples: HF admission, orthopedic surgery, ED visit, trial PI
+    - `network-for-member.md` (~500 lines) - MemberSim network status determination
+      - Network lookup and tier assignment
+      - In-network/out-of-network determination
+      - Tiered network cost sharing
+      - Emergency exception handling (No Surprises Act)
+      - Examples: PPO in-network, tiered preferred, HMO OON denied
+    - `pharmacy-for-rx.md` (~480 lines) - RxMemberSim pharmacy routing
+      - Specialty vs retail routing logic
+      - Mail order eligibility
+      - Limited distribution pharmacy assignment
+      - REMS compliance verification
+      - Examples: acute retail, maintenance mail, oncology specialty, REMS drug
+    - `benefit-for-claim.md` (~550 lines) - MemberSim/RxMemberSim cost sharing
+      - Deductible, copay, coinsurance calculation
+      - Accumulator tracking and updates
+      - OOP max application
+      - Service-type cost sharing rules
+      - Examples: copay visit, deductible lab, inpatient, OON, preventive
+    - `formulary-for-rx.md` (~520 lines) - RxMemberSim formulary coverage
+      - Formulary status and tier lookup
+      - Prior authorization criteria by drug class
+      - Step therapy protocol application
+      - Quantity limit enforcement
+      - Examples: generic covered, brand ST, specialty PA, excluded drug
+  - All integration skills include:
+    - Cross-product input/output contracts
+    - Decision trees and routing logic
+    - Complete adjudication examples
+    - Validation rules
+  - Total Phase 4: ~2,500 lines of content
+
 - **[NetworkSim]** Phase 3 Complete - Pattern/Template Skills (2024-12-24)
   - Created `skills/networksim/patterns/` directory with 5 pattern skills:
     - `README.md` - Category overview and pattern usage guide
