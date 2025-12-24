@@ -2,7 +2,20 @@
 
 ## Objective
 
-Generate a comprehensive population profile for a county, demonstrating PopulationSim's core demographic and health indicator capabilities.
+Generate a comprehensive population profile for a county, demonstrating PopulationSim's core demographic and health indicator capabilities using **embedded v2.0 data**.
+
+---
+
+## v2.0 Data-First Approach
+
+PopulationSim v2.0 uses embedded real-world data files. When you request a county profile, Claude looks up actual values from:
+
+| Data File | Content | Records |
+|-----------|---------|---------|
+| `data/county/places_county_2024.csv` | CDC PLACES health measures | 3,144 counties |
+| `data/county/svi_county_2022.csv` | Social Vulnerability Index | 3,144 counties |
+
+**Key difference from v1.0**: Values are **looked up**, not estimated.
 
 ---
 
@@ -10,6 +23,30 @@ Generate a comprehensive population profile for a county, demonstrating Populati
 
 ```
 Create a population profile for Harris County, Texas
+```
+
+---
+
+## Behind the Scenes: Data Lookup
+
+When Claude processes this request, it reads from embedded data files:
+
+```
+# Step 1: Look up FIPS code
+Harris County, TX → FIPS: 48201
+
+# Step 2: Read from places_county_2024.csv
+Row where CountyFIPS = "48201":
+  - DIABETES_CrudePrev: 12.1
+  - OBESITY_CrudePrev: 32.8
+  - BPHIGH_CrudePrev: 32.4
+  - TotalPopulation: 4,731,145
+
+# Step 3: Read from svi_county_2022.csv
+Row where FIPS = "48201":
+  - RPL_THEMES: 0.68
+  - EP_MINRTY: 72.1
+  - EP_POV150: 22.3
 ```
 
 ---
