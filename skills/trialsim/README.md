@@ -1,138 +1,118 @@
-# TrialSim Skills
+# TrialSim
 
-Clinical trial synthetic data generation skills for HealthSim.
+> Generate realistic clinical trial data including study definitions, subjects, visits, adverse events, efficacy assessments, and CDISC-compliant output.
 
-## Directory Structure
+## What TrialSim Does
 
+TrialSim is the **clinical trial data** engine of HealthSim. It creates synthetic trial data that follows regulatory standards—proper SDTM domains, MedDRA-coded adverse events, LOINC-coded labs, and realistic enrollment patterns across multi-site, multi-country trials.
+
+Whether you need a small Phase 1 dose-escalation study or a large Phase 3 pivotal trial with SDTM/ADaM output, TrialSim generates data suitable for testing EDC systems, statistical programming, and regulatory submission workflows.
+
+## Quick Start
+
+**Simple:**
 ```
-skills/trialsim/
-├── README.md                          # This file
-├── SKILL.md                           # Product router
-├── clinical-trials-domain.md          # Core domain knowledge
-├── recruitment-enrollment.md          # Recruitment funnel
-│
-├── phase1-dose-escalation.md          # Phase I dose escalation
-├── phase2-proof-of-concept.md         # Phase II proof-of-concept
-├── phase3-pivotal.md                  # Phase III pivotal scenarios
-├── phase4-postmarket.md               # Phase IV scenarios (planned)
-├── adaptive-design.md                 # Adaptive trial designs (planned)
-├── rare-disease.md                    # Small population trials (planned)
-│
-├── domains/                           # SDTM Domain Skills
-│   ├── README.md                      # Domain index, SDTM overview
-│   ├── demographics-dm.md             # DM - Subject demographics
-│   ├── adverse-events-ae.md           # AE - Adverse events (MedDRA)
-│   ├── vital-signs-vs.md              # VS - Vital sign measurements
-│   ├── laboratory-lb.md               # LB - Laboratory results (LOINC)
-│   ├── concomitant-meds-cm.md         # CM - Concomitant medications (ATC)
-│   ├── exposure-ex.md                 # EX - Study drug exposure
-│   ├── disposition-ds.md              # DS - Subject disposition
-│   └── medical-history-mh.md          # MH - Medical history
-│
-├── therapeutic-areas/                 # Indication-specific skills
-│   ├── README.md                      # Therapeutic area index
-│   ├── oncology.md                    # Solid tumors, RECIST
-│   ├── cardiovascular.md              # MACE, CV outcomes
-│   ├── cns.md                         # Neurological endpoints
-│   └── cgt.md                         # Cell & Gene Therapy
-│
-└── rwe/                               # Real World Evidence
-    ├── README.md                      # RWE concepts index
-    ├── overview.md                    # RWE fundamentals
-    └── synthetic-control.md           # External control generation
+Generate a Phase 3 oncology trial with 200 subjects
+Generate adverse events for an immunotherapy trial
 ```
 
-**Note:** TrialSim uses subdirectories for complex, related skill groups (domains, therapeutic areas, RWE). This matches PatientSim's pattern with `oncology/` and `pediatrics/` subdirectories.
+**SDTM domains:**
+```
+Generate DM domain for 50 subjects as SDTM
+Generate AE domain with MedDRA coding
+```
 
-## Quick Reference
+**With output format:**
+```
+Generate a Phase II trial as SDTM datasets
+Generate analysis-ready data as ADaM
+```
 
-| I want to generate... | Skill | Key Triggers |
-|-----------------------|-------|--------------|
-| Subject demographics (DM) | `domains/demographics-dm.md` | "demographics", "DM domain", "USUBJID" |
-| Adverse events (AE) | `domains/adverse-events-ae.md` | "adverse events", "AE domain", "MedDRA", "SAE" |
-| Vital signs (VS) | `domains/vital-signs-vs.md` | "vital signs", "VS domain", "blood pressure" |
-| Laboratory results (LB) | `domains/laboratory-lb.md` | "lab results", "LB domain", "chemistry", "LOINC" |
-| Concomitant meds (CM) | `domains/concomitant-meds-cm.md` | "concomitant meds", "CM domain", "ATC" |
-| Study drug exposure (EX) | `domains/exposure-ex.md` | "exposure", "EX domain", "dosing", "dose modification" |
-| Subject disposition (DS) | `domains/disposition-ds.md` | "disposition", "DS domain", "discontinuation" |
-| Medical history (MH) | `domains/medical-history-mh.md` | "medical history", "MH domain", "comorbidities" |
-| A Phase III pivotal trial | `phase3-pivotal.md` | "Phase 3", "pivotal", "registrational" |
-| A Phase I dose escalation | `phase1-dose-escalation.md` | "Phase 1", "FIH", "MTD", "3+3", "BOIN" |
-| A Phase II POC trial | `phase2-proof-of-concept.md` | "Phase 2", "POC", "Simon's", "dose-ranging" |
-| An oncology trial | `therapeutic-areas/oncology.md` | "oncology", "cancer", "RECIST", "ORR" |
-| A cardiovascular trial | `therapeutic-areas/cardiovascular.md` | "cardiovascular", "MACE", "heart failure" |
-| A CNS/neurology trial | `therapeutic-areas/cns.md` | "CNS", "neurology", "Alzheimer's", "Parkinson's" |
-| A cell/gene therapy trial | `therapeutic-areas/cgt.md` | "gene therapy", "CAR-T", "CGT" |
-| Recruitment/screening data | `recruitment-enrollment.md` | "screening", "enrollment", "screen failure" |
-| External control arm | `rwe/synthetic-control.md` | "synthetic control", "external control", "RWE" |
+See [hello-healthsim examples](../../hello-healthsim/examples/trialsim-examples.md) for detailed examples with expected outputs.
 
-## Implementation Status
+## Key Capabilities
 
-### Core Skills
+| Capability | Description | Skill Reference |
+|------------|-------------|-----------------|
+| **Study Definition** | Protocol, arms, visit schedules | [SKILL.md](SKILL.md#core-entities) |
+| **Phase 1** | Dose escalation, MTD, 3+3, BOIN, CRM | [phase1-dose-escalation.md](phase1-dose-escalation.md) |
+| **Phase 2** | Proof of concept, Simon's two-stage | [phase2-proof-of-concept.md](phase2-proof-of-concept.md) |
+| **Phase 3** | Pivotal registration trials | [phase3-pivotal.md](phase3-pivotal.md) |
+| **SDTM Domains** | DM, AE, VS, LB, CM, EX, DS, MH | [domains/](domains/) |
+| **Therapeutic Areas** | Oncology, CV, CNS, CGT | [therapeutic-areas/](therapeutic-areas/) |
+| **Real World Evidence** | Synthetic controls, external comparators | [rwe/](rwe/) |
 
-| Skill | Status | Notes |
-|-------|--------|-------|
-| clinical-trials-domain.md | ✅ Complete | Core domain knowledge |
-| phase1-dose-escalation.md | ✅ Complete | FIH, 3+3, BOIN, CRM, PK sampling |
-| phase2-proof-of-concept.md | ✅ Complete | Simon's, MCP-Mod, futility analysis |
-| phase3-pivotal.md | ✅ Complete | Comprehensive Phase III patterns |
-| recruitment-enrollment.md | ✅ Complete | Screening funnel, I/E |
+## Trial Phase Scenarios
 
-### SDTM Domain Skills
+| Phase | Key Elements | Skill |
+|-------|--------------|-------|
+| Phase 1 | First-in-human, dose escalation, MTD, DLTs | [phase1-dose-escalation.md](phase1-dose-escalation.md) |
+| Phase 2 | Proof of concept, dose-ranging, futility | [phase2-proof-of-concept.md](phase2-proof-of-concept.md) |
+| Phase 3 | Pivotal, registration, NDA/BLA enabling | [phase3-pivotal.md](phase3-pivotal.md) |
 
-| Domain | Skill | Status | Notes |
-|--------|-------|--------|-------|
-| DM | domains/demographics-dm.md | ✅ Complete | Required for all studies |
-| AE | domains/adverse-events-ae.md | ✅ Complete | MedDRA coding, SAE flags |
-| VS | domains/vital-signs-vs.md | ✅ Complete | BP, HR, temp, weight |
-| LB | domains/laboratory-lb.md | ✅ Complete | LOINC coding, ref ranges |
-| CM | domains/concomitant-meds-cm.md | ✅ Complete | ATC classification |
-| EX | domains/exposure-ex.md | ✅ Complete | Study drug exposure, dose modifications |
-| DS | domains/disposition-ds.md | ✅ Complete | Discontinuation, milestones |
-| MH | domains/medical-history-mh.md | ✅ Complete | Pre-existing conditions, MedDRA |
+## SDTM Domains
 
-### Therapeutic Area Skills
+| Domain | Purpose | Skill |
+|--------|---------|-------|
+| DM | Subject demographics, treatment arms | [domains/demographics-dm.md](domains/demographics-dm.md) |
+| AE | Adverse events with MedDRA | [domains/adverse-events-ae.md](domains/adverse-events-ae.md) |
+| VS | Vital sign measurements | [domains/vital-signs-vs.md](domains/vital-signs-vs.md) |
+| LB | Laboratory results with LOINC | [domains/laboratory-lb.md](domains/laboratory-lb.md) |
+| CM | Concomitant medications with ATC | [domains/concomitant-meds-cm.md](domains/concomitant-meds-cm.md) |
+| EX | Study drug exposure | [domains/exposure-ex.md](domains/exposure-ex.md) |
+| DS | Subject disposition | [domains/disposition-ds.md](domains/disposition-ds.md) |
+| MH | Medical history | [domains/medical-history-mh.md](domains/medical-history-mh.md) |
 
-| Skill | Status | Notes |
-|-------|--------|-------|
-| therapeutic-areas/oncology.md | ✅ Complete | RECIST, survival |
-| therapeutic-areas/cardiovascular.md | ✅ Complete | MACE, HF |
-| therapeutic-areas/cns.md | ✅ Complete | Cognitive, imaging |
-| therapeutic-areas/cgt.md | ✅ Complete | CAR-T, gene therapy |
+## Output Formats
 
-### RWE Skills
+| Format | Request | Use Case |
+|--------|---------|----------|
+| JSON | (default) | API testing, EDC integration |
+| CDISC SDTM | "as SDTM" | Regulatory submission |
+| CDISC ADaM | "as ADaM" | Statistical analysis |
+| Star Schema | "as star schema" | BI dashboards, DuckDB |
+| CSV | "as CSV" | Spreadsheet analysis |
 
-| Skill | Status | Notes |
-|-------|--------|-------|
-| rwe/overview.md | ✅ Complete | RWE concepts |
-| rwe/synthetic-control.md | ✅ Complete | External controls |
+## Integration with Other Products
 
-### Planned Skills
+| Product | Integration | Example |
+|---------|-------------|---------|
+| **PatientSim** | Patient → Subject | Cancer patient enrolls in trial |
+| **PopulationSim** | Geography → Feasibility | County data → Site selection, diversity |
+| **NetworkSim** | Provider → Investigator | Site PI with credentials |
+| **MemberSim** | Standard of care claims | SOC claims during trial |
 
-| Skill | Phase | Notes |
-|-------|-------|-------|
-| phase4-postmarket.md | Phase 3 | Safety surveillance, PSUR |
-| adaptive-design.md | Phase 3 | Bayesian adaptive, platform trials |
-| rare-disease.md | Phase 3 | Small populations, natural history |
+## Data-Driven Planning (PopulationSim v2.0)
 
-## Development Roadmap
+When planning trials, TrialSim uses **real population data** for evidence-based feasibility:
 
-See [TrialSim Development Plan](../../docs/TRIALSIM-DEVELOPMENT-PLAN.md) for complete roadmap.
+```
+Identify top 5 US counties for a Phase III NASH trial based on patient availability
+```
 
-**Phase 1 (Foundation):** Domain knowledge, Phase 3 pivotal ✅  
-**Phase 2 (SDTM Domains):** Core domain skills (DM, AE, VS, LB, CM, EX, DS, MH) ✅  
-**Phase 2 (Trial Phases):** Phase 1 dose escalation, Phase 2 POC ✅  
-**Phase 2 (Therapeutic Areas):** Oncology, CNS, CV, CGT ✅  
-**Phase 2 (RWE):** Overview, Synthetic Control ✅  
-**Phase 3 (Next):** Phase 4 post-market, adaptive designs, rare disease
+This provides:
+- Disease prevalence from CDC PLACES for feasibility estimates
+- Demographic distributions for diversity planning (FDA guidance compliance)
+- SVI data for site access and enrollment projections
+- Data provenance for audit trails
+
+See [SKILL.md](SKILL.md#cross-product-populationsim-demographics--sdoh---v20-data-integration) for full integration details.
+
+## Skills Reference
+
+For complete generation parameters, examples, and validation rules, see:
+
+- **[SKILL.md](SKILL.md)** - Full skill reference with all scenarios
+- **[../../SKILL.md](../../SKILL.md)** - Master skill file (cross-product routing)
+- **[domains/README.md](domains/README.md)** - SDTM domain overview
 
 ## Related Documentation
 
-- [TrialSim Prompt Guide](../../docs/TRIALSIM-PROMPT-GUIDE.md) - Example prompts and usage patterns
-- [TrialSim Developer Guide](../../docs/TRIALSIM-DEVELOPER-GUIDE.md) - Skill template, CDISC reference, roadmap
-- [TrialSim Development Plan](../../docs/TRIALSIM-DEVELOPMENT-PLAN.md) - Original planning document
-- [HealthSim Architecture Guide](../../docs/HEALTHSIM-ARCHITECTURE-GUIDE.md) - Cross-product patterns
-- [Hello HealthSim Examples](../../hello-healthsim/examples/trialsim-examples.md) - Working examples
-- [CDISC SDTM Format](../../formats/cdisc-sdtm.md) - SDTM output transformation
-- [CDISC ADaM Format](../../formats/cdisc-adam.md) - ADaM output transformation
-- [Domain Skills Index](domains/README.md) - SDTM domain overview
+- [hello-healthsim TrialSim Examples](../../hello-healthsim/examples/trialsim-examples.md)
+- [CDISC SDTM Format](../../formats/cdisc-sdtm.md)
+- [CDISC ADaM Format](../../formats/cdisc-adam.md)
+- [Clinical Trials Domain Knowledge](clinical-trials-domain.md)
+
+---
+
+*TrialSim generates synthetic trial data only. Never use for actual regulatory submissions.*
