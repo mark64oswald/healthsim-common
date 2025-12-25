@@ -1,34 +1,31 @@
 # NetworkSim
 
-> Generate realistic provider network data including healthcare providers, facilities, pharmacies, and network configurations.
+> Generate synthetic healthcare provider networks including providers, facilities, pharmacies, and plan configurations with realistic NPI formatting and network structures.
 
 ## What NetworkSim Does
 
-NetworkSim is the **provider network** engine of HealthSim. It has two distinct roles:
+NetworkSim is the **provider network** engine of HealthSim. It creates synthetic providers, facilities, and pharmacies with properly formatted NPIs and taxonomy codes. It also provides reference knowledge about network structures (HMO, PPO, tiered networks) and pharmacy benefit designs.
 
-1. **Reference Knowledge**: Domain expertise about network types (HMO, PPO), plan structures, pharmacy benefits, and utilization management
-2. **Synthetic Generation**: Create realistic provider entities with valid NPI formats, taxonomy codes, and network affiliations
-
-When PatientSim needs a cardiologist for a referral or RxMemberSim needs a dispensing pharmacy, NetworkSim provides properly structured entities that make the data realistic.
+When other HealthSim products need a provider for an encounter, a pharmacy for a prescription, or a facility for a claim, NetworkSim generates the appropriate entity with realistic characteristics.
 
 ## Quick Start
 
-**Simple generation:**
+**Generate providers:**
 ```
-Generate a cardiologist in Houston
-Generate a community hospital with 200 beds
-Generate a retail pharmacy chain location
-```
-
-**Network structures:**
-```
-Generate an HMO network with 50 PCPs and specialty referral requirements
-Generate a tiered PPO network with in-network and OON providers
+Generate a cardiologist in Houston, TX
+Generate 10 primary care physicians for San Diego County
 ```
 
-**Integration:**
+**Generate facilities:**
 ```
-Generate a provider for this cardiology encounter
+Generate a 200-bed acute care hospital in Phoenix
+Generate an ambulatory surgery center
+```
+
+**Generate networks:**
+```
+Generate a PPO network with 500 providers across 3 counties
+Generate a tiered pharmacy network
 ```
 
 See [hello-healthsim examples](../../hello-healthsim/examples/networksim-examples.md) for detailed examples with expected outputs.
@@ -37,74 +34,72 @@ See [hello-healthsim examples](../../hello-healthsim/examples/networksim-example
 
 | Capability | Description | Skill Reference |
 |------------|-------------|-----------------|
-| **Provider Generation** | Physicians with NPIs, specialties, credentials | [synthetic/synthetic-provider.md](synthetic/synthetic-provider.md) |
-| **Facility Generation** | Hospitals, ASCs, imaging centers | [synthetic/synthetic-facility.md](synthetic/synthetic-facility.md) |
-| **Pharmacy Generation** | Retail, specialty, mail-order pharmacies | [synthetic/synthetic-pharmacy.md](synthetic/synthetic-pharmacy.md) |
-| **Network Configuration** | HMO, PPO, tiered network structures | [synthetic/synthetic-network.md](synthetic/synthetic-network.md) |
-| **Plan Structures** | Benefit designs, cost sharing | [reference/plan-structures.md](reference/plan-structures.md) |
-| **Pharmacy Benefits** | Formulary tiers, PA requirements | [reference/pharmacy-benefit-concepts.md](reference/pharmacy-benefit-concepts.md) |
+| **Reference Knowledge** | Network types, plan structures, pharmacy benefits | [reference/](reference/) |
+| **Synthetic Providers** | Physicians, NPs, PAs with NPIs | [synthetic/synthetic-provider.md](synthetic/synthetic-provider.md) |
+| **Synthetic Facilities** | Hospitals, ASCs, clinics | [synthetic/synthetic-facility.md](synthetic/synthetic-facility.md) |
+| **Synthetic Pharmacies** | Retail, mail-order, specialty | [synthetic/synthetic-pharmacy.md](synthetic/synthetic-pharmacy.md) |
+| **Network Patterns** | HMO, PPO, tiered structures | [patterns/](patterns/) |
+| **Cross-Product Integration** | Provider entities for other products | [integration/](integration/) |
 
-## Skill Organization
+## Skill Categories
 
-NetworkSim uses a four-category organization:
+### Reference Knowledge
+Domain knowledge about how real networks work:
 
-### Reference Knowledge (`reference/`)
-Domain expertise about healthcare networks:
-- [network-types.md](reference/network-types.md) - HMO, PPO, EPO, POS explained
-- [plan-structures.md](reference/plan-structures.md) - Benefit design patterns
-- [pharmacy-benefit-concepts.md](reference/pharmacy-benefit-concepts.md) - PBM operations
-- [network-adequacy.md](reference/network-adequacy.md) - Regulatory requirements
+| Skill | Purpose |
+|-------|---------|
+| [network-types.md](reference/network-types.md) | HMO, PPO, EPO, POS structures |
+| [plan-structures.md](reference/plan-structures.md) | Cost sharing, benefit design |
+| [pharmacy-benefit-concepts.md](reference/pharmacy-benefit-concepts.md) | PBM, formulary, tiers |
+| [network-adequacy.md](reference/network-adequacy.md) | Access standards, ratios |
 
-### Synthetic Generation (`synthetic/`)
-Create provider entities:
-- [synthetic-provider.md](synthetic/synthetic-provider.md) - Physicians, NPIs
-- [synthetic-facility.md](synthetic/synthetic-facility.md) - Hospitals, ASCs
-- [synthetic-pharmacy.md](synthetic/synthetic-pharmacy.md) - Pharmacy locations
-- [synthetic-network.md](synthetic/synthetic-network.md) - Network configurations
+### Synthetic Generation
+Create realistic healthcare entities:
 
-### Patterns & Templates (`patterns/`)
-Reusable network patterns:
-- [hmo-network-pattern.md](patterns/hmo-network-pattern.md) - Closed network with gatekeeping
-- [ppo-network-pattern.md](patterns/ppo-network-pattern.md) - Open access with cost differentials
-- [tiered-network-pattern.md](patterns/tiered-network-pattern.md) - Multi-tier provider arrangements
+| Skill | Output |
+|-------|--------|
+| [synthetic-provider.md](synthetic/synthetic-provider.md) | Provider with NPI, taxonomy, credentials |
+| [synthetic-facility.md](synthetic/synthetic-facility.md) | Facility with beds, services, addresses |
+| [synthetic-pharmacy.md](synthetic/synthetic-pharmacy.md) | Pharmacy with NCPDP ID, hours, services |
+| [synthetic-network.md](synthetic/synthetic-network.md) | Complete network configuration |
 
-### Cross-Product Integration (`integration/`)
-Connecting with other products:
-- [provider-for-encounter.md](integration/provider-for-encounter.md) - PatientSim integration
-- [network-for-member.md](integration/network-for-member.md) - MemberSim integration
-- [pharmacy-for-rx.md](integration/pharmacy-for-rx.md) - RxMemberSim integration
+### Integration Skills
+Provide entities to other HealthSim products:
 
-## Output Entities
+| Skill | Use Case |
+|-------|----------|
+| [provider-for-encounter.md](integration/provider-for-encounter.md) | Attending/referring for PatientSim |
+| [network-for-member.md](integration/network-for-member.md) | Network status for MemberSim claims |
+| [pharmacy-for-rx.md](integration/pharmacy-for-rx.md) | Dispensing pharmacy for RxMemberSim |
 
-| Entity | Key Fields | Format |
-|--------|------------|--------|
-| **Provider** | NPI, name, specialty, taxonomy, credentials | JSON |
-| **Facility** | NPI, name, type, address, bed count | JSON |
-| **Pharmacy** | NCPDP ID, NPI, name, type, address | JSON |
-| **Network** | ID, type, providers, facilities | JSON |
-| **Plan** | ID, network, benefits, cost sharing | JSON |
+## Output Formats
+
+| Format | Request | Use Case |
+|--------|---------|----------|
+| JSON | (default) | API testing, integration |
+| CSV | "as CSV" | Analytics, spreadsheets |
 
 ## Integration with Other Products
 
-| Product | Integration | Skill |
-|---------|-------------|-------|
-| **PatientSim** | Provider for encounter | [provider-for-encounter.md](integration/provider-for-encounter.md) |
-| **MemberSim** | Network status for adjudication | [network-for-member.md](integration/network-for-member.md) |
-| **RxMemberSim** | Pharmacy for prescription | [pharmacy-for-rx.md](integration/pharmacy-for-rx.md) |
-| **TrialSim** | Investigator site | [site-for-trial.md](integration/site-for-trial.md) |
+| Product | NetworkSim Provides | Example |
+|---------|---------------------|---------|
+| **PatientSim** | Attending, referring, PCP | Cardiologist for heart failure encounter |
+| **MemberSim** | Billing provider, network status | In-network vs OON for adjudication |
+| **RxMemberSim** | Dispensing pharmacy | CVS with NCPDP ID for Rx claim |
+| **TrialSim** | Site, investigator | PI credentials for trial site |
 
-## NetworkSim Public vs Private
+## Dual-Version Architecture
 
 NetworkSim exists in two versions:
 
-| Aspect | NetworkSim (Public) | NetworkSim-Local (Private) |
-|--------|---------------------|----------------------------|
-| **Repository** | healthsim-workspace | networksim-local |
-| **Purpose** | Synthetic generation | Real data lookup |
-| **NPIs** | Valid format, synthetic | Actual registered NPIs |
-| **Use Case** | Demos, testing | Research, validation |
+| Version | Repository | Data Source | Use Case |
+|---------|------------|-------------|----------|
+| **NetworkSim (Public)** | healthsim-workspace | Synthetic generation | Demos, tutorials, testing |
+| **NetworkSim-Local (Private)** | networksim-local | Real NPPES data | Research, validation |
 
-See [NetworkSim Dual-Version Guide](../../docs/networksim-dual-version.md) for details.
+The public version generates synthetic providers with valid NPI format. The private version (separate repo) provides access to real NPPES registry data for research requiring actual provider information.
+
+See [docs/networksim-dual-version.md](../../docs/networksim-dual-version.md) for architecture details.
 
 ## Skills Reference
 
@@ -118,7 +113,8 @@ For complete generation parameters, examples, and validation rules, see:
 - [hello-healthsim NetworkSim Examples](../../hello-healthsim/examples/networksim-examples.md)
 - [NetworkSim Dual-Version Architecture](../../docs/networksim-dual-version.md)
 - [Cross-Product Integration Guide](../../docs/HEALTHSIM-ARCHITECTURE-GUIDE.md#83-cross-product-integration)
+- [Code Systems Reference](../../references/code-systems.md)
 
 ---
 
-*NetworkSim generates synthetic provider data only. For real NPI data, see NetworkSim-Local.*
+*NetworkSim generates synthetic provider data only. For real NPPES data, see networksim-local.*
