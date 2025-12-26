@@ -9,6 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- **[Docs]** Documentation structure and navigation improvements (2025-12-26)
+  - Streamlined top-level README: Removed redundant "I Want To..." section, added "Getting Started" section
+  - Removed PopulationSim v2.0 detailed section from root README (content is on PopulationSim page)
+  - Added State Management overview section to root README
+  - Standardized NetworkSim SKILL.md frontmatter to match other products (removed extra fields)
+  - Added "For Claude" section to NetworkSim SKILL.md for consistency
+  - Archived outdated `docs/architecture/` files to `docs/archive/architecture/`
+  - Renamed `references/models/` to `references/populationsim-models/` for clarity
+  - Updated all cross-references to use new path
+
 - **[RxMemberSim]** Updated MCP server to v1.x API pattern (2025-12-25)
   - Migrated from deprecated `@server.tool()` decorator to explicit `list_tools/call_tool` pattern
   - All 6 MCP tools now have proper JSON schemas for Claude integration
@@ -368,7 +378,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - `svi-methodology.md` - 4 themes, 16 variables, percentile calculation, interpretation
     - `adi-methodology.md` - 17 variables, 2 factor domains, national percentile/state decile
     - `code-systems.md` - Updated with geographic codes and SDOH Z-codes sections
-  - Phase 8: Model Schemas (5 files in `references/models/`)
+  - Phase 8: Model Schemas (5 files in `references/populationsim-models/`)
     - `population-profile.md` - Primary output model with complete field definitions
     - `cohort-specification.md` - Input model for population subsetting criteria
     - `geographic-entity.md` - Census hierarchy, FIPS/CBSA identification

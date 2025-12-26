@@ -4,6 +4,8 @@
 
 This directory contains the canonical data models for PopulationSim. These schemas define the structure for population profiles, cohort specifications, geographic entities, and SDOH assessments.
 
+> **Note**: This folder is named `populationsim-models` to distinguish it from the multi-product `data-models.md` file in the parent folder. PopulationSim models are in a separate folder due to their complexity and interdependence.
+
 ---
 
 ## Core Models

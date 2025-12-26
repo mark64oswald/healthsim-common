@@ -6,6 +6,21 @@ Domain knowledge and reference data for HealthSim data generation.
 
 Reference data provides the foundation for realistic healthcare data generation. These files define code systems, clinical rules, domain-specific terminology, and validation constraints.
 
+## Folder Organization
+
+The references folder uses two patterns for organizing content:
+
+| Pattern | When Used | Example |
+|---------|-----------|---------|
+| **Single file** | Smaller, simpler reference data | `code-systems.md`, `terminology.md` |
+| **Subfolder** | Complex domains with multiple related files | `oncology/`, `ccda/`, `populationsim-models/` |
+
+**Data Models Organization:**
+- `data-models.md` - Contains canonical schemas for PatientSim, MemberSim, RxMemberSim, and TrialSim
+- `populationsim-models/` - Contains PopulationSim models (more complex, requires separate files)
+
+---
+
 ## Reference Categories
 
 ### Code Systems & Terminology
@@ -28,9 +43,10 @@ Reference data provides the foundation for realistic healthcare data generation.
 
 ### Data Models
 
-| File | Description |
-|------|-------------|
-| [data-models.md](data-models.md) | Core entity schemas |
+| Resource | Description |
+|----------|-------------|
+| [data-models.md](data-models.md) | Core entity schemas for PatientSim, MemberSim, RxMemberSim, TrialSim |
+| [populationsim-models/](populationsim-models/) | PopulationSim canonical models (see below) |
 | [generation-patterns.md](generation-patterns.md) | Data generation strategies |
 | [validation-rules.md](validation-rules.md) | Cross-field validation |
 
@@ -43,9 +59,22 @@ Reference data provides the foundation for realistic healthcare data generation.
 | [svi-methodology.md](svi-methodology.md) | Social Vulnerability Index |
 | [adi-methodology.md](adi-methodology.md) | Area Deprivation Index |
 
-### Oncology Reference Data
+---
 
-Located in [oncology/](oncology/):
+## Subfolders
+
+### PopulationSim Models (populationsim-models/)
+
+Detailed canonical models for PopulationSim population intelligence features:
+
+| File | Description |
+|------|-------------|
+| [population-profile.md](populationsim-models/population-profile.md) | Population profile schema |
+| [cohort-specification.md](populationsim-models/cohort-specification.md) | Cohort definition schema |
+| [geographic-entity.md](populationsim-models/geographic-entity.md) | Geographic entity schema |
+| [sdoh-profile.md](populationsim-models/sdoh-profile.md) | SDOH indicators schema |
+
+### Oncology Reference Data (oncology/)
 
 | File | Description | Records |
 |------|-------------|---------|
@@ -55,9 +84,7 @@ Located in [oncology/](oncology/):
 | [oncology-tumor-markers.csv](oncology/oncology-tumor-markers.csv) | Lab markers | 31 |
 | [oncology-staging-templates.yaml](oncology/oncology-staging-templates.yaml) | TNM staging | YAML |
 
-### C-CDA Reference Data
-
-Located in [ccda/](ccda/):
+### C-CDA Reference Data (ccda/)
 
 | File | Description |
 |------|-------------|
@@ -68,16 +95,7 @@ Located in [ccda/](ccda/):
 | [ccda-snomed-problem-mappings.csv](ccda/ccda-snomed-problem-mappings.csv) | Problem mappings |
 | [ccda-vital-signs-loinc.csv](ccda/ccda-vital-signs-loinc.csv) | Vital sign codes |
 
-### Data Models (models/)
-
-Located in [models/](models/):
-
-| File | Description |
-|------|-------------|
-| [population-profile.md](models/population-profile.md) | Population profile schema |
-| [cohort-specification.md](models/cohort-specification.md) | Cohort definition schema |
-| [geographic-entity.md](models/geographic-entity.md) | Geographic entity schema |
-| [sdoh-profile.md](models/sdoh-profile.md) | SDOH indicators schema |
+---
 
 ## Usage
 
@@ -93,10 +111,16 @@ User Request → Skill → Reference Data → Generated Output
 ## Adding Reference Data
 
 1. Determine category (code systems, clinical, population)
-2. Use consistent file format (CSV for tabular, YAML for hierarchical, MD for documentation)
-3. Include header row for CSV files
-4. Add entry to this README
-5. Reference from relevant Skills
+2. Choose organization:
+   - Single file for simple references
+   - Subfolder for complex domains with multiple files
+3. Use consistent file format:
+   - CSV for tabular data
+   - YAML for hierarchical data
+   - Markdown for documentation
+4. Include header row for CSV files
+5. Add entry to this README
+6. Reference from relevant Skills
 
 ---
 

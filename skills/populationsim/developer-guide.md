@@ -322,5 +322,5 @@ When creating cohorts, document:
 
 - [SKILL.md](SKILL.md) - Main skill reference
 - [Data Sources](data-sources.md) - Source data details
-- [Model Schemas](../../references/models/) - Data model definitions
+- [Model Schemas](../../references/populationsim-models/) - Data model definitions
 - [Integration Guide](integration/README.md) - Cross-product integration
