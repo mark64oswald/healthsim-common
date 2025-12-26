@@ -6,26 +6,6 @@ HealthSim generates realistic, clinically coherent healthcare data for testing, 
 
 ---
 
-## I Want To...
-
-| Goal | Start Here | Products Used |
-|------|------------|---------------|
-| **Get started quickly** | [hello-healthsim/](hello-healthsim/README.md) | All products |
-| **Generate patient clinical data** | [PatientSim SKILL.md](skills/patientsim/SKILL.md) | PatientSim |
-| **Generate claims/billing data** | [MemberSim SKILL.md](skills/membersim/SKILL.md) | MemberSim |
-| **Generate pharmacy data** | [RxMemberSim SKILL.md](skills/rxmembersim/SKILL.md) | RxMemberSim |
-| **Generate clinical trial data** | [TrialSim SKILL.md](skills/trialsim/SKILL.md) | TrialSim |
-| **Analyze population demographics** | [PopulationSim SKILL.md](skills/populationsim/SKILL.md) | PopulationSim |
-| **Generate provider networks** | [NetworkSim SKILL.md](skills/networksim/SKILL.md) | NetworkSim |
-| **Generate a complete patient journey** | [Product Architecture](docs/product-architecture.md#common-workflows) | Multiple |
-| **Use real geographic health data** | [PopulationSim v2.0](#populationsim-v20---data-driven-generation) | PopulationSim + others |
-| **Generate patient + claims together** | [Product Architecture](docs/product-architecture.md#2-patient-with-claims) | PatientSim + MemberSim |
-| **Plan a clinical trial** | [TrialSim SKILL.md](skills/trialsim/SKILL.md#trial-support) | TrialSim + PopulationSim |
-| **Output as FHIR/HL7/X12** | [Output Formats](#output-formats) | Any product |
-| **Extend or customize** | [EXTENDING.md](hello-healthsim/EXTENDING.md) | Framework |
-
----
-
 ## Products Overview
 
 | Product | What It Generates | Key Scenarios | Standards |
@@ -39,64 +19,23 @@ HealthSim generates realistic, clinically coherent healthcare data for testing, 
 
 ---
 
-## Quick Examples
+## Getting Started
 
-```plaintext
-# Basic
-Generate a patient
-Generate a professional claim for an office visit
-Generate a pharmacy claim for metformin
+New to HealthSim? Start here:
 
-# Clinical scenarios
-Generate a 65-year-old diabetic with HFpEF and CKD Stage 3
-Generate a denied MRI claim requiring prior authorization
-Generate a drug-drug interaction alert for warfarin and aspirin
+| Resource | Description |
+|----------|-------------|
+| **[Hello HealthSim](hello-healthsim/README.md)** | Quick start guide with setup instructions and first steps |
+| **[Examples by Product](hello-healthsim/examples/)** | Detailed examples with expected outputs for each product |
+| **[Extending HealthSim](hello-healthsim/EXTENDING.md)** | How to add new clinical scenarios, skills, and output formats |
 
-# Clinical trials
-Generate a Phase III oncology trial with 200 subjects as SDTM
-Generate adverse events for an immunotherapy trial with MedDRA coding
-
-# Data-driven (with PopulationSim v2.0)
-Generate 50 diabetic patients for Harris County, TX with real prevalence data
-Profile San Diego County health indicators and SDOH factors
-
-# Output formats
-Generate a diabetic patient as FHIR Bundle
-Generate an inpatient admission as ADT A01 HL7v2 message
-Generate a professional claim as X12 837P
-```
-
-See [hello-healthsim/examples/](hello-healthsim/examples/) for detailed examples with expected outputs.
-
----
-
-## PopulationSim v2.0 - Data-Driven Generation
-
-**NEW**: PopulationSim v2.0 embeds 148 MB of real CDC/Census data, enabling **evidence-based synthetic data generation** grounded in actual population statistics.
-
-| Data Source | Coverage | Records | Key Use |
-|-------------|----------|---------|---------|
-| CDC PLACES 2024 | 100% US counties + tracts | 86,665 | Disease prevalence (40 measures) |
-| CDC SVI 2022 | 100% US counties + tracts | 87,264 | Social vulnerability (16 indicators) |
-| HRSA ADI 2023 | 100% US block groups | 242,336 | Area deprivation |
-
-**What This Enables:**
-
-```plaintext
-# Instead of generic data:
-"Generate 10 diabetic patients" → Generic 10.2% national prevalence
-
-# With PopulationSim v2.0:
-"Generate 10 diabetic patients in Harris County, TX" →
-  - Uses actual 12.1% diabetes rate from CDC PLACES
-  - Applies 72% minority population from SVI  
-  - Includes real comorbidity correlations
-  - Tracks data provenance in output
-```
-
-**Cross-Product Data Flow**: PopulationSim data grounds generation in PatientSim (demographics, conditions), MemberSim (utilization, risk), RxMemberSim (adherence), and TrialSim (feasibility, diversity).
-
-See: [PopulationSim SKILL.md](skills/populationsim/SKILL.md) | [Data Package README](skills/populationsim/data/README.md)
+The examples folder contains ready-to-use prompts organized by product:
+- [PatientSim Examples](hello-healthsim/examples/patientsim-examples.md) - Clinical data generation
+- [MemberSim Examples](hello-healthsim/examples/membersim-examples.md) - Claims and payer data
+- [RxMemberSim Examples](hello-healthsim/examples/rxmembersim-examples.md) - Pharmacy data
+- [TrialSim Examples](hello-healthsim/examples/trialsim-examples.md) - Clinical trial data
+- [PopulationSim Examples](hello-healthsim/examples/populationsim-examples.md) - Demographics and SDOH
+- [NetworkSim Examples](hello-healthsim/examples/networksim-examples.md) - Provider networks
 
 ---
 
@@ -154,6 +93,27 @@ See [formats/](formats/) for transformation specifications.
 
 ---
 
+## State Management
+
+HealthSim includes a state management system for persisting and restoring workspaces:
+
+| Feature | Description |
+|---------|-------------|
+| **Session Management** | In-memory entity collection across products |
+| **Scenario Storage** | Named snapshots of entire workspace |
+| **Provenance Tracking** | Records how each entity was created |
+| **Branching** | Save baseline, explore variations, compare outcomes |
+
+**Tools:**
+- `healthsim.save_scenario` - Save workspace to named scenario
+- `healthsim.load_scenario` - Restore workspace from scenario
+- `healthsim.list_scenarios` - List saved scenarios
+- `healthsim.delete_scenario` - Remove a saved scenario
+
+See [State Management Guide](docs/state-management/) for detailed documentation.
+
+---
+
 ## Clinical Scenarios
 
 ### PatientSim Scenarios
@@ -203,8 +163,12 @@ healthsim-workspace/
 ├── formats/                    # Output transformations (12 formats)
 ├── references/                 # Shared terminology, code systems
 ├── docs/                       # Architecture, guides, processes
-├── src/healthsim/              # Python infrastructure
-└── tests/                      # Test suite (476 tests)
+├── packages/                   # Python infrastructure
+│   ├── core/                  # Shared healthsim-core library
+│   ├── patientsim/            # PatientSim package
+│   ├── membersim/             # MemberSim package
+│   └── rxmembersim/           # RxMemberSim package
+└── scripts/                    # Utility scripts and tests
 ```
 
 ---
@@ -270,7 +234,7 @@ See [hello-healthsim/](hello-healthsim/) for detailed setup instructions.
 - **Clinical Coherence**: Age/gender-appropriate conditions, medications match diagnoses, labs correlate with disease state
 - **Proper Healthcare Codes**: ICD-10, CPT, LOINC, NDC, RxNorm, MedDRA, taxonomy codes
 - **Realistic Business Logic**: Claims adjudication, accumulators, prior auth, DUR alerts, formulary tiers
-- **Data-Driven Generation**: Ground synthetic data in real CDC/Census population statistics
+- **Data-Driven Generation**: Ground synthetic data in real CDC/Census population statistics (via PopulationSim)
 - **Multiple Output Formats**: FHIR, HL7v2, C-CDA, X12, NCPDP, CDISC SDTM/ADaM
 
 ---

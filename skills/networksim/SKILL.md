@@ -1,25 +1,30 @@
 ---
-name: networksim
-description: |
-  Healthcare network knowledge and entity generation. Reference information about 
-  network types, plan structures, pharmacy benefits, and PBM operations. Synthetic 
-  generation of providers, facilities, pharmacies, and network configurations.
-  Cross-product integration for realistic healthcare data generation.
-  
-  Trigger phrases: "network type", "HMO vs PPO", "generate provider", "generate facility",
-  "generate pharmacy", "plan structure", "pharmacy benefit", "PBM", "network adequacy",
-  "provider for encounter", "pharmacy for prescription"
-version: "1.0"
-status: "Active"
-products:
-  - patientsim
-  - membersim
-  - rxmembersim
-  - trialsim
-  - populationsim
+name: healthsim-networksim
+description: "NetworkSim generates synthetic healthcare network entities and provides reference knowledge about network types, plan structures, and pharmacy benefits. Use when user requests: (1) provider, facility, or pharmacy generation, (2) network type explanations (HMO, PPO, EPO), (3) plan structure or benefit design, (4) pharmacy benefit or PBM concepts, (5) network adequacy or utilization management."
 ---
 
-# NetworkSim
+# NetworkSim - Healthcare Network and Provider Generation
+
+## For Claude
+
+Use this skill when the user requests healthcare network entities, provider data, or plan/benefit structure information. NetworkSim provides both reference knowledge and synthetic generation capabilities.
+
+**When to apply this skill:**
+
+- User mentions providers, physicians, or NPIs
+- User requests facility, hospital, or clinic generation
+- User asks about pharmacy entities or NCPDP data
+- User wants to understand network types (HMO, PPO, EPO, POS)
+- User needs plan benefit or cost-sharing information
+- User asks about PBM, formulary, or pharmacy benefits
+
+**Key capabilities:**
+
+- Reference knowledge about network types, plan structures, and pharmacy benefits
+- Synthetic generation of providers, facilities, pharmacies, and networks
+- Cross-product integration for PatientSim, MemberSim, and RxMemberSim
+
+---
 
 ## Overview
 
