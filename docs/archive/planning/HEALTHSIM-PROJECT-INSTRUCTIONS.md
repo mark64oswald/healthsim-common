@@ -192,6 +192,31 @@ Examples:
 
 ---
 
+## Test Failure Policy
+
+When tests fail during implementation:
+
+1. **STOP and diagnose** - Before making any changes, explain:
+   - What the test is trying to verify
+   - Why it's failing
+   - Whether the problem is in the TEST or the IMPLEMENTATION
+
+2. **Never modify test assertions to make them pass** - If a test's expectations need to change, explain why the original expectation was wrong, not just inconvenient.
+
+3. **Ask if uncertain** - If there's any ambiguity about whether the test or implementation is at fault, ask before proceeding.
+
+4. **Red flags that require discussion**:
+   - Changing test assertions or expected values
+   - Commenting out test code
+   - Skipping tests with `@pytest.skip`
+   - "Simplifying" tests that were testing real functionality
+
+**Core Principle**: Tests are a specification of how code should behave. Changing a test to pass is like changing the requirements to match a bug. The only valid reasons to modify a test are:
+- The requirement itself was wrong
+- The test doesn't accurately represent the requirement
+
+---
+
 ## Link Patterns
 
 From within `skills/{product}/`:
