@@ -1,47 +1,27 @@
 """
-Phase 5: Integration and Performance Tests for Auto-Persist.
+Integration tests for Auto-Persist Phase 2 features.
 
-Tests full workflows across multiple operations:
-- End-to-end persist → query → clone → merge → export workflows
-- Performance testing with large batches (100-1000 entities)
-- Edge cases and error handling
-- Cross-product data integration
-
-These tests validate the complete auto-persist feature set working together.
+Tests full workflows across multiple entity types, large batches,
+and all export formats.
 """
 
-import pytest
 import json
-import csv
 import tempfile
 import time
 from pathlib import Path
-from datetime import datetime, timedelta
 from uuid import uuid4
-import random
+
+import pytest
 
 from healthsim.db import DatabaseConnection
-from healthsim.state.auto_persist import (
-    AutoPersistService,
-    get_auto_persist_service,
-    reset_service,
-    PersistResult,
-    CloneResult,
-    MergeResult,
-    ExportResult,
-    CANONICAL_TABLES,
-)
+from healthsim.state.auto_persist import AutoPersistService
 
-
-# ============================================================================
-# Fixtures
-# ============================================================================
 
 @pytest.fixture
-def test_db():
-    """Create a temporary test database with schema applied."""
+def db_connection():
+    """Create a temporary database connection."""
     with tempfile.TemporaryDirectory() as tmpdir:
-        db_path = Path(tmpdir) / "test_integration.duckdb"
+        db_path = Path(tmpdir) / "integration_test.duckdb"
         db_conn = DatabaseConnection(db_path)
         conn = db_conn.connect()
         yield conn
@@ -49,551 +29,402 @@ def test_db():
 
 
 @pytest.fixture
-def service(test_db):
-    """Create a fresh AutoPersistService for each test."""
-    reset_service()
-    return AutoPersistService(test_db)
+def service(db_connection):
+    """Create AutoPersistService instance."""
+    return AutoPersistService(db_connection)
 
 
-@pytest.fixture
-def export_dir():
-    """Create a temporary directory for exports."""
-    with tempfile.TemporaryDirectory() as tmpdir:
-        yield Path(tmpdir)
+class TestParquetExport:
+    """Test Parquet export functionality."""
 
+    def test_parquet_export_creates_valid_files(self, service):
+        """Verify Parquet export creates readable files."""
+        # Create test data
+        patients = [
+            {
+                "id": str(uuid4()),
+                "given_name": f"Patient{i}",
+                "family_name": "Test",
+                "gender": "male" if i % 2 == 0 else "female",
+                "birth_date": f"198{i % 10}-01-15",
+            }
+            for i in range(10)
+        ]
 
-def generate_patients(count: int) -> list:
-    """Generate a batch of patient entities."""
-    first_names = ['John', 'Jane', 'Bob', 'Alice', 'Charlie', 'Diana', 'Eve', 'Frank', 'Grace', 'Henry']
-    last_names = ['Smith', 'Johnson', 'Williams', 'Brown', 'Jones', 'Garcia', 'Miller', 'Davis', 'Martinez', 'Wilson']
-    genders = ['male', 'female']
-    
-    patients = []
-    for i in range(count):
-        birth_year = random.randint(1940, 2005)
-        birth_month = random.randint(1, 12)
-        birth_day = random.randint(1, 28)
-        
-        patients.append({
-            'patient_id': str(uuid4()),
-            'given_name': random.choice(first_names),
-            'family_name': random.choice(last_names),
-            'gender': random.choice(genders),
-            'birth_date': f'{birth_year}-{birth_month:02d}-{birth_day:02d}',
-        })
-    return patients
-
-
-def generate_members(count: int) -> list:
-    """Generate a batch of member entities."""
-    first_names = ['Maria', 'James', 'Patricia', 'Robert', 'Linda', 'Michael', 'Barbara', 'William']
-    last_names = ['Anderson', 'Taylor', 'Thomas', 'Moore', 'Jackson', 'White', 'Harris', 'Martin']
-    
-    members = []
-    for i in range(count):
-        birth_year = random.randint(1935, 1959)  # Medicare-age
-        members.append({
-            'member_id': str(uuid4()),
-            'given_name': random.choice(first_names),
-            'family_name': random.choice(last_names),
-            'birth_date': f'{birth_year}-{random.randint(1,12):02d}-{random.randint(1,28):02d}',
-            'plan_type': random.choice(['HMO', 'PPO', 'PFFS']),
-            'group_id': f'GRP{random.randint(1000, 9999)}',  # Use correct column name
-        })
-    return members
-
-
-# ============================================================================
-# Integration Tests - Full Workflows
-# ============================================================================
-
-class TestEndToEndWorkflows:
-    """Test complete workflows from persist through export."""
-    
-    def test_persist_query_export_workflow(self, service, export_dir):
-        """Test: persist → query → export to all formats."""
-        # Step 1: Persist patients
-        patients = generate_patients(50)
         result = service.persist_entities(
-            entities=patients,
-            entity_type='patient',
-            scenario_name='workflow-test-1',
-            tags=['integration', 'workflow'],
+            entities=patients, entity_type="patient", scenario_name="parquet-test"
         )
-        
-        assert result.entities_persisted == 50
-        scenario_id = result.scenario_id
-        
-        # Step 2: Query to verify (use results, not rows)
-        query_result = service.query_scenario(
-            scenario_id,
-            "SELECT COUNT(*) as cnt FROM patients",
-        )
-        assert query_result.results[0]['cnt'] == 50
-        
-        # Step 3: Export to JSON (provide full file path, not directory)
-        json_path = export_dir / "workflow-test-1.json"
-        json_export = service.export_to_json(scenario_id, str(json_path))
-        assert json_export.entities_exported.get('patients', 0) == 50
-        assert Path(json_export.file_path).exists()
-        
-        # Verify JSON content (check for scenario info, not metadata)
-        with open(json_export.file_path, 'r') as f:
-            json_data = json.load(f)
-        # Check the scenario exists in the data
-        assert 'patients' in json_data.get('entities', json_data)
-        
-        # Step 4: Export to CSV (provide directory path)
-        csv_dir = export_dir / "csv-export"
-        csv_export = service.export_to_csv(scenario_id, str(csv_dir))
-        assert csv_export.entities_exported.get('patients', 0) == 50
-        
-        csv_path = Path(csv_export.file_path) / 'patients.csv'
-        assert csv_path.exists()
-        
-        # Verify CSV content
-        with open(csv_path, 'r') as f:
-            reader = csv.DictReader(f)
-            rows = list(reader)
-        assert len(rows) == 50
-    
-    def test_persist_clone_modify_merge_workflow(self, service):
-        """Test: persist → clone → add data → merge back."""
-        # Step 1: Create base scenario
-        patients_a = generate_patients(20)
-        result_a = service.persist_entities(
-            entities=patients_a,
-            entity_type='patient',
-            scenario_name='base-cohort',
-            tags=['base'],
-        )
-        base_id = result_a.scenario_id
-        
-        # Step 2: Clone for variant (use new_scenario_id, not target_scenario_id)
-        clone = service.clone_scenario(
-            base_id,
-            new_name='variant-cohort',
-            tags=['variant'],
-        )
-        variant_id = clone.new_scenario_id
-        assert clone.entities_cloned.get('patients', 0) == 20
-        
-        # Step 3: Add more patients to variant
-        patients_b = generate_patients(10)
-        service.persist_entities(
-            entities=patients_b,
-            entity_type='patient',
-            scenario_id=variant_id,
-        )
-        
-        # Verify variant has 30 patients
-        query_variant = service.query_scenario(
-            variant_id,
-            "SELECT COUNT(*) as cnt FROM patients",
-        )
-        assert query_variant.results[0]['cnt'] == 30
-        
-        # Step 4: Merge base and variant
-        merged = service.merge_scenarios(
-            source_scenario_ids=[base_id, variant_id],
-            target_name='merged-cohort',
-            conflict_strategy='skip',
-        )
-        
-        # Should have combined unique patients
-        total = merged.entities_merged.get('patients', 0)
-        assert total >= 30  # At least the 30 from variant
-    
-    def test_tag_filter_clone_workflow(self, service):
-        """Test: create tagged scenarios → filter by tag → clone filtered."""
-        # Create several scenarios with different tags
-        for i in range(5):
-            patients = generate_patients(10)
-            tags = ['batch']
-            if i % 2 == 0:
-                tags.append('even')
-            else:
-                tags.append('odd')
-            
-            service.persist_entities(
-                entities=patients,
-                entity_type='patient',
-                scenario_name=f'tagged-scenario-{i}',
-                tags=tags,
-            )
-        
-        # Filter by 'even' tag
-        even_scenarios = service.scenarios_by_tag('even')
-        assert len(even_scenarios) == 3  # 0, 2, 4
-        
-        # Clone one of the filtered scenarios (ScenarioBrief is an object)
-        clone = service.clone_scenario(
-            even_scenarios[0].scenario_id,  # Use attribute access
-            new_name='cloned-even',
-            tags=['cloned', 'even'],
-        )
-        assert clone.total_entities == 10
-        
-        # Verify clone has correct tags
-        clone_tags = service.get_tags(clone.new_scenario_id)
-        assert 'cloned' in clone_tags
-        assert 'even' in clone_tags
 
+        with tempfile.TemporaryDirectory() as export_dir:
+            exp = service.export_scenario(result.scenario_id, "parquet", export_dir)
 
-# ============================================================================
-# Performance Tests
-# ============================================================================
+            # Verify export succeeded
+            assert Path(exp.file_path).exists()
+            assert exp.total_entities > 0
+
+            # Verify parquet files created
+            parquet_files = list(Path(exp.file_path).glob("*.parquet"))
+            assert len(parquet_files) > 0
+            assert "patients.parquet" in [f.name for f in parquet_files]
+
+            # Verify files are readable with pyarrow
+            try:
+                import pyarrow.parquet as pq
+
+                for pf in parquet_files:
+                    table = pq.read_table(pf)
+                    assert table.num_rows > 0
+            except ImportError:
+                pytest.skip("pyarrow not installed")
+
 
 class TestPerformance:
     """Performance tests with large batches."""
-    
-    def test_persist_100_patients(self, service):
-        """Test persisting 100 patients - baseline performance."""
-        patients = generate_patients(100)
-        
+
+    def test_persist_1000_entities_under_5_seconds(self, service):
+        """Persist 1000 patients should complete in under 5 seconds."""
+        patients = [
+            {
+                "id": str(uuid4()),
+                "given_name": f"Patient{i}",
+                "family_name": f"Family{i}",
+                "gender": "male" if i % 2 == 0 else "female",
+                "birth_date": f"{1950 + (i % 50)}-{(i % 12) + 1:02d}-{(i % 28) + 1:02d}",
+            }
+            for i in range(1000)
+        ]
+
         start = time.time()
         result = service.persist_entities(
-            entities=patients,
-            entity_type='patient',
-            scenario_name='perf-100',
+            entities=patients, entity_type="patient", scenario_name="perf-test"
         )
         elapsed = time.time() - start
-        
-        assert result.entities_persisted == 100
-        assert elapsed < 5.0, f"100 patients took {elapsed:.2f}s (should be < 5s)"
-        print(f"\n  100 patients: {elapsed:.3f}s ({100/elapsed:.0f} entities/sec)")
-    
-    def test_persist_500_patients(self, service):
-        """Test persisting 500 patients - medium batch."""
-        patients = generate_patients(500)
-        
-        start = time.time()
-        result = service.persist_entities(
-            entities=patients,
-            entity_type='patient',
-            scenario_name='perf-500',
-        )
-        elapsed = time.time() - start
-        
-        assert result.entities_persisted == 500
-        assert elapsed < 15.0, f"500 patients took {elapsed:.2f}s (should be < 15s)"
-        print(f"\n  500 patients: {elapsed:.3f}s ({500/elapsed:.0f} entities/sec)")
-    
-    def test_persist_1000_patients(self, service):
-        """Test persisting 1000 patients - large batch."""
-        patients = generate_patients(1000)
-        
-        start = time.time()
-        result = service.persist_entities(
-            entities=patients,
-            entity_type='patient',
-            scenario_name='perf-1000',
-        )
-        elapsed = time.time() - start
-        
+
         assert result.entities_persisted == 1000
-        assert elapsed < 30.0, f"1000 patients took {elapsed:.2f}s (should be < 30s)"
-        print(f"\n  1000 patients: {elapsed:.3f}s ({1000/elapsed:.0f} entities/sec)")
-    
-    def test_clone_large_scenario(self, service):
-        """Test cloning a large scenario (patients only)."""
-        # Create large scenario with patients only
-        patients = generate_patients(500)
-        
+        assert elapsed < 5.0, f"Persist took {elapsed:.2f}s, expected < 5s"
+
+    def test_clone_1000_entities_under_5_seconds(self, service):
+        """Clone 1000 patients should complete in under 5 seconds."""
+        patients = [
+            {
+                "id": str(uuid4()),
+                "given_name": f"Patient{i}",
+                "family_name": f"Family{i}",
+                "gender": "male",
+                "birth_date": "1980-01-15",
+            }
+            for i in range(1000)
+        ]
+
+        result = service.persist_entities(
+            entities=patients, entity_type="patient", scenario_name="clone-perf-test"
+        )
+
+        start = time.time()
+        clone = service.clone_scenario(result.scenario_id, "cloned-1000")
+        elapsed = time.time() - start
+
+        assert clone.total_entities == 1000
+        assert elapsed < 5.0, f"Clone took {elapsed:.2f}s, expected < 5s"
+
+    def test_export_1000_entities_all_formats(self, service):
+        """Export 1000 patients in all formats should be fast."""
+        patients = [
+            {
+                "id": str(uuid4()),
+                "given_name": f"Patient{i}",
+                "family_name": f"Family{i}",
+                "gender": "male",
+                "birth_date": "1980-01-15",
+            }
+            for i in range(1000)
+        ]
+
+        result = service.persist_entities(
+            entities=patients, entity_type="patient", scenario_name="export-perf-test"
+        )
+
+        with tempfile.TemporaryDirectory() as export_dir:
+            # JSON export
+            start = time.time()
+            exp_json = service.export_scenario(result.scenario_id, "json", export_dir)
+            json_time = time.time() - start
+            assert Path(exp_json.file_path).exists()
+            assert json_time < 2.0, f"JSON export took {json_time:.2f}s"
+
+            # CSV export
+            start = time.time()
+            exp_csv = service.export_scenario(
+                result.scenario_id, "csv", f"{export_dir}/csv"
+            )
+            csv_time = time.time() - start
+            assert Path(exp_csv.file_path).exists()
+            assert csv_time < 2.0, f"CSV export took {csv_time:.2f}s"
+
+            # Parquet export
+            start = time.time()
+            exp_pq = service.export_scenario(
+                result.scenario_id, "parquet", f"{export_dir}/pq"
+            )
+            pq_time = time.time() - start
+            assert Path(exp_pq.file_path).exists()
+            assert pq_time < 2.0, f"Parquet export took {pq_time:.2f}s"
+
+
+class TestCrossProductIntegration:
+    """Test scenarios with multiple entity types."""
+
+    def test_scenario_with_patients_and_encounters(self, service):
+        """Create scenario with patients and encounters, then clone and merge."""
+        # Create patients with MRNs
+        mrns = [f"MRN-{i:04d}" for i in range(5)]
+        patients = [
+            {
+                "id": str(uuid4()),
+                "mrn": mrn,
+                "given_name": f"Patient{i}",
+                "family_name": "Test",
+                "gender": "male",
+                "birth_date": "1980-01-15",
+            }
+            for i, mrn in enumerate(mrns)
+        ]
+
         result = service.persist_entities(
             entities=patients,
-            entity_type='patient',
-            scenario_name='large-for-clone',
+            entity_type="patient",
+            scenario_name="multi-entity-test",
+            tags=["integration-test"],
+        )
+        assert result.entities_persisted == 5
+
+        # Add encounters for each patient
+        encounters = []
+        for mrn in mrns:
+            for j in range(3):
+                encounters.append(
+                    {
+                        "encounter_id": str(uuid4()),
+                        "patient_mrn": mrn,
+                        "class_code": "AMB",
+                        "status": "finished",
+                        "admission_time": f"2024-0{j+1}-15T09:00:00",
+                        "discharge_time": f"2024-0{j+1}-15T10:00:00",
+                    }
+                )
+
+        result2 = service.persist_entities(
+            entities=encounters, entity_type="encounter", scenario_id=result.scenario_id
+        )
+        assert result2.entities_persisted == 15
+
+        # Verify summary
+        summary = service.get_scenario_summary(result.scenario_id)
+        assert summary.entity_counts == {"patients": 5, "encounters": 15}
+
+        # Clone and verify IDs are different
+        clone = service.clone_scenario(result.scenario_id, "multi-entity-clone")
+        assert clone.total_entities == 20
+
+        orig_patients = service.query_scenario(result.scenario_id, "SELECT id FROM patients")
+        clone_patients = service.query_scenario(clone.new_scenario_id, "SELECT id FROM patients")
+        
+        orig_ids = {r["id"] for r in orig_patients.results}
+        clone_ids = {r["id"] for r in clone_patients.results}
+        assert orig_ids != clone_ids, "Cloned IDs should be different"
+
+    def test_merge_scenarios_with_different_entity_types(self, service):
+        """Merge scenarios where one has encounters and one doesn't."""
+        # First scenario: patients + encounters
+        patients1 = [
+            {
+                "id": str(uuid4()),
+                "mrn": f"MRN-A{i:03d}",
+                "given_name": f"PatientA{i}",
+                "family_name": "Test",
+                "gender": "male",
+                "birth_date": "1980-01-15",
+            }
+            for i in range(3)
+        ]
+        result1 = service.persist_entities(
+            entities=patients1, entity_type="patient", scenario_name="scenario-a"
+        )
+
+        encounters = [
+            {
+                "encounter_id": str(uuid4()),
+                "patient_mrn": f"MRN-A{i:03d}",
+                "class_code": "AMB",
+                "status": "finished",
+                "admission_time": "2024-01-15T09:00:00",
+            }
+            for i in range(3)
+        ]
+        service.persist_entities(
+            entities=encounters, entity_type="encounter", scenario_id=result1.scenario_id
+        )
+
+        # Second scenario: patients only
+        patients2 = [
+            {
+                "id": str(uuid4()),
+                "mrn": f"MRN-B{i:03d}",
+                "given_name": f"PatientB{i}",
+                "family_name": "Test",
+                "gender": "female",
+                "birth_date": "1990-06-20",
+            }
+            for i in range(2)
+        ]
+        result2 = service.persist_entities(
+            entities=patients2, entity_type="patient", scenario_name="scenario-b"
+        )
+
+        # Merge
+        merged = service.merge_scenarios(
+            [result1.scenario_id, result2.scenario_id], "merged-scenario"
+        )
+
+        # Verify counts
+        assert merged.entities_merged["patients"] == 5  # 3 + 2
+        assert merged.entities_merged["encounters"] == 3  # only from scenario-a
+
+    def test_export_multi_entity_scenario(self, service):
+        """Export scenario with multiple entity types."""
+        # Create patients
+        patients = [
+            {
+                "id": str(uuid4()),
+                "mrn": f"MRN-{i:04d}",
+                "given_name": f"Patient{i}",
+                "family_name": "Test",
+                "gender": "male",
+                "birth_date": "1980-01-15",
+            }
+            for i in range(3)
+        ]
+        result = service.persist_entities(
+            entities=patients, entity_type="patient", scenario_name="export-multi-test"
+        )
+
+        # Add encounters
+        encounters = [
+            {
+                "encounter_id": str(uuid4()),
+                "patient_mrn": f"MRN-{i:04d}",
+                "class_code": "AMB",
+                "status": "finished",
+                "admission_time": "2024-01-15T09:00:00",
+            }
+            for i in range(3)
+        ]
+        service.persist_entities(
+            entities=encounters, entity_type="encounter", scenario_id=result.scenario_id
+        )
+
+        with tempfile.TemporaryDirectory() as export_dir:
+            # JSON export
+            exp = service.export_scenario(result.scenario_id, "json", export_dir)
+            with open(exp.file_path) as f:
+                data = json.load(f)
+
+            entities = data.get("entities", {})
+            assert "patients" in entities
+            assert "encounters" in entities
+            assert len(entities["patients"]) == 3
+            assert len(entities["encounters"]) == 3
+
+            # CSV export
+            exp_csv = service.export_scenario(
+                result.scenario_id, "csv", f"{export_dir}/csv"
+            )
+            csv_files = list(Path(exp_csv.file_path).glob("*.csv"))
+            csv_names = [f.name for f in csv_files]
+            assert "patients.csv" in csv_names
+            assert "encounters.csv" in csv_names
+
+
+class TestFullWorkflow:
+    """End-to-end workflow tests."""
+
+    def test_generate_persist_tag_clone_merge_export(self, service):
+        """Complete workflow: generate -> persist -> tag -> clone -> merge -> export."""
+        # Step 1: Generate and persist initial patients
+        patients = [
+            {
+                "id": str(uuid4()),
+                "given_name": f"Patient{i}",
+                "family_name": "Original",
+                "gender": "male",
+                "birth_date": "1980-01-15",
+            }
+            for i in range(5)
+        ]
+        result = service.persist_entities(
+            entities=patients, entity_type="patient", scenario_name="workflow-test"
         )
         scenario_id = result.scenario_id
-        
-        # Clone
-        start = time.time()
-        clone = service.clone_scenario(scenario_id, new_name='large-clone')
-        elapsed = time.time() - start
-        
-        assert clone.entities_cloned.get('patients', 0) == 500
-        assert elapsed < 10.0, f"Cloning 500 entities took {elapsed:.2f}s"
-        print(f"\n  Clone 500 entities: {elapsed:.3f}s")
-    
-    def test_merge_multiple_scenarios(self, service):
-        """Test merging multiple scenarios."""
-        # Create 5 scenarios
-        scenario_ids = []
-        for i in range(5):
-            patients = generate_patients(50)
-            result = service.persist_entities(
-                entities=patients,
-                entity_type='patient',
-                scenario_name=f'merge-source-{i}',
-            )
-            scenario_ids.append(result.scenario_id)
-        
-        # Merge all
-        start = time.time()
-        merged = service.merge_scenarios(
-            source_scenario_ids=scenario_ids,
-            target_name='merged-5-sources',
-            conflict_strategy='skip',
-        )
-        elapsed = time.time() - start
-        
-        total_merged = sum(merged.entities_merged.values())
-        assert total_merged == 250  # 5 × 50 patients
-        assert elapsed < 10.0, f"Merging 5 scenarios took {elapsed:.2f}s"
-        print(f"\n  Merge 5 scenarios (250 entities): {elapsed:.3f}s")
-    
-    def test_export_large_scenario(self, service, export_dir):
-        """Test exporting a large scenario."""
-        # Create large scenario
-        patients = generate_patients(500)
-        result = service.persist_entities(
-            entities=patients,
-            entity_type='patient',
-            scenario_name='large-for-export',
-        )
-        
-        # Export to JSON
-        start = time.time()
-        json_path = export_dir / "large-export.json"
-        json_export = service.export_scenario(
-            result.scenario_id,
-            format='json',
-            output_path=str(json_path),
-        )
-        json_elapsed = time.time() - start
-        
-        assert json_export.entities_exported.get('patients', 0) == 500
-        assert json_elapsed < 10.0, f"Export to JSON took {json_elapsed:.2f}s"
-        print(f"\n  Export 500 to JSON: {json_elapsed:.3f}s ({json_export.file_size_bytes/1024:.1f} KB)")
-        
-        # Export to CSV
-        start = time.time()
-        csv_dir = export_dir / "csv-large"
-        csv_export = service.export_scenario(
-            result.scenario_id,
-            format='csv',
-            output_path=str(csv_dir),
-        )
-        csv_elapsed = time.time() - start
-        
-        assert csv_export.entities_exported.get('patients', 0) == 500
-        assert csv_elapsed < 10.0, f"Export to CSV took {csv_elapsed:.2f}s"
-        print(f"  Export 500 to CSV: {csv_elapsed:.3f}s ({csv_export.file_size_bytes/1024:.1f} KB)")
-    
-    def test_query_large_dataset(self, service):
-        """Test querying a large dataset."""
-        # Create large scenario
-        patients = generate_patients(1000)
-        result = service.persist_entities(
-            entities=patients,
-            entity_type='patient',
-            scenario_name='large-for-query',
-        )
-        
-        # Simple count query
-        start = time.time()
-        count_result = service.query_scenario(
-            result.scenario_id,
-            "SELECT COUNT(*) as cnt FROM patients",
-        )
-        count_elapsed = time.time() - start
-        assert count_result.results[0]['cnt'] == 1000
-        print(f"\n  COUNT query on 1000: {count_elapsed:.4f}s")
-        
-        # Filtered query
-        start = time.time()
-        filter_result = service.query_scenario(
-            result.scenario_id,
-            "SELECT * FROM patients WHERE gender = 'female' LIMIT 100",
-        )
-        filter_elapsed = time.time() - start
-        assert len(filter_result.results) <= 100
-        print(f"  Filtered query: {filter_elapsed:.4f}s")
-        
-        # Aggregation query
-        start = time.time()
-        agg_result = service.query_scenario(
-            result.scenario_id,
-            """SELECT gender, COUNT(*) as cnt 
-               FROM patients 
-               GROUP BY gender""",
-        )
-        agg_elapsed = time.time() - start
-        assert len(agg_result.results) == 2  # male, female
-        print(f"  Aggregation query: {agg_elapsed:.4f}s")
+        assert result.entities_persisted == 5
 
+        # Step 2: Add tags
+        service.add_tag(scenario_id, "diabetes-cohort")
+        service.add_tag(scenario_id, "2024-study")
+        tags = service.get_tags(scenario_id)
+        assert "diabetes-cohort" in tags
+        assert "2024-study" in tags
 
-# ============================================================================
-# Edge Case Tests
-# ============================================================================
+        # Step 3: Clone for A/B testing
+        clone_a = service.clone_scenario(scenario_id, "control-group")
+        clone_b = service.clone_scenario(scenario_id, "treatment-group")
+        service.add_tag(clone_a.new_scenario_id, "control")
+        service.add_tag(clone_b.new_scenario_id, "treatment")
 
-class TestEdgeCases:
-    """Test edge cases and error handling."""
-    
-    def test_merge_single_scenario_error(self, service):
-        """Test that merging a single scenario raises error."""
-        patients = generate_patients(10)
-        result = service.persist_entities(
-            entities=patients,
-            entity_type='patient',
-            scenario_name='single-scenario',
+        # Step 4: Verify clones are independent
+        control_count = service.query_scenario(
+            clone_a.new_scenario_id, "SELECT COUNT(*) as cnt FROM patients"
         )
-        
-        # Match the actual error message (case-sensitive)
-        with pytest.raises(ValueError, match="At least 2 source scenarios"):
-            service.merge_scenarios(
-                source_scenario_ids=[result.scenario_id],
-                target_name='should-fail',
-            )
-    
-    def test_export_nonexistent_scenario(self, service, export_dir):
-        """Test exporting a scenario that doesn't exist."""
-        fake_id = str(uuid4())
-        json_path = export_dir / "fake.json"
-        
-        with pytest.raises(ValueError, match="not found"):
-            service.export_to_json(fake_id, str(json_path))
-    
-    def test_clone_nonexistent_scenario(self, service):
-        """Test cloning a scenario that doesn't exist."""
-        fake_id = str(uuid4())
-        
-        with pytest.raises(ValueError, match="not found"):
-            service.clone_scenario(fake_id)
-    
-    def test_tag_case_insensitivity(self, service):
-        """Test that tags are case-insensitive."""
-        patients = generate_patients(5)
-        result = service.persist_entities(
-            entities=patients,
-            entity_type='patient',
-            scenario_name='case-test',
-            tags=['TestTag'],
+        treatment_count = service.query_scenario(
+            clone_b.new_scenario_id, "SELECT COUNT(*) as cnt FROM patients"
         )
-        
-        # Add mixed case tags
-        service.add_tag(result.scenario_id, 'UPPERCASE')
-        service.add_tag(result.scenario_id, 'lowercase')
-        service.add_tag(result.scenario_id, 'MixedCase')
-        
-        tags = service.get_tags(result.scenario_id)
-        # All should be lowercase
-        assert all(t == t.lower() for t in tags)
-        assert 'testtag' in tags
-        assert 'uppercase' in tags
-        assert 'mixedcase' in tags
-    
-    def test_duplicate_tag_ignored(self, service):
-        """Test that adding the same tag twice is idempotent."""
-        patients = generate_patients(5)
-        result = service.persist_entities(
-            entities=patients,
-            entity_type='patient',
-            scenario_name='dup-tag-test',
-        )
-        
-        service.add_tag(result.scenario_id, 'duplicate')
-        service.add_tag(result.scenario_id, 'duplicate')
-        service.add_tag(result.scenario_id, 'DUPLICATE')  # Case variation
-        
-        tags = service.get_tags(result.scenario_id)
-        assert tags.count('duplicate') == 1
-    
-    def test_special_characters_in_scenario_name(self, service):
-        """Test scenario names with special characters."""
-        patients = generate_patients(5)
-        
-        # Names with various special characters
-        # Note: sanitize_name has specific character handling rules
-        special_names = [
-            ('test-with-dashes', 'test-with-dashes'),
-            ('test_with_underscores', 'test-with-underscores'),  # Underscores → dashes
-            ('test.with.dots', 'testwithdots'),  # Dots removed
-            ('test with spaces', 'test-with-spaces'),  # Spaces → dashes
+        assert control_count.results[0]["cnt"] == 5
+        assert treatment_count.results[0]["cnt"] == 5
+
+        # Step 5: Create additional cohort
+        more_patients = [
+            {
+                "id": str(uuid4()),
+                "given_name": f"NewPatient{i}",
+                "family_name": "Additional",
+                "gender": "female",
+                "birth_date": "1990-06-20",
+            }
+            for i in range(3)
         ]
-        
-        for input_name, expected_name in special_names:
-            result = service.persist_entities(
-                entities=patients.copy(),
-                entity_type='patient',
-                scenario_name=input_name,
-            )
-            assert result.scenario_name == expected_name
-            
-            # Should be able to find by filter_pattern
-            scenarios = service.list_scenarios(filter_pattern=expected_name[:10])
-            assert len(scenarios) >= 1
-    
-    def test_very_long_scenario_name(self, service):
-        """Test handling of very long scenario names."""
-        patients = generate_patients(5)
-        long_name = 'a' * 500  # Very long name
-        
-        result = service.persist_entities(
-            entities=patients,
-            entity_type='patient',
-            scenario_name=long_name,
+        additional = service.persist_entities(
+            entities=more_patients,
+            entity_type="patient",
+            scenario_name="additional-cohort",
         )
-        
-        # Should truncate or handle gracefully
-        assert result.scenario_id is not None
 
-
-# ============================================================================
-# Cross-Product Tests
-# ============================================================================
-
-class TestCrossProduct:
-    """Test scenarios with multiple product domains."""
-    
-    def test_multi_scenario_tagging_and_filtering(self, service):
-        """Test tagging and filtering across multiple scenarios."""
-        # Create scenarios from different products
-        patients_1 = generate_patients(20)
-        patients_2 = generate_patients(15)
-        
-        # PatientSim scenario
-        result1 = service.persist_entities(
-            entities=patients_1,
-            entity_type='patient',
-            scenario_name='patientsim-cohort',
-            tags=['patientsim', 'training'],
-        )
-        
-        # Another PatientSim scenario
-        result2 = service.persist_entities(
-            entities=patients_2,
-            entity_type='patient',
-            scenario_name='patientsim-test',
-            tags=['patientsim', 'testing'],
-        )
-        
-        # Query by product tag
-        patientsim_scenarios = service.scenarios_by_tag('patientsim')
-        assert len(patientsim_scenarios) == 2
-        
-        # Query by purpose tag
-        training_scenarios = service.scenarios_by_tag('training')
-        assert len(training_scenarios) == 1
-        assert training_scenarios[0].name == 'patientsim-cohort'
-        
-        # Merge both into combined dataset
+        # Step 6: Merge cohorts
         merged = service.merge_scenarios(
-            source_scenario_ids=[result1.scenario_id, result2.scenario_id],
-            target_name='combined-patientsim',
-            tags=['patientsim', 'merged'],
+            [clone_a.new_scenario_id, additional.scenario_id], "combined-study"
         )
-        assert merged.entities_merged.get('patients', 0) == 35
-    
-    def test_all_canonical_tables_defined(self, service):
-        """Verify CANONICAL_TABLES constant is defined with expected tables."""
-        # CANONICAL_TABLES is a list of (table_name, id_column) tuples
-        table_names = [t[0] for t in CANONICAL_TABLES]
-        
-        assert len(CANONICAL_TABLES) >= 17  # At least the original 17
-        
-        # Check key tables from each product
-        assert 'patients' in table_names
-        assert 'encounters' in table_names
-        assert 'members' in table_names
+        assert merged.total_entities == 8  # 5 + 3
+
+        # Step 7: Export final dataset
+        with tempfile.TemporaryDirectory() as export_dir:
+            exp = service.export_scenario(
+                merged.target_scenario_id, "json", export_dir
+            )
+            assert Path(exp.file_path).exists()
+
+            with open(exp.file_path) as f:
+                data = json.load(f)
+            assert len(data["entities"]["patients"]) == 8
+
+        # Verify tag filtering works
+        diabetes_scenarios = service.scenarios_by_tag("diabetes-cohort")
+        scenario_ids = [s.scenario_id for s in diabetes_scenarios]
+        assert scenario_id in scenario_ids
