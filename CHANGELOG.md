@@ -9,6 +9,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **[Auto-Persist]** Phase 5 - Integration & Performance Testing Complete (2024-12-27)
+  - **Integration Test Suite** (`test_auto_persist_integration.py` - 8 tests):
+    - `TestParquetExport` - Validates Parquet export with pyarrow verification
+    - `TestPerformance` - Performance benchmarks for 1000+ entities:
+      - Persist: ~1,270 entities/sec
+      - Clone: ~1,220 entities/sec
+      - Export (all formats): < 0.1s for 1000 entities
+    - `TestCrossProductIntegration` - Multi-entity type scenarios (patients + encounters)
+    - `TestFullWorkflow` - Complete end-to-end: generate → persist → tag → clone → merge → export
+  - **Verified Performance Metrics**:
+    - Persist 1000 entities: 0.79s
+    - Clone 1000 entities: 0.82s
+    - Merge 2 scenarios (2000 entities): 1.53s
+    - JSON export 1000 entities: 0.07s (930 KB)
+    - CSV export: 0.06s
+    - Parquet export: 0.10s
+  - **Bug Fix**: JSON export now correctly handles directory paths (was failing with IsADirectoryError)
+  - 230 total state management tests passing
+  - All Auto-Persist phases complete (0-5)
+
 - **[Auto-Persist]** Phase 2 Enhancements - Tag Management, Cloning, Merging, Export (2024-12-27)
   - **Tag Management** (6 new methods):
     - `add_tag()` - Add tag to scenario (case-insensitive, stored lowercase)
