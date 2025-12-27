@@ -3,9 +3,11 @@ HealthSim State Manager - DuckDB Backend.
 
 Provides save/load/list/delete operations for scenarios using DuckDB
 as the storage backend instead of JSON files.
+
+Extended with auto-persist capabilities for token-efficient scenario management.
 """
 
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Union
 from uuid import uuid4
 from datetime import datetime
 from pathlib import Path
@@ -19,6 +21,14 @@ from .serializers import (
     get_table_info,
     ENTITY_TABLE_MAP,
 )
+from .auto_persist import (
+    AutoPersistService,
+    PersistResult,
+    QueryResult,
+    ScenarioBrief,
+    get_auto_persist_service,
+)
+from .summary import ScenarioSummary
 
 
 class StateManager:
@@ -30,25 +40,31 @@ class StateManager:
     1. In typed canonical tables (patients, encounters, etc.) for SQL queries
     2. In scenario_entities.entity_data as JSON for round-trip compatibility
     
+    Extended Features (Auto-Persist):
+    - `persist()` - Token-efficient persist that stores in canonical tables
+    - `get_summary()` - Load only summary (~500 tokens) instead of full data
+    - `query()` - Run SQL queries against scenario data with pagination
+    
     Usage:
         manager = StateManager()
         
-        # Save a scenario
+        # Traditional save/load (full data in context)
         scenario_id = manager.save_scenario(
             name='diabetes-cohort',
             entities={'patients': [...], 'encounters': [...]},
-            description='Type 2 diabetes patient cohort',
-            tags=['diabetes', 'chronic']
         )
+        scenario = manager.load_scenario('diabetes-cohort')  # Full data
         
-        # Load a scenario
-        scenario = manager.load_scenario('diabetes-cohort')
+        # Auto-persist pattern (token-efficient)
+        result = manager.persist(
+            entities={'patients': [...], 'encounters': [...]},
+            context='diabetes patients in San Diego'
+        )
+        # Returns summary (~500 tokens), not full data
         
-        # List scenarios
-        scenarios = manager.list_scenarios(tag='diabetes')
-        
-        # Delete a scenario
-        manager.delete_scenario('diabetes-cohort')
+        summary = manager.get_summary('diabetes-patients-20241227')
+        # Query for specific data
+        results = manager.query(scenario_id, "SELECT * FROM patients WHERE gender = 'F'")
     """
     
     def __init__(self, connection: Optional[duckdb.DuckDBPyConnection] = None):
@@ -59,6 +75,7 @@ class StateManager:
             connection: Optional database connection (uses default if not provided)
         """
         self._conn = connection
+        self._auto_persist: Optional[AutoPersistService] = None
     
     @property
     def conn(self) -> duckdb.DuckDBPyConnection:
@@ -66,6 +83,165 @@ class StateManager:
         if self._conn is None:
             self._conn = get_connection()
         return self._conn
+    
+    @property
+    def auto_persist(self) -> AutoPersistService:
+        """Get auto-persist service (lazy initialization)."""
+        if self._auto_persist is None:
+            self._auto_persist = AutoPersistService(self.conn)
+        return self._auto_persist
+    
+    # =========================================================================
+    # Auto-Persist Methods (Token-Efficient)
+    # =========================================================================
+    
+    def persist(
+        self,
+        entities: Dict[str, List[Dict]],
+        scenario_id: Optional[str] = None,
+        scenario_name: Optional[str] = None,
+        context: Optional[str] = None,
+        tags: Optional[List[str]] = None,
+        description: Optional[str] = None,
+    ) -> PersistResult:
+        """
+        Persist entities using the auto-persist pattern.
+        
+        This is the recommended method for token-efficient scenario management.
+        Entities are stored directly in canonical tables with scenario_id.
+        Returns a summary instead of echoing back all data.
+        
+        Args:
+            entities: Dict mapping entity type to list of entities
+            scenario_id: Optional existing scenario to add to
+            scenario_name: Optional explicit scenario name
+            context: Context string for auto-naming (e.g., 'diabetes patients')
+            tags: Optional tags for organization
+            description: Optional description
+            
+        Returns:
+            PersistResult with summary and entity IDs (not full data)
+            
+        Example:
+            result = manager.persist(
+                entities={'patients': patient_list},
+                context='diabetes cohort San Diego',
+                tags=['diabetes', 'san-diego']
+            )
+            # result.summary has ~500 tokens, not 10K+ for full data
+        """
+        return self.auto_persist.persist_entities(
+            entities=entities,
+            scenario_id=scenario_id,
+            scenario_name=scenario_name,
+            context=context,
+            tags=tags,
+            description=description,
+        )
+    
+    def get_summary(
+        self,
+        scenario_id_or_name: str,
+        include_samples: bool = True,
+        samples_per_type: int = 3,
+    ) -> ScenarioSummary:
+        """
+        Get a token-efficient summary of a scenario.
+        
+        Use this instead of load_scenario() when you need context
+        about a scenario without loading all entities.
+        
+        Args:
+            scenario_id_or_name: Scenario identifier (UUID or name)
+            include_samples: Whether to include sample entities
+            samples_per_type: Number of samples per entity type
+            
+        Returns:
+            ScenarioSummary with counts, statistics, and optional samples
+            - Without samples: ~500 tokens
+            - With samples: ~3,500 tokens
+            
+        Example:
+            summary = manager.get_summary('diabetes-patients-20241227')
+            print(f"Scenario has {summary.total_entities()} entities")
+            print(f"Token cost: ~{summary.token_estimate()} tokens")
+        """
+        return self.auto_persist.get_scenario_summary(
+            scenario_id_or_name=scenario_id_or_name,
+            include_samples=include_samples,
+            samples_per_type=samples_per_type,
+        )
+    
+    def query(
+        self,
+        scenario_id_or_name: str,
+        sql: str,
+        limit: int = 20,
+        offset: int = 0,
+    ) -> QueryResult:
+        """
+        Run a SQL query against scenario data with pagination.
+        
+        Only SELECT queries are allowed. Queries are automatically
+        filtered to the specified scenario.
+        
+        Args:
+            scenario_id_or_name: Scenario identifier
+            sql: SQL SELECT query
+            limit: Max results per page (default 20, max 100)
+            offset: Pagination offset
+            
+        Returns:
+            QueryResult with rows, columns, and pagination info
+            
+        Example:
+            result = manager.query(
+                'diabetes-patients-20241227',
+                "SELECT given_name, family_name, birth_date FROM patients WHERE gender = 'F'",
+                limit=10
+            )
+            for row in result.rows:
+                print(row)
+            if result.has_more:
+                # Fetch next page
+                result = manager.query(..., offset=10)
+        """
+        return self.auto_persist.query_scenario(
+            scenario_id_or_name=scenario_id_or_name,
+            query=sql,
+            limit=limit,
+            offset=offset,
+        )
+    
+    def get_samples(
+        self,
+        scenario_id_or_name: str,
+        entity_type: str,
+        count: int = 3,
+        strategy: str = 'diverse',
+    ) -> List[Dict]:
+        """
+        Get sample entities from a scenario.
+        
+        Args:
+            scenario_id_or_name: Scenario identifier
+            entity_type: Type of entity to sample
+            count: Number of samples (default 3)
+            strategy: 'diverse', 'random', or 'recent'
+            
+        Returns:
+            List of entity dicts (without internal fields)
+        """
+        return self.auto_persist.get_entity_samples(
+            scenario_id_or_name=scenario_id_or_name,
+            entity_type=entity_type,
+            count=count,
+            strategy=strategy,
+        )
+    
+    # =========================================================================
+    # Traditional Methods (Full Data Loading)
+    # =========================================================================
     
     def save_scenario(
         self,
@@ -77,7 +253,9 @@ class StateManager:
         product: str = 'healthsim',
     ) -> str:
         """
-        Save a scenario to the database.
+        Save a scenario to the database (traditional method).
+        
+        Note: For token-efficient persistence, use persist() instead.
         
         Args:
             name: Unique scenario name
@@ -153,13 +331,15 @@ class StateManager:
     
     def load_scenario(self, name_or_id: str) -> Dict[str, Any]:
         """
-        Load a scenario from the database.
+        Load a scenario from the database (full data).
+        
+        Note: For token-efficient loading, use get_summary() instead.
         
         Args:
             name_or_id: Scenario name or UUID
             
         Returns:
-            Dict with scenario metadata and entities
+            Dict with scenario metadata and all entities
             
         Raises:
             ValueError: If scenario not found
@@ -282,24 +462,42 @@ class StateManager:
         
         return scenarios
     
-    def delete_scenario(self, name_or_id: str) -> bool:
+    def delete_scenario(self, name_or_id: str, confirm: bool = False) -> bool:
         """
         Delete a scenario.
         
-        Note: This removes the scenario metadata, entity links, and tags.
-        Entity data in canonical tables is NOT deleted (for cross-scenario sharing).
+        Note: This removes the scenario and all associated entities from
+        canonical tables where scenario_id matches.
         
         Args:
             name_or_id: Scenario name or UUID
+            confirm: Must be True to actually delete (safety check)
             
         Returns:
             True if deleted, False if not found
         """
+        if not confirm:
+            raise ValueError("Must pass confirm=True to delete scenario")
+        
         scenario = self._get_scenario_by_name(name_or_id) or self._get_scenario_by_id(name_or_id)
         if not scenario:
             return False
         
         scenario_id = scenario['scenario_id']
+        
+        # Delete from canonical tables (entities with this scenario_id)
+        canonical_tables = [
+            'patients', 'encounters', 'diagnoses', 'medications',
+            'lab_results', 'vital_signs', 'orders', 'clinical_notes',
+            'members', 'claims', 'claim_lines',
+            'prescriptions', 'pharmacy_claims',
+            'subjects', 'trial_visits', 'adverse_events', 'exposures'
+        ]
+        for table in canonical_tables:
+            try:
+                self.conn.execute(f"DELETE FROM {table} WHERE scenario_id = ?", [scenario_id])
+            except Exception:
+                pass  # Table may not have scenario_id column yet
         
         # Delete in order: tags, entity links, scenario
         self.conn.execute("DELETE FROM scenario_tags WHERE scenario_id = ?", [scenario_id])
@@ -307,6 +505,22 @@ class StateManager:
         self.conn.execute("DELETE FROM scenarios WHERE scenario_id = ?", [scenario_id])
         
         return True
+    
+    def rename_scenario(self, old_name_or_id: str, new_name: str) -> bool:
+        """
+        Rename a scenario.
+        
+        Args:
+            old_name_or_id: Current scenario name or UUID
+            new_name: New scenario name
+            
+        Returns:
+            True if renamed successfully
+            
+        Raises:
+            ValueError: If scenario not found or new name already exists
+        """
+        return self.auto_persist.rename_scenario(old_name_or_id, new_name)
     
     def scenario_exists(self, name_or_id: str) -> bool:
         """Check if a scenario exists."""
@@ -423,14 +637,14 @@ class StateManager:
         serializer = get_serializer(entity_type)
         if serializer:
             try:
-                self._insert_canonical_entity(entity_type, entity, serializer)
+                self._insert_canonical_entity(scenario_id, entity_type, entity, serializer)
             except Exception:
                 # Canonical insert is optional - JSON storage is the primary
                 pass
         
         return entity_id
     
-    def _insert_canonical_entity(self, entity_type: str, entity: Dict, serializer) -> None:
+    def _insert_canonical_entity(self, scenario_id: str, entity_type: str, entity: Dict, serializer) -> None:
         """Insert entity into canonical table using serializer."""
         table_name, id_column = get_table_info(entity_type)
         
@@ -443,6 +657,9 @@ class StateManager:
         
         # Serialize entity
         data = serializer(entity, provenance)
+        
+        # Add scenario_id to data
+        data['scenario_id'] = scenario_id
         
         # Build INSERT statement
         columns = list(data.keys())
@@ -639,9 +856,9 @@ def list_scenarios(**kwargs) -> List[Dict]:
     return get_manager().list_scenarios(**kwargs)
 
 
-def delete_scenario(name_or_id: str) -> bool:
+def delete_scenario(name_or_id: str, confirm: bool = False) -> bool:
     """Convenience function for delete_scenario."""
-    return get_manager().delete_scenario(name_or_id)
+    return get_manager().delete_scenario(name_or_id, confirm=confirm)
 
 
 def scenario_exists(name_or_id: str) -> bool:
@@ -657,3 +874,19 @@ def export_scenario_to_json(name_or_id: str, output_path: Optional[Path] = None)
 def import_scenario_from_json(json_path: Path, name: Optional[str] = None, overwrite: bool = False) -> str:
     """Convenience function for import_from_json."""
     return get_manager().import_from_json(json_path, name, overwrite)
+
+
+# New convenience functions for auto-persist pattern
+def persist(entities: Dict[str, List[Dict]], **kwargs) -> PersistResult:
+    """Convenience function for persist (auto-persist pattern)."""
+    return get_manager().persist(entities, **kwargs)
+
+
+def get_summary(scenario_id_or_name: str, **kwargs) -> ScenarioSummary:
+    """Convenience function for get_summary."""
+    return get_manager().get_summary(scenario_id_or_name, **kwargs)
+
+
+def query_scenario(scenario_id_or_name: str, sql: str, **kwargs) -> QueryResult:
+    """Convenience function for query."""
+    return get_manager().query(scenario_id_or_name, sql, **kwargs)

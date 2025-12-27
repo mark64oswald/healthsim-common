@@ -41,14 +41,19 @@ Usage:
         ...
     ```
 
-    For auto-persist:
+    For auto-persist (recommended for token efficiency):
 
     ```python
-    from healthsim.state import get_auto_persist_service
+    from healthsim.state import persist, get_summary, query_scenario
 
-    service = get_auto_persist_service()
-    result = service.persist_entities(entities, 'patient')
-    summary = service.get_scenario_summary(scenario_id=result.scenario_id)
+    # Persist entities - returns summary, not full data
+    result = persist({'patients': patient_list}, context='diabetes cohort')
+    
+    # Load summary (~500 tokens instead of full data)
+    summary = get_summary('diabetes-cohort-20241227')
+    
+    # Query for specific data with pagination
+    results = query_scenario(scenario_id, "SELECT * FROM patients WHERE gender = 'F'")
     ```
 """
 
@@ -59,6 +64,8 @@ from .workspace import WORKSPACES_DIR, Workspace, WorkspaceMetadata
 from .manager import (
     StateManager,
     get_manager,
+    reset_manager,
+    # Traditional methods (full data)
     save_scenario,
     load_scenario,
     list_scenarios,
@@ -66,6 +73,10 @@ from .manager import (
     scenario_exists,
     export_scenario_to_json,
     import_scenario_from_json,
+    # Auto-persist convenience functions
+    persist,
+    get_summary,
+    query_scenario,
 )
 from .legacy import (
     export_to_json,
@@ -115,6 +126,8 @@ __all__ = [
     # State Manager (DuckDB-backed)
     "StateManager",
     "get_manager",
+    "reset_manager",
+    # Traditional methods (full data in context)
     "save_scenario",
     "load_scenario",
     "list_scenarios",
@@ -122,6 +135,10 @@ __all__ = [
     "scenario_exists",
     "export_scenario_to_json",
     "import_scenario_from_json",
+    # Auto-persist convenience functions (token-efficient)
+    "persist",
+    "get_summary",
+    "query_scenario",
     # Legacy JSON support
     "export_to_json",
     "import_from_json",
