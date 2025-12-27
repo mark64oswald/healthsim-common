@@ -276,7 +276,7 @@ class TestDeleteScenario:
         """Can delete scenario by name."""
         state_manager.save_scenario(name='to-delete', entities={})
         
-        result = state_manager.delete_scenario('to-delete')
+        result = state_manager.delete_scenario('to-delete', confirm=True)
         assert result is True
         
         scenarios = state_manager.list_scenarios()
@@ -287,12 +287,12 @@ class TestDeleteScenario:
         """Can delete scenario by UUID."""
         scenario_id = state_manager.save_scenario(name='delete-by-id', entities={})
         
-        result = state_manager.delete_scenario(scenario_id)
+        result = state_manager.delete_scenario(scenario_id, confirm=True)
         assert result is True
     
     def test_delete_not_found(self, state_manager):
         """Delete returns False for non-existent scenario."""
-        result = state_manager.delete_scenario('nonexistent')
+        result = state_manager.delete_scenario('nonexistent', confirm=True)
         assert result is False
     
     def test_delete_removes_tags(self, state_manager):
@@ -303,7 +303,7 @@ class TestDeleteScenario:
             tags=['tag1', 'tag2'],
         )
         
-        state_manager.delete_scenario('tagged-delete')
+        state_manager.delete_scenario('tagged-delete', confirm=True)
         
         # Verify tags are gone by checking the tags table directly
         result = state_manager.conn.execute(

@@ -327,7 +327,7 @@ class TestRoundTrip:
         state_manager.export_to_json('round-trip-test', json_path)
         
         # Delete original
-        state_manager.delete_scenario('round-trip-test')
+        state_manager.delete_scenario('round-trip-test', confirm=True)
         
         # Import
         state_manager.import_from_json(json_path, name='round-trip-restored')
@@ -353,7 +353,7 @@ class TestRoundTrip:
         # Export and re-import
         json_path = tmp_path / "tagged.json"
         state_manager.export_to_json('tagged-round-trip', json_path)
-        state_manager.delete_scenario('tagged-round-trip')
+        state_manager.delete_scenario('tagged-round-trip', confirm=True)
         state_manager.import_from_json(json_path)
         
         # Verify tags
@@ -372,7 +372,7 @@ class TestRoundTrip:
         # Export and re-import
         json_path = tmp_path / "described.json"
         state_manager.export_to_json('described-round-trip', json_path)
-        state_manager.delete_scenario('described-round-trip')
+        state_manager.delete_scenario('described-round-trip', confirm=True)
         state_manager.import_from_json(json_path)
         
         # Verify
