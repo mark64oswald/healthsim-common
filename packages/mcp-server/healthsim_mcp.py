@@ -12,6 +12,7 @@ Tools provided:
 - healthsim_query: Execute read-only SQL queries
 - healthsim_get_summary: Get token-efficient scenario summary
 - healthsim_query_reference: Query PopulationSim reference data
+- healthsim_tables: List all tables in the database
 
 Usage:
     python healthsim_mcp.py
@@ -21,9 +22,14 @@ Configuration in claude_desktop_config.json:
         "command": "python",
         "args": ["/path/to/healthsim_mcp.py"]
     }
+
+Environment Variables:
+    HEALTHSIM_DB_PATH: Override default database path
+    HEALTHSIM_READ_ONLY: Set to "true" for read-only mode (avoids locks)
 """
 
 import json
+import os
 import sys
 from datetime import datetime
 from pathlib import Path
@@ -36,8 +42,23 @@ from pydantic import BaseModel, Field, ConfigDict
 WORKSPACE_ROOT = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(WORKSPACE_ROOT / "packages" / "core" / "src"))
 
-from healthsim.db import get_connection, DatabaseConnection
+from healthsim.db import get_connection, DatabaseConnection, DEFAULT_DB_PATH
 from healthsim.state import StateManager
+
+
+# =============================================================================
+# Configuration from Environment
+# =============================================================================
+
+# Allow override via environment variable
+DB_PATH = Path(os.environ.get("HEALTHSIM_DB_PATH", str(DEFAULT_DB_PATH)))
+READ_ONLY = os.environ.get("HEALTHSIM_READ_ONLY", "").lower() == "true"
+
+# Log startup configuration (to stderr so it doesn't interfere with MCP protocol)
+print(f"HealthSim MCP Server starting...", file=sys.stderr)
+print(f"  Database: {DB_PATH}", file=sys.stderr)
+print(f"  Read-only: {READ_ONLY}", file=sys.stderr)
+print(f"  DB exists: {DB_PATH.exists()}", file=sys.stderr)
 
 
 # =============================================================================
@@ -54,7 +75,7 @@ def _get_conn():
     """Get or create the database connection."""
     global _conn
     if _conn is None:
-        _conn = get_connection()
+        _conn = get_connection(db_path=DB_PATH, read_only=READ_ONLY)
     return _conn
 
 

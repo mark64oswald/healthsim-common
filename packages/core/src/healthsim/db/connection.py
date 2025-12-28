@@ -4,6 +4,7 @@ Database connection management for HealthSim.
 Provides:
 - Automatic database creation on first access
 - Connection pooling (via DuckDB's built-in)
+- Read-only mode support to avoid locking issues
 - Path configuration (local vs cloud future)
 """
 
@@ -25,16 +26,20 @@ class DatabaseConnection:
     
     _instance: Optional['DatabaseConnection'] = None
     _connection: Optional[duckdb.DuckDBPyConnection] = None
+    _read_only: bool = False
     
-    def __init__(self, db_path: Optional[Path] = None):
+    def __init__(self, db_path: Optional[Path] = None, read_only: bool = False):
         """
         Initialize database connection.
         
         Args:
             db_path: Path to database file. Uses DEFAULT_DB_PATH if not specified.
+            read_only: If True, open database in read-only mode to avoid locking.
         """
         self.db_path = db_path or DEFAULT_DB_PATH
-        self._ensure_directory()
+        self._read_only = read_only
+        if not read_only:
+            self._ensure_directory()
     
     def _ensure_directory(self) -> None:
         """Create database directory if it doesn't exist."""
@@ -48,8 +53,11 @@ class DatabaseConnection:
             Active DuckDB connection.
         """
         if self._connection is None:
-            self._connection = duckdb.connect(str(self.db_path))
-            self._initialize_if_needed()
+            if self._read_only:
+                self._connection = duckdb.connect(str(self.db_path), read_only=True)
+            else:
+                self._connection = duckdb.connect(str(self.db_path))
+                self._initialize_if_needed()
         return self._connection
     
     def _initialize_if_needed(self) -> None:
@@ -77,18 +85,19 @@ class DatabaseConnection:
             self._connection = None
     
     @classmethod
-    def get_instance(cls, db_path: Optional[Path] = None) -> 'DatabaseConnection':
+    def get_instance(cls, db_path: Optional[Path] = None, read_only: bool = False) -> 'DatabaseConnection':
         """
         Get singleton database connection instance.
         
         Args:
             db_path: Override default path (only used on first call).
+            read_only: If True, open in read-only mode (only used on first call).
             
         Returns:
             DatabaseConnection singleton.
         """
         if cls._instance is None:
-            cls._instance = cls(db_path)
+            cls._instance = cls(db_path, read_only=read_only)
         return cls._instance
     
     @classmethod
@@ -99,14 +108,32 @@ class DatabaseConnection:
         cls._instance = None
 
 
-def get_connection(db_path: Optional[Path] = None) -> duckdb.DuckDBPyConnection:
+def get_connection(db_path: Optional[Path] = None, read_only: bool = False) -> duckdb.DuckDBPyConnection:
     """
     Convenience function to get database connection.
     
     Args:
         db_path: Optional path override (only used on first call).
+        read_only: If True, open in read-only mode (only used on first call).
     
     Returns:
         Active DuckDB connection.
     """
-    return DatabaseConnection.get_instance(db_path).connect()
+    return DatabaseConnection.get_instance(db_path, read_only=read_only).connect()
+
+
+def get_read_only_connection(db_path: Optional[Path] = None) -> duckdb.DuckDBPyConnection:
+    """
+    Get a read-only database connection (separate from main connection).
+    
+    This creates a separate connection that won't hold write locks,
+    useful for concurrent query operations.
+    
+    Args:
+        db_path: Optional path override.
+    
+    Returns:
+        Read-only DuckDB connection.
+    """
+    path = db_path or DEFAULT_DB_PATH
+    return duckdb.connect(str(path), read_only=True)

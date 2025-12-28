@@ -14,6 +14,7 @@ Usage:
 from .connection import (
     DatabaseConnection,
     get_connection,
+    get_read_only_connection,
     DEFAULT_DB_PATH,
 )
 from .schema import (
@@ -50,6 +51,7 @@ __all__ = [
     # Connection management
     'DatabaseConnection',
     'get_connection',
+    'get_read_only_connection',
     'DEFAULT_DB_PATH',
     
     # Schema
