@@ -1,297 +1,304 @@
 ---
-name: healthsim-networksim
-description: "NetworkSim generates synthetic healthcare network entities and provides reference knowledge about network types, plan structures, and pharmacy benefits. Use when user requests: (1) provider, facility, or pharmacy generation, (2) network type explanations (HMO, PPO, EPO), (3) plan structure or benefit design, (4) pharmacy benefit or PBM concepts, (5) network adequacy or utilization management."
+name: networksim
+description: Healthcare provider network data generation and analysis using real NPPES, CMS, and HRSA data
+version: 2.0.0
+status: active
 ---
 
-# NetworkSim - Healthcare Network and Provider Generation
-
-## For Claude
-
-Use this skill when the user requests healthcare network entities, provider data, or plan/benefit structure information. NetworkSim provides both reference knowledge and synthetic generation capabilities.
-
-**When to apply this skill:**
-
-- User mentions providers, physicians, or NPIs
-- User requests facility, hospital, or clinic generation
-- User asks about pharmacy entities or NCPDP data
-- User wants to understand network types (HMO, PPO, EPO, POS)
-- User needs plan benefit or cost-sharing information
-- User asks about PBM, formulary, or pharmacy benefits
-
-**Key capabilities:**
-
-- Reference knowledge about network types, plan structures, and pharmacy benefits
-- Synthetic generation of providers, facilities, pharmacies, and networks
-- Cross-product integration for PatientSim, MemberSim, and RxMemberSim
-
----
+# NetworkSim Master Skill
 
 ## Overview
 
-NetworkSim provides healthcare network knowledge and synthetic entity generation for the HealthSim ecosystem. Unlike other products that generate transaction data (encounters, claims, prescriptions), NetworkSim focuses on the structural elements that support those transactions:
+**NetworkSim** provides comprehensive healthcare provider network data including individual providers, facilities, pharmacies, and quality metrics. Built on real CMS National Provider Identifier (NPI) Registry data with 8.9M active US providers, Medicare Provider of Services data with 77K facilities, and CMS quality ratings.
 
-1. **Reference Knowledge** - Network types, plan structures, pharmacy benefits, PBM operations
-2. **Synthetic Generation** - Providers, facilities, pharmacies, network configurations
-3. **Integration Patterns** - Cross-product enhancement for realistic data
+**Key Capabilities**:
+- Search providers by specialty, location, and credentials
+- Find healthcare facilities with bed counts and quality ratings
+- Locate pharmacies by type and geography
+- Analyze provider density and network adequacy
+- Cross-reference with population health data (PopulationSim)
 
-## When to Use NetworkSim
-
-| Need | Skill Category | Example Prompt |
-|------|---------------|----------------|
-| Understand network types | reference/ | "Explain the difference between HMO and PPO" |
-| Learn about plan structures | reference/ | "What components make up a health plan benefit?" |
-| Understand pharmacy benefits | reference/ | "Explain pharmacy tier structures" |
-| Generate a provider | synthetic/ | "Generate a cardiologist in Houston" |
-| Generate a facility | synthetic/ | "Generate a 200-bed community hospital" |
-| Generate a pharmacy | synthetic/ | "Generate a specialty pharmacy in Boston" |
-| Use a network template | patterns/ | "Create an HMO network configuration" |
-| Enhance PatientSim | integration/ | "Generate a provider for this encounter" |
-| Enhance MemberSim | integration/ | "Add network context to this claim" |
-| Enhance RxMemberSim | integration/ | "Generate a pharmacy for this prescription" |
+**Data Sources**:
+- **NPPES**: 8.9M providers (97.77% with county FIPS)
+- **Provider of Services**: 77K facilities across all types
+- **Hospital Compare**: 5.4K hospitals with CMS star ratings
+- **Physician Compare**: 1.5M physicians with quality metrics
+- **AHRF**: County-level healthcare resource data
 
 ---
 
-## Skill Categories
+## Trigger Phrases
 
-### Reference Knowledge (reference/)
+NetworkSim activates when users request provider or network data:
 
-Educational content about healthcare networks, plan structures, and pharmacy benefits. Use these skills to understand concepts before generating synthetic data.
-
-| Skill | Purpose | Trigger Phrases |
-|-------|---------|-----------------|
-| [network-types](reference/network-types.md) | HMO, PPO, EPO, POS, HDHP definitions and comparisons | "explain HMO", "difference between PPO and EPO", "network types" |
-| [plan-structures](reference/plan-structures.md) | Benefit design concepts: deductibles, copays, coinsurance | "plan structure", "deductible vs copay", "out-of-pocket max" |
-| [pharmacy-benefit-concepts](reference/pharmacy-benefit-concepts.md) | Tier structures, formulary types, pharmacy networks | "tier structure", "formulary", "preferred pharmacy" |
-| [pbm-operations](reference/pbm-operations.md) | PBM functions: claims processing, rebates, formulary management | "what is a PBM", "pharmacy benefit manager", "BIN PCN" |
-| [utilization-management](reference/utilization-management.md) | Prior authorization, step therapy, quantity limits | "prior authorization", "step therapy", "quantity limits" |
-| [specialty-pharmacy](reference/specialty-pharmacy.md) | Specialty drug distribution, hub model, REMS | "specialty pharmacy", "limited distribution", "hub model" |
-| [network-adequacy](reference/network-adequacy.md) | Access standards, time/distance, provider ratios | "network adequacy", "access standards", "time distance" |
-
-### Synthetic Generation (synthetic/)
-
-Generate realistic synthetic healthcare entities. Each skill produces canonical JSON that can be transformed to various output formats.
-
-| Skill | Purpose | Trigger Phrases |
-|-------|---------|-----------------|
-| [synthetic-provider](synthetic/synthetic-provider.md) | Generate provider entities with NPI, credentials, taxonomy | "generate provider", "create physician", "synthetic NPI" |
-| [synthetic-facility](synthetic/synthetic-facility.md) | Generate facility entities with CCN, beds, services | "generate hospital", "create facility", "synthetic ASC" |
-| [synthetic-pharmacy](synthetic/synthetic-pharmacy.md) | Generate pharmacy entities with NCPDP, type, services | "generate pharmacy", "create drugstore", "specialty pharmacy" |
-| [synthetic-network](synthetic/synthetic-network.md) | Generate network configurations with provider rosters | "generate network", "create provider network", "build roster" |
-| [synthetic-plan](synthetic/synthetic-plan.md) | Generate plan benefit structures | "generate plan", "create benefit design", "synthetic benefits" |
-| [synthetic-pharmacy-benefit](synthetic/synthetic-pharmacy-benefit.md) | Generate pharmacy benefit designs | "generate pharmacy benefit", "create formulary tier" |
-
-### Patterns & Templates (patterns/)
-
-Reusable configuration patterns for common network and benefit structures. Use these as starting points for customization.
-
-| Skill | Purpose | Trigger Phrases |
-|-------|---------|-----------------|
-| [hmo-network-pattern](patterns/hmo-network-pattern.md) | Typical HMO network structure | "HMO network pattern", "gatekeeper model" |
-| [ppo-network-pattern](patterns/ppo-network-pattern.md) | Typical PPO network structure | "PPO network pattern", "open access" |
-| [tiered-network-pattern](patterns/tiered-network-pattern.md) | Narrow/tiered network structures | "tiered network", "narrow network", "high performance" |
-| [pharmacy-benefit-patterns](patterns/pharmacy-benefit-patterns.md) | Common PBM configurations | "pharmacy benefit pattern", "4-tier", "5-tier" |
-| [specialty-distribution-pattern](patterns/specialty-distribution-pattern.md) | Hub vs retail routing | "specialty distribution", "hub model", "limited distribution" |
-
-### Cross-Product Integration (integration/)
-
-Enhance other HealthSim products with network context. These skills bridge NetworkSim entities into other product workflows.
-
-| Skill | Purpose | Trigger Phrases |
-|-------|---------|-----------------|
-| [provider-for-encounter](integration/provider-for-encounter.md) | Generate provider for PatientSim encounter | "provider for this encounter", "attending physician for" |
-| [network-for-member](integration/network-for-member.md) | Add network context to MemberSim member | "network for this member", "plan network" |
-| [pharmacy-for-rx](integration/pharmacy-for-rx.md) | Generate pharmacy for RxMemberSim prescription | "pharmacy for this prescription", "dispensing pharmacy" |
-| [benefit-for-claim](integration/benefit-for-claim.md) | Add benefit context to MemberSim claim | "benefit for this claim", "cost sharing" |
-| [formulary-for-rx](integration/formulary-for-rx.md) | Add formulary context to RxMemberSim | "formulary for this drug", "tier for medication" |
+- "Find [specialty] providers in [location]"
+- "Search for hospitals near [ZIP code]"
+- "Locate pharmacies in [county]"
+- "Show me provider networks in [state]"
+- "Analyze provider density in [region]"
+- "Find facilities with [beds] beds"
+- "Search for [quality rating]-star hospitals"
 
 ---
 
-## Quick Start Examples
+## Product Architecture
 
-### Example 1: Network Type Reference
+### Data Organization
 
-```
-User: What's the difference between an HMO and a PPO?
-
-Claude: [Routes to reference/network-types.md]
-
-HMO (Health Maintenance Organization) and PPO (Preferred Provider Organization) 
-differ primarily in flexibility and cost:
-
-| Aspect | HMO | PPO |
-|--------|-----|-----|
-| Network | Must use in-network providers | Can use any provider |
-| Referrals | Required for specialists | Not required |
-| PCP Required | Yes | No |
-| Out-of-Network | Not covered (except emergency) | Covered at higher cost |
-| Premiums | Lower | Higher |
-| Cost Sharing | Lower | Higher |
-
-HMOs work best for people who want lower costs and don't mind the gatekeeper model.
-PPOs suit those who value flexibility and are willing to pay more for it.
-```
-
-### Example 2: Generate a Provider
+NetworkSim data is stored in the `network` schema of `healthsim.duckdb`:
 
 ```
-User: Generate a cardiologist in San Diego
-
-Claude: [Routes to synthetic/synthetic-provider.md]
-
-{
-  "npi": "1234567890",
-  "entity_type": "individual",
-  "provider": {
-    "last_name": "Martinez",
-    "first_name": "Elena",
-    "credential": "MD, FACC",
-    "gender": "F"
-  },
-  "taxonomy": {
-    "code": "207RC0000X",
-    "classification": "Internal Medicine",
-    "specialization": "Cardiovascular Disease",
-    "display_name": "Cardiologist"
-  },
-  "practice_location": {
-    "address_line_1": "4567 Cardiovascular Way",
-    "address_line_2": "Suite 300",
-    "city": "San Diego",
-    "state": "CA",
-    "zip": "92121",
-    "county": "San Diego",
-    "phone": "858-555-0142"
-  },
-  "hospital_affiliations": [
-    {
-      "name": "Scripps Memorial Hospital La Jolla",
-      "ccn": "050678",
-      "privileges": ["Admitting", "Surgical"]
-    }
-  ],
-  "accepting_new_patients": true,
-  "languages": ["English", "Spanish"]
-}
+network/
+├── providers          (8.9M records)  - Individual + organizational providers
+├── facilities         (77K records)   - Hospitals, nursing homes, clinics
+├── hospital_quality   (5.4K records)  - CMS Hospital Compare ratings
+├── physician_quality  (1.5M records)  - CMS Physician Compare metrics
+└── ahrf_county        (3K records)    - Area Health Resources Files
 ```
 
-### Example 3: Cross-Product Integration
+### Cross-Product Integration
 
+NetworkSim integrates with other HealthSim products:
+
+**PopulationSim**: Geographic JOIN via county_fips for demographic analysis
+**PatientSim**: Assign providers to patient encounters by specialty/location
+**MemberSim**: Build provider networks for health plan claims  
+**RxMemberSim**: Link prescriptions to pharmacy locations
+**TrialSim**: Identify trial sites and recruiting physicians
+
+---
+
+## Query Skills
+
+### Provider & Facility Search
+
+**[provider-search](query/provider-search.md)** - Search for healthcare providers
+- Find providers by specialty, location, credentials
+- Filter by taxonomy codes (207Q*, 208D*, 332*, etc.)
+- Search individual practitioners or organizations
+- Cross-reference with demographic data
+
+**[facility-search](query/facility-search.md)** - Search for healthcare facilities
+- Find hospitals, nursing homes, clinics by location
+- Filter by bed count, ownership type, facility type
+- Join with quality ratings from Hospital Compare
+- Analyze facility distribution
+
+**[pharmacy-search](query/pharmacy-search.md)** - Search for retail and specialty pharmacies
+- Find pharmacies by type (retail, specialty, mail-order)
+- Search by geography (state, county, ZIP)
+- Analyze pharmacy density and access
+- Integration with RxMemberSim for prescription fills
+
+### Network Analysis (Coming Soon - Session 6)
+
+**npi-validation** - Validate NPI format and existence
+**network-roster** - Generate provider network rosters
+**provider-density** - Calculate provider-to-population ratios
+**coverage-analysis** - Analyze specialty coverage and gaps
+
+### Quality-Based Queries (Coming Soon - Session 7)
+
+**hospital-quality-search** - Filter hospitals by CMS star ratings
+**physician-quality-search** - Search by MIPS scores and certifications
+
+### Advanced Analytics (Coming Soon - Session 8)
+
+**network-adequacy** - Calculate time/distance network adequacy
+**healthcare-deserts** - Identify underserved areas
+**specialty-distribution** - Analyze specialty mix by geography
+**provider-demographics** - Analyze provider workforce characteristics
+
+---
+
+## Data Standards
+
+NetworkSim supports multiple healthcare data standards:
+
+### Provider Identifiers
+- **NPI**: 10-digit National Provider Identifier (primary key)
+- **Taxonomy Codes**: NUCC Healthcare Provider Taxonomy (332*, 207*, 163*, etc.)
+- **State License Numbers**: Where available
+
+### Facility Identifiers
+- **CCN**: CMS Certification Number (6 characters)
+- **Facility Type Codes**: POS file type codes (01=Hospital, 21=SNF, etc.)
+
+### Quality Metrics
+- **Hospital Star Ratings**: 1-5 scale from CMS Hospital Compare
+- **MIPS Scores**: Merit-based Incentive Payment System scores
+
+### Geographic Standards
+- **County FIPS**: 5-digit Federal Information Processing Standard codes
+- **State Codes**: 2-letter USPS abbreviations
+- **ZIP Codes**: 5 or 9-digit postal codes
+
+---
+
+## Common Workflows
+
+### Workflow 1: Build Primary Care Network for Texas
+
+```markdown
+1. Find PCPs in target counties (provider-search)
+2. Filter by quality metrics (physician-quality-search)
+3. Generate network roster (network-roster)
+4. Analyze coverage adequacy (coverage-analysis)
+5. Export to standard format (network-export)
 ```
-User: Generate a provider for this heart failure patient's cardiology referral
 
-Claude: [Routes to integration/provider-for-encounter.md]
+### Workflow 2: Identify Healthcare Deserts
 
-Based on the patient's heart failure diagnosis (I50.9) and location in Harris County, TX,
-I'll generate an appropriate cardiologist:
+```markdown
+1. Calculate provider density by county (provider-density)
+2. Cross-reference with diabetes prevalence (PopulationSim)
+3. Identify high-need, low-access areas (healthcare-deserts)
+4. Find nearest facilities (facility-search)
+5. Generate gap analysis report
+```
 
-{
-  "npi": "1987654321",
-  "entity_type": "individual",
-  "provider": {
-    "last_name": "Patel",
-    "first_name": "Vikram",
-    "credential": "MD, FACC, FHFSA",
-    "gender": "M"
-  },
-  "taxonomy": {
-    "code": "207RC0001X",
-    "classification": "Internal Medicine",
-    "specialization": "Advanced Heart Failure and Transplant Cardiology",
-    "display_name": "Heart Failure Specialist"
-  },
-  "practice_location": {
-    "city": "Houston",
-    "state": "TX",
-    "county_fips": "48201"
-  },
-  "integration_context": {
-    "source_product": "patientsim",
-    "matched_on": ["diagnosis_category", "geography"],
-    "patient_diagnosis": "I50.9",
-    "referral_reason": "Heart failure management"
-  }
-}
+### Workflow 3: Pharmacy Network Development
+
+```markdown
+1. Find retail pharmacies by geography (pharmacy-search)
+2. Analyze pharmacy density (provider-density)
+3. Identify specialty pharmacy capabilities
+4. Build network roster (network-roster)
+5. Integrate with prescription data (RxMemberSim)
 ```
 
 ---
 
-## Related Products
+## Data Quality
 
-NetworkSim integrates with all other HealthSim products:
+### Geographic Coverage
+- **97.77% county FIPS coverage** for providers (8.7M of 8.9M)
+- Missing FIPS primarily: military addresses (APO/FPO), PO Box-only
+- **3,213 counties covered** (100% of PopulationSim + 70 additional)
 
-| Product | NetworkSim Provides | Integration Skill |
-|---------|--------------------|--------------------|
-| **PatientSim** | Providers for encounters, facilities for admissions | [provider-for-encounter](integration/provider-for-encounter.md) |
-| **MemberSim** | Network context for claims, benefit structures | [network-for-member](integration/network-for-member.md) |
-| **RxMemberSim** | Pharmacies for prescriptions, formulary concepts | [pharmacy-for-rx](integration/pharmacy-for-rx.md) |
-| **TrialSim** | Sites and investigators for trials | [provider-for-encounter](integration/provider-for-encounter.md) |
-| **PopulationSim** | Geographic context for provider distribution | [network-adequacy](reference/network-adequacy.md) |
+### Provider Data Quality
+- **NPI format**: 100% valid (10 digits)
+- **Entity types**: 85% Individual (Type 1), 15% Organization (Type 2)
+- **Taxonomy codes**: 99%+ have primary taxonomy (taxonomy_1)
+- **No duplicate NPIs**: Verified via automated testing
 
----
+### Facility Data Quality
+- **77,302 facilities** across all types
+- **7% have quality ratings** (hospitals only)
+- **Bed counts**: Available for hospitals and nursing homes
+- **Missing county_fips**: Facility table needs geographic enrichment
 
-## Boundary Rules
-
-Understanding what NetworkSim owns vs. what other products own:
-
-### NetworkSim Owns
-
-- Network type knowledge and definitions
-- Provider/facility/pharmacy entity generation
-- Network configuration patterns
-- Benefit design concepts (structure, not pricing)
-- PBM operational concepts
-
-### Other Products Own
-
-| Responsibility | Owner Product |
-|----------------|---------------|
-| Claim processing logic | MemberSim |
-| Claim adjudication | MemberSim |
-| Formulary drug coverage decisions | RxMemberSim |
-| Drug-specific PA criteria | RxMemberSim |
-| Encounter generation | PatientSim |
-| Clinical documentation | PatientSim |
-| Geographic/demographic data | PopulationSim |
-| SDOH indicators | PopulationSim |
-
-### Collaboration Pattern
-
-When generating data that spans boundaries:
-
-1. **NetworkSim** generates the structural entity (provider, facility, pharmacy)
-2. **Other product** consumes that entity in its workflow
-3. **Identity correlation** maintained via NPI, CCN, NCPDP identifiers
+### Known Limitations
+- Gender field not populated in current data
+- Some specialty taxonomies incomplete
+- Facilities lack direct county FIPS (use city/state or provider linkage)
 
 ---
 
-## Output Formats
+## Performance Benchmarks
 
-NetworkSim entities can be output in multiple formats:
+All benchmarks measured on MacBook Pro with 1.65 GB database:
 
-| Format | Use Case | Available For |
-|--------|----------|---------------|
-| Canonical JSON | Default, cross-product integration | All entities |
-| FHIR R4 | Interoperability | Providers, Facilities, Pharmacies |
-| NPPES-style CSV | Bulk provider data | Providers |
-| CMS POS-style | Facility reporting | Facilities |
-| NCPDP-style | Pharmacy data exchange | Pharmacies |
+| Query Type | Avg Time | Notes |
+|------------|----------|-------|
+| Provider count | <100ms | Simple filters |
+| Geographic + specialty | 200-500ms | With county JOIN |
+| Cross-product analytics | 500ms-1s | Population + network |
+| Pharmacy density | 20-50ms | Taxonomy filter |
+| Facility quality JOIN | 200-400ms | Hospital Compare |
+| Full test suite (12 tests) | <200ms | Average 13.8ms/test |
+
+**Optimization Tips**:
+- Filter by taxonomy_1 early for specialty searches
+- Use county_fips instead of city names
+- Add entity_type_code to WHERE clause
+- LIMIT results appropriately
+
+---
+
+## Validation & Testing
+
+NetworkSim includes comprehensive automated testing:
+
+**Test Suite**: `scenarios/networksim/tests/test_data_quality.py`
+- 18 tests covering provider data, geography, facilities, quality metrics
+- Tests run in <1 second
+- All tests passing (100% success rate)
+
+**Search Skills Tests**: `scenarios/networksim/scripts/test_search_skills.py`
+- 12 end-to-end query tests
+- Validates all search patterns from skill documentation
+- Performance benchmarks included
+
+Run tests:
+```bash
+cd scenarios/networksim
+pytest tests/
+python scripts/test_search_skills.py
+```
+
+---
+
+## Related Skills
+
+### HealthSim Core
+- **[healthsim-master](../healthsim-master-SKILL.md)** - HealthSim platform overview
+- **[populationsim](../populationsim/SKILL.md)** - Demographic and SDOH data
+
+### Other Products
+- **[patientsim](../patientsim/SKILL.md)** - Assign providers to encounters
+- **[membersim](../membersim/SKILL.md)** - Claims with network providers
+- **[rxmembersim](../rxmembersim/SKILL.md)** - Pharmacy fills
+- **[trialsim](../trialsim/SKILL.md)** - Trial site selection
+
+---
+
+## Development Status
+
+**Version**: 2.0.0  
+**Status**: Phase 1 Complete (Data Infrastructure), Phase 2 Active (Query Skills)
+
+### Phase 1: Data Infrastructure ✅ Complete
+- [x] Session 1-3: NPPES data acquisition and import (8.9M providers)
+- [x] Session 4: Geographic enrichment and validation (97.77% coverage)
+
+### Phase 2: Query Skills Development 🔄 In Progress
+- [x] Session 5: Provider & facility search skills ✅
+- [ ] Session 6: Network & analysis skills
+- [ ] Session 7: Quality-based query skills
+
+### Phase 3: Integration & Advanced Analytics
+- [ ] Session 8-10: Advanced analysis skills
+- [ ] Session 11-12: Cross-product integration
+
+### Future Enhancements
+1. Add taxonomy_codes reference table for human-readable specialty names
+2. Enrich facilities table with county_fips for better geographic JOINs
+3. Geospatial capabilities using DuckDB spatial extensions
+4. Historical quality trend analysis using multi-year CMS data
+5. Provider-facility linkage via NPI relationships
+6. Distance calculations for radius-based searches
 
 ---
 
 ## Documentation
 
-- [README](README.md) - Product overview and quick start
-- [Developer Guide](developer-guide.md) - Technical reference and workflows
-- [Prompt Guide](prompt-guide.md) - Example prompts by category
+**Architecture**: `docs/NETWORKSIM-ARCHITECTURE.md`  
+**Master Plan**: `docs/NETWORKSIM-V2-MASTER-PLAN.md`  
+**Data README**: `scenarios/networksim/DATA-README.md`  
+**Session Reports**: `scenarios/networksim/SESSION-*-SUMMARY.md`
 
 ---
 
-## Version History
+## Support & Feedback
 
-| Version | Date | Changes |
-|---------|------|---------|
-| 1.0 | 2024-12 | Initial release with reference and synthetic skills |
+NetworkSim is part of the HealthSim open-source project.
+
+**GitHub**: [healthsim-workspace](https://github.com/mark64oswald/healthsim-workspace)  
+**Issues**: Report bugs or request features via GitHub Issues  
+**Contact**: mark@rewirehealth.com
 
 ---
 
-*NetworkSim is part of the HealthSim ecosystem. For overall architecture, see the [HealthSim Architecture Guide](../../docs/HEALTHSIM-ARCHITECTURE-GUIDE.md).*
+*Last Updated: December 27, 2025*  
+*Version: 2.0.0 - Phase 1 Complete*
