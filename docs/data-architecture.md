@@ -10,10 +10,15 @@ HealthSim uses DuckDB as its unified data store for:
 ## Database Location
 
 ```
-~/.healthsim/healthsim.duckdb
+/path/to/healthsim-workspace/healthsim.duckdb
 ```
 
-The database is created automatically on first use. A separate test database is used during testing to isolate test data from production scenarios.
+The database is located in the workspace root directory. This enables:
+- **Version control awareness**: Database path relative to project
+- **Cross-product integration**: Single database for all HealthSim products
+- **MCP server access**: healthsim-mcp connects to workspace database
+
+**Size**: ~1.7 GB (includes NetworkSim providers, PopulationSim demographics)
 
 ---
 
@@ -83,7 +88,7 @@ HealthSim uses two different approaches for reference data, each chosen delibera
 
 ### DuckDB (External Packaged Reference Data)
 
-**Location**: `~/.healthsim/healthsim.duckdb` (ref_* tables)
+**Location**: `healthsim.duckdb` (in workspace root, ref_* tables)
 
 **Examples**: CDC PLACES health indicators, Social Vulnerability Index, Area Deprivation Index, NPPES provider registry
 

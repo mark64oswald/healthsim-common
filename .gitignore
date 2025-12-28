@@ -66,3 +66,7 @@ scenarios/networksim/archive/**/*.duckdb
 
 # Keep .gitkeep files to preserve directory structure
 !scenarios/networksim/data/**/.gitkeep
+
+# Session handoff documents
+*-HANDOFF-*.md
+SESSION-SUMMARY.md

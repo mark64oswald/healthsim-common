@@ -1,0 +1,132 @@
+{
+  "enrollmentTransaction": {
+    "transactionId": "ENR-2025-0001847",
+    "transactionDate": "2025-01-01",
+    "transactionType": "INITIAL_ENROLLMENT",
+    "effectiveDate": "2025-01-01",
+    "source": "OPEN_ENROLLMENT"
+  },
+  "healthPlan": {
+    "payerId": "60054",
+    "payerName": "Aetna",
+    "planId": "AET-PPO-PLAT-2025",
+    "planName": "Aetna Platinum PPO",
+    "planType": "PPO",
+    "metalLevel": "PLATINUM",
+    "groupNumber": "847291",
+    "groupName": "Individual & Family Plans",
+    "networkId": "AETNA-OPEN-ACCESS",
+    "coverageType": "FAMILY",
+    "planYear": 2025
+  },
+  "benefits": {
+    "deductible": {
+      "individual": 250,
+      "family": 500
+    },
+    "outOfPocketMax": {
+      "individual": 2500,
+      "family": 5000
+    },
+    "coinsurance": {
+      "inNetwork": 10,
+      "outOfNetwork": 30
+    },
+    "copays": {
+      "primaryCare": 20,
+      "specialist": 40,
+      "urgentCare": 50,
+      "emergencyRoom": 150,
+      "genericRx": 10,
+      "preferredBrandRx": 35,
+      "nonPreferredBrandRx": 70,
+      "specialtyRx": 150
+    },
+    "preventiveCare": "COVERED_100_PERCENT"
+  },
+  "subscriber": {
+    "memberId": "AET847291001",
+    "relationshipCode": "18",
+    "relationship": "SELF",
+    "firstName": "Mark",
+    "lastName": "Oswald",
+    "dateOfBirth": "1975-06-15",
+    "gender": "M",
+    "ssn": "XXX-XX-4521",
+    "address": {
+      "line1": "1234 Oak Street",
+      "city": "San Francisco",
+      "state": "CA",
+      "zipCode": "94102"
+    },
+    "phone": "415-555-0147",
+    "email": "mark.oswald@email.com",
+    "employmentStatus": "ACTIVE",
+    "primaryCareProvider": {
+      "npi": "1234567890",
+      "name": "Dr. Nasrin Arbabi",
+      "specialty": "Family Medicine",
+      "practiceName": "Bay Area Family Health",
+      "phone": "415-555-0200",
+      "address": {
+        "line1": "500 Medical Center Drive",
+        "suite": "Suite 210",
+        "city": "San Francisco",
+        "state": "CA",
+        "zipCode": "94103"
+      }
+    }
+  },
+  "dependents": [
+    {
+      "memberId": "AET847291002",
+      "relationshipCode": "01",
+      "relationship": "SPOUSE",
+      "firstName": "Karen",
+      "lastName": "Oswald",
+      "dateOfBirth": "1977-03-22",
+      "gender": "F",
+      "ssn": "XXX-XX-7834",
+      "primaryCareProvider": {
+        "npi": "1234567890",
+        "name": "Dr. Nasrin Arbabi",
+        "specialty": "Family Medicine",
+        "practiceName": "Bay Area Family Health",
+        "phone": "415-555-0200"
+      }
+    }
+  ],
+  "premium": {
+    "totalMonthly": 1247.50,
+    "subscriberPortion": 624.00,
+    "dependentPortion": 623.50,
+    "employerContribution": 0,
+    "subsidyAmount": 0,
+    "paymentMethod": "ACH",
+    "billingFrequency": "MONTHLY"
+  },
+  "coverage": {
+    "medicalCoverage": true,
+    "dentalCoverage": false,
+    "visionCoverage": false,
+    "prescriptionCoverage": true,
+    "mentalHealthCoverage": true,
+    "substanceAbuseCoverage": true
+  },
+  "idCards": {
+    "subscriber": {
+      "memberId": "AET847291001",
+      "groupNumber": "847291",
+      "rxBin": "004336",
+      "rxPcn": "ADV",
+      "rxGroup": "RX4521"
+    },
+    "dependent": {
+      "memberId": "AET847291002",
+      "groupNumber": "847291",
+      "rxBin": "004336",
+      "rxPcn": "ADV",
+      "rxGroup": "RX4521"
+    }
+  }
+}
