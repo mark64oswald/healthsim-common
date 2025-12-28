@@ -21,7 +21,7 @@ from pathlib import Path
 # Database paths
 MCP_DB = Path.home() / '.healthsim/healthsim.duckdb'
 NETWORK_DB = Path.home() / 'Developer/projects/healthsim-workspace/healthsim.duckdb'
-MERGED_DB = Path.home() / 'Developer/projects/healthsim-workspace/healthsim_merged.duckdb'
+OUTPUT_DB = Path.home() / 'Developer/projects/healthsim-workspace/healthsim.duckdb'
 
 def main():
     print("=" * 80)
@@ -43,20 +43,20 @@ def main():
     print(f"  Network DB: {NETWORK_DB} ({NETWORK_DB.stat().st_size / (1024**2):.1f} MB)")
     print()
     
-    # Remove old merged database if exists
-    if MERGED_DB.exists():
-        print(f"Removing old merged database...")
-        os.remove(MERGED_DB)
+    # Remove old output database if exists
+    if OUTPUT_DB.exists():
+        print(f"Removing old output database...")
+        os.remove(OUTPUT_DB)
     
     print("=" * 80)
     print("STEP 1: COPY MCP DATABASE")
     print("=" * 80)
     print()
     
-    # Copy MCP database to merged location
+    # Copy MCP database to output location
     import shutil
-    shutil.copy2(MCP_DB, MERGED_DB)
-    print(f"✓ Copied MCP database to {MERGED_DB}")
+    shutil.copy2(MCP_DB, OUTPUT_DB)
+    print(f"✓ Copied MCP database to {OUTPUT_DB}")
     print()
     
     print("=" * 80)
@@ -64,8 +64,8 @@ def main():
     print("=" * 80)
     print()
     
-    # Connect to merged database
-    con = duckdb.connect(str(MERGED_DB))
+    # Connect to output database
+    con = duckdb.connect(str(OUTPUT_DB))
     
     # Create schemas
     con.execute("CREATE SCHEMA IF NOT EXISTS population")
@@ -198,19 +198,19 @@ def main():
             print()
     
     # Get database size
-    db_size_mb = MERGED_DB.stat().st_size / (1024**2)
+    db_size_mb = OUTPUT_DB.stat().st_size / (1024**2)
     
     print("=" * 80)
     print("MERGE COMPLETE!")
     print("=" * 80)
     print()
-    print(f"Merged database: {MERGED_DB}")
+    print(f"Output database: {OUTPUT_DB}")
     print(f"Database size: {db_size_mb:.1f} MB")
     print(f"Total tables: {total_tables}")
     print()
     print("Next steps:")
-    print("1. Test merged database with MCP server")
-    print("2. Update MCP configuration to use merged database")
+    print("1. Test database with MCP server")
+    print("2. Update MCP configuration to use healthsim.duckdb")
     print("3. Commit with Git LFS")
     
     con.close()

@@ -213,18 +213,35 @@ healthsim-workspace/
 
 ## Setup
 
-### Prerequisites
+**📖 [Complete Installation Guide](INSTALL.md)** - Detailed instructions for Git LFS, Python, DuckDB, and Claude integration.
+
+### Quick Setup
 
 | Requirement | Version | Notes |
 |-------------|---------|-------|
+| **Git LFS** | 3.0+ | **Required** for database files |
 | Git | 2.0+ | Clone repository |
 | Python | 3.10+ | For healthsim-core package |
 | Claude Desktop or Claude Code | Latest | AI conversation interface |
 
+### Git LFS (Required)
+
+HealthSim uses Git Large File Storage for the database. Install before cloning:
+
+```bash
+# macOS
+brew install git-lfs && git lfs install
+
+# Linux (Ubuntu/Debian)
+sudo apt-get install git-lfs && git lfs install
+
+# See INSTALL.md for Windows and troubleshooting
+```
+
 ### Python Environment
 
 ```bash
-# Clone and setup
+# Clone and setup (Git LFS downloads database automatically)
 git clone https://github.com/mark64oswald/healthsim-workspace.git
 cd healthsim-workspace
 
@@ -237,7 +254,9 @@ cd packages/core
 pip install -e .
 ```
 
-DuckDB is bundled with healthsim-core - no separate installation required. The database is created automatically at `~/.healthsim/healthsim.duckdb` on first use.
+**DuckDB** is bundled with healthsim-core - no separate installation required. The database (`healthsim.duckdb`, 1.16 GB) is automatically downloaded via Git LFS and ready to use.
+
+**Important:** If the database file is missing or tiny (~500 bytes), Git LFS didn't download it. Run `git lfs pull` to download manually. See [INSTALL.md](INSTALL.md) for details.
 
 ### Claude Desktop (Recommended)
 

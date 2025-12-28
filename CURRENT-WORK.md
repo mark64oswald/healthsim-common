@@ -12,7 +12,7 @@
 **Achievement:** Successfully consolidated three fragmented databases into unified schema-organized structure.
 
 **What Was Done:**
-- Merged MCP server database (88 MB) + NetworkSim standalone (2 GB) → `healthsim_merged.duckdb` (1.16 GB)
+- Merged MCP server database (88 MB) + NetworkSim standalone (2 GB) → `healthsim.duckdb` (1.16 GB)
 - Implemented schema organization: `main` (entities), `population` (demographics), `network` (providers)
 - Configured Git LFS for database version control
 - Created comprehensive test suite validating cross-schema JOINs
@@ -42,7 +42,7 @@
 4. Document cross-schema query patterns (population + network)
 
 **Key Files:**
-- Database: `healthsim_merged.duckdb` (network schema)
+- Database: `healthsim.duckdb` (network schema)
 - Skills: TBD - NetworkSim skill structure
 - Demo: `healthsim-demo-scripts.md` (needs NetworkSim examples)
 
@@ -126,7 +126,7 @@
 
 ## Quick Reference
 
-**Primary Database:** `healthsim_merged.duckdb` (1.16 GB)
+**Primary Database:** `healthsim.duckdb` (1.16 GB)
 - Main schema: Entity tables (patients, members, encounters, claims)
 - Population schema: Demographics, SVI, ADI, CDC PLACES (416K records)
 - Network schema: Providers, facilities, quality data (10.4M records)

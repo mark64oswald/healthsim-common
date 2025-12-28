@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-Test MCP server connection to merged database.
+Test MCP server connection to HealthSim database.
 
 Verifies:
-- Connection to healthsim_merged.duckdb
+- Connection to healthsim.duckdb
 - Access to all three schemas (main, population, network)
 - Cross-schema JOIN capabilities
 """

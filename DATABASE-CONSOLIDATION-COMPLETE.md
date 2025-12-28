@@ -17,7 +17,7 @@ Successfully consolidated three separate DuckDB databases into a single unified 
 - Fragmented state management and reference data
 
 **After:**
-- Unified database: `workspace/healthsim_merged.duckdb` (1.16 GB, 31 tables)
+- Unified database: `workspace/healthsim.duckdb` (1.16 GB, 31 tables)
 - Schema-organized structure:
   * `main` schema: Entity tables (21 tables, 0 records - templates)
   * `population` schema: PopulationSim reference data (5 tables, 416K+ records)
@@ -33,7 +33,7 @@ Successfully consolidated three separate DuckDB databases into a single unified 
 ### 3. Code Updates
 
 **Modified:** `packages/core/src/healthsim/db/connection.py`
-- Changed `DEFAULT_DB_PATH` from `~/.healthsim/healthsim.duckdb` to `workspace/healthsim_merged.duckdb`
+- Changed `DEFAULT_DB_PATH` from `~/.healthsim/healthsim.duckdb` to `workspace/healthsim.duckdb`
 - Added comments documenting schema organization
 
 ### 4. Validation & Testing
@@ -126,7 +126,7 @@ TX                574,601             115,131
 ## Files Created/Modified
 
 ### Created:
-- `healthsim_merged.duckdb` - Unified database (1.16 GB)
+- `healthsim.duckdb` - Unified database (1.16 GB)
 - `scenarios/networksim/scripts/merge_databases.py` - Merge script (219 lines)
 - `test_mcp_connection.py` - Connection validation test (121 lines)
 - `.gitattributes` - Git LFS configuration
@@ -145,6 +145,7 @@ TX                574,601             115,131
 1. **a03defb** - Initial database consolidation with Git LFS setup
 2. **ee7e94b** - Add indexes and archive standalone database
 3. **90b2ca2** - Add merge script and connection test
+4. **aea34b8** - Add consolidation documentation
 
 ## Benefits Achieved
 
@@ -157,7 +158,7 @@ TX                574,601             115,131
 ## Next Steps
 
 ### Immediate (Session 6):
-1. ✅ Test MCP server tools with merged database
+1. ✅ Test MCP server tools with unified database
 2. Update NetworkSim documentation to reference unified database
 3. Resume NetworkSim query development for demo
 
