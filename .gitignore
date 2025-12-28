@@ -51,5 +51,18 @@ Thumbs.db
 # Logs
 *.log
 
-# Saved scenarios (may contain synthetic patient data)
-scenarios/
+# NetworkSim data files (large, re-downloadable)
+# Ignore all CSV/ZIP files in data directories
+scenarios/networksim/data/raw/**/*.csv
+scenarios/networksim/data/raw/**/*.zip
+scenarios/networksim/data/raw/**/*.txt
+scenarios/networksim/data/processed/**/*.csv
+
+# Ignore archived databases
+scenarios/networksim/archive/**/*.duckdb
+
+# Keep documentation in data directories  
+!scenarios/networksim/data/**/*.md
+
+# Keep .gitkeep files to preserve directory structure
+!scenarios/networksim/data/**/.gitkeep
