@@ -433,6 +433,24 @@ def query_reference(params: QueryReferenceInput) -> str:
         "adi_blockgroup": "population.adi_blockgroup",
     }
     
+    # Map table names to their state column (different sources use different naming)
+    state_column_map = {
+        "places_county": "stateabbr",
+        "places_tract": "stateabbr", 
+        "svi_county": "st_abbr",
+        "svi_tract": "st_abbr",
+        "adi_blockgroup": "gidbg",  # ADI uses FIPS in gidbg, no direct state column
+    }
+    
+    # Map table names to their county column
+    county_column_map = {
+        "places_county": "countyname",
+        "places_tract": "countyname",
+        "svi_county": "county",
+        "svi_tract": "county",
+        "adi_blockgroup": "gidbg",  # ADI uses FIPS codes
+    }
+    
     table = table_map.get(params.table)
     if not table:
         return json.dumps({
@@ -444,13 +462,42 @@ def query_reference(params: QueryReferenceInput) -> str:
     conditions = []
     query_params = []
     
+    state_col = state_column_map.get(params.table, "stateabbr")
+    county_col = county_column_map.get(params.table, "countyname")
+    
+    # State abbreviation to FIPS mapping for ADI queries
+    STATE_FIPS = {
+        "AL": "01", "AK": "02", "AZ": "04", "AR": "05", "CA": "06",
+        "CO": "08", "CT": "09", "DE": "10", "FL": "12", "GA": "13",
+        "HI": "15", "ID": "16", "IL": "17", "IN": "18", "IA": "19",
+        "KS": "20", "KY": "21", "LA": "22", "ME": "23", "MD": "24",
+        "MA": "25", "MI": "26", "MN": "27", "MS": "28", "MO": "29",
+        "MT": "30", "NE": "31", "NV": "32", "NH": "33", "NJ": "34",
+        "NM": "35", "NY": "36", "NC": "37", "ND": "38", "OH": "39",
+        "OK": "40", "OR": "41", "PA": "42", "RI": "44", "SC": "45",
+        "SD": "46", "TN": "47", "TX": "48", "UT": "49", "VT": "50",
+        "VA": "51", "WA": "53", "WV": "54", "WI": "55", "WY": "56",
+        "DC": "11", "PR": "72",
+    }
+    
     if params.state:
-        conditions.append("stateabbr = ?")
-        query_params.append(params.state.upper())
+        # Handle ADI specially - it uses FIPS codes, not state abbreviations
+        if params.table == "adi_blockgroup":
+            # State FIPS is first 2 chars of gidbg
+            state_fips = STATE_FIPS.get(params.state.upper(), params.state)
+            conditions.append(f"SUBSTRING({state_col}, 1, 2) = ?")
+            query_params.append(state_fips)
+        else:
+            conditions.append(f"{state_col} = ?")
+            query_params.append(params.state.upper())
     
     if params.county:
-        conditions.append("countyname ILIKE ?")
-        query_params.append(f"%{params.county}%")
+        if params.table == "adi_blockgroup":
+            # ADI doesn't have a county name column, skip this filter
+            pass
+        else:
+            conditions.append(f"{county_col} ILIKE ?")
+            query_params.append(f"%{params.county}%")
     
     where_clause = " WHERE " + " AND ".join(conditions) if conditions else ""
     sql = f"SELECT * FROM {table}{where_clause} LIMIT {params.limit}"
