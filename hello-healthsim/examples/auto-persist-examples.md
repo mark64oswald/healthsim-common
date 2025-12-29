@@ -4,67 +4,61 @@ _Token-efficient scenario management for large batch operations._
 
 ## Overview
 
-The auto-persist pattern enables generating and persisting large batches of synthetic healthcare data without filling the context window. Instead of echoing back all generated data, it returns a compact summary (~500 tokens).
+When generating large datasets (50+ entities), auto-persist saves data to DuckDB and returns a compact summary instead of flooding the conversation with hundreds of JSON objects. Query for specific data as needed.
 
 **When to Use Auto-Persist**:
 - Generating 50+ entities at once
 - Building large cohorts for training or testing
 - Batch generation workflows
-- Avoiding context overflow in long sessions
+- Long sessions where context efficiency matters
 
 **Traditional vs Auto-Persist**:
 
-| Approach | Use Case | Context Impact |
-|----------|----------|----------------|
-| Traditional `save_scenario` | Small scenarios (<50 entities) | Returns all data (~1K-50K tokens) |
-| Auto-Persist `persist()` | Large batches (50+ entities) | Returns summary (~500 tokens) |
+| Approach | Use Case | What You See |
+|----------|----------|--------------|
+| Traditional | Small scenarios (<50 entities) | Full data in conversation |
+| Auto-Persist | Large batches (50+ entities) | Summary + query on demand |
 
 ---
 
-## Example 1: Generate 100 Medicare Members
+## Example 1: Generate Large Member Cohort
 
-### User Prompt
+### Prompt
 ```
-Generate 100 Medicare Advantage members over 65 years old in California
+Generate 100 Medicare Advantage members over 65 in California
 ```
 
-### Claude Response (using auto-persist)
+### Response
 ```
-I'll generate 100 Medicare Advantage members for you.
-
-[Generates members using MemberSim skill...]
-[Auto-persists to database...]
-
-**Saved "medicare-advantage-20241227"**
+Generated and saved "medicare-ca-20241228":
 
 | Metric | Value |
 |--------|-------|
 | Members | 100 |
 | Age Range | 65-89 |
 | Gender | 48 male, 52 female |
-| Geographic | California (Los Angeles, San Diego, San Francisco, etc.) |
 | Plan Types | HMO (40), PPO (35), PFFS (25) |
 
-The data is persisted and ready for use. Would you like to:
+Top counties: Los Angeles (28), San Diego (18), Orange (15)
+
+The data is saved. Would you like to:
 - Query specific subsets ("show members in San Diego")
-- See sample members ("show me 3 example members")
+- See sample members ("show me 3 examples")
 - Generate claims for these members
 ```
 
 ---
 
-## Example 2: Query Saved Scenario Data
+## Example 2: Query Saved Data
 
-### User Prompt
+### Prompt
 ```
-From my medicare scenario, show female members over 75 with diabetes
+From my Medicare scenario, show female members over 75 with diabetes
 ```
 
-### Claude Response
+### Response
 ```
-[Queries scenario with SQL...]
-
-Found 12 female members over 75 with diabetes:
+Found 12 matching members:
 
 | Name | Age | City | Plan | Risk Score |
 |------|-----|------|------|------------|
@@ -73,9 +67,8 @@ Found 12 female members over 75 with diabetes:
 | Patricia Johnson | 76 | San Francisco | HMO | 1.45 |
 | Betty Martinez | 79 | Sacramento | PFFS | 1.92 |
 | Ruth Anderson | 81 | Fresno | PPO | 2.34 |
-...
 
-Showing 5 of 12 results. Say "show more" to see the rest.
+Showing 5 of 12. Say "show more" for the rest.
 
 These high-risk members may benefit from care management programs.
 ```
@@ -84,16 +77,14 @@ These high-risk members may benefit from care management programs.
 
 ## Example 3: Resume Work with Summary
 
-### User Prompt
+### Prompt
 ```
 Load my diabetes cohort from yesterday
 ```
 
-### Claude Response (loading summary only)
+### Response
 ```
-[Loading summary for "diabetes-cohort-20241226"...]
-
-**diabetes-cohort-20241226** Summary:
+"diabetes-cohort-20241227" summary:
 
 | Entity Type | Count |
 |-------------|-------|
@@ -102,19 +93,18 @@ Load my diabetes cohort from yesterday
 | Lab Results | 890 |
 | Medications | 320 |
 
-**Patient Demographics**:
+**Demographics**:
 - Age range: 35-78 years
 - Gender: 72 male, 78 female
-- Race: White (45%), Hispanic (28%), Black (18%), Asian (9%)
 
 **Clinical Characteristics**:
 - Average A1C: 7.8% (range: 6.1-12.4%)
 - With complications: 67 (45%)
 - On insulin: 43 (29%)
 
-What would you like to do with this cohort?
+What would you like to do?
 - Query specific patients
-- Generate additional data (encounters, labs)
+- Generate additional encounters
 - Export for analysis
 ```
 
@@ -122,30 +112,30 @@ What would you like to do with this cohort?
 
 ## Example 4: Get Sample Entities
 
-### User Prompt
+### Prompt
 ```
 Show me a few example patients from that cohort
 ```
 
-### Claude Response
+### Response
 ```
-Here are 3 representative patients from "diabetes-cohort-20241226":
+Here are 3 representative patients:
 
 ---
 
 **1. Maria Gonzalez** (Female, 58)
 - MRN: P-2024-00847
-- Diagnosis: E11.65 - Type 2 DM with hyperglycemia
+- Diagnosis: Type 2 DM with hyperglycemia
 - Latest A1C: 8.2% (2024-02-15)
 - Medications: Metformin 1000mg BID, Jardiance 10mg daily
-- Comorbidities: Hypertension (I10), Obesity (E66.9)
+- Comorbidities: Hypertension, Obesity
 - Last Visit: 2024-02-15 (routine follow-up)
 
 ---
 
 **2. James Thompson** (Male, 67)
 - MRN: P-2024-01234
-- Diagnosis: E11.9 - Type 2 DM without complications
+- Diagnosis: Type 2 DM without complications
 - Latest A1C: 6.8% (2024-01-20) - well controlled
 - Medications: Metformin 500mg BID
 - Comorbidities: None
@@ -155,11 +145,11 @@ Here are 3 representative patients from "diabetes-cohort-20241226":
 
 **3. Patricia Lee** (Female, 72)
 - MRN: P-2024-00623
-- Diagnosis: E11.40 - Type 2 DM with DKA
+- Diagnosis: Type 2 DM with nephropathy
 - Latest A1C: 10.1% (2024-03-01) - poor control
 - Medications: Insulin glargine 30u qHS, Humalog sliding scale
-- Comorbidities: CKD Stage 3 (N18.3), Retinopathy (E11.319)
-- Last Visit: 2024-03-01 (urgent, post-hospitalization)
+- Comorbidities: CKD Stage 3, Retinopathy
+- Last Visit: 2024-03-01 (post-hospitalization)
 
 ---
 
@@ -168,39 +158,24 @@ Want to see more samples or query for specific criteria?
 
 ---
 
-## Example 5: Batch Generation Workflow
+## Example 5: Generate Clinical Trial Scenario
 
-### User Prompt
+### Prompt
 ```
-Generate a complete clinical trial scenario with 200 subjects
+Generate a Phase 3 oncology trial with 200 subjects
 ```
 
-### Claude Response
+### Response
 ```
-I'll generate a Phase 3 oncology trial with 200 subjects. This will use 
-auto-persist to manage the large volume of data.
+Generated and saved "oncology-phase3-20241228":
 
-[Generating study and sites...]
-[Generating subjects in batches of 50...]
-[Generating visits and adverse events...]
-[Auto-persisting...]
+**Study**: ONCO-2024-001 (Phase 3 NSCLC)
 
-**Saved "oncology-phase3-20241227"**
-
-**Study Overview**:
 | Attribute | Value |
 |-----------|-------|
-| Protocol | ONCO-2024-001 |
-| Phase | 3 |
-| Indication | NSCLC |
 | Sites | 8 |
 | Subjects | 200 |
-
-**Subject Breakdown**:
-| Treatment Arm | N | % |
-|---------------|---|---|
-| Active (Drug A + SOC) | 100 | 50% |
-| Control (SOC only) | 100 | 50% |
+| Treatment Arms | Active (100), Control (100) |
 
 **Visit Statistics**:
 - Scheduled visits: 2,400 (12 per subject)
@@ -211,11 +186,9 @@ auto-persist to manage the large volume of data.
 | Entity | Count |
 |--------|-------|
 | Subjects | 200 |
-| Treatment Arms | 2 |
-| Scheduled Visits | 2,400 |
-| Actual Visits | 1,847 |
+| Visits | 1,847 |
 | Adverse Events | 89 |
-| Disposition Events | 200 |
+| Lab Results | 3,200 |
 
 Would you like to:
 - Query subjects by arm or site
@@ -227,153 +200,85 @@ Would you like to:
 
 ## Example 6: Cross-Product Query
 
-### User Prompt
+### Prompt
 ```
 For my diabetes cohort, show patients who also have claims over $10,000
 ```
 
-### Claude Response
+### Response
 ```
-[Running cross-product query...]
+Found 23 patients with diabetes AND claims over $10,000:
 
-Found 23 patients with both diabetes diagnosis AND claims over $10,000:
-
-| Patient | Total Claims | Highest Claim | Primary Payer |
-|---------|-------------|---------------|---------------|
+| Patient | Total Claims | Highest Single Claim | Payer |
+|---------|-------------|---------------------|-------|
 | Robert Wilson | $45,230 | $28,500 (inpatient) | Medicare |
 | Linda Martinez | $32,100 | $15,200 (surgery) | BCBS PPO |
-| Michael Chen | $28,750 | $12,400 (ED) | Aetna HMO |
+| Michael Chen | $28,750 | $12,400 (ED visit) | Aetna HMO |
 | Barbara Johnson | $24,300 | $11,800 (inpatient) | UHC |
 | Thomas Brown | $19,450 | $10,500 (procedure) | Medicare |
-...
 
-Showing 5 of 23 results.
+Showing 5 of 23.
 
-**Key Insights**:
+**Insights**:
 - Average total claims: $18,420
 - Most common high-cost service: Inpatient hospitalization
 - Average age of high-cost patients: 68 years
 
-Would you like to see the claim details for any specific patient?
+See claim details for any specific patient?
 ```
 
 ---
 
-## Example 7: Rename and Tag Scenarios
+## Example 7: Tag and Organize Scenarios
 
-### User Prompt
+### Prompt
 ```
-Rename my medicare scenario to "ca-medicare-q4-2024" and tag it with 
-"training", "california", "medicare-advantage"
-```
-
-### Claude Response
-```
-[Renaming scenario...]
-[Adding tags...]
-
-Updated scenario:
-- **Old name**: medicare-advantage-20241227
-- **New name**: ca-medicare-q4-2024
-- **Tags**: training, california, medicare-advantage
-
-You can now find this scenario with:
-- `list scenarios tagged training`
-- `load ca-medicare-q4-2024`
+Tag my Medicare scenario as "training" and "california"
 ```
 
----
+### Response
+```
+Tagged "medicare-ca-20241228":
+- training ✓
+- california ✓
 
-## Technical Details
-
-### Auto-Persist Functions
-
-```python
-from healthsim.state import persist, get_summary, query_scenario
-
-# Persist entities - returns summary, not full data
-result = persist(
-    entities={'patients': [...], 'encounters': [...]},
-    context='diabetes cohort for training',
-    tags=['diabetes', 'training']
-)
-# result.summary contains ~500 tokens
-
-# Load summary only
-summary = get_summary('scenario-name')
-# summary.entity_counts, summary.statistics, summary.samples
-
-# Query with pagination
-results = query_scenario(
-    'scenario-name',
-    "SELECT * FROM patients WHERE gender = 'F'",
-    limit=20
-)
-# results.rows, results.has_more
+Find it later with "show scenarios tagged training".
 ```
 
-### Token Budget
-
-| Component | Approximate Tokens |
-|-----------|-------------------|
-| Scenario metadata | ~100 |
-| Entity counts | ~50 |
-| Statistics summary | ~150 |
-| Sample entities (3 per type) | ~200 per type |
-| **Total (without samples)** | **~300** |
-| **Total (with 3 samples × 5 types)** | **~1,300** |
-
-### Query Security
-
-All queries are validated to ensure they are SELECT-only:
-- ✅ `SELECT * FROM patients WHERE...`
-- ✅ `SELECT COUNT(*) FROM encounters`
-- ❌ `DELETE FROM patients` (blocked)
-- ❌ `DROP TABLE scenarios` (blocked)
-- ❌ `UPDATE members SET...` (blocked)
-
----
-
-## Example 8: Tag Management
-
-### User Prompt
+### Prompt
 ```
 What tags do I have across my scenarios?
 ```
 
-### Claude Response
+### Response
 ```
-[Listing all tags...]
+Your scenario tags:
 
-**Your scenario tags**:
+| Tag | Scenarios |
+|-----|-----------|
+| training | 5 |
+| production | 3 |
+| california | 3 |
+| diabetes | 2 |
+| validated | 2 |
+| testing | 1 |
 
-| Tag | Usage Count |
-|-----|-------------|
-| training | 5 scenarios |
-| production | 3 scenarios |
-| california | 3 scenarios |
-| diabetes | 2 scenarios |
-| validated | 2 scenarios |
-| testing | 1 scenario |
-
-To find scenarios with a specific tag: "show scenarios tagged production"
-To add a tag: "tag my-scenario with validated"
+To find scenarios: "show scenarios tagged [tag]"
+To add a tag: "tag [scenario] with [tag]"
 ```
 
 ---
 
-## Example 9: Clone Scenario for A/B Testing
+## Example 8: Clone for Testing
 
-### User Prompt
+### Prompt
 ```
-Clone my diabetes-cohort scenario so I can test a different cohort definition
+Clone my diabetes cohort so I can test different analysis approaches
 ```
 
-### Claude Response
+### Response
 ```
-[Cloning scenario...]
-
-**Cloned "diabetes-cohort-20241227" → "diabetes-cohort-20241227-copy"**
+Cloned "diabetes-cohort-20241227" → "diabetes-cohort-20241227-copy":
 
 | Entity Type | Copied |
 |-------------|--------|
@@ -381,29 +286,24 @@ Clone my diabetes-cohort scenario so I can test a different cohort definition
 | Encounters | 425 |
 | Lab Results | 890 |
 | Medications | 320 |
-| **Total** | **1,785 entities** |
 
-All entities have new unique IDs. The clone is completely independent - 
-changes to either scenario won't affect the other.
+All entities have new unique IDs. The clone is independent—changes won't affect the original.
 
-Would you like to rename the clone to something more descriptive?
+Would you like to rename it to something more descriptive?
 ```
 
 ---
 
-## Example 10: Merge Multiple Cohorts
+## Example 9: Merge Multiple Cohorts
 
-### User Prompt
+### Prompt
 ```
-Merge my diabetes, heart-failure, and copd scenarios into a combined 
-training dataset
+Merge my diabetes, heart-failure, and copd scenarios into a combined training set
 ```
 
-### Claude Response
+### Response
 ```
-[Merging 3 scenarios...]
-
-**Created "merged-training-20241227"** from 3 sources:
+Created "combined-training-20241228" from 3 sources:
 
 | Source | Patients | Encounters | Labs |
 |--------|----------|------------|------|
@@ -413,28 +313,26 @@ training dataset
 | **Total** | **345** | **1,015** | **2,060** |
 
 - Conflicts resolved: 0 (no duplicate IDs)
-- Tags inherited: training, chronic-disease, validated
+- Tags inherited: training, chronic-disease
 
-All source scenarios remain unchanged. Would you like to:
-- View samples from the merged set
-- Query specific patient subsets
-- Export for external analysis
+All source scenarios preserved. Would you like to:
+- Query the combined set
+- Export for analysis
+- Add more scenarios
 ```
 
 ---
 
-## Example 11: Export to CSV for Analysis
+## Example 10: Export for Analysis
 
-### User Prompt
+### Prompt
 ```
-Export my merged training dataset to CSV for analysis in Python
+Export my training dataset to CSV for Python analysis
 ```
 
-### Claude Response
+### Response
 ```
-[Exporting to CSV...]
-
-**Exported "merged-training-20241227" to CSV**
+Exported "combined-training-20241228" to CSV:
 
 | File | Rows | Size |
 |------|------|------|
@@ -444,16 +342,15 @@ Export my merged training dataset to CSV for analysis in Python
 | diagnoses.csv | 892 | 124 KB |
 | medications.csv | 1,240 | 186 KB |
 
-**Location**: `~/Downloads/merged-training-20241227/`
-**Total Size**: 2.3 MB
+**Location**: ~/Downloads/combined-training-20241228/
+**Total**: 2.3 MB
 
 Load in Python:
 ```python
 import pandas as pd
 
-patients = pd.read_csv('~/Downloads/merged-training-20241227/patients.csv')
-encounters = pd.read_csv('~/Downloads/merged-training-20241227/encounters.csv')
-labs = pd.read_csv('~/Downloads/merged-training-20241227/lab_results.csv')
+patients = pd.read_csv('~/Downloads/combined-training-20241228/patients.csv')
+encounters = pd.read_csv('~/Downloads/combined-training-20241228/encounters.csv')
 
 print(f"Loaded {len(patients)} patients with {len(encounters)} encounters")
 ```
@@ -461,63 +358,81 @@ print(f"Loaded {len(patients)} patients with {len(encounters)} encounters")
 
 ---
 
-## Example 12: Export to Parquet for Big Data
+## Example 11: Paginated Query Results
 
-### User Prompt
+### Prompt
 ```
-Export as Parquet for loading into Databricks
-```
-
-### Claude Response
-```
-[Exporting to Parquet...]
-
-**Exported "merged-training-20241227" to Parquet**
-
-| File | Rows | Size |
-|------|------|------|
-| patients.parquet | 345 | 89 KB |
-| encounters.parquet | 1,015 | 142 KB |
-| lab_results.parquet | 2,060 | 285 KB |
-| diagnoses.parquet | 892 | 38 KB |
-| medications.parquet | 1,240 | 52 KB |
-
-**Location**: `~/Downloads/merged-training-20241227-parquet/`
-**Total Size**: 606 KB (74% smaller than CSV!)
-
-Load in Databricks:
-```python
-# Upload to DBFS first
-dbutils.fs.cp(
-    'file:///Users/.../merged-training-20241227-parquet/',
-    'dbfs:/FileStore/healthsim-training/',
-    recurse=True
-)
-
-# Read with Spark
-patients = spark.read.parquet('dbfs:/FileStore/healthsim-training/patients.parquet')
-patients.display()
+Show all encounters from January 2024
 ```
 
-Or query directly:
-```sql
-CREATE TABLE healthsim.patients
-USING PARQUET
-LOCATION 'dbfs:/FileStore/healthsim-training/patients.parquet';
-
-SELECT * FROM healthsim.patients WHERE gender = 'F';
+### Response
 ```
+Found 234 encounters in January 2024:
+
+| Date | Patient | Type | Provider | Diagnosis |
+|------|---------|------|----------|-----------|
+| 2024-01-03 | Maria Gonzalez | Office Visit | Dr. Chen | E11.9 |
+| 2024-01-05 | James Thompson | Lab Only | - | E11.65 |
+| 2024-01-08 | Robert Wilson | ED Visit | Dr. Patel | I50.9 |
+| 2024-01-10 | Patricia Lee | Inpatient | Dr. Kim | E11.22 |
+| 2024-01-12 | Linda Martinez | Office Visit | Dr. Chen | I10 |
+...
+
+Showing 5 of 234. 
+
+- "show more" - next page
+- "show encounters from week of Jan 15" - narrow down
+- "count by type" - see breakdown
+```
+
+---
+
+## Example 12: Scenario Statistics
+
+### Prompt
+```
+Give me statistics on my heart failure cohort
+```
+
+### Response
+```
+"heart-failure-cohort" statistics:
+
+**Demographics**:
+- Total patients: 120
+- Age: mean 68.4, range 45-89
+- Gender: 58% male, 42% female
+- Race: White (52%), Black (28%), Hispanic (15%), Other (5%)
+
+**Clinical**:
+- NYHA Class: I (12%), II (35%), III (38%), IV (15%)
+- EF: mean 35%, range 15-55%
+- On GDMT: 94 (78%)
+
+**Encounters**:
+- Total: 380
+- Per patient: mean 3.2, range 1-12
+- Types: Office (45%), Inpatient (30%), ED (25%)
+
+**Top Diagnoses**:
+1. I50.9 Heart failure, unspecified (120)
+2. I10 Essential hypertension (98)
+3. E11.9 Type 2 DM (67)
+4. N18.3 CKD Stage 3 (45)
+5. I25.10 CAD (42)
+
+Would you like to drill into any of these areas?
 ```
 
 ---
 
 ## Related Examples
 
-- [Cross-Domain Examples](cross-domain-examples.md) - **Cross-product auto-persist workflow** (PopulationSim → PatientSim → TrialSim)
-- [PatientSim Examples](patientsim-examples.md)
-- [MemberSim Examples](membersim-examples.md)
-- [TrialSim Examples](trialsim-examples.md)
+- [Cross-Domain Examples](cross-domain-examples.md) - Multi-product workflows
+- [PatientSim Examples](patientsim-examples.md) - Clinical data generation
+- [MemberSim Examples](membersim-examples.md) - Claims and payer data
+- [TrialSim Examples](trialsim-examples.md) - Clinical trial data
 
 ---
 
-*Version: 2.0 | December 27, 2024 | Phase 2 Enhancements: Tags, Cloning, Merging, Export*
+*Auto-Persist Examples v3.0 | December 2024*

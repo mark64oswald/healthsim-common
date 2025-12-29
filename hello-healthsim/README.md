@@ -524,9 +524,9 @@ See [examples/populationsim-examples.md](examples/populationsim-examples.md) for
 
 ## Hello, Provider Networks!
 
-NetworkSim provides access to **8.9 million real US healthcare providers** from the NPPES registry stored in DuckDB, plus **synthetic generation** for test data. It also provides **reference knowledge** about how provider networks work.
+NetworkSim provides access to **8.9 million real US healthcare providers** from the NPPES registry stored in DuckDB. Query real providers for validation and analysis, or generate synthetic providers when real data isn't appropriate for your use case.
 
-### Query Real Providers (from NPPES)
+### Query Real Providers (Primary Use Case)
 
 ```
 Find cardiologists in Houston, Texas
@@ -534,9 +534,9 @@ Find cardiologists in Houston, Texas
 
 This queries the real NPPES registry and returns:
 
-- Real NPIs from the national provider database
-- Actual taxonomy codes and specialties
-- Real practice addresses
+- Actual NPIs from the national provider database
+- Real taxonomy codes and specialties
+- Actual practice addresses
 - Provider credentials (MD, DO, NP, etc.)
 
 ### Analyze Provider Distribution
@@ -545,50 +545,47 @@ This queries the real NPPES registry and returns:
 How many primary care physicians are in San Diego County?
 ```
 
-NetworkSim can analyze real provider data:
+NetworkSim analyzes real provider data:
 
 - Provider counts by specialty and geography
 - Network adequacy analysis
 - Provider-to-population ratios
 
-### Generate Synthetic Providers (for Testing)
+### Verify Provider Information
 
 ```
-Generate a cardiologist in Houston, Texas
+Is NPI 1234567890 a valid cardiologist?
 ```
 
-This creates a synthetic physician entity with:
+Look up any NPI to verify:
+
+- Provider exists in NPPES
+- Specialty and taxonomy codes
+- Practice location and credentials
+
+### Generate Synthetic Providers (When Needed)
+
+When real data isn't appropriate (tutorials, demos, testing):
+
+```
+Generate a synthetic cardiologist for this patient's encounter
+```
+
+This creates a synthetic provider with:
 
 - Valid-format NPI (synthetic, not from registry)
 - Appropriate specialty taxonomy code
 - Practice address in the specified location
-- Credential abbreviations (MD, FACC, etc.)
 
-### Generate a Facility
+### Generate Facilities and Pharmacies
 
 ```
-Generate an acute care hospital with 350 beds in Phoenix, AZ
+Generate a 350-bed acute care hospital in Phoenix
 ```
-
-This creates a facility entity with:
-
-- Facility NPI and taxonomy classification
-- Bed count and service lines
-- Address and contact information
-- Accreditation indicators
-
-### Generate a Pharmacy
 
 ```
 Generate a specialty pharmacy for oncology medications
 ```
-
-This creates pharmacy entities with:
-
-- NCPDP ID and NPI
-- Pharmacy type (retail, mail-order, specialty)
-- Specialty certifications and capabilities
-- Limited distribution drug handling
 
 ### Understanding Network Types
 
@@ -596,20 +593,19 @@ This creates pharmacy entities with:
 Explain the differences between HMO, PPO, and EPO network structures
 ```
 
-NetworkSim provides educational content about:
+NetworkSim provides reference knowledge about:
 
 - Network design patterns and access rules
 - Cost sharing differences
 - Referral and authorization requirements
-- Member choice vs. cost trade-offs
 
 ### Integration with Other Products
 
-NetworkSim provides providers for other HealthSim products:
+NetworkSim provides provider data for other HealthSim products:
 
-- **PatientSim encounters**: Appropriate specialty for the visit type
-- **MemberSim claims**: Billing provider with network status
-- **RxMemberSim fills**: Dispensing pharmacy with proper identifiers
+- **PatientSim encounters**: Real or synthetic provider for the visit
+- **MemberSim claims**: Billing provider with NPI
+- **RxMemberSim fills**: Dispensing pharmacy identifiers
 
 See [examples/networksim-examples.md](examples/networksim-examples.md) for detailed examples.
 

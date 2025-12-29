@@ -1,134 +1,254 @@
 # NetworkSim Examples
 
-NetworkSim provides healthcare network knowledge and synthetic entity generation. This file demonstrates common use cases.
+NetworkSim provides access to **8.9 million real US healthcare providers** from the NPPES registry. This is the primary use case. Synthetic generation is available when real data isn't appropriate.
 
 ---
 
-## Quick Reference Examples
+## Real Provider Queries (Primary Use Case)
 
-### Explain Network Types
+### Find Providers by Specialty and Location
 
 **Prompt**:
 ```
-Explain the difference between HMO and PPO networks
+Find cardiologists in Houston, TX
 ```
 
 **Expected Response**:
-| Aspect | HMO | PPO |
-|--------|-----|-----|
-| Network Access | Closed - in-network only | Open - any provider |
-| Referrals | Required for specialists | Not required |
-| PCP Required | Yes | No |
-| Out-of-Network | Emergency only | Covered at higher cost |
-| Premiums | Lower | Higher |
+
+Found 847 cardiologists in Houston, TX:
+
+| NPI | Name | Credentials | Subspecialty | Practice Address |
+|-----|------|-------------|--------------|------------------|
+| 1234567890 | Dr. Sarah Chen | MD, FACC | Interventional Cardiology | 6624 Fannin St |
+| 1876543210 | Dr. Michael Patel | MD, FSCAI | Electrophysiology | 1 Baylor Plaza |
+| 1567890123 | Dr. Jennifer Williams | MD | General Cardiology | 7777 Southwest Fwy |
+| ... | ... | ... | ... | ... |
+
+Showing 20 of 847. Say "show more" for next page.
 
 ---
 
-### Explain Pharmacy Benefit Tiers
+### Count Providers by Region
 
 **Prompt**:
 ```
-Explain pharmacy benefit tier structures
+How many primary care physicians are in San Diego County?
 ```
 
 **Expected Response**:
-| Tier | Drug Type | Typical Copay |
-|------|-----------|---------------|
-| Tier 1 | Generic | $10 |
-| Tier 2 | Preferred Brand | $35 |
-| Tier 3 | Non-Preferred Brand | $60 |
-| Tier 4 | Specialty | 25% coinsurance |
+
+San Diego County has **2,847 primary care physicians**:
+
+| Specialty | Count | % of Total |
+|-----------|-------|------------|
+| Family Medicine | 1,602 | 56% |
+| Internal Medicine | 1,245 | 44% |
+
+Geographic distribution:
+- San Diego city: 1,423
+- Chula Vista: 312
+- Oceanside: 287
+- Escondido: 198
+- Other: 627
 
 ---
 
-## Synthetic Provider Examples
-
-### Generate Primary Care Physician
+### Find Hospitals with Quality Data
 
 **Prompt**:
 ```
-Generate a primary care physician in Chicago, Illinois
+Show me hospitals in Phoenix with 4+ star CMS ratings
+```
+
+**Expected Response**:
+
+Found 12 hospitals in Phoenix metro with 4+ star ratings:
+
+| Hospital | City | Beds | CMS Rating | Specialties |
+|----------|------|------|------------|-------------|
+| Mayo Clinic Hospital | Phoenix | 304 | 5 stars | Transplant, Cancer, Cardiology |
+| Banner University Medical Center | Phoenix | 672 | 4 stars | Trauma Level 1, Teaching |
+| HonorHealth Scottsdale Shea | Scottsdale | 409 | 4 stars | Cardiac, Orthopedic |
+| ... | ... | ... | ... | ... |
+
+---
+
+### Verify a Provider's NPI
+
+**Prompt**:
+```
+Is NPI 1234567890 a valid provider? What's their specialty?
+```
+
+**Expected Response**:
+
+**NPI 1234567890 is valid.**
+
+| Field | Value |
+|-------|-------|
+| Name | Dr. Sarah Chen |
+| Entity Type | Individual |
+| Primary Specialty | Cardiovascular Disease (207RC0000X) |
+| Credentials | MD, FACC |
+| City, State | Houston, TX |
+| Enumeration Date | 2008-03-15 |
+
+---
+
+### Provider Distribution Analysis
+
+**Prompt**:
+```
+Show the top 10 states by number of physicians
+```
+
+**Expected Response**:
+
+| Rank | State | Physicians | Per 100K Population |
+|------|-------|------------|---------------------|
+| 1 | California | 142,567 | 361 |
+| 2 | New York | 98,234 | 504 |
+| 3 | Texas | 87,456 | 301 |
+| 4 | Florida | 76,234 | 354 |
+| 5 | Pennsylvania | 52,123 | 407 |
+| 6 | Illinois | 48,567 | 383 |
+| 7 | Ohio | 42,345 | 362 |
+| 8 | Massachusetts | 41,234 | 598 |
+| 9 | New Jersey | 38,567 | 434 |
+| 10 | Michigan | 35,789 | 358 |
+
+---
+
+### Find Specialists for a Specific Condition
+
+**Prompt**:
+```
+Find endocrinologists in Denver who specialize in diabetes
+```
+
+**Expected Response**:
+
+Found 67 endocrinologists in Denver metro:
+
+| NPI | Name | Credentials | Focus Areas | Accepting New Patients |
+|-----|------|-------------|-------------|------------------------|
+| 1234509876 | Dr. Amanda Rodriguez | MD, FACE | Diabetes, Thyroid | Yes |
+| 1876540123 | Dr. David Kim | MD, PhD | Diabetes, Metabolism | Yes |
+| ... | ... | ... | ... | ... |
+
+Note: "Accepting New Patients" status may not be current in NPPES data.
+
+---
+
+### Network Adequacy Check
+
+**Prompt**:
+```
+Are there enough PCPs in rural Montana counties?
+```
+
+**Expected Response**:
+
+**Rural Montana PCP Analysis** (counties with <50K population):
+
+| County | Population | PCPs | Ratio | Status |
+|--------|------------|------|-------|--------|
+| Flathead | 104,357 | 87 | 1:1,200 | Adequate |
+| Ravalli | 44,174 | 28 | 1:1,578 | Borderline |
+| Gallatin | 119,283 | 112 | 1:1,065 | Adequate |
+| Lincoln | 19,589 | 8 | 1:2,449 | **Shortage** |
+| Sanders | 12,148 | 4 | 1:3,037 | **Shortage** |
+| ... | ... | ... | ... | ... |
+
+6 of 52 Montana counties are designated HPSA (Health Professional Shortage Areas) for primary care.
+
+---
+
+## SQL Query Examples
+
+For advanced users, direct SQL against the `network` schema:
+
+### Find Providers by Taxonomy Code
+
+```sql
+SELECT npi, first_name, last_name, credential_text, city
+FROM network.providers
+WHERE state = 'CA'
+  AND primary_taxonomy_code = '207RC0000X'  -- Cardiovascular Disease
+  AND city = 'LOS ANGELES'
+LIMIT 20;
+```
+
+### Join Provider and Quality Data
+
+```sql
+SELECT 
+  p.organization_name,
+  p.city,
+  h.overall_rating,
+  h.mortality_rating,
+  h.readmission_rating
+FROM network.providers p
+JOIN network.hospital_quality h ON p.npi = h.facility_id
+WHERE p.state = 'TX'
+  AND h.overall_rating >= 4
+ORDER BY h.overall_rating DESC;
+```
+
+### Provider Count by Specialty
+
+```sql
+SELECT 
+  primary_taxonomy_code,
+  COUNT(*) as provider_count
+FROM network.providers
+WHERE state = 'NY'
+  AND entity_type_code = '1'
+GROUP BY primary_taxonomy_code
+ORDER BY provider_count DESC
+LIMIT 15;
+```
+
+---
+
+## Synthetic Generation Examples
+
+When real provider data isn't appropriate (demos, tutorials, testing), generate synthetic providers:
+
+### Generate a Provider for an Encounter
+
+**Prompt**:
+```
+Generate a synthetic cardiologist for this heart failure patient's encounter
 ```
 
 **Expected Response**:
 ```json
 {
-  "npi": "1234567890",
+  "npi": "1999999001",
   "entity_type": "individual",
   "provider": {
-    "last_name": "Williams",
-    "first_name": "Sarah",
-    "credential": "MD"
+    "last_name": "Martinez",
+    "first_name": "Elena",
+    "credential": "MD, FACC"
   },
   "taxonomy": {
-    "code": "207R00000X",
-    "classification": "Internal Medicine",
-    "specialization": null
-  },
-  "practice_location": {
-    "address_line_1": "233 E Erie Street",
-    "city": "Chicago",
-    "state": "IL",
-    "zip": "60611",
-    "county_fips": "17031"
-  }
-}
-```
-
----
-
-### Generate Specialist with Credentials
-
-**Prompt**:
-```
-Generate an interventional cardiologist in Houston, Texas with full credentials
-```
-
-**Expected Response**:
-```json
-{
-  "npi": "1987654321",
-  "entity_type": "individual",
-  "provider": {
-    "last_name": "Patel",
-    "first_name": "Vikram",
-    "credential": "MD, FACC, FSCAI"
-  },
-  "taxonomy": {
-    "primary": {
-      "code": "207RC0001X",
-      "classification": "Internal Medicine",
-      "specialization": "Interventional Cardiology"
-    }
+    "code": "207RC0200X",
+    "display": "Advanced Heart Failure and Transplant Cardiology"
   },
   "practice_location": {
     "city": "Houston",
-    "state": "TX",
-    "county_fips": "48201"
+    "state": "TX"
   },
-  "board_certifications": [
-    {
-      "board": "American Board of Internal Medicine",
-      "specialty": "Cardiovascular Disease",
-      "certification_date": "2012"
-    },
-    {
-      "board": "American Board of Internal Medicine",
-      "specialty": "Interventional Cardiology",
-      "certification_date": "2014"
-    }
-  ],
-  "hospital_privileges": [
-    {"facility_name": "Houston Methodist Hospital", "ccn": "450358"}
-  ]
+  "_synthetic": true
 }
 ```
 
+Note: Synthetic NPIs use the `199XXXXXX` range to distinguish from real NPIs.
+
 ---
 
-## Synthetic Facility Examples
-
-### Generate Community Hospital
+### Generate a Hospital
 
 **Prompt**:
 ```
@@ -139,186 +259,78 @@ Generate a 200-bed community hospital in suburban Dallas
 ```json
 {
   "ccn": "450XXX",
-  "npi": "1234567890",
+  "npi": "1999999002",
   "facility": {
     "name": "Plano Community Medical Center",
-    "type": "Short Term Acute Care Hospital",
-    "subtype": "General Medical and Surgical"
+    "type": "Short Term Acute Care Hospital"
   },
   "characteristics": {
     "bed_count": 200,
-    "staffed_beds": 185,
     "emergency_department": true,
     "trauma_level": null,
     "teaching_hospital": false
   },
-  "services": {
-    "cardiac_surgery": false,
-    "cardiac_cath_lab": true,
-    "labor_delivery": true,
-    "nicu_level": 2
-  },
   "location": {
     "city": "Plano",
-    "state": "TX",
-    "county_fips": "48085"
-  }
+    "state": "TX"
+  },
+  "_synthetic": true
 }
 ```
 
 ---
 
-### Generate Ambulatory Surgery Center
+### Generate a Pharmacy
 
 **Prompt**:
 ```
-Generate an ambulatory surgery center specializing in orthopedics in Phoenix
+Generate a retail pharmacy in San Diego
 ```
 
 **Expected Response**:
 ```json
 {
-  "ccn": "03XXXX",
-  "facility": {
-    "name": "Desert Orthopedic Surgery Center",
-    "type": "Ambulatory Surgical Center",
-    "specialty_focus": ["Orthopedic Surgery"]
-  },
-  "characteristics": {
-    "operating_rooms": 4,
-    "procedure_rooms": 2,
-    "overnight_stay": false
-  },
-  "services": {
-    "total_joint": true,
-    "arthroscopy": true,
-    "spine": false,
-    "pain_management": true
-  },
-  "location": {
-    "city": "Phoenix",
-    "state": "AZ",
-    "county_fips": "04013"
-  }
-}
-```
-
----
-
-## Synthetic Pharmacy Examples
-
-### Generate Retail Pharmacy
-
-**Prompt**:
-```
-Generate a CVS pharmacy in San Diego, California
-```
-
-**Expected Response**:
-```json
-{
-  "ncpdp_id": "3456789",
-  "npi": "1876543210",
+  "ncpdp_id": "9999001",
+  "npi": "1999999003",
   "pharmacy": {
-    "name": "CVS Pharmacy #4521",
-    "type": "Community/Retail Pharmacy",
-    "chain_code": "CVS"
+    "name": "Pacific Coast Pharmacy",
+    "type": "Community/Retail Pharmacy"
   },
   "services": {
     "immunizations": true,
-    "mtm": true,
     "drive_through": true,
     "24_hour": false
   },
   "location": {
-    "address_line_1": "1234 Camino Del Rio North",
     "city": "San Diego",
-    "state": "CA",
-    "zip": "92108",
-    "county_fips": "06073"
-  }
+    "state": "CA"
+  },
+  "_synthetic": true
 }
 ```
 
 ---
 
-### Generate Specialty Pharmacy
-
-**Prompt**:
-```
-Generate a specialty pharmacy for oncology medications
-```
-
-**Expected Response**:
-```json
-{
-  "ncpdp_id": "5678901",
-  "pharmacy": {
-    "name": "OncoMed Specialty Pharmacy",
-    "type": "Specialty Pharmacy",
-    "specialty_focus": ["Oncology"]
-  },
-  "specialty": {
-    "specialty_pharmacy": true,
-    "therapeutic_areas": ["Solid Tumors", "Hematologic Malignancies"],
-    "accreditations": ["URAC", "ACHC"]
-  },
-  "services": {
-    "clinical_pharmacist": true,
-    "nurse_support": true,
-    "adherence_programs": true,
-    "copay_assistance": true,
-    "cold_chain": true
-  },
-  "delivery": {
-    "next_day": true,
-    "temperature_controlled": true,
-    "signature_required": true
-  }
-}
-```
-
----
-
-## Cross-Product Integration Examples
+## Cross-Product Integration
 
 ### Provider for PatientSim Encounter
 
 **Prompt**:
 ```
-Generate a provider for this heart failure patient's cardiology referral
-
-Context:
-- Patient diagnosis: I50.9 (Heart failure, unspecified)
-- Patient location: Houston, TX
-- Referral type: Specialist consultation
+This heart failure patient needs a cardiology referral in Houston. Find a real cardiologist.
 ```
 
 **Expected Response**:
-```json
-{
-  "encounter_providers": {
-    "consulting_provider": {
-      "npi": "1987654321",
-      "role": "Consulting",
-      "provider": {
-        "last_name": "Chen",
-        "first_name": "Michael",
-        "credential": "MD, FACC, FHFSA"
-      },
-      "taxonomy": {
-        "code": "207RC0200X",
-        "display_name": "Advanced Heart Failure and Transplant Cardiology"
-      },
-      "assignment_reason": "Heart failure diagnosis (I50.9) matched to heart failure specialist"
-    },
-    "integration_metadata": {
-      "source_product": "patientsim",
-      "matching_logic": "diagnosis_to_specialty"
-    }
-  }
-}
-```
+
+Found a heart failure specialist for this referral:
+
+**Dr. Michael Chen, MD, FACC, FHFSA**
+- NPI: 1234567890
+- Specialty: Advanced Heart Failure and Transplant Cardiology
+- Practice: Houston Methodist DeBakey Heart Center
+- Address: 6550 Fannin St, Houston, TX 77030
+
+This NPI can be used for the referral encounter.
 
 ---
 
@@ -326,218 +338,69 @@ Context:
 
 **Prompt**:
 ```
-Determine network status for this member's claim
-
-Context:
-- Member plan: PPO with tiered network
-- Provider NPI: 1234567890
-- Service: Office visit (99213)
+Is NPI 1234567890 in-network for Aetna PPO in Texas?
 ```
 
 **Expected Response**:
-```json
-{
-  "network_status": {
-    "status": "IN_NETWORK",
-    "tier": {
-      "tier_id": "TIER-1",
-      "tier_name": "Preferred",
-      "tier_level": 1
-    },
-    "cost_sharing": {
-      "copay": 25,
-      "deductible_applies": false
-    },
-    "contracted_rate": 125.00
-  }
-}
-```
+
+I can verify the provider exists:
+- **NPI 1234567890** is a valid cardiologist in Houston, TX
+
+However, network participation (in-network vs out-of-network) depends on the specific health plan's contracts, which aren't in NPPES data. For claims processing:
+- Use the NPI for the claim
+- Network status would be determined by the payer's provider directory
 
 ---
 
-### Pharmacy Routing for RxMemberSim
+## Domain Knowledge Examples
+
+### Explain Network Types
 
 **Prompt**:
 ```
-Route this prescription to the appropriate pharmacy
-
-Context:
-- Drug: Humira 40mg pen
-- Days supply: 28
-- Member benefit: Specialty carve-out
+Explain the difference between HMO and PPO networks
 ```
 
 **Expected Response**:
-```json
-{
-  "pharmacy_assignment": {
-    "routing_type": "SPECIALTY",
-    "pharmacy": {
-      "name": "Accredo Specialty Pharmacy",
-      "pharmacy_type": "Specialty",
-      "ncpdp_id": "5678901"
-    },
-    "routing_reason": "Specialty indicator on drug - routed to designated specialty pharmacy",
-    "clinical_services": {
-      "welcome_call": true,
-      "adherence_monitoring": true,
-      "side_effect_management": true
-    },
-    "cost_sharing": {
-      "tier": 4,
-      "coinsurance": 0.25,
-      "max_oop": 400
-    }
-  }
-}
-```
+
+| Aspect | HMO | PPO |
+|--------|-----|-----|
+| Network Access | Closed - in-network only | Open - any provider |
+| Referrals | Required for specialists | Not required |
+| PCP Required | Yes | No |
+| Out-of-Network | Emergency only | Covered at higher cost |
+| Premiums | Lower | Higher |
+| Cost Control | Higher | Lower |
 
 ---
 
-### Formulary Check for RxMemberSim
+### Explain Taxonomy Codes
 
 **Prompt**:
 ```
-Is this drug covered on the member's formulary?
-
-Context:
-- Drug: Atorvastatin 20mg
-- Formulary: ESI Standard 2024
+What taxonomy code is used for interventional cardiologists?
 ```
 
 **Expected Response**:
-```json
-{
-  "formulary_status": {
-    "covered": true,
-    "formulary_status": "Formulary",
-    "tier": {
-      "tier_id": 1,
-      "tier_name": "Generic"
-    },
-    "cost_sharing": {
-      "copay_retail_30": 10,
-      "copay_mail_90": 20
-    },
-    "clinical_programs": {
-      "prior_authorization": false,
-      "step_therapy": false,
-      "quantity_limit": {
-        "applies": true,
-        "quantity": 90,
-        "per_days": 30
-      }
-    }
-  }
-}
-```
 
----
+**Interventional Cardiology**: `207RC0001X`
 
-## Network Pattern Examples
-
-### HMO Network Configuration
-
-**Prompt**:
-```
-Generate an HMO network configuration for Los Angeles County
-```
-
-**Expected Response**:
-```json
-{
-  "network": {
-    "network_id": "NET-CA-HMO-LA-2024",
-    "name": "LA Care HMO Network",
-    "type": "HMO",
-    "model": "IPA Model"
-  },
-  "configuration": {
-    "pcp_gatekeeper": true,
-    "referral_required": true,
-    "out_of_network_coverage": "Emergency only",
-    "capitation": true
-  },
-  "panel_management": {
-    "pcp_panel_size": 2000,
-    "panel_open": true
-  },
-  "geography": {
-    "counties": ["06037"],
-    "county_names": ["Los Angeles County"]
-  },
-  "adequacy": {
-    "pcp_count": 2500,
-    "specialist_count": 4800,
-    "hospital_count": 45
-  }
-}
-```
-
----
-
-### Tiered PPO Network
-
-**Prompt**:
-```
-Generate a quality-based tiered PPO network with 3 tiers
-```
-
-**Expected Response**:
-```json
-{
-  "network": {
-    "network_id": "NET-TX-TIERED-2024",
-    "name": "HealthSelect Quality Tiered PPO",
-    "type": "PPO",
-    "tiered": true
-  },
-  "tiers": [
-    {
-      "tier_id": "BLUE",
-      "tier_name": "Blue Tier - Preferred",
-      "tier_level": 1,
-      "criteria": "Top 25% quality score",
-      "cost_sharing": {"copay_pcp": 15, "coinsurance": 0.10}
-    },
-    {
-      "tier_id": "WHITE",
-      "tier_name": "White Tier - Standard",
-      "tier_level": 2,
-      "criteria": "50-75% quality score",
-      "cost_sharing": {"copay_pcp": 30, "coinsurance": 0.20}
-    },
-    {
-      "tier_id": "GRAY",
-      "tier_name": "Gray Tier - Basic",
-      "tier_level": 3,
-      "criteria": "Below 50% quality score",
-      "cost_sharing": {"copay_pcp": 50, "coinsurance": 0.35}
-    }
-  ],
-  "quality_metrics": ["HEDIS measures", "Patient satisfaction", "Cost efficiency"]
-}
-```
-
----
-
-## Best Practices Demonstrated
-
-1. **Be specific about geography** - County-level specificity produces realistic entities
-2. **Include specialty details** - Specific specialties map to correct taxonomy codes
-3. **Provide context for integration** - Cross-product prompts need source context
-4. **Request credentials when needed** - Full credentials output requires explicit request
-5. **Reference network constraints** - Network type affects valid outputs
+Taxonomy hierarchy:
+- `207R00000X` - Internal Medicine
+  - `207RC0000X` - Cardiovascular Disease
+    - `207RC0001X` - Interventional Cardiology
+    - `207RC0200X` - Advanced Heart Failure and Transplant Cardiology
+    - `207RA0001X` - Clinical Cardiac Electrophysiology
 
 ---
 
 ## Related Examples
 
-- [PatientSim Examples](patientsim-examples.md) - Clinical encounters
-- [MemberSim Examples](membersim-examples.md) - Claims and members
+- [PatientSim Examples](patientsim-examples.md) - Clinical encounters using providers
+- [MemberSim Examples](membersim-examples.md) - Claims with provider NPIs
 - [RxMemberSim Examples](rxmembersim-examples.md) - Pharmacy claims
 - [Cross-Domain Examples](cross-domain-examples.md) - Multi-product scenarios
 
 ---
 
-*NetworkSim Examples v1.0 - December 2024*
+*NetworkSim Examples v2.0 - December 2024*

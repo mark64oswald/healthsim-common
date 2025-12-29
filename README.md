@@ -95,53 +95,82 @@ See [formats/](formats/) for transformation specifications.
 
 ## State Management
 
-HealthSim persists generated data to DuckDB, enabling you to save, load, and query scenarios across sessions.
+HealthSim persists your generated data to DuckDB, allowing you to build scenarios over multiple sessions and query them without regenerating.
 
-### Why Two Retrieval Patterns?
+### Two Approaches: Full Data vs. Auto-Persist
 
-When loading saved scenarios, you have two options based on scenario size:
+**Full Data** is best when you have a small scenario (under 50 entities) and want everything loaded at once. Claude sees all the data in context and can reference it directly.
 
-| Pattern | Best For | How It Works | Token Cost |
-|---------|----------|--------------|------------|
-| **Full Load** | Small scenarios (<50 entities) | Returns all entities immediately | High (1K-50K tokens) |
-| **Summary + Query** | Large scenarios (50+ entities) | Returns metadata, query for details | Low (~500 tokens) |
+**Auto-Persist** is best when you're generating larger datasets (50+ entities). Instead of flooding the conversation with hundreds of JSON objects, HealthSim saves them quietly and gives you a compact summary. When you need specific data, you query for just what you need.
 
-### State Management Tools
+| Approach | Best For | What Happens |
+|----------|----------|---------------|
+| **Full Data** | Small scenarios, interactive exploration | All entities loaded into conversation |
+| **Auto-Persist** | Large batches, production datasets | Summary in conversation, data in database |
 
-| Tool | Description |
-|------|-------------|
-| `healthsim_save_scenario` | Save entities with name, description, tags |
-| `healthsim_load_scenario` | Load all entities (use for small scenarios) |
-| `healthsim_get_summary` | Load metadata + samples only (use for large scenarios) |
-| `healthsim_query` | SQL query against saved entities |
-| `healthsim_list_scenarios` | Browse saved scenarios with filtering |
-| `healthsim_delete_scenario` | Remove scenario (requires confirmation) |
+### Conversation Examples
 
-### Example Workflow
+**Full Data Approach** (small scenarios):
 
-**Small Scenario (Full Load)**:
 ```
-User: "Save these 10 patients as 'test-cohort'"
-→ healthsim_save_scenario(name='test-cohort', entities={...})
+You: Generate 5 diabetes patients for my demo
 
-User: "Load my test cohort"
-→ healthsim_load_scenario('test-cohort')
-→ Returns all 10 patients with full details
+Claude: [Generates patients with full details]
+
+Here are 5 diabetes patients:
+1. Maria Santos, 58F, Type 2 DM, A1C 7.8%, on Metformin...
+2. James Wilson, 67M, Type 2 DM with CKD...
+[full details for all 5]
+
+You: Save these as "demo-cohort"
+
+Claude: Saved "demo-cohort" with 5 patients.
+
+You: Load my demo cohort
+
+Claude: [Full patient data appears in conversation]
 ```
 
-**Large Scenario (Summary + Query)**:
-```
-User: "Generate 200 diabetic patients and save them"
-→ healthsim_save_scenario(name='diabetes-200', entities={...})
+**Auto-Persist Approach** (large scenarios):
 
-User: "What's in my diabetes scenario?"
-→ healthsim_get_summary('diabetes-200')
-→ Returns: 200 patients, age range 35-78, 52% female, 3 samples
-
-User: "Show me female patients over 65"
-→ healthsim_query("SELECT * FROM patients WHERE gender='F' AND age > 65")
-→ Returns matching subset only
 ```
+You: Generate 200 Medicare members over 65
+
+Claude: Generated and saved "medicare-members-20241228":
+- 200 members persisted
+- Age range: 65-89
+- Gender: 48% male, 52% female
+- Top states: CA, TX, FL
+
+[Data is in database, not flooding the conversation]
+
+You: Show me members from California
+
+Claude: Found 42 California members:
+
+| Name | Age | County | Risk Score |
+|------|-----|--------|------------|
+| Margaret Chen | 72 | Los Angeles | 1.85 |
+| Robert Williams | 68 | San Diego | 1.12 |
+...
+Showing 20 of 42. Say "show more" for next page.
+
+You: How many have diabetes?
+
+Claude: [Queries database]
+67 members (34%) have a diabetes diagnosis.
+```
+
+### Benefits
+
+- **Session continuity** - Save work at end of day, resume tomorrow
+- **Scenario library** - Build reusable cohorts for demos and testing
+- **Context efficiency** - Generate thousands of entities without context overflow
+- **Targeted queries** - Find exactly what you need without loading everything
+
+### Under the Hood
+
+State management uses the `healthsim-mcp` server which provides tools for saving, loading, querying, and managing scenarios in DuckDB. You don't need to know the tool names—just ask Claude naturally to save, load, or query your data.
 
 See [State Management Skill](skills/common/state-management.md) | [Auto-Persist Examples](hello-healthsim/examples/auto-persist-examples.md) | [Data Architecture](docs/data-architecture.md)
 

@@ -273,5 +273,5 @@ Current test counts:
 
 - [State Management Skill](../../skills/common/state-management.md)
 - [DuckDB Skill](../../skills/common/duckdb-skill.md)
-- [Auto-Persist Architecture](../../docs/healthsim-auto-persist-architecture.html)
+- [Data Architecture](../../docs/data-architecture.md)
 - [Auto-Persist Examples](../../hello-healthsim/examples/auto-persist-examples.md)

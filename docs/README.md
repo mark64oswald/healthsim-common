@@ -1,208 +1,146 @@
-# HealthSim Documentation Hub
+# HealthSim Documentation
 
-The complete guide to generating realistic synthetic healthcare data with HealthSim.
-
----
-
-## The HealthSim Ecosystem
-
-HealthSim is a suite of products for generating synthetic healthcare data through natural conversation with Claude:
-
-```text
-                              HealthSim Ecosystem
-    ┌─────────────────────────────────────────────────────────────────┐
-    │                                                                 │
-    │   ┌─────────────────────────────────────────────────────────┐   │
-    │   │              healthsim-workspace (Skills)                │   │
-    │   │   Scenarios, Formats, References, Documentation         │   │
-    │   └─────────────────────────────────────────────────────────┘   │
-    │                              │                                  │
-    │   ┌──────────┬───────────────┼───────────────┬──────────┐       │
-    │   ▼          ▼               ▼               ▼          ▼       │
-    │ ┌────────┐┌────────┐┌──────────────┐┌────────────┐┌─────────┐   │
-    │ │Patient ││Member  ││  RxMember    ││  TrialSim  ││ Network │   │
-    │ │  Sim   ││  Sim   ││    Sim       ││            ││   Sim   │   │
-    │ │Clinical││Claims  ││  Pharmacy    ││  Trials    ││Providers│   │
-    │ └────────┘└────────┘└──────────────┘└────────────┘└─────────┘   │
-    │              │               │               │                  │
-    │              └───────────────┼───────────────┘                  │
-    │                              ▼                                  │
-    │   ┌─────────────────────────────────────────────────────────┐   │
-    │   │              PopulationSim (Data Layer)                  │   │
-    │   │   CDC PLACES, SVI, ADI - Embedded Real Population Data  │   │
-    │   └─────────────────────────────────────────────────────────┘   │
-    │                                                                 │
-    └─────────────────────────────────────────────────────────────────┘
-```
+Central hub for HealthSim technical documentation. Start here to understand the architecture, find guides, or explore specific topics.
 
 ---
 
-## Repository Overview
+## Quick Navigation
 
-This is a **monorepo** containing all HealthSim skills, formats, references, and documentation.
-
-| Component | Location | Description |
-|-----------|----------|-------------|
-| **Skills** | `skills/` | Product skills (patientsim, membersim, rxmembersim, trialsim, populationsim, networksim) |
-| **Formats** | `formats/` | Output transformations (FHIR, HL7v2, X12, NCPDP, CDISC, CSV) |
-| **References** | `references/` | Code systems, clinical rules, validation |
-| **Getting Started** | `hello-healthsim/` | Tutorials, examples, setup guides |
-| **Documentation** | `docs/` | Architecture, guides, processes |
-| **Python Core** | `src/healthsim/` | Shared infrastructure |
+| I want to... | Go to |
+|--------------|-------|
+| **Get started quickly** | [hello-healthsim/](../hello-healthsim/README.md) |
+| **Understand the architecture** | [Architecture Guide](#architecture) |
+| **Learn how products relate** | [Integration Guide](integration-guide.md) |
+| **Understand the database** | [Data Architecture](data-architecture.md) |
+| **Create new skills** | [Skills Documentation](#skills-development) |
+| **Work with MCP servers** | [MCP Documentation](#mcp-servers) |
+| **Contribute to HealthSim** | [Contributing Guide](contributing.md) |
 
 ---
 
-## Quick Start
+## Architecture
 
-**New to HealthSim? Start here:**
+Core documents describing how HealthSim is designed and built.
 
-| Step | Resource | Time |
-|------|----------|------|
-| 1. Setup | [hello-healthsim/README.md](../hello-healthsim/README.md) | 5 min |
-| 2. First generation | [hello-healthsim/examples/](../hello-healthsim/examples/) | 10 min |
-| 3. Understand Skills | [SKILL.md](../SKILL.md) | 15 min |
-| 4. Explore products | [Product documentation](#documentation-by-product) | As needed |
+| Document | Description |
+|----------|-------------|
+| [HEALTHSIM-ARCHITECTURE-GUIDE.md](HEALTHSIM-ARCHITECTURE-GUIDE.md) | **Start here** - Complete architecture overview including products, data flow, skills patterns, and extension points |
+| [data-architecture.md](data-architecture.md) | Database schema, state management patterns, and data flow |
+| [integration-guide.md](integration-guide.md) | Cross-product integration patterns and entity relationships |
+| [healthsim-duckdb-schema.md](healthsim-duckdb-schema.md) | DuckDB table definitions and schema reference |
+
+### Visual Architecture (HTML)
+
+| Document | Description |
+|----------|-------------|
+| [healthsim-duckdb-architecture.html](healthsim-duckdb-architecture.html) | Interactive diagram of DuckDB unified architecture |
+
+---
+
+## Development
+
+Guides for developing and extending HealthSim.
+
+| Document | Description |
+|----------|-------------|
+| [HEALTHSIM-DEVELOPMENT-PROCESS.md](HEALTHSIM-DEVELOPMENT-PROCESS.md) | Development workflow, session management, super-prompts |
+| [contributing.md](contributing.md) | How to contribute - code style, PR process, testing |
+| [testing-patterns.md](testing-patterns.md) | Testing strategies and patterns for HealthSim |
+
+---
+
+## Skills Development
+
+Everything about creating and maintaining HealthSim skills.
+
+| Document | Description |
+|----------|-------------|
+| [skills-template.md](skills-template.md) | Template for creating new skill files |
+| [skills/format-specification-v2.md](skills/format-specification-v2.md) | Current skill file format specification |
+| [skills/creating-skills.md](skills/creating-skills.md) | Guide to creating effective skills |
+| [skills/migration-guide.md](skills/migration-guide.md) | Migrating skills between format versions |
+
+---
+
+## MCP Servers
+
+Model Context Protocol server documentation.
+
+| Document | Description |
+|----------|-------------|
+| [mcp/configuration.md](mcp/configuration.md) | MCP server configuration for Claude Desktop/Code |
+| [mcp/development-guide.md](mcp/development-guide.md) | Building MCP servers for HealthSim |
+| [mcp/integration-guide.md](mcp/integration-guide.md) | Integrating MCP tools with skills |
+| [mcp/duckdb-connection-architecture.md](mcp/duckdb-connection-architecture.md) | DuckDB connection patterns for MCP |
+
+---
+
+## Extensions
+
+Guides for extending HealthSim capabilities.
+
+| Document | Description |
+|----------|-------------|
+| [extensions/philosophy.md](extensions/philosophy.md) | Extension design philosophy |
+| [extensions/skills.md](extensions/skills.md) | Adding new domain skills |
+| [extensions/mcp-tools.md](extensions/mcp-tools.md) | Adding new MCP tools |
+| [extensions/slash-commands.md](extensions/slash-commands.md) | Creating slash commands |
+| [extensions/quick-reference.md](extensions/quick-reference.md) | Quick reference for extension patterns |
+
+---
+
+## Active Initiatives
+
+Current development work in progress.
+
+| Initiative | Location | Status |
+|------------|----------|--------|
+| NetworkSim v2 | [initiatives/networksim-v2/](initiatives/networksim-v2/) | Active |
+
+---
+
+## Archive
+
+Historical documentation preserved for reference. These documents are no longer current but may provide useful context.
+
+**[docs/archive/](archive/)** contains:
+
+| Category | Description |
+|----------|-------------|
+| [archive/initiatives/](archive/initiatives/) | Completed initiative plans and session logs |
+| [archive/planning/](archive/planning/) | Historical planning documents |
+| [archive/migration/](archive/migration/) | Past migration guides |
+| [archive/audits/](archive/audits/) | Completed audit reports |
+| [archive/obsolete/](archive/obsolete/) | Superseded documentation |
 
 ---
 
 ## Documentation by Product
 
-### PatientSim (Clinical Data)
+Each product has its own documentation in the `skills/` directory:
 
-| Document | Description |
-|----------|-------------|
-| [skills/patientsim/README.md](../skills/patientsim/README.md) | Product overview |
-| [skills/patientsim/SKILL.md](../skills/patientsim/SKILL.md) | Complete skill reference |
-| [hello-healthsim/examples/patientsim-examples.md](../hello-healthsim/examples/patientsim-examples.md) | Examples |
-
-### MemberSim (Claims Data)
-
-| Document | Description |
-|----------|-------------|
-| [skills/membersim/README.md](../skills/membersim/README.md) | Product overview |
-| [skills/membersim/SKILL.md](../skills/membersim/SKILL.md) | Complete skill reference |
-| [hello-healthsim/examples/membersim-examples.md](../hello-healthsim/examples/membersim-examples.md) | Examples |
-
-### RxMemberSim (Pharmacy Data)
-
-| Document | Description |
-|----------|-------------|
-| [skills/rxmembersim/README.md](../skills/rxmembersim/README.md) | Product overview |
-| [skills/rxmembersim/SKILL.md](../skills/rxmembersim/SKILL.md) | Complete skill reference |
-| [hello-healthsim/examples/rxmembersim-examples.md](../hello-healthsim/examples/rxmembersim-examples.md) | Examples |
-
-### TrialSim (Clinical Trials)
-
-| Document | Description |
-|----------|-------------|
-| [skills/trialsim/README.md](../skills/trialsim/README.md) | Product overview |
-| [skills/trialsim/SKILL.md](../skills/trialsim/SKILL.md) | Complete skill reference |
-| [hello-healthsim/examples/trialsim-examples.md](../hello-healthsim/examples/trialsim-examples.md) | Examples |
-
-### PopulationSim (Demographics & SDOH)
-
-| Document | Description |
-|----------|-------------|
-| [skills/populationsim/README.md](../skills/populationsim/README.md) | Product overview |
-| [skills/populationsim/SKILL.md](../skills/populationsim/SKILL.md) | Complete skill reference |
-| [skills/populationsim/data/README.md](../skills/populationsim/data/README.md) | Embedded data package |
-| [hello-healthsim/examples/populationsim-examples.md](../hello-healthsim/examples/populationsim-examples.md) | Examples |
-
-### NetworkSim (Provider Networks)
-
-| Document | Description |
-|----------|-------------|
-| [skills/networksim/README.md](../skills/networksim/README.md) | Product overview |
-| [skills/networksim/SKILL.md](../skills/networksim/SKILL.md) | Complete skill reference |
-| [networksim-dual-version.md](networksim-dual-version.md) | Public vs private versions |
-| [hello-healthsim/examples/networksim-examples.md](../hello-healthsim/examples/networksim-examples.md) | Examples |
+| Product | README | Skill Reference |
+|---------|--------|-----------------|
+| **PatientSim** | [skills/patientsim/README.md](../skills/patientsim/README.md) | [SKILL.md](../skills/patientsim/SKILL.md) |
+| **MemberSim** | [skills/membersim/README.md](../skills/membersim/README.md) | [SKILL.md](../skills/membersim/SKILL.md) |
+| **RxMemberSim** | [skills/rxmembersim/README.md](../skills/rxmembersim/README.md) | [SKILL.md](../skills/rxmembersim/SKILL.md) |
+| **TrialSim** | [skills/trialsim/README.md](../skills/trialsim/README.md) | [SKILL.md](../skills/trialsim/SKILL.md) |
+| **PopulationSim** | [skills/populationsim/README.md](../skills/populationsim/README.md) | [SKILL.md](../skills/populationsim/SKILL.md) |
+| **NetworkSim** | [skills/networksim/README.md](../skills/networksim/README.md) | [SKILL.md](../skills/networksim/SKILL.md) |
 
 ---
 
-## Documentation by Topic
+## Output Formats
 
-### Getting Started
+Format specifications in the `formats/` directory:
 
-| Document | Description |
-|----------|-------------|
-| [hello-healthsim/README.md](../hello-healthsim/README.md) | Quick start guide |
-| [hello-healthsim/CLAUDE-DESKTOP.md](../hello-healthsim/CLAUDE-DESKTOP.md) | Claude Desktop setup |
-| [hello-healthsim/CLAUDE-CODE.md](../hello-healthsim/CLAUDE-CODE.md) | Claude Code CLI setup |
-| [hello-healthsim/TROUBLESHOOTING.md](../hello-healthsim/TROUBLESHOOTING.md) | Common issues & fixes |
-| [hello-healthsim/EXTENDING.md](../hello-healthsim/EXTENDING.md) | How to extend HealthSim |
-
-### Output Formats
-
-| Document | Formats |
+| Category | Formats |
 |----------|---------|
-| [formats/fhir-r4.md](../formats/fhir-r4.md) | FHIR R4, NDJSON |
-| [formats/hl7v2-adt.md](../formats/hl7v2-adt.md) | HL7v2 ADT messages |
-| [formats/x12-837.md](../formats/x12-837.md) | X12 837 claims |
-| [formats/x12-835.md](../formats/x12-835.md) | X12 835 remittance |
-| [formats/ncpdp-d0.md](../formats/ncpdp-d0.md) | NCPDP D.0 pharmacy |
-| [formats/cdisc-sdtm.md](../formats/cdisc-sdtm.md) | CDISC SDTM |
-| [formats/cdisc-adam.md](../formats/cdisc-adam.md) | CDISC ADaM |
-| [formats/dimensional-analytics.md](../formats/dimensional-analytics.md) | Star schema |
-
-### Reference Data
-
-| Document | Description |
-|----------|-------------|
-| [references/data-models.md](../references/data-models.md) | Entity schemas |
-| [references/code-systems.md](../references/code-systems.md) | ICD-10, CPT, LOINC, NDC |
-| [references/clinical-rules.md](../references/clinical-rules.md) | Clinical business rules |
-
-### Architecture & Development
-
-| Document | Description |
-|----------|-------------|
-| [product-architecture.md](product-architecture.md) | Visual product relationships and workflows |
-| [HEALTHSIM-ARCHITECTURE-GUIDE.md](HEALTHSIM-ARCHITECTURE-GUIDE.md) | Complete architecture guide |
-| [HEALTHSIM-DEVELOPMENT-PROCESS.md](HEALTHSIM-DEVELOPMENT-PROCESS.md) | Development workflow |
-| [skills/format-specification-v2.md](skills/format-specification-v2.md) | Skills format specification |
-| [skills-template.md](skills-template.md) | SKILL.md template |
-| [contributing.md](contributing.md) | Contribution guidelines |
-
----
-
-## Examples by Use Case
-
-| I want to... | Example Location |
-|--------------|------------------|
-| Generate a patient | [patientsim-examples.md](../hello-healthsim/examples/patientsim-examples.md) |
-| Generate a claim | [membersim-examples.md](../hello-healthsim/examples/membersim-examples.md) |
-| Generate pharmacy data | [rxmembersim-examples.md](../hello-healthsim/examples/rxmembersim-examples.md) |
-| Generate trial data | [trialsim-examples.md](../hello-healthsim/examples/trialsim-examples.md) |
-| Analyze population data | [populationsim-examples.md](../hello-healthsim/examples/populationsim-examples.md) |
-| Generate provider networks | [networksim-examples.md](../hello-healthsim/examples/networksim-examples.md) |
-| Generate cross-domain data | [cross-domain-examples.md](../hello-healthsim/examples/cross-domain-examples.md) |
-
----
-
-## Navigation by Role
-
-### For Users (generating data)
-
-1. [Quick Start](../hello-healthsim/README.md) - Get set up
-2. [SKILL.md](../SKILL.md) - Understand what you can generate
-3. [Examples](../hello-healthsim/examples/) - Copy-paste prompts
-4. [Troubleshooting](../hello-healthsim/TROUBLESHOOTING.md) - Fix issues
-
-### For Developers (extending HealthSim)
-
-1. [Extension Guide](../hello-healthsim/EXTENDING.md) - How to extend
-2. [Skills Template](skills-template.md) - Create new skills
-3. [Architecture Guide](HEALTHSIM-ARCHITECTURE-GUIDE.md) - System design
-4. [Contributing](contributing.md) - Submit changes
-
----
-
-## Getting Help
-
-| Resource | Use For |
-|----------|---------|
-| [Troubleshooting Guide](../hello-healthsim/TROUBLESHOOTING.md) | Common issues |
-| [GitHub Issues](https://github.com/mark64oswald/healthsim-workspace/issues) | Bug reports, feature requests |
+| **Clinical** | [FHIR R4](../formats/fhir-r4.md), [HL7v2](../formats/hl7v2-adt.md), [C-CDA](../formats/ccda-format.md) |
+| **Claims** | [X12 837](../formats/x12-837.md), [X12 835](../formats/x12-835.md), [X12 834](../formats/x12-834.md) |
+| **Pharmacy** | [NCPDP D.0](../formats/ncpdp-d0.md) |
+| **Clinical Trials** | [CDISC SDTM](../formats/cdisc-sdtm.md), [CDISC ADaM](../formats/cdisc-adam.md) |
+| **Analytics** | [Dimensional/Star Schema](../formats/dimensional-analytics.md), [CSV](../formats/csv.md) |
 
 ---
 

@@ -1,677 +1,394 @@
 ---
 name: state-management
-description: "Save, load, and manage workspace scenarios to preserve synthetic data across sessions. Auto-persist for token-efficient batch operations. Query saved data with SQL. Tag, clone, merge, and export scenarios. Triggers: save, load, scenario, persist, resume, continue, list scenarios, delete scenario, export scenario, import scenario, share scenario, query scenario, get summary, tag scenario, clone scenario, merge scenarios, export to CSV, export to JSON, export to Parquet"
+description: "Save, load, and manage workspace scenarios to preserve synthetic data across sessions. Auto-persist for token-efficient batch operations. Query saved data with SQL. Tag, clone, merge, and export scenarios. Triggers: save, load, scenario, persist, resume, continue, list scenarios, delete scenario, export scenario, query scenario, get summary, tag scenario, clone scenario, merge scenarios"
 ---
 
 # State Management
 
-_Save, load, and manage workspace scenarios to preserve your synthetic healthcare data across sessions. Use auto-persist for token-efficient batch operations._
+_Save, load, and manage workspace scenarios to preserve your synthetic healthcare data across sessions._
 
 ## For Claude
 
-Use this skill when the user wants to persist their work or resume from a previous session. This skill teaches you how to manage scenarios - named snapshots of the workspace containing all generated entities (patients, encounters, claims, etc.) with full provenance tracking.
+Use this skill when the user wants to persist their work or resume from a previous session. Scenarios are named snapshots containing all generated entities (patients, encounters, claims, etc.).
 
-**Two Persistence Patterns**:
+**Two Approaches**:
 
-1. **Traditional Save/Load** - Full data in context. Use for small scenarios (<50 entities) or when the user needs all data immediately.
+1. **Full Data** - Load everything into conversation. Best for small scenarios (<50 entities) where the user needs to see or reference all data immediately.
 
-2. **Auto-Persist Pattern** (Recommended for large batches) - Token-efficient persistence. Returns summary (~500 tokens) instead of echoing back all data. Use for:
-   - Generating 50+ entities
-   - Batch operations
-   - When you need to persist without filling context
+2. **Auto-Persist** - Save data, return only a summary. Best for large batches (50+ entities) to avoid context overflow. Query for specific data as needed.
 
-You should apply this knowledge when:
-- The user asks to save their current work ("save this", "let's save my progress")
-- The user wants to resume from a previous session ("load my scenario", "continue from yesterday")
-- The user wants to see what scenarios they have saved ("what scenarios do I have?")
-- The user wants to clean up old scenarios ("delete the test scenario")
-- The user wants to share a scenario ("export for sharing", "send to colleague")
-- The user receives a scenario file ("import this scenario")
-- **After generating large batches**, use auto-persist to avoid context overflow
-- **When querying specific data** from a saved scenario
+Apply this knowledge when:
+- User asks to save work ("save this", "let's save my progress")
+- User wants to resume ("load my scenario", "continue from yesterday")
+- User wants to see saved scenarios ("what scenarios do I have?")
+- User generates large batches (auto-persist to avoid context overflow)
+- User wants specific data from a saved scenario (query rather than load all)
 
 ## Purpose
 
-State Management enables users to capture their entire workspace as a named scenario that can be restored later. This is essential for:
+State Management captures your workspace as a named scenario that can be restored later:
 
-- **Session continuity** - Save work at the end of a session, resume later
-- **Scenario libraries** - Build collections of reusable cohorts
-- **Reproducibility** - Share exact configurations with colleagues
-- **Experimentation** - Save before making major changes, restore if needed
-- **Token efficiency** - Generate large batches without filling context
-
-A scenario captures:
-- All entities (patients, encounters, diagnoses, labs, vitals, medications, claims, etc.)
-- Complete provenance for every entity (how it was created)
-- User-provided metadata (name, description, tags)
+- **Session continuity** - Save at end of session, resume tomorrow
+- **Scenario libraries** - Build reusable cohorts for demos and testing
+- **Context efficiency** - Generate thousands of entities without overflow
+- **Targeted queries** - Find exactly what you need without loading everything
 
 ## Trigger Phrases
 
-### Traditional Save/Load
-- "Save this scenario as..."
+**Saving**:
+- "Save this as..."
 - "Save my patients as..."
-- "Load scenario..."
-- "Open the [name] scenario"
-
-### Auto-Persist (Token-Efficient)
-- "Generate 100 patients and save them"
 - "Persist these entities"
-- "Save without showing all the data"
-- "Get a summary of [scenario]"
-- "Query the [scenario] for..."
+
+**Loading**:
+- "Load my scenario"
+- "Open the diabetes cohort"
+- "What's in my scenario?"
+- "Get a summary of..."
+
+**Querying**:
 - "Show me patients where..."
+- "Query for female members over 65"
+- "Find encounters with diagnosis..."
 
-### Management
+**Managing**:
 - "List my scenarios"
-- "Show available scenarios"
-- "Delete scenario..."
-- "Rename scenario..."
-- "Export [scenario] as JSON"
-- "Import scenario from [path]"
-
-### Tag Management
-- "Tag this scenario with..."
-- "Add tag 'validated' to..."
-- "Remove tag 'draft' from..."
-- "Find scenarios tagged..."
-- "What tags do I have?"
-- "Show all my tags"
-
-### Cloning & Merging
-- "Clone this scenario"
-- "Make a copy of [scenario]"
-- "Duplicate [scenario] for testing"
-- "Merge scenarios A and B"
-- "Combine my two cohorts"
-
-### Export
+- "Delete the test scenario"
+- "Tag this with 'validated'"
+- "Clone my cohort"
+- "Merge these two scenarios"
 - "Export to CSV"
-- "Export as Parquet"
-- "Export [scenario] to JSON"
-- "Download [scenario] for analysis"
 
-## Domain Knowledge
+## Conversation Examples
 
-### What is a Scenario?
+### Example 1: Save a Small Scenario
 
-A scenario is a complete snapshot of the workspace. It includes:
-
-1. **Metadata** - Name, description, tags, timestamps
-2. **All Entities** - Patients, encounters, diagnoses, labs, vitals, medications, procedures, notes, members, claims, prescriptions, subjects, trial visits
-3. **Provenance** - How each entity was created
-
-### Two Persistence Patterns
-
-#### Pattern 1: Traditional Save/Load (Full Data)
-
-Best for:
-- Small scenarios (< 50 entities)
-- When user needs immediate access to all data
-- Interactive exploration
-
-```python
-# Save - returns scenario ID
-scenario_id = save_scenario('my-cohort', {'patients': [...]})
-
-# Load - returns ALL entities (can be large!)
-scenario = load_scenario('my-cohort')
-patients = scenario['entities']['patients']  # Full data in context
 ```
+User: Save these 10 patients as "demo-cohort"
 
-#### Pattern 2: Auto-Persist (Token-Efficient) ⭐ RECOMMENDED
-
-Best for:
-- Large batches (50+ entities)
-- Batch generation workflows
-- Avoiding context overflow
-
-```python
-# Persist - returns summary (~500 tokens), not full data
-result = persist(
-    {'patients': patient_list, 'encounters': encounter_list},
-    context='diabetes cohort San Diego'  # Used for auto-naming
-)
-# result.scenario_name: "diabetes-cohort-20241227"
-# result.summary: ScenarioSummary with counts and statistics
-
-# Get summary - load metadata without full data (~500 tokens)
-summary = get_summary('diabetes-cohort-20241227')
-# summary.entity_counts: {'patients': 100, 'encounters': 250}
-# summary.statistics: {'age_range': [35, 78], 'gender_distribution': {...}}
-
-# Query specific data with pagination
-results = query_scenario(
-    'diabetes-cohort-20241227',
-    "SELECT given_name, family_name, birth_date FROM patients WHERE gender = 'F'",
-    limit=20
-)
-# Only returns the 20 rows you asked for
-```
-
-### Auto-Naming
-
-When using `persist()`, if no explicit name is provided, the system automatically generates a descriptive name:
-
-- Extracts healthcare-relevant keywords from context
-- Adds date stamp for uniqueness
-- Format: `{keywords}-{YYYYMMDD}`
-
-Examples:
-- Context: "diabetes patients in San Diego" → `diabetes-patients-20241227`
-- Context: "Medicare members over 65" → `medicare-members-20241227`
-- Context: "Phase 3 oncology trial" → `oncology-trial-20241227`
-
-### Scenario Storage
-
-Scenarios are stored in a DuckDB database at `~/.healthsim/healthsim.duckdb`. This provides:
-- Fast save and load operations
-- Efficient storage with compression
-- SQL query capability for advanced users
-- Scenario-scoped queries via `scenario_id` column
-
-For sharing scenarios between users, export to JSON format.
-
-### Tag Management
-
-Tags help organize scenarios for easy filtering:
-
-```python
-# Add tags
-tags = add_tag(scenario_id, 'validated')  # Case-insensitive, stored lowercase
-tags = add_tag(scenario_id, 'training-data')
-
-# Remove tags
-tags = remove_tag(scenario_id, 'draft')
-
-# Get scenario tags
-tags = get_tags(scenario_id)  # ['training-data', 'validated']
-
-# List all tags with usage counts
-all_tags = list_all_tags()  # [{'tag': 'training-data', 'count': 5}, ...]
-
-# Find scenarios by tag
-scenarios = scenarios_by_tag('validated')  # List of matching scenarios
-```
-
-### Scenario Cloning
-
-Create copies of scenarios for A/B testing or variations:
-
-```python
-clone = clone_scenario(
-    source_scenario_id,
-    new_name='my-variant',        # Optional - defaults to "{source}-copy"
-    description='Testing new cohort definition',
-    tags=['variant-a', 'testing']
-)
-# clone.new_scenario_id: New scenario UUID
-# clone.entities_cloned: {'patients': 100, 'encounters': 250}
-# clone.total_entities: 350
-```
-
-### Scenario Merging
-
-Combine multiple scenarios into one:
-
-```python
-merged = merge_scenarios(
-    source_scenario_ids=[id1, id2, id3],
-    target_name='combined-cohort',
-    description='Merged training data',
-    conflict_strategy='skip'  # 'skip', 'overwrite', or 'rename'
-)
-# merged.entities_merged: {'patients': 300, 'encounters': 800}
-# merged.conflicts_resolved: 0
-```
-
-Conflict strategies:
-- **skip** (default): Keep first occurrence of duplicate IDs
-- **overwrite**: Later scenarios overwrite earlier ones
-- **rename**: Generate new IDs for duplicates
-
-### Multi-Format Export
-
-Export scenarios in various formats:
-
-```python
-# JSON - Single file with all data
-export = export_to_json(scenario_id)  # ~/Downloads/{name}.json
-
-# CSV - Directory with one file per entity type  
-export = export_to_csv(scenario_id)   # ~/Downloads/{name}/patients.csv, etc.
-
-# Parquet - Efficient columnar format
-export = export_to_parquet(scenario_id)
-
-# With options
-export = export_scenario(
-    scenario_id,
-    format='csv',
-    output_path='/custom/path',
-    include_provenance=False  # Exclude source tracking columns
-)
-# export.file_path: Path to exported file/directory
-# export.file_size_bytes: Size in bytes
-# export.entities_exported: {'patients': 100, 'encounters': 250}
-```
-
-## Generation Guidelines
-
-### Auto-Persist Pattern (Recommended for Large Batches)
-
-**When generating 50+ entities**, use auto-persist to avoid filling context:
-
-**Example - Generate 100 Medicare Members**:
-```
-User: Generate 100 Medicare members over 65 in California
-
-Claude: [Generates members using MemberSim skill]
-        [Persists using auto-persist]
-
-Saved "medicare-members-20241227":
-- 100 members persisted
-- Age range: 65-89
-- Geographic: California
-
-Use "query medicare-members-20241227" to explore specific subsets.
-```
-
-**Example - Query Saved Data**:
-```
-User: Show me female members from that cohort
-
-Claude: [Queries scenario with SQL]
-
-Found 48 female members:
-
-| Given Name | Family Name | Birth Date | City |
-|------------|-------------|------------|------|
-| Margaret   | Wilson      | 1952-03-15 | LA   |
-| Dorothy    | Chen        | 1948-11-22 | SF   |
-...
-
-Showing 20 of 48 results. Say "show more" for next page.
-```
-
-### Traditional Save/Load (For Small Scenarios)
-
-**When the user says**: "Save my patients" (with < 50 entities)
-
-**Claude should**:
-1. Ask for a name if not provided
-2. Optionally ask for description and tags
-3. Call save_scenario with appropriate parameters
-4. Confirm what was saved with summary statistics
-
-**Example**:
-```
-User: Save this as diabetes-cohort
-
-Claude: [Saves to database]
-
-Saved "diabetes-cohort":
-- 15 patients with full clinical data
-- 47 encounters, 182 lab results
+Claude: Saved "demo-cohort":
+- 10 patients
+- 32 encounters
+- 89 lab results
 - Tags: (none)
 
-You can load this anytime with "load diabetes-cohort".
+Load anytime with "load demo-cohort".
 ```
 
-### Loading a Scenario
+### Example 2: Load with Full Data (Small Scenario)
 
-**Two options based on need**:
+```
+User: Load my demo cohort
 
-1. **Load Summary Only** (token-efficient):
+Claude: Loaded "demo-cohort" with 10 patients:
+
+1. Maria Santos (58F) - Type 2 DM, A1C 7.8%
+   - 4 encounters, latest: 2024-02-15
+   - Medications: Metformin 1000mg BID
+
+2. James Wilson (67M) - Type 2 DM with CKD Stage 3
+   - 3 encounters, latest: 2024-01-28
+   - Medications: Metformin 500mg BID, Lisinopril 10mg
+
+[...full details for all 10 patients...]
+
+What would you like to do with this cohort?
+```
+
+### Example 3: Generate Large Batch (Auto-Persist)
+
+```
+User: Generate 200 Medicare members over 65
+
+Claude: Generated and saved "medicare-members-20241228":
+
+| Metric | Value |
+|--------|-------|
+| Members | 200 |
+| Age Range | 65-89 |
+| Gender | 96 male, 104 female |
+| Top States | CA (42), TX (38), FL (31) |
+
+Data is persisted. Query for specific subsets:
+- "Show me members from California"
+- "Find members with diabetes"
+- "Show 3 sample members"
+```
+
+### Example 4: Query Saved Data
+
+```
+User: Show me female members from California over 75
+
+Claude: Found 18 matching members:
+
+| Name | Age | City | Risk Score |
+|------|-----|------|------------|
+| Margaret Chen | 78 | Los Angeles | 1.85 |
+| Dorothy Williams | 82 | San Francisco | 2.12 |
+| Patricia Lee | 76 | San Diego | 1.45 |
+| Betty Martinez | 79 | Sacramento | 1.92 |
+| Ruth Anderson | 81 | Fresno | 2.34 |
+...
+
+Showing 5 of 18. Say "show more" for next page.
+```
+
+### Example 5: Get Summary Without Loading All Data
+
 ```
 User: What's in my diabetes scenario?
 
-Claude: [Calls get_summary]
+Claude: "diabetes-cohort-20241227" summary:
 
-"diabetes-cohort" summary:
-- 15 patients (8 male, 7 female)
-- Age range: 45-72 years
-- 47 encounters, 182 labs
-- Top conditions: E11.9 (Type 2 DM), I10 (Hypertension)
+| Entity Type | Count |
+|-------------|-------|
+| Patients | 150 |
+| Encounters | 425 |
+| Lab Results | 890 |
+| Medications | 320 |
+
+**Demographics**:
+- Age range: 35-78 years
+- Gender: 72 male, 78 female
+
+**Clinical**:
+- Average A1C: 7.8%
+- With complications: 67 (45%)
+- On insulin: 43 (29%)
 
 Need specific data? I can query for particular patients or conditions.
 ```
 
-2. **Load Full Data** (when needed):
-```
-User: Load all my diabetes patients - I need to review each one
-
-Claude: [Calls load_scenario - full data in context]
-
-Loaded "diabetes-cohort" with 15 patients:
-[Full patient details...]
-```
-
-### Querying Scenarios
-
-**When the user wants specific data from a saved scenario**:
-
-**Claude should**:
-1. Identify the scenario to query
-2. Construct appropriate SQL (SELECT only)
-3. Call query_scenario with pagination
-4. Present results in a readable format
-
-**Example**:
-```
-User: Show me patients with A1C > 9 from my diabetes cohort
-
-Claude: [Queries scenario]
-
-Found 4 patients with A1C > 9.0:
-
-| Name | A1C | Last Visit |
-|------|-----|------------|
-| John Smith | 9.8 | 2024-01-15 |
-| Maria Garcia | 10.2 | 2024-02-20 |
-| Robert Lee | 9.3 | 2024-03-01 |
-| Susan Brown | 11.1 | 2024-01-28 |
-
-These patients may need medication adjustment.
-```
-
-### Listing Scenarios
-
-**When the user says**: "What scenarios do I have?"
-
-**Claude should**:
-1. Call list_scenarios with any search/filter criteria
-2. Present results in a scannable format
-3. Offer to load summary or query specific ones
-
-### Deleting a Scenario
-
-**When the user says**: "Delete the test scenario"
-
-**Claude should**:
-1. Identify the scenario to delete
-2. **Always confirm before deleting** (deletion requires confirm=True)
-3. Call delete_scenario with confirm=True
-4. Confirm deletion
-
-**Example**:
-```
-User: Delete test-patients
-
-Claude: Are you sure you want to delete "test-patients"?
-This contained 3 patients and cannot be undone.
-
-User: Yes
-
-Claude: [Deletes with confirm=True]
-
-Deleted "test-patients". You have 3 remaining scenarios.
-```
-
-### Proactive Auto-Persist
-
-**When to automatically persist**:
-- After generating 50+ entities: Auto-persist, show summary
-- After batch generation completes: "Persisted 100 members as 'medicare-batch-20241227'"
-- When context is filling up: Persist and continue with summary
-
-## Examples
-
-### Example 1: Auto-Persist Batch Generation
+### Example 6: Resume Work on Large Cohort
 
 ```
-User: Generate 200 patients with various chronic conditions
+User: Continue working on my Medicare scenario from yesterday
 
-Claude: [Generates patients in batches]
-        [Auto-persists to avoid context overflow]
-
-Generated and saved "chronic-conditions-20241227":
-- 200 patients persisted
-- Conditions: Diabetes (45), Hypertension (78), COPD (32), CHF (25), Other (20)
-- Age range: 35-85
-
-The full data is saved. Would you like to:
-- Query specific conditions ("show COPD patients")
-- Get samples ("show me 3 example patients")
-- Export for analysis
-```
-
-### Example 2: Query Workflow
-
-```
-User: From my chronic conditions scenario, show diabetes patients over 60
-
-Claude: [Queries scenario with SQL]
-
-Found 28 diabetes patients over 60:
-
-| Name | Age | A1C | Comorbidities |
-|------|-----|-----|---------------|
-| James Wilson | 67 | 7.8 | HTN, CKD |
-| Patricia Lee | 72 | 8.2 | HTN |
-...
-
-Showing 20 of 28. Say "next page" for more.
-```
-
-### Example 3: Get Samples Without Full Load
-
-```
-User: Show me a few example patients from the scenario
-
-Claude: [Gets samples with diverse strategy]
-
-Here are 3 representative patients:
-
-1. **John Smith** (Male, 58)
-   - Conditions: Type 2 DM, Hypertension
-   - Recent A1C: 7.4
-
-2. **Maria Garcia** (Female, 71)
-   - Conditions: COPD, CHF
-   - Last Visit: 2024-02-15
-
-3. **Robert Chen** (Male, 45)
-   - Conditions: Type 2 DM
-   - Recent A1C: 8.1
-
-Want to see more samples or query for specific criteria?
-```
-
-### Example 4: Resume Work on Large Cohort
-
-```
-User: Continue working on my medicare scenario from yesterday
-
-Claude: [Gets summary - doesn't load all data]
-
-Loaded summary for "medicare-members-20241227":
+Claude: Loaded summary for "medicare-members-20241227":
 - 500 members
-- Geographic: California, Texas, Florida
-- Age range: 65-92
 - Last updated: yesterday at 3:45 PM
+- Tags: training, california
 
 What would you like to do?
 - Generate more members
-- Query specific subsets
+- Query specific subsets  
+- Add claims or encounters
 - Export for analysis
 ```
 
-### Example 5: Tag Management Workflow
+### Example 7: List Available Scenarios
 
 ```
-User: Tag my diabetes scenario as "validated" and "training-data"
+User: What scenarios do I have?
 
-Claude: [Adds tags]
+Claude: You have 5 saved scenarios:
 
-Tagged "diabetes-cohort-20241227" with:
-- validated
-- training-data
+| Name | Entities | Last Updated | Tags |
+|------|----------|--------------|------|
+| diabetes-cohort-20241227 | 1,785 | 2 days ago | training, validated |
+| medicare-members-20241227 | 500 | yesterday | training |
+| heart-failure-demo | 45 | 1 week ago | demo |
+| test-patients | 10 | 3 weeks ago | - |
+| oncology-trial-2024 | 2,340 | 1 month ago | trialsim |
 
-Now has 3 tags: [production, training-data, validated]
+Load any with "load [name]" or get summary with "summarize [name]".
+```
+
+### Example 8: Delete a Scenario
+
+```
+User: Delete test-patients
+
+Claude: Delete "test-patients"? This contained 10 patients and cannot be undone.
+
+User: Yes
+
+Claude: Deleted "test-patients". You have 4 remaining scenarios.
+```
+
+### Example 9: Tag Management
+
+```
+User: Tag my diabetes scenario as "validated" and "production"
+
+Claude: Tagged "diabetes-cohort-20241227":
+- validated ✓
+- production ✓
+
+Now has 4 tags: [training, validated, production, diabetes]
 ```
 
 ```
-User: What scenarios are validated?
+User: What scenarios are tagged "validated"?
 
-Claude: [Queries by tag]
-
-Found 3 validated scenarios:
-- diabetes-cohort-20241227 (200 patients)
-- heart-failure-cohort-20241215 (150 patients)  
-- copd-training-20241210 (75 patients)
+Claude: 2 scenarios tagged "validated":
+- diabetes-cohort-20241227 (1,785 entities)
+- heart-failure-validated (890 entities)
 ```
 
-### Example 6: Clone for A/B Testing
+### Example 10: Clone a Scenario
 
 ```
-User: Clone my diabetes scenario for testing a new cohort definition
+User: Clone my diabetes scenario for testing variations
 
-Claude: [Clones scenario]
+Claude: Cloned "diabetes-cohort-20241227" → "diabetes-cohort-20241227-copy":
+- 150 patients copied
+- 425 encounters copied
+- All entities have new IDs
 
-Cloned "diabetes-cohort-20241227" → "diabetes-cohort-20241227-copy":
-- 200 patients copied
-- 500 encounters copied
-- 1,200 labs copied
-- All entities have new unique IDs
-
-The clone is independent - changes won't affect the original.
+The clone is independent—changes won't affect the original.
+Would you like to rename it?
 ```
 
-### Example 7: Merge Multiple Cohorts
+### Example 11: Merge Scenarios
 
 ```
-User: Merge my diabetes and heart-failure scenarios into a combined training set
+User: Merge my diabetes and heart-failure scenarios into combined-training
 
-Claude: [Merges scenarios]
+Claude: Created "combined-training" from 2 sources:
 
-Created "combined-training-20241227" from 2 sources:
-- From diabetes-cohort: 200 patients, 500 encounters
-- From heart-failure-cohort: 150 patients, 400 encounters
-- Total: 350 patients, 900 encounters
+| Source | Patients | Encounters |
+|--------|----------|------------|
+| diabetes-cohort | 150 | 425 |
+| heart-failure-cohort | 120 | 380 |
+| **Total** | **270** | **805** |
+
 - Conflicts resolved: 0 (no duplicate IDs)
+- Tags inherited: training, validated
 
 Both source scenarios preserved unchanged.
 ```
 
-### Example 8: Export for External Analysis
+### Example 12: Export to CSV
 
 ```
-User: Export my cohort to CSV for analysis in Python
+User: Export my diabetes cohort to CSV
 
-Claude: [Exports to CSV]
+Claude: Exported "diabetes-cohort-20241227" to CSV:
 
-Exported "diabetes-cohort-20241227" to CSV:
-- Location: ~/Downloads/diabetes-cohort-20241227/
-- Files:
-  - patients.csv (200 rows, 245 KB)
-  - encounters.csv (500 rows, 312 KB)
-  - lab_results.csv (1,200 rows, 890 KB)
-- Total: 1.4 MB
+| File | Rows | Size |
+|------|------|------|
+| patients.csv | 150 | 145 KB |
+| encounters.csv | 425 | 312 KB |
+| lab_results.csv | 890 | 548 KB |
+| medications.csv | 320 | 98 KB |
 
-Load in Python with:
+Location: ~/Downloads/diabetes-cohort-20241227/
+Total: 1.1 MB
+
+Load in Python:
 ```python
 import pandas as pd
 patients = pd.read_csv('~/Downloads/diabetes-cohort-20241227/patients.csv')
 ```
 ```
 
+## Generation Guidelines
+
+### When to Use Full Data vs Auto-Persist
+
+| Situation | Approach | Reason |
+|-----------|----------|--------|
+| User asks to "save" small scenario | Full save, confirm | User expects confirmation |
+| User generates 50+ entities | Auto-persist, show summary | Avoid context overflow |
+| User asks "what's in my scenario" | Get summary first | Don't assume they want all data |
+| User asks to "load" and scenario is small | Load full data | User wants to see it |
+| User asks to "load" and scenario is large | Get summary, offer to query | Context efficiency |
+| User asks specific question about saved data | Query for just that data | Targeted response |
+
+### Proactive Auto-Persist
+
+When generating large batches:
+1. Generate entities
+2. Auto-persist immediately
+3. Show summary with counts and key stats
+4. Offer query options
+
 ```
-User: Export as Parquet for Databricks
+User: Generate 100 heart failure patients
 
-Claude: [Exports to Parquet]
+Claude: [Generates patients]
+[Auto-persists]
 
-Exported to Parquet:
-- Location: ~/Downloads/diabetes-cohort-20241227-parquet/
-- Files: patients.parquet, encounters.parquet, lab_results.parquet
-- Total: 420 KB (70% smaller than CSV)
+Saved "heart-failure-20241228":
+- 100 patients persisted
+- NYHA Class: I (15), II (40), III (35), IV (10)
+- EF range: 15-55%
+- On GDMT: 82 (82%)
 
-Load in Databricks with:
-```python
-df = spark.read.parquet('dbfs:/FileStore/diabetes-cohort-20241227-parquet/')
+Query for specific subsets or generate encounters for these patients.
 ```
+
+### Confirming Destructive Actions
+
+Always confirm before:
+- Deleting scenarios
+- Overwriting existing scenarios
+- Merging (which creates new scenario)
+
+```
+User: Save this as diabetes-cohort
+
+Claude: "diabetes-cohort" already exists with 150 patients. 
+Overwrite it, or save as "diabetes-cohort-2"?
 ```
 
-## Parameters
+## Parameters Reference
 
-### persist()
-| Parameter | Description | Type | Default |
-|-----------|-------------|------|---------|
-| entities | Dict of entity type → list | dict | (required) |
-| context | Context for auto-naming | string | (optional) |
-| scenario_name | Explicit name | string | (auto-generated) |
-| tags | Organization keywords | string[] | (optional) |
+### save_scenario
+| Parameter | Description | Required |
+|-----------|-------------|----------|
+| name | Scenario identifier | Yes |
+| entities | Dict of entity type → list | Yes |
+| description | Notes about contents | No |
+| tags | Organization keywords | No |
+| overwrite | Replace existing | No (default: false) |
 
-### get_summary()
-| Parameter | Description | Type | Default |
-|-----------|-------------|------|---------|
-| scenario_id_or_name | Scenario identifier | string | (required) |
-| include_samples | Include sample entities | boolean | true |
-| samples_per_type | Samples per entity type | int | 3 |
+### get_summary
+| Parameter | Description | Required |
+|-----------|-------------|----------|
+| scenario_id_or_name | Scenario identifier | Yes |
+| include_samples | Include sample entities | No (default: true) |
+| samples_per_type | Samples per entity type | No (default: 3) |
 
-### query_scenario()
-| Parameter | Description | Type | Default |
-|-----------|-------------|------|---------|
-| scenario_id_or_name | Scenario identifier | string | (required) |
-| sql | SELECT query | string | (required) |
-| limit | Max results | int | 20 |
-| offset | Pagination offset | int | 0 |
+### query_scenario
+| Parameter | Description | Required |
+|-----------|-------------|----------|
+| scenario_id_or_name | Scenario identifier | Yes |
+| sql | SELECT query | Yes |
+| limit | Max results | No (default: 20) |
 
-### save_scenario() (Traditional)
-| Parameter | Description | Type | Default |
-|-----------|-------------|------|---------|
-| name | Scenario identifier | string | (required) |
-| entities | Dict of entity type → list | dict | (required) |
-| description | Notes about contents | string | (optional) |
-| tags | Organization keywords | string[] | (optional) |
-| overwrite | Replace existing | boolean | false |
+### clone_scenario
+| Parameter | Description | Required |
+|-----------|-------------|----------|
+| source_scenario_id | Source scenario | Yes |
+| new_name | Name for clone | No (auto-generated) |
+| tags | Tags for clone | No (copies source) |
 
-### add_tag() / remove_tag()
-| Parameter | Description | Type | Default |
-|-----------|-------------|------|---------|
-| scenario_id | Scenario UUID | string | (required) |
-| tag | Tag to add/remove | string | (required) |
+### merge_scenarios
+| Parameter | Description | Required |
+|-----------|-------------|----------|
+| source_scenario_ids | List of sources (min 2) | Yes |
+| target_name | Name for merged | No (auto-generated) |
+| conflict_strategy | skip/overwrite/rename | No (default: skip) |
 
-### clone_scenario()
-| Parameter | Description | Type | Default |
-|-----------|-------------|------|---------|
-| source_scenario_id | Source scenario UUID | string | (required) |
-| new_name | Name for clone | string | "{source}-copy" |
-| description | Clone description | string | (optional) |
-| tags | Tags for clone | string[] | (copy source) |
-| include_entity_types | Limit to specific types | string[] | (all) |
-
-### merge_scenarios()
-| Parameter | Description | Type | Default |
-|-----------|-------------|------|---------|
-| source_scenario_ids | List of source UUIDs | string[] | (required, min 2) |
-| target_name | Name for merged scenario | string | (auto-generated) |
-| description | Merged scenario description | string | (optional) |
-| tags | Tags for merged | string[] | (union of sources) |
-| conflict_strategy | How to handle duplicates | string | "skip" |
-
-### export_scenario()
-| Parameter | Description | Type | Default |
-|-----------|-------------|------|---------|
-| scenario_id | Scenario UUID | string | (required) |
-| format | Output format | "json"/"csv"/"parquet" | (required) |
-| output_path | Destination path | string | ~/Downloads |
-| include_provenance | Include source columns | boolean | true |
-| include_entity_types | Limit to specific types | string[] | (all) |
+### export_scenario
+| Parameter | Description | Required |
+|-----------|-------------|----------|
+| scenario_id | Scenario to export | Yes |
+| format | json/csv/parquet | Yes |
+| output_path | Destination | No (default: ~/Downloads) |
 
 ## Related Skills
 
 - [PatientSim](../patientsim/SKILL.md) - Generate patient data
 - [MemberSim](../membersim/SKILL.md) - Generate member/claims data
-- [RxMemberSim](../rxmembersim/SKILL.md) - Generate pharmacy data
 - [TrialSim](../trialsim/SKILL.md) - Generate clinical trial data
 - [DuckDB Skill](./duckdb-skill.md) - Advanced database queries
 
 ## Metadata
 
-- **Type**: domain-knowledge
-- **Version**: 4.0
-- **Format**: Claude-Optimized (v2.0)
-- **Author**: HealthSim Team
-- **Tags**: state-management, persistence, scenarios, export, import, auto-persist, query, tags, clone, merge
-- **Created**: 2025-01-26
-- **Updated**: 2025-12-27
+- **Version**: 5.0
+- **Updated**: 2024-12-28
+- **Tags**: state-management, persistence, scenarios, query, export
