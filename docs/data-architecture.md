@@ -2,120 +2,187 @@
 
 ## Overview
 
-HealthSim uses DuckDB as its unified data store for:
-- **State Management**: Scenario persistence and retrieval
-- **Reference Data**: PopulationSim demographic datasets
-- **Analytics** (Phase 2): Star schema for OHDSI-style analysis
+HealthSim uses **DuckDB** as its unified data store, organized into three schemas:
 
-## Database Location
+| Schema | Purpose | Tables |
+|--------|---------|--------|
+| **main** | Generated entities + state management | patients, encounters, claims, scenarios, etc. |
+| **network** | Real provider reference data (NPPES) | providers (8.9M), facilities, quality metrics |
+| **population** | Real demographic reference data (CDC/Census) | places_county, svi_tract, adi_blockgroup, etc. |
 
-```
-/path/to/healthsim-workspace/healthsim.duckdb
-```
+**Database Location**: `healthsim-workspace/healthsim.duckdb` (~1.7 GB)
 
-The database is located in the workspace root directory. This enables:
-- **Version control awareness**: Database path relative to project
-- **Cross-product integration**: Single database for all HealthSim products
-- **MCP server access**: healthsim-mcp connects to workspace database
-
-**Size**: ~1.7 GB (includes NetworkSim providers, PopulationSim demographics)
+The database is distributed via Git LFS and downloaded automatically when you clone the repository.
 
 ---
 
-## Schema Layers
+## Canonical Data Model
 
-### Layer 1: Canonical Data Model
+### Entity Extension Pattern
 
-Source of truth for all generated entities. Tables mirror the JSON canonical model.
+HealthSim uses an inheritance-based entity model where Person is the base entity that extends to domain-specific types:
+
+```
+                    Person (Base)
+                       │
+        ┌──────────────┼──────────────┐
+        │              │              │
+     Patient        Member       RxMember
+   (PatientSim)   (MemberSim)  (RxMemberSim)
+        │
+     Subject
+    (TrialSim)
+```
+
+**Identity Correlation**: SSN serves as the universal correlator across products, enabling seamless entity linking between clinical, claims, and pharmacy domains.
+
+### Entity Relationships
+
+| Entity | Primary Key | Foreign Keys | Product |
+|--------|-------------|--------------|---------|
+| patients | patient_id | - | PatientSim |
+| encounters | encounter_id | patient_id | PatientSim |
+| diagnoses | diagnosis_id | encounter_id, patient_id | PatientSim |
+| medications | medication_id | patient_id | PatientSim |
+| lab_results | lab_result_id | encounter_id, patient_id | PatientSim |
+| vital_signs | vital_sign_id | encounter_id, patient_id | PatientSim |
+| clinical_notes | note_id | encounter_id, patient_id | PatientSim |
+| members | member_id | - | MemberSim |
+| claims | claim_id | member_id | MemberSim |
+| claim_lines | claim_line_id | claim_id | MemberSim |
+| prescriptions | prescription_id | patient_id | RxMemberSim |
+| pharmacy_claims | pharmacy_claim_id | prescription_id | RxMemberSim |
+| subjects | subject_id | patient_id | TrialSim |
+| trial_visits | visit_id | subject_id | TrialSim |
+| adverse_events | ae_id | subject_id | TrialSim |
+| exposures | exposure_id | subject_id | TrialSim |
+
+---
+
+## Schema Details
+
+### Main Schema (Entity + State Management)
+
+Source of truth for all generated entities and scenario management.
+
+**Entity Tables** (generated data):
 
 | Table | Description | Source Product |
 |-------|-------------|----------------|
-| patients | Patient demographics | PatientSim |
-| encounters | Visits, admissions | PatientSim |
-| diagnoses | ICD-10 codes | PatientSim |
-| procedures | CPT/ICD-PCS codes | PatientSim |
-| medications | Active/historical meds | PatientSim |
-| lab_results | Lab values | PatientSim |
-| vital_signs | Vitals | PatientSim |
-| clinical_notes | Notes/documents | PatientSim |
-| members | Health plan members | MemberSim |
-| claims | Claim headers | MemberSim |
-| claim_lines | Claim line items | MemberSim |
-| prescriptions | Rx fills | RxMemberSim |
-| subjects | Trial subjects | TrialSim |
-| trial_visits | Trial visit data | TrialSim |
+| patients | Patient demographics and identifiers | PatientSim |
+| encounters | Visits, admissions, discharges | PatientSim |
+| diagnoses | ICD-10-CM coded diagnoses | PatientSim |
+| medications | Active and historical medications | PatientSim |
+| lab_results | Laboratory values with LOINC codes | PatientSim |
+| vital_signs | Vitals (BP, HR, temp, etc.) | PatientSim |
+| clinical_notes | Clinical documentation | PatientSim |
+| orders | Clinical orders | PatientSim |
+| members | Health plan member demographics | MemberSim |
+| claims | Claim headers (837P/837I) | MemberSim |
+| claim_lines | Claim line items with CPT/HCPCS | MemberSim |
+| prescriptions | Prescription orders | RxMemberSim |
+| pharmacy_claims | NCPDP pharmacy claims | RxMemberSim |
+| subjects | Clinical trial subjects | TrialSim |
+| trial_visits | Protocol visit data | TrialSim |
+| adverse_events | AEs with MedDRA coding | TrialSim |
+| exposures | Drug exposure records | TrialSim |
 
-### Layer 2: State Management
-
-Organizes entities into named scenarios for save/load/share operations.
+**State Management Tables**:
 
 | Table | Description |
 |-------|-------------|
-| scenarios | Scenario metadata (name, description, timestamps) |
-| scenario_entities | Links entities to scenarios (stores full entity JSON) |
-| scenario_tags | Tag-based organization |
+| scenarios | Scenario metadata (name, description, timestamps, tags) |
+| scenario_entities | Links entities to scenarios (stores entity JSON) |
+| scenario_tags | Tag-based organization for filtering |
+| schema_migrations | Schema version tracking |
 
-### Layer 3: Reference Data
+### Network Schema (Provider Reference Data)
 
-Read-only datasets loaded from PopulationSim for generation support.
+Real-world provider data from CMS/NPPES. Read-only reference tables.
 
-| Table | Source | Records | Coverage |
-|-------|--------|---------|----------|
-| ref_cdc_places_tract | CDC PLACES 2024 | ~85,000 | All US census tracts |
-| ref_cdc_places_county | CDC PLACES 2024 | ~3,200 | All US counties |
-| ref_svi_tract | SVI 2022 | ~85,000 | All US census tracts |
-| ref_svi_county | SVI 2022 | ~3,200 | All US counties |
-| ref_adi_blockgroup | ADI 2021 | ~242,000 | All US block groups |
+| Table | Source | Records | Description |
+|-------|--------|---------|-------------|
+| providers | NPPES | 8,925,672 | All US healthcare providers with NPIs |
+| facilities | CMS POS | ~35,000 | Medicare-certified facilities |
+| hospital_quality | CMS Hospital Compare | ~4,500 | Hospital quality metrics |
+| physician_quality | CMS Physician Compare | ~1.2M | Physician quality data |
+| ahrf_county | HRSA AHRF | ~3,200 | County-level healthcare resources |
 
----
+### Population Schema (Demographic Reference Data)
 
-## Reference Data Philosophy
+Real-world demographic and health indicator data from CDC/Census. Read-only reference tables.
 
-HealthSim uses two different approaches for reference data, each chosen deliberately based on the data's nature and use case:
-
-### Text Files (Skills-Based Reference Data)
-
-**Location**: `references/` and `formats/` directories
-
-**Examples**: Code systems (ICD-10, CPT, LOINC), format specifications (FHIR, X12, NCPDP), validation rules, clinical guidelines
-
-**Why text files?**
-- **Version controlled**: Changes are tracked in git, enabling history and collaboration
-- **Human-readable**: Developers and domain experts can read and edit directly
-- **Part of the conversation**: Claude reads these during generation to apply correct codes and rules
-- **Small and focused**: Each file covers a specific domain (diabetes codes, heart failure meds)
-- **No query overhead**: Direct file access during generation
-
-### DuckDB (External Packaged Reference Data)
-
-**Location**: `healthsim.duckdb` (in workspace root, ref_* tables)
-
-**Examples**: CDC PLACES health indicators, Social Vulnerability Index, Area Deprivation Index, NPPES provider registry
-
-**Why DuckDB?**
-- **Large datasets**: Millions of records (85K census tracts, 9M providers) impossible to embed in skills
-- **Real statistical data**: Actual prevalence rates, demographics, and geographic distributions
-- **SQL queryable**: Complex aggregations, joins, and filtering for analytics
-- **Compressed storage**: 5-7x smaller than source CSVs
-- **Optional download**: Users can choose to download these datasets or skip them
-
-### Decision Guide
-
-| Characteristic | Use Text Files | Use DuckDB |
-|----------------|----------------|------------|
-| Size | < 1MB | > 1MB |
-| Update frequency | Rarely (version controlled) | Periodically (external source) |
-| Access pattern | Read during generation | Query for analysis |
-| Source | Created/curated by HealthSim | External agency (CDC, CMS) |
-| Required? | Yes (core functionality) | Optional (enhanced functionality) |
-
-This hybrid approach keeps HealthSim's core lightweight and conversational while enabling powerful analytics when external data sources are available.
+| Table | Source | Records | Description |
+|-------|--------|---------|-------------|
+| places_county | CDC PLACES 2024 | ~3,200 | County-level health indicators |
+| places_tract | CDC PLACES 2024 | ~85,000 | Census tract health indicators |
+| svi_county | CDC SVI 2022 | ~3,200 | Social Vulnerability Index by county |
+| svi_tract | CDC SVI 2022 | ~85,000 | Social Vulnerability Index by tract |
+| adi_blockgroup | HRSAn ADI 2021 | ~242,000 | Area Deprivation Index by block group |
 
 ---
 
-## Provenance Tracking
+## State Management
 
-All canonical tables include provenance columns for traceability:
+### Overview
+
+State management enables saving, loading, and querying generated data across sessions. All entity data is persisted to DuckDB with full provenance tracking.
+
+### Two Retrieval Patterns
+
+When working with saved scenarios, you have two options for retrieving data:
+
+| Pattern | Use Case | Token Cost | Tool |
+|---------|----------|------------|------|
+| **Full Load** | Small scenarios (<50 entities), need all data immediately | High (1K-50K tokens) | `healthsim_load_scenario` |
+| **Summary + Query** | Large scenarios (50+ entities), token efficiency | Low (~500 tokens) | `healthsim_get_summary` + `healthsim_query` |
+
+**Why two patterns?**
+
+- **Full Load** returns all entities in the response, making them immediately available in the conversation context. Great for small scenarios where you want to work with all the data at once.
+
+- **Summary + Query** returns only metadata and statistics (~500 tokens), keeping the context window lean. You then query for specific data as needed. Essential for large scenarios that would overwhelm the context.
+
+### State Management Operations
+
+| Operation | Tool | Description |
+|-----------|------|-------------|
+| Save scenario | `healthsim_save_scenario` | Persist entities with name, description, tags |
+| Load full data | `healthsim_load_scenario` | Retrieve all entities (high token cost) |
+| Load summary | `healthsim_get_summary` | Retrieve metadata + samples (~500 tokens) |
+| Query data | `healthsim_query` | SQL query against saved entities |
+| List scenarios | `healthsim_list_scenarios` | Browse saved scenarios with filtering |
+| Delete scenario | `healthsim_delete_scenario` | Remove scenario (requires confirmation) |
+
+### Workflow Examples
+
+**Small Scenario (Full Load)**:
+```
+User: "Save these 10 patients as 'test-cohort'"
+→ healthsim_save_scenario(name='test-cohort', entities={...})
+
+User: "Load my test cohort"
+→ healthsim_load_scenario('test-cohort')
+→ Returns all 10 patients with full details
+```
+
+**Large Scenario (Summary + Query)**:
+```
+User: "Generate 200 diabetic patients and save them"
+→ healthsim_save_scenario(name='diabetes-200', entities={...})
+
+User: "What's in my diabetes scenario?"
+→ healthsim_get_summary('diabetes-200')
+→ Returns: 200 patients, age range 35-78, 52% female, 3 samples
+
+User: "Show me female patients over 65"
+→ healthsim_query("SELECT * FROM patients WHERE gender='F' AND age > 65")
+→ Returns matching subset only
+```
+
+### Provenance Tracking
+
+All entity tables include provenance columns for traceability:
 
 ```sql
 created_at          TIMESTAMP   -- When the entity was created
@@ -127,152 +194,103 @@ generation_seed     INTEGER     -- For reproducibility
 
 ---
 
-## Querying
+## Reference Data Philosophy
+
+HealthSim uses two approaches for reference data, chosen based on data characteristics:
+
+### Text Files (Skills-Based Reference Data)
+
+**Location**: `references/` and `formats/` directories
+
+**Examples**: Code systems (ICD-10, CPT, LOINC), format specifications, validation rules
+
+**Why text files?**
+- Version controlled in git
+- Human-readable and editable
+- Part of the conversation (Claude reads during generation)
+- Small and focused (~KB each)
+
+### DuckDB (External Reference Data)
+
+**Location**: `healthsim.duckdb` (network.* and population.* schemas)
+
+**Examples**: NPPES providers (8.9M records), CDC PLACES health indicators, SVI vulnerability scores
+
+**Why DuckDB?**
+- Large datasets (millions of records)
+- Real statistical data from authoritative sources
+- SQL queryable for complex analysis
+- Compressed storage (5-7x smaller than CSV)
+
+### Decision Guide
+
+| Characteristic | Use Text Files | Use DuckDB |
+|----------------|----------------|------------|
+| Size | < 1MB | > 1MB |
+| Source | HealthSim-created | External agency (CDC, CMS) |
+| Updates | Version controlled | Periodic refresh |
+| Access pattern | Read during generation | Query for analysis |
+
+---
+
+## Querying the Database
 
 ### Via HealthSim MCP Server (Recommended)
 
-The `healthsim-mcp` server is the **recommended** way to query the database. It maintains the single connection and prevents file locking issues:
+The `healthsim-mcp` server is the recommended way to query:
 
 ```
-# List available tables
-Use healthsim_tables
+# List all tables
+healthsim_tables
 
-# Query reference data
-Use healthsim_query_reference with table="places_county" and state="CA"
+# Query population reference data
+healthsim_query_reference(table="places_county", state="CA")
 
-# Run custom SQL
-Use healthsim_query with sql="SELECT * FROM patients LIMIT 10"
+# Custom SQL query
+healthsim_query(sql="SELECT * FROM network.providers WHERE state = 'TX' LIMIT 10")
+
+# Get scenario summary
+healthsim_get_summary(scenario_id_or_name="my-cohort")
 ```
 
-See [MCP Configuration](./mcp/configuration.md) for setup.
+### SQL Query Examples
 
-### Via Python (Use Carefully)
-
-**Warning**: DuckDB uses file-level locking. If the MCP server is running, Python scripts cannot open the database for writing. Stop the MCP server first, or use read-only mode.
-
-Direct SQL queries are supported via Python:
-
+**Find providers by specialty and location**:
 ```sql
--- Find all diabetic patients in a scenario
-SELECT p.* 
-FROM patients p
-JOIN scenario_entities se ON p.patient_id = se.entity_id
-JOIN scenarios s ON se.scenario_id = s.scenario_id
-WHERE s.name = 'diabetes-cohort'
-  AND se.entity_type = 'patient';
+SELECT npi, first_name, last_name, primary_taxonomy_code, city
+FROM network.providers 
+WHERE state = 'CA' 
+  AND primary_taxonomy_code LIKE '207R%'  -- Internal Medicine
+LIMIT 20;
+```
 
--- Query reference data for population health indicators
-SELECT 
-    county_name,
-    AVG(diabetes_crude_prev) as avg_diabetes_rate,
-    AVG(obesity_crude_prev) as avg_obesity_rate
-FROM ref_cdc_places_county 
-WHERE state_abbr = 'CA'
-GROUP BY county_name
-ORDER BY avg_diabetes_rate DESC;
+**Get health indicators for a county**:
+```sql
+SELECT county_name, diabetes_crude_prev, obesity_crude_prev, 
+       smoking_crude_prev, binge_drinking_crude_prev
+FROM population.places_county 
+WHERE state_abbr = 'TX'
+ORDER BY diabetes_crude_prev DESC
+LIMIT 10;
+```
 
--- Cross-reference patient location with SDOH data
-SELECT 
-    p.patient_id,
-    p.given_name,
-    svi.rpl_themes as vulnerability_score
-FROM patients p
-JOIN ref_svi_tract svi ON p.census_tract = svi.fips
+**Cross-reference patient location with SDOH**:
+```sql
+SELECT p.patient_id, p.given_name, p.family_name,
+       svi.rpl_themes as vulnerability_score
+FROM main.patients p
+JOIN population.svi_tract svi ON p.census_tract = svi.fips
 WHERE svi.rpl_themes > 0.75;
 ```
 
----
-
-## Python API
-
-### State Management
-
-```python
-from healthsim.state import save_scenario, load_scenario, list_scenarios
-
-# Save a scenario
-scenario_id = save_scenario(
-    name='diabetes-cohort',
-    entities={
-        'patients': [patient1, patient2, ...],
-        'encounters': [enc1, enc2, ...]
-    },
-    description='Type 2 Diabetes test cohort',
-    tags=['diabetes', 'chronic', 'testing']
-)
-
-# Load a scenario
-scenario = load_scenario('diabetes-cohort')
-patients = scenario['entities']['patients']
-
-# List scenarios by tag
-scenarios = list_scenarios(tag='diabetes')
-```
-
-### JSON Export/Import
-
-```python
-from healthsim.state import export_scenario_to_json, import_scenario_from_json
-
-# Export for sharing
-path = export_scenario_to_json('diabetes-cohort')
-# Creates ~/Downloads/diabetes-cohort.json
-
-# Import from file
-import_scenario_from_json(Path('shared-scenario.json'))
-```
-
-### Database Access
-
-```python
-from healthsim.db import get_connection
-
-with get_connection() as conn:
-    result = conn.execute("""
-        SELECT COUNT(*) FROM ref_cdc_places_tract
-        WHERE diabetes_crude_prev > 15
-    """).fetchone()
-    print(f"High diabetes prevalence tracts: {result[0]}")
-```
-
----
-
-## Migration from JSON
-
-If you have existing JSON scenarios from before the DuckDB migration:
-
-```bash
-# Check migration status
-python scripts/migrate_json_to_duckdb.py --status
-
-# Dry run (preview only)
-python scripts/migrate_json_to_duckdb.py --dry-run
-
-# Execute migration (creates backup automatically)
-python scripts/migrate_json_to_duckdb.py
-```
-
-The migration tool:
-- Discovers scenarios in `~/.healthsim/scenarios/`
-- Creates a backup at `~/.healthsim/scenarios_backup/`
-- Imports each scenario to DuckDB
-- Verifies migration success
-
-See [Migration Guide](./state-management/migration.md) for details.
-
----
-
-## Schema Versioning
-
-Schema versions are tracked in a `schema_version` table:
-
+**Query saved scenario data**:
 ```sql
-SELECT * FROM schema_version;
--- version | applied_at
--- 1       | 2024-12-26 10:30:00
+SELECT se.entity_type, COUNT(*) as count
+FROM main.scenario_entities se
+JOIN main.scenarios s ON se.scenario_id = s.scenario_id
+WHERE s.name = 'diabetes-cohort'
+GROUP BY se.entity_type;
 ```
-
-Migrations are applied automatically when the database is opened if the schema is outdated.
 
 ---
 
@@ -282,8 +300,9 @@ Migrations are applied automatically when the database is opened if the schema i
 |-----------|---------------------|
 | Save scenario (100 entities) | < 100ms |
 | Load scenario (100 entities) | < 50ms |
+| Get scenario summary | < 50ms |
 | List scenarios | < 10ms |
-| Reference data query (indexed) | < 50ms |
+| Provider search (indexed) | < 50ms |
 | Full table scan (250K rows) | < 500ms |
 
 DuckDB's columnar storage provides excellent compression:
@@ -294,7 +313,7 @@ DuckDB's columnar storage provides excellent compression:
 
 ## Related Documentation
 
-- [State Management Skill](../skills/common/state-management.md) - Conversational interface
-- [State Management Specification](./state-management/specification.md) - MCP tool details
-- [PopulationSim Skill](../skills/populationsim/SKILL.md) - Reference data usage
-- [HEALTHSIM-ARCHITECTURE-GUIDE.md](./HEALTHSIM-ARCHITECTURE-GUIDE.md) - Overall architecture
+- [State Management Skill](../skills/common/state-management.md) - Conversational interface for scenarios
+- [NetworkSim README](../skills/networksim/README.md) - Provider reference data usage
+- [PopulationSim README](../skills/populationsim/README.md) - Demographic reference data usage
+- [Architecture Guide](./HEALTHSIM-ARCHITECTURE-GUIDE.md) - Overall system architecture

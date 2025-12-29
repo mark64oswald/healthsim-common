@@ -293,11 +293,9 @@ result = await mcp.query("SELECT * FROM persons LIMIT 10")
 
 ## Related Documentation
 
-- [DuckDB Schema Reference](docs/healthsim-duckdb-schema.md)
-- [Auto-Persist Architecture](docs/healthsim-auto-persist-architecture.html)
-- [State Management Skill](skills/common/state-management.md)
-- [Tools README](tools/README.md)
-- [Data Models Reference](references/data-models.md)
+- [Data Architecture](../../docs/data-architecture.md) - Database schema and state management
+- [State Management Skill](./state-management.md) - Save/load/query scenarios
+- [Data Models Reference](../../references/data-models.md) - Canonical model definitions
 
 ## Validation Rules
 

@@ -15,7 +15,7 @@ HealthSim generates realistic, clinically coherent healthcare data for testing, 
 | **[RxMemberSim](skills/rxmembersim/README.md)** | Pharmacy/PBM data | Retail fills, specialty drugs, DUR alerts, manufacturer programs | NCPDP D.0 |
 | **[TrialSim](skills/trialsim/README.md)** | Clinical trial data | Phase I-III, adverse events, efficacy endpoints, SDTM domains | CDISC SDTM/ADaM |
 | **[PopulationSim](skills/populationsim/README.md)** | Demographics/SDOH | County profiles, health disparities, cohort specifications | Census, CDC PLACES |
-| **[NetworkSim](skills/networksim/README.md)** | Provider networks | Providers, facilities, pharmacies, network configurations | NPPES, NPI |
+| **[NetworkSim](skills/networksim/README.md)** | Provider networks | Providers (8.9M real NPIs), facilities, pharmacies | NPPES, NPI |
 
 ---
 
@@ -44,7 +44,7 @@ The examples folder contains ready-to-use prompts organized by product:
 HealthSim products work together to generate complete healthcare data journeys:
 
 ```
-Person (Base Identity)
+Person (Base Identity - SSN as universal correlator)
    │
    ├── PatientSim → Patient → Clinical encounters, labs, meds
    │        ↓
@@ -69,7 +69,7 @@ Person (Base Identity)
 | 30 | PatientSim | Cardiology follow-up | Office encounter |
 | 32 | MemberSim | Professional claim | 837P (99214) |
 
-See [Cross-Product Integration Guide](docs/HEALTHSIM-ARCHITECTURE-GUIDE.md#83-cross-product-integration) | [Product Architecture Diagrams](docs/product-architecture.md)
+See [Architecture Guide - Cross-Product Integration](docs/HEALTHSIM-ARCHITECTURE-GUIDE.md#3-product-relationships) for detailed diagrams and patterns.
 
 ---
 
@@ -95,60 +95,55 @@ See [formats/](formats/) for transformation specifications.
 
 ## State Management
 
-HealthSim includes a comprehensive state management system with two persistence patterns:
+HealthSim persists generated data to DuckDB, enabling you to save, load, and query scenarios across sessions.
 
-### Traditional Pattern (Full Data)
+### Why Two Retrieval Patterns?
 
-Best for small scenarios (under 50 entities) where you want all data in context:
+When loading saved scenarios, you have two options based on scenario size:
+
+| Pattern | Best For | How It Works | Token Cost |
+|---------|----------|--------------|------------|
+| **Full Load** | Small scenarios (<50 entities) | Returns all entities immediately | High (1K-50K tokens) |
+| **Summary + Query** | Large scenarios (50+ entities) | Returns metadata, query for details | Low (~500 tokens) |
+
+### State Management Tools
 
 | Tool | Description |
 |------|-------------|
-| `save_scenario` | Save workspace to named scenario |
-| `load_scenario` | Restore workspace from scenario |
-| `list_scenarios` | List saved scenarios with filtering |
-| `export_scenario_to_json` | Export for sharing |
-| `import_scenario_from_json` | Import shared scenarios |
+| `healthsim_save_scenario` | Save entities with name, description, tags |
+| `healthsim_load_scenario` | Load all entities (use for small scenarios) |
+| `healthsim_get_summary` | Load metadata + samples only (use for large scenarios) |
+| `healthsim_query` | SQL query against saved entities |
+| `healthsim_list_scenarios` | Browse saved scenarios with filtering |
+| `healthsim_delete_scenario` | Remove scenario (requires confirmation) |
 
-### Auto-Persist Pattern (Token-Efficient) ✨ NEW
+### Example Workflow
 
-Best for large batches (50+ entities) where context efficiency matters:
-
-| Tool | Description | Token Cost |
-|------|-------------|------------|
-| `persist()` | Save entities, return summary only | ~500 tokens |
-| `get_summary()` | Load scenario metadata + samples | ~500-3500 tokens |
-| `query_scenario()` | SQL queries with pagination | ~200/page |
-| `get_samples()` | Get representative samples | ~200/type |
-
-**Auto-Persist Benefits:**
-- **Intelligent Naming**: Auto-generates names like `diabetes-cohort-20241227`
-- **Token Efficient**: Returns ~500 token summary instead of 50,000+ tokens of data
-- **SQL Querying**: Filter and retrieve specific entities as needed
-- **Batch Operations**: Generate hundreds of entities without context overflow
-
-**Example:**
+**Small Scenario (Full Load)**:
 ```
-User: "Generate 200 diabetic patients in Texas"
-Claude: Persists patients → Returns summary:
-  - Scenario: diabetes-texas-20241227
-  - Patients: 200 (ages 35-85, 52% female)
-  - [3 representative samples shown]
+User: "Save these 10 patients as 'test-cohort'"
+→ healthsim_save_scenario(name='test-cohort', entities={...})
 
-User: "Show me patients over 65 with A1C > 9"
-Claude: Queries → Returns 23 matching patients (page 1 of 2)
+User: "Load my test cohort"
+→ healthsim_load_scenario('test-cohort')
+→ Returns all 10 patients with full details
 ```
 
-### Advanced Features
+**Large Scenario (Summary + Query)**:
+```
+User: "Generate 200 diabetic patients and save them"
+→ healthsim_save_scenario(name='diabetes-200', entities={...})
 
-| Feature | Description |
-|---------|-------------|
-| **Tag Management** | Organize scenarios with tags (add, remove, filter by tag) |
-| **Scenario Cloning** | Create copies for A/B testing or variations |
-| **Scenario Merging** | Combine multiple scenarios into one |
-| **Multi-Format Export** | Export to JSON, CSV, or Parquet |
-| **Provenance Tracking** | Records how each entity was created |
+User: "What's in my diabetes scenario?"
+→ healthsim_get_summary('diabetes-200')
+→ Returns: 200 patients, age range 35-78, 52% female, 3 samples
 
-See [State Management Skill](skills/common/state-management.md) | [Auto-Persist Examples](hello-healthsim/examples/auto-persist-examples.md) | [Architecture](docs/healthsim-auto-persist-architecture.html)
+User: "Show me female patients over 65"
+→ healthsim_query("SELECT * FROM patients WHERE gender='F' AND age > 65")
+→ Returns matching subset only
+```
+
+See [State Management Skill](skills/common/state-management.md) | [Auto-Persist Examples](hello-healthsim/examples/auto-persist-examples.md) | [Data Architecture](docs/data-architecture.md)
 
 ---
 
@@ -185,6 +180,7 @@ See [State Management Skill](skills/common/state-management.md) | [Auto-Persist 
 healthsim-workspace/
 ├── SKILL.md                    # Master skill file (Claude entry point)
 ├── README.md                   # This file
+├── healthsim.duckdb            # Unified database (~1.7 GB via Git LFS)
 │
 ├── hello-healthsim/            # Getting started (tutorials, setup)
 │   ├── README.md              # Quick start guide
@@ -196,7 +192,7 @@ healthsim-workspace/
 │   ├── rxmembersim/           # Pharmacy/PBM (8 scenarios)
 │   ├── trialsim/              # Clinical trials (20+ skills)
 │   ├── populationsim/         # Demographics/SDOH + embedded data
-│   └── networksim/            # Provider networks
+│   └── networksim/            # Provider networks (8.9M real providers)
 │
 ├── formats/                    # Output transformations (12 formats)
 ├── references/                 # Shared terminology, code systems
@@ -254,7 +250,7 @@ cd packages/core
 pip install -e .
 ```
 
-**DuckDB** is bundled with healthsim-core - no separate installation required. The database (`healthsim.duckdb`, 1.16 GB) is automatically downloaded via Git LFS and ready to use.
+**DuckDB** is bundled with healthsim-core - no separate installation required. The database (`healthsim.duckdb`, ~1.7 GB) is automatically downloaded via Git LFS and ready to use.
 
 **Important:** If the database file is missing or tiny (~500 bytes), Git LFS didn't download it. Run `git lfs pull` to download manually. See [INSTALL.md](INSTALL.md) for details.
 
@@ -304,12 +300,10 @@ See [hello-healthsim/](hello-healthsim/) for detailed setup instructions.
 |-------|----------|
 | Quick Start | [hello-healthsim/](hello-healthsim/README.md) |
 | Master Skill Reference | [SKILL.md](SKILL.md) |
-| Product Architecture | [docs/product-architecture.md](docs/product-architecture.md) |
-| Data Architecture | [docs/data-architecture.md](docs/data-architecture.md) |
 | Architecture Guide | [docs/HEALTHSIM-ARCHITECTURE-GUIDE.md](docs/HEALTHSIM-ARCHITECTURE-GUIDE.md) |
-| State Management | [docs/state-management/](docs/state-management/) |
+| Data Architecture | [docs/data-architecture.md](docs/data-architecture.md) |
+| State Management | [skills/common/state-management.md](skills/common/state-management.md) |
 | Extension Guide | [hello-healthsim/EXTENDING.md](hello-healthsim/EXTENDING.md) |
-| Skills Format Spec | [docs/skills/format-specification-v2.md](docs/skills/format-specification-v2.md) |
 | Contributing | [docs/contributing.md](docs/contributing.md) |
 
 ---
@@ -320,6 +314,7 @@ See [hello-healthsim/](hello-healthsim/) for detailed setup instructions.
 - **Proper Healthcare Codes**: ICD-10, CPT, LOINC, NDC, RxNorm, MedDRA, taxonomy codes
 - **Realistic Business Logic**: Claims adjudication, accumulators, prior auth, DUR alerts, formulary tiers
 - **Data-Driven Generation**: Ground synthetic data in real CDC/Census population statistics (via PopulationSim)
+- **Real Provider Data**: Query 8.9 million real healthcare providers from NPPES (via NetworkSim)
 - **Multiple Output Formats**: FHIR, HL7v2, C-CDA, X12, NCPDP, CDISC SDTM/ADaM
 
 ---

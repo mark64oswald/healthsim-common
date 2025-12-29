@@ -5,8 +5,8 @@ description: "Authoritative reference for HealthSim architecture, patterns, and 
 
 # HealthSim Architecture Guide
 
-**Version**: 3.0  
-**Last Updated**: 2025-12-18  
+**Version**: 4.0  
+**Last Updated**: 2025-12-28  
 **Purpose**: Authoritative reference for HealthSim architecture, patterns, and conventions.
 
 ---
@@ -15,13 +15,13 @@ description: "Authoritative reference for HealthSim architecture, patterns, and 
 
 1. [Philosophy](#1-philosophy)
 2. [Product Family](#2-product-family)
-3. [Directory Organization](#3-directory-organization)
-4. [Skills Architecture](#4-skills-architecture)
-5. [Canonical Data Models](#5-canonical-data-models)
-6. [Output Formats](#6-output-formats)
-7. [MCP Integration](#7-mcp-integration)
-   - [Data Architecture](#75-data-architecture)
-8. [Extension Patterns](#8-extension-patterns)
+3. [Product Relationships](#3-product-relationships)
+4. [Directory Organization](#4-directory-organization)
+5. [Skills Architecture](#5-skills-architecture)
+6. [Canonical Data Models](#6-canonical-data-models)
+7. [Output Formats](#7-output-formats)
+8. [Data Architecture](#8-data-architecture)
+9. [Extension Patterns](#9-extension-patterns)
 
 ---
 
@@ -47,7 +47,7 @@ HealthSim replaces traditional programming with conversational AI. Users describ
 | **Skills as Knowledge, Not Code** | Skills contain domain knowledge; Claude generates data |
 | **Progressive Disclosure** | Master skill routes to detailed skills |
 | **Format-Agnostic Generation** | Generate canonical JSON first, then transform |
-| **Skills + Packages Organization** | Skills for domain knowledge; Packages for Python infrastructure |
+| **Unified DuckDB Database** | Single database for entities, state, and reference data |
 | **MCP for I/O Only** | MCP servers handle file/database ops; generation is conversational |
 
 ---
@@ -63,124 +63,176 @@ HealthSim replaces traditional programming with conversational AI. Users describ
 | **RxMemberSim** | Pharmacy/PBM | NCPDP D.0 | Active |
 | **TrialSim** | Clinical Trials | CDISC SDTM/ADaM | Active |
 | **PopulationSim** | Demographics/SDOH | Census, ACS, SDOH indices | Active |
-| **NetworkSim** | Provider Networks | NPPES, NPI, taxonomy | Planned |
+| **NetworkSim** | Provider Networks | NPPES, NPI, taxonomy | Active |
 
-### 2.2 Product Relationships
+### 2.2 Product Capabilities Matrix
 
-```
-                    ┌─────────────────┐
-                    │  PopulationSim  │
-                    │  (Demographics) │
-                    └────────┬────────┘
-                             │ provides population patterns
-                             ▼
-┌─────────────┐    ┌─────────────────┐    ┌─────────────┐
-│ NetworkSim  │◄───│   PatientSim    │───►│  TrialSim   │
-│ (Providers) │    │   (Clinical)    │    │  (Trials)   │
-└──────┬──────┘    └────────┬────────┘    └─────────────┘
-       │                    │
-       │    ┌───────────────┼───────────────┐
-       │    │               │               │
-       ▼    ▼               ▼               ▼
-┌─────────────────┐  ┌─────────────┐
-│   MemberSim     │  │ RxMemberSim │
-│   (Claims)      │  │ (Pharmacy)  │
-└─────────────────┘  └─────────────┘
-```
+| Need | Primary Product | Supporting Products |
+|------|----------------|---------------------|
+| Patient demographics | PatientSim | PopulationSim (real rates) |
+| Clinical encounters | PatientSim | NetworkSim (providers) |
+| Lab results | PatientSim | - |
+| Medication orders | PatientSim | RxMemberSim (fills) |
+| Professional claims | MemberSim | PatientSim (encounter), NetworkSim (provider) |
+| Facility claims | MemberSim | PatientSim (admission), NetworkSim (facility) |
+| Pharmacy claims | RxMemberSim | PatientSim (medication), NetworkSim (pharmacy) |
+| Trial subjects | TrialSim | PatientSim (baseline), PopulationSim (diversity) |
+| SDTM domains | TrialSim | - |
+| Provider entities | NetworkSim | - |
+| Population statistics | PopulationSim | - |
 
 ---
 
-## 3. Directory Organization
+## 3. Product Relationships
 
-### 3.1 Repository Structure
+### 3.1 Architecture Diagram
 
-HealthSim uses a **single unified repository** (`healthsim-workspace`) with clear separation.
+```
+                           ┌─────────────────────────────────────────────────────────┐
+                           │                    HealthSim Ecosystem                   │
+                           └─────────────────────────────────────────────────────────┘
+                                                      │
+              ┌──────────────────────────────────────┼──────────────────────────────────────┐
+              │                                      │                                      │
+              ▼                                      ▼                                      ▼
+    ┌──────────────────┐                  ┌──────────────────┐                  ┌──────────────────┐
+    │   Data Layer     │                  │  Generation      │                  │  Network Layer   │
+    │                  │                  │  Products        │                  │                  │
+    │  PopulationSim   │─────────────────▶│                  │◀────────────────│   NetworkSim     │
+    │                  │  Demographics,   │  PatientSim      │  Providers,     │                  │
+    │  • CDC PLACES    │  SDOH, rates     │  MemberSim       │  facilities,    │  • 8.9M NPIs     │
+    │  • SVI           │                  │  RxMemberSim     │  pharmacies     │  • Facilities    │
+    │  • ADI           │                  │  TrialSim        │                 │  • Quality Data  │
+    │                  │                  │                  │                  │                  │
+    └──────────────────┘                  └──────────────────┘                  └──────────────────┘
+```
+
+### 3.2 Data Flow Between Products
+
+**Clinical → Claims → Pharmacy Flow**
+
+```
+┌───────────────┐      ┌───────────────┐      ┌───────────────┐
+│   PatientSim  │─────▶│   MemberSim   │─────▶│  RxMemberSim  │
+│               │      │               │      │               │
+│  • Encounter  │      │  • Claim      │      │  • Rx Claim   │
+│  • Diagnosis  │      │  • Adjudicate │      │  • DUR Check  │
+│  • Medication │      │  • Payment    │      │  • Fill       │
+└───────────────┘      └───────────────┘      └───────────────┘
+       │                      │                      │
+       └──────────────────────┴──────────────────────┘
+                              │
+                    ┌─────────▼─────────┐
+                    │    NetworkSim     │
+                    │   (Provider NPI)  │
+                    └───────────────────┘
+```
+
+**Trial Enrollment Flow**
+
+```
+┌───────────────┐      ┌───────────────┐
+│   PatientSim  │─────▶│   TrialSim    │
+│               │      │               │
+│  • Patient    │      │  • Subject    │
+│  • History    │      │  • Consent    │
+│  • Baseline   │      │  • Randomize  │
+│               │      │  • SDTM       │
+└───────────────┘      └───────────────┘
+       ▲                      ▲
+       │                      │
+┌──────┴──────┐      ┌────────┴────────┐
+│PopulationSim│      │   NetworkSim    │
+│ (Diversity) │      │ (Investigator)  │
+└─────────────┘      └─────────────────┘
+```
+
+### 3.3 Identity Correlation
+
+```
+                    ┌─────────────────────────────────────┐
+                    │               Person                │
+                    │  (SSN as universal correlator)      │
+                    └─────────────────────────────────────┘
+                                     │
+         ┌───────────────┬───────────┼───────────┬───────────────┐
+         │               │           │           │               │
+         ▼               ▼           ▼           ▼               ▼
+    ┌─────────┐    ┌─────────┐ ┌─────────┐ ┌─────────┐    ┌─────────┐
+    │ Patient │    │ Member  │ │RxMember │ │ Subject │    │ Patient │
+    │  (MRN)  │    │(Member  │ │(Cardholder│ │(Subject │    │ (MRN)   │
+    │         │    │   ID)   │ │   ID)   │ │   ID)   │    │         │
+    └─────────┘    └─────────┘ └─────────┘ └─────────┘    └─────────┘
+         │               │           │           │               │
+    PatientSim     MemberSim   RxMemberSim   TrialSim      PatientSim
+```
+
+### 3.4 Common Workflows
+
+| Workflow | Steps |
+|----------|-------|
+| **Simple Patient** | User Request → PatientSim → JSON/FHIR output |
+| **Patient with Claims** | PatientSim → MemberSim (+ NetworkSim provider) → X12 output |
+| **Complete Care Episode** | PatientSim admission → MemberSim claim → PatientSim discharge → RxMemberSim fills → MemberSim follow-up |
+| **Data-Driven Population** | PopulationSim (lookup rates) → PatientSim/MemberSim (apply rates) → Output with provenance |
+| **Clinical Trial** | TrialSim study → PatientSim baseline → TrialSim visits/AEs → SDTM output |
+
+---
+
+## 4. Directory Organization
+
+### 4.1 Repository Structure
 
 ```
 healthsim-workspace/
 ├── SKILL.md                           # Master entry point (routing)
 ├── README.md                          # Repository overview
 ├── CHANGELOG.md                       # Version history
-├── pyproject.toml                     # Workspace-level Python config
-├── healthsim.code-workspace           # VS Code workspace file
+├── healthsim.duckdb                   # Unified database (~1.7 GB via Git LFS)
 │
 ├── docs/                              # Documentation
-│   ├── README.md
 │   ├── HEALTHSIM-ARCHITECTURE-GUIDE.md    # This document
 │   ├── HEALTHSIM-DEVELOPMENT-PROCESS.md
-│   ├── HEALTHSIM-PROJECT-INSTRUCTIONS.md
+│   ├── data-architecture.md           # Database schema details
 │   └── contributing.md
 │
 ├── references/                        # Shared reference data
 │   ├── code-systems.md               # ICD-10, CPT, LOINC, NDC
 │   ├── terminology.md
-│   ├── clinical-rules.md
 │   └── validation-rules.md
 │
-├── formats/                           # Output format transformations (SHARED)
+├── formats/                           # Output format transformations
 │   ├── fhir-r4.md
 │   ├── hl7v2-adt.md
 │   ├── x12-837.md
 │   ├── ncpdp-d0.md
-│   ├── cdisc-sdtm.md                 # For TrialSim
-│   ├── cdisc-adam.md                 # For TrialSim
+│   ├── cdisc-sdtm.md
 │   └── dimensional-analytics.md
 │
-├── skills/                            # Domain-specific scenario skills
+├── skills/                            # Domain-specific skills
 │   ├── common/
 │   │   └── state-management.md
-│   │
-│   ├── patientsim/                    # Clinical scenarios
-│   │   ├── SKILL.md
-│   │   ├── diabetes-management.md
-│   │   ├── oncology/                 # Subcategory (allowed)
-│   │   └── pediatrics/               # Subcategory (allowed)
-│   │
-│   ├── membersim/                     # Payer/claims scenarios
-│   │   ├── SKILL.md
-│   │   └── professional-claims.md
-│   │
-│   ├── rxmembersim/                   # Pharmacy scenarios
-│   │   ├── SKILL.md
-│   │   └── retail-pharmacy.md
-│   │
-│   ├── trialsim/                      # Clinical trials (Active)
-│   │   ├── SKILL.md
-│   │   ├── clinical-trials-domain.md
-│   │   ├── phase3-pivotal.md
-│   │   └── therapeutic-areas/        # Subcategory (allowed)
-│   │
-│   ├── populationsim/                 # Demographics/SDOH (Active)
-│   │   ├── SKILL.md
-│   │   └── README.md
-│   │
-│   └── networksim/                    # Provider networks (Planned)
-│       ├── SKILL.md
-│       └── README.md
+│   ├── patientsim/
+│   ├── membersim/
+│   ├── rxmembersim/
+│   ├── trialsim/
+│   ├── populationsim/
+│   └── networksim/
 │
 ├── hello-healthsim/                   # Tutorials and examples
 │   ├── README.md
-│   ├── CLAUDE-DESKTOP.md
-│   ├── CLAUDE-CODE.md
 │   └── examples/
 │
-├── packages/                          # Python packages (infrastructure)
-│   ├── README.md
-│   ├── core/                          # Shared Python library
-│   │   ├── pyproject.toml
-│   │   ├── src/healthsim/
-│   │   └── tests/
-│   ├── patientsim/                    # PatientSim MCP/utilities
-│   ├── membersim/                     # MemberSim MCP/utilities
-│   └── rxmembersim/                   # RxMemberSim MCP/utilities
-│
-├── demos/                             # Interactive demos
+├── packages/                          # Python infrastructure
+│   ├── core/                          # Shared healthsim-core library
+│   ├── patientsim/
+│   ├── membersim/
+│   └── rxmembersim/
 │
 └── scripts/                           # Utility scripts
-    └── smoke_test.py
 ```
 
-### 3.2 Key Organization Principles
+### 4.2 Organization Principles
 
 | Principle | Implementation |
 |-----------|----------------|
@@ -190,19 +242,11 @@ healthsim-workspace/
 | **Subcategories allowed** | Use sparingly (oncology/, pediatrics/, therapeutic-areas/) |
 | **Python is separate** | Python packages in `packages/`, not mixed with skills |
 
-### 3.3 What NOT to Create
-
-These subdirectories should **NOT** exist:
-- `skills/{product}/scenarios/` - Put scenarios directly in product folder
-- `skills/{product}/domain/` - Put domain files directly in product folder
-- `skills/{product}/formats/` - Formats go in root `formats/`
-- `skills/{product}/models/` - Schemas defined inline in skills
-
 ---
 
-## 4. Skills Architecture
+## 5. Skills Architecture
 
-### 4.1 Skill Types
+### 5.1 Skill Types
 
 | Type | Purpose | Location |
 |------|---------|----------|
@@ -212,7 +256,7 @@ These subdirectories should **NOT** exist:
 | **Format Skill** | Output transformation | `formats/*.md` |
 | **Reference Skill** | Code lookups, rules | `references/*.md` |
 
-### 4.2 Required YAML Frontmatter
+### 5.2 Required YAML Frontmatter
 
 Every skill MUST have:
 
@@ -223,7 +267,7 @@ description: "{What this skill does}. Use when user requests: {trigger 1}, {trig
 ---
 ```
 
-### 4.3 Standard Skill Sections
+### 5.3 Standard Skill Sections
 
 1. **Overview** - What this skill does
 2. **Trigger Phrases** - When to activate
@@ -235,9 +279,9 @@ description: "{What this skill does}. Use when user requests: {trigger 1}, {trig
 
 ---
 
-## 5. Canonical Data Models
+## 6. Canonical Data Models
 
-### 5.1 Entity Extension Pattern
+### 6.1 Entity Extension Pattern
 
 | Product | Base | Extended Entity |
 |---------|------|-----------------|
@@ -248,7 +292,7 @@ description: "{What this skill does}. Use when user requests: {trigger 1}, {trig
 | PopulationSim | Person | PopulationMember |
 | NetworkSim | - | Provider |
 
-### 5.2 Standard Code Systems
+### 6.2 Standard Code Systems
 
 | Data Type | Code System |
 |-----------|-------------|
@@ -258,12 +302,13 @@ description: "{What this skill does}. Use when user requests: {trigger 1}, {trig
 | Medications | NDC/RxNorm |
 | Providers | NPI |
 | Trial Domains | CDISC |
+| Adverse Events | MedDRA |
 
 ---
 
-## 6. Output Formats
+## 7. Output Formats
 
-### 6.1 Healthcare Standards
+### 7.1 Healthcare Standards
 
 | Format | Skill | Use Case |
 |--------|-------|----------|
@@ -275,7 +320,7 @@ description: "{What this skill does}. Use when user requests: {trigger 1}, {trig
 | CDISC SDTM | `formats/cdisc-sdtm.md` | Trial regulatory |
 | CDISC ADaM | `formats/cdisc-adam.md` | Trial analysis |
 
-### 6.2 Export Formats
+### 7.2 Export Formats
 
 | Format | Skill | Use Case |
 |--------|-------|----------|
@@ -283,72 +328,57 @@ description: "{What this skill does}. Use when user requests: {trigger 1}, {trig
 | SQL | `formats/sql.md` | Database loading |
 | Dimensional | `formats/dimensional-analytics.md` | Star schema |
 
----
+### 7.3 Format by Product
 
-## 7. MCP Integration
-
-### 7.1 Philosophy
-
-**MCP is for I/O only.** Data generation happens in conversation; MCP handles:
-- File system operations
-- Database operations
-- External services
-
-### 7.2 What Does NOT Need MCP
-
-- Generating synthetic data
-- Formatting data
-- Explaining schemas
-- Validating structures
+| Product | Native Output | Healthcare Standards |
+|---------|--------------|---------------------|
+| PatientSim | JSON | FHIR R4, HL7v2, C-CDA |
+| MemberSim | JSON | X12 837/835/834/270/271 |
+| RxMemberSim | JSON | NCPDP D.0 |
+| TrialSim | JSON | CDISC SDTM, CDISC ADaM |
+| PopulationSim | JSON | CohortSpecification |
+| NetworkSim | JSON | - |
 
 ---
 
-## 7.5 Data Architecture
+## 8. Data Architecture
 
-### 7.5.1 Storage Backend
+### 8.1 Unified DuckDB Database
 
-HealthSim uses **DuckDB** as its unified data store:
+HealthSim uses a single DuckDB database with three schemas:
 
-| Layer | Purpose | Tables |
-|-------|---------|--------|
-| **Canonical** | Source of truth for entities | patients, encounters, claims, etc. |
-| **State Management** | Scenario organization | scenarios, scenario_entities, scenario_tags |
-| **Reference** | PopulationSim datasets | ref_cdc_places_*, ref_svi_*, ref_adi_* |
+| Schema | Purpose | Tables |
+|--------|---------|--------|
+| **main** | Generated entities + state management | patients, encounters, claims, scenarios, etc. |
+| **network** | Real NPPES provider data | providers (8.9M), facilities, quality metrics |
+| **population** | Real CDC/Census demographic data | places_county, svi_tract, adi_blockgroup, etc. |
 
-**Location**: `~/.healthsim/healthsim.duckdb`
+**Location**: `healthsim-workspace/healthsim.duckdb` (~1.7 GB, distributed via Git LFS)
 
-### 7.5.2 State Management
+### 8.2 State Management
 
-Scenarios are named snapshots containing:
-- All generated entities (patients, encounters, claims, etc.)
-- Full provenance (source_type, source_system, skill_used)
-- User metadata (name, description, tags)
+Scenarios are named snapshots containing generated entities with full provenance:
 
-**API**:
-```python
-from healthsim.state import save_scenario, load_scenario, list_scenarios
+| Tool | Purpose | Token Cost |
+|------|---------|------------|
+| `healthsim_save_scenario` | Persist entities to database | - |
+| `healthsim_load_scenario` | Load all entities (full data) | High |
+| `healthsim_get_summary` | Load metadata + samples only | ~500 tokens |
+| `healthsim_query` | SQL query against entities | Variable |
+| `healthsim_list_scenarios` | List saved scenarios | Low |
+| `healthsim_delete_scenario` | Remove scenario | - |
 
-scenario_id = save_scenario(name='my-cohort', entities={...})
-scenario = load_scenario('my-cohort')
-```
+**Pattern Selection**:
+- Small scenarios (<50 entities): Use `load_scenario` for full data
+- Large scenarios (50+ entities): Use `get_summary` + `query` for token efficiency
 
-### 7.5.3 Sharing Scenarios
-
-Export to JSON for portability:
-```python
-from healthsim.state import export_scenario_to_json, import_scenario_from_json
-
-export_scenario_to_json('my-cohort')  # → ~/Downloads/my-cohort.json
-import_scenario_from_json(Path('shared.json'))
-```
-
-See [Data Architecture](data-architecture.md) for complete documentation.
+See [Data Architecture Guide](data-architecture.md) for complete schema documentation.
 
 ---
 
-## 8. Extension Patterns
+## 9. Extension Patterns
 
-### 8.1 Adding a New Skill
+### 9.1 Adding a New Skill
 
 1. Create file in `skills/{product}/`
 2. Add YAML frontmatter with triggers
@@ -356,44 +386,31 @@ See [Data Architecture](data-architecture.md) for complete documentation.
 4. Link from product SKILL.md
 5. Add hello-healthsim example
 
-### 8.2 Adding a New Product
+### 9.2 Adding a New Product
 
 1. Create `skills/{newproduct}/` directory
 2. Create product SKILL.md
 3. Update master SKILL.md routing
 4. Update VS Code workspace
-5. Add hello-healthsim quickstart
+5. Update this architecture guide
+6. Add hello-healthsim quickstart
 
-### 8.3 Cross-Product Integration
+### 9.3 Cross-Product Integration
 
-When generating data that spans multiple products (e.g., a patient journey from clinical encounter to claims to pharmacy), follow these patterns:
+When generating data that spans multiple products, follow these patterns:
 
 **Identity Correlation:**
-See `references/data-models.md` → "Cross-Product Identity Correlation" section for:
-- Entity inheritance model (Person → Patient/Member/RxMember)
-- Identity linking keys (SSN as universal correlator)
-- Cross-product identity JSON pattern
-- Event correlation timing across products
+- Person is the base entity
+- SSN serves as universal correlator
+- Each product adds domain-specific identifiers (MRN, Member ID, Subject ID)
 
-**Shared Domain Knowledge:**
-- Place foundational concepts in `references/` (e.g., `oncology-domain.md`)
-- Reference data (codes, medications) goes in `references/{domain}/`
+**Cross-Product Mappings:**
 
-**Cross-Referencing:**
-- All scenario skills include "Related Skills" sections with cross-product links
-- Each link includes an integration pattern note explaining when to use each product's skill
-
-**Current Cross-Product Mappings:**
-
-| Domain | PatientSim | MemberSim | RxMemberSim | TrialSim | Shared Reference |
-|--------|------------|-----------|-------------|----------|------------------|
-| Oncology | `oncology/*.md` | `facility-claims.md` | `specialty-pharmacy.md` | `therapeutic-areas/oncology.md` | `references/oncology-domain.md` |
-| Cardiovascular | `heart-failure.md`, `ed-chest-pain.md` | `facility-claims.md` | `retail-pharmacy.md` | `therapeutic-areas/cardiovascular.md` | - |
-| CNS/Behavioral | `behavioral-health.md` | `behavioral-health.md` | `retail-pharmacy.md` | `therapeutic-areas/cns.md` | `references/mental-health-reference.md` |
-| Diabetes | `diabetes-management.md` | `professional-claims.md` | `retail-pharmacy.md`, `specialty-pharmacy.md` | - | - |
-| CKD | `chronic-kidney-disease.md` | `facility-claims.md` | `specialty-pharmacy.md` | - | - |
-| Maternal | `maternal-health.md` | `facility-claims.md` | `retail-pharmacy.md` | - | - |
-| Surgical | `elective-joint.md` | `facility-claims.md`, `prior-authorization.md` | `retail-pharmacy.md` | - | - |
+| Domain | PatientSim | MemberSim | RxMemberSim | TrialSim |
+|--------|------------|-----------|-------------|----------|
+| Oncology | `oncology/*.md` | `facility-claims.md` | `specialty-pharmacy.md` | `therapeutic-areas/oncology.md` |
+| Cardiovascular | `heart-failure.md` | `facility-claims.md` | `retail-pharmacy.md` | `therapeutic-areas/cardiovascular.md` |
+| Diabetes | `diabetes-management.md` | `professional-claims.md` | `retail-pharmacy.md` | - |
 
 **Integration Pattern Examples:**
 
@@ -402,11 +419,8 @@ See `references/data-models.md` → "Cross-Product Identity Correlation" section
 | HF Admission | Inpatient encounter, meds, labs | Facility claim (DRG 291-293) | Discharge Rx fills (0-3 days) |
 | Diabetes Visit | Office encounter, A1C | Professional claim (99214) | Rx fills same day |
 | Oncology | Treatment regimen | Infusion claims (J-codes) | Oral oncolytic fills |
-| Joint Replacement | Surgical episode | Prior auth → Facility claim (DRG 469-470) | Post-op pain meds |
 
-**Best Practice:** When creating a new scenario skill, check if related skills exist in other products. Add bidirectional cross-references with integration pattern guidance.
-
-### 8.4 Checklist
+### 9.4 Checklist
 
 - [ ] YAML frontmatter with name and description
 - [ ] Trigger phrases included

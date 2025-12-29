@@ -55,5 +55,5 @@ Each format file contains:
 
 ## Related Documentation
 
-- [Product Architecture](../docs/product-architecture.md) - Format-product mapping
-- [HEALTHSIM-ARCHITECTURE-GUIDE](../docs/HEALTHSIM-ARCHITECTURE-GUIDE.md) - System design
+- [Architecture Guide](../docs/HEALTHSIM-ARCHITECTURE-GUIDE.md) - Product architecture and format mappings
+- [Data Architecture](../docs/data-architecture.md) - Database schema and storage
