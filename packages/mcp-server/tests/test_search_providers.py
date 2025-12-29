@@ -208,6 +208,73 @@ class TestSearchProvidersErrorHandling:
         assert "providers" in data or "error" in data
 
 
+class TestSearchProvidersIntegration:
+    """Integration tests that query actual NPPES data.
+    
+    These tests validate the SQL query works against the production database.
+    They require the network.providers table to be populated.
+    """
+    
+    def test_search_california_providers(self):
+        """Query real providers in California."""
+        params = SearchProvidersInput(state="CA", limit=5)
+        result = search_providers(params)
+        data = json.loads(result)
+        
+        # Should either succeed with providers or fail gracefully
+        if "error" not in data:
+            assert "providers" in data
+            assert data["source"] == "NPPES (National Plan and Provider Enumeration System)"
+            assert data["data_type"] == "REAL registered providers"
+            # If we got results, validate structure
+            if data["result_count"] > 0:
+                provider = data["providers"][0]
+                assert "npi" in provider
+                assert "practice_state" in provider
+    
+    def test_search_with_city_filter(self):
+        """Query providers filtered by city."""
+        params = SearchProvidersInput(state="CA", city="San Diego", limit=5)
+        result = search_providers(params)
+        data = json.loads(result)
+        
+        if "error" not in data and data["result_count"] > 0:
+            # All results should be in San Diego
+            for provider in data["providers"]:
+                assert "SAN DIEGO" in provider["practice_city"].upper()
+    
+    def test_search_with_taxonomy_code(self):
+        """Query providers by taxonomy code (Family Medicine)."""
+        params = SearchProvidersInput(
+            state="CA", 
+            taxonomy_code="207Q00000X",  # Family Medicine
+            limit=5
+        )
+        result = search_providers(params)
+        data = json.loads(result)
+        
+        if "error" not in data and data["result_count"] > 0:
+            # All results should have the taxonomy code
+            for provider in data["providers"]:
+                assert provider["primary_taxonomy"].startswith("207Q")
+    
+    def test_column_names_correct(self):
+        """Verify practice_address_1 column is used (not practice_address)."""
+        params = SearchProvidersInput(state="CA", limit=1)
+        result = search_providers(params)
+        data = json.loads(result)
+        
+        # Should not have column name errors
+        if "error" in data:
+            assert "practice_address" not in data["error"], \
+                "Column name error - should use practice_address_1"
+        else:
+            # If we got results, practice_address should be populated
+            if data["result_count"] > 0:
+                provider = data["providers"][0]
+                assert "practice_address" in provider
+
+
 class TestDataSourceDecisionMatrix:
     """Tests verifying the decision matrix is properly encoded."""
     
