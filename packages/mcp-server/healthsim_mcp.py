@@ -16,7 +16,8 @@ See docs/mcp/duckdb-connection-architecture.md for design details.
 Tools provided:
 - healthsim_list_scenarios: List all saved scenarios
 - healthsim_load_scenario: Load a scenario by name/ID
-- healthsim_save_scenario: Save a new scenario
+- healthsim_save_scenario: Save a new scenario (full replacement)
+- healthsim_add_entities: Add entities incrementally (recommended for large datasets)
 - healthsim_delete_scenario: Delete a scenario
 - healthsim_query: Execute read-only SQL queries
 - healthsim_get_summary: Get token-efficient scenario summary
@@ -43,6 +44,7 @@ from contextlib import contextmanager
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional
+from uuid import uuid4
 
 import duckdb
 from mcp.server.fastmcp import FastMCP
@@ -54,6 +56,7 @@ sys.path.insert(0, str(WORKSPACE_ROOT / "packages" / "core" / "src"))
 
 from healthsim.db import DEFAULT_DB_PATH
 from healthsim.state import StateManager
+from healthsim.state.auto_persist import AutoPersistService
 
 
 # =============================================================================
@@ -168,6 +171,18 @@ class ConnectionManager:
         with self.write_connection() as conn:
             yield StateManager(connection=conn)
     
+    @contextmanager
+    def write_auto_persist(self):
+        """
+        Context manager for AutoPersistService with write capability.
+        
+        Usage:
+            with manager.write_auto_persist() as service:
+                service.persist_entities(...)
+        """
+        with self.write_connection() as conn:
+            yield AutoPersistService(connection=conn)
+    
     def close(self):
         """Close all connections."""
         if self._read_conn:
@@ -223,6 +238,42 @@ class SaveScenarioInput(BaseModel):
     description: Optional[str] = Field(default=None, description="Scenario description")
     tags: Optional[List[str]] = Field(default=None, description="Tags for filtering")
     overwrite: bool = Field(default=False, description="Overwrite if exists")
+
+
+class AddEntitiesInput(BaseModel):
+    """Input for adding entities incrementally to a scenario.
+    
+    This is the RECOMMENDED approach for large datasets. It:
+    - Adds entities without deleting existing ones
+    - Handles duplicates gracefully (upsert behavior)
+    - Returns a summary instead of echoing all data (token-efficient)
+    - Supports batched operations across multiple calls
+    """
+    model_config = ConfigDict(str_strip_whitespace=True)
+    
+    # Scenario identification - use ONE of these
+    scenario_id: Optional[str] = Field(
+        default=None, 
+        description="Existing scenario UUID to add entities to. If provided, entities are added to this scenario."
+    )
+    scenario_name: Optional[str] = Field(
+        default=None,
+        description="Scenario name. If scenario_id not provided, creates new scenario with this name or auto-generates one."
+    )
+    
+    # Entities to add
+    entities: Dict[str, List[Dict[str, Any]]] = Field(
+        ..., 
+        description="Entity dict: {type: [entities]}. Example: {'patients': [...], 'members': [...]}"
+    )
+    
+    # Optional metadata (only used when creating new scenario)
+    description: Optional[str] = Field(default=None, description="Scenario description (for new scenarios)")
+    tags: Optional[List[str]] = Field(default=None, description="Tags for filtering (for new scenarios)")
+    
+    # Batch tracking (optional, for progress reporting)
+    batch_number: Optional[int] = Field(default=None, description="Current batch number (e.g., 1, 2, 3)")
+    total_batches: Optional[int] = Field(default=None, description="Total number of batches expected")
 
 
 class DeleteScenarioInput(BaseModel):
@@ -609,6 +660,9 @@ def list_tables() -> str:
 def save_scenario(params: SaveScenarioInput) -> str:
     """Save a scenario to the HealthSim database.
     
+    WARNING: When overwrite=True, this REPLACES ALL entities in the scenario.
+    For incremental additions, use healthsim_add_entities instead.
+    
     Entities should be a dict mapping entity type to list of entities:
     {
         "patients": [{...}, {...}],
@@ -647,6 +701,203 @@ def save_scenario(params: SaveScenarioInput) -> str:
         return json.dumps({"error": str(e)})
     except Exception as e:
         return json.dumps({"error": f"Save failed: {str(e)}"})
+
+
+@mcp.tool(
+    name="healthsim_add_entities",
+    annotations={
+        "title": "Add Entities to Scenario (Incremental)",
+        "readOnlyHint": False,
+        "destructiveHint": False,
+        "idempotentHint": True,  # Upsert behavior makes it idempotent
+    }
+)
+def add_entities(params: AddEntitiesInput) -> str:
+    """Add entities incrementally to a scenario without replacing existing data.
+    
+    RECOMMENDED for large datasets. This tool:
+    - ADDS entities without deleting existing ones
+    - Handles duplicates gracefully (upsert: update if exists, insert if new)
+    - Returns a summary instead of echoing all data (token-efficient)
+    - Supports batched operations across multiple calls
+    
+    Usage patterns:
+    
+    1. CREATE NEW SCENARIO (first batch):
+       {"scenario_name": "My Scenario", "entities": {"patients": [...]}}
+       
+    2. ADD TO EXISTING (subsequent batches):
+       {"scenario_id": "uuid-from-first-call", "entities": {"patients": [...]}}
+       
+    3. ADD DIFFERENT ENTITY TYPES:
+       {"scenario_id": "uuid", "entities": {"members": [...]}}
+    
+    Batch tracking (optional):
+       {"scenario_id": "uuid", "entities": {...}, "batch_number": 2, "total_batches": 4}
+    
+    Returns:
+        JSON with scenario_id, entity counts, and summary (NOT full entity data)
+    """
+    try:
+        # Validate: need at least one of scenario_id or scenario_name for new scenarios
+        if not params.scenario_id and not params.scenario_name and not params.entities:
+            return json.dumps({
+                "error": "Must provide scenario_id (to add to existing) or scenario_name (to create new), plus entities"
+            })
+        
+        # Use write connection for the add operation
+        with _get_manager().write_auto_persist() as service:
+            # Determine scenario context
+            scenario_id = params.scenario_id
+            scenario_name = params.scenario_name
+            is_new_scenario = False
+            
+            # If no scenario_id provided, we need to create or find the scenario
+            if not scenario_id:
+                if scenario_name:
+                    # Check if scenario exists
+                    existing = service.conn.execute(
+                        "SELECT scenario_id FROM scenarios WHERE name = ?",
+                        [scenario_name]
+                    ).fetchone()
+                    
+                    if existing:
+                        scenario_id = existing[0]
+                    else:
+                        # Create new scenario
+                        is_new_scenario = True
+                        scenario_id = str(uuid4())
+                        now = datetime.utcnow()
+                        
+                        service.conn.execute("""
+                            INSERT INTO scenarios (scenario_id, name, description, created_at, updated_at)
+                            VALUES (?, ?, ?, ?, ?)
+                        """, [scenario_id, scenario_name, params.description, now, now])
+                        
+                        # Add tags if provided
+                        if params.tags:
+                            for tag in params.tags:
+                                service.conn.execute("""
+                                    INSERT INTO scenario_tags (scenario_id, tag)
+                                    VALUES (?, ?)
+                                """, [scenario_id, tag.lower()])
+                else:
+                    # Auto-generate scenario name
+                    is_new_scenario = True
+                    scenario_id = str(uuid4())
+                    scenario_name = f"scenario-{datetime.utcnow().strftime('%Y%m%d-%H%M%S')}"
+                    now = datetime.utcnow()
+                    
+                    service.conn.execute("""
+                        INSERT INTO scenarios (scenario_id, name, description, created_at, updated_at)
+                        VALUES (?, ?, ?, ?, ?)
+                    """, [scenario_id, scenario_name, params.description, now, now])
+            else:
+                # Verify scenario exists
+                existing = service.conn.execute(
+                    "SELECT name FROM scenarios WHERE scenario_id = ?",
+                    [scenario_id]
+                ).fetchone()
+                
+                if not existing:
+                    return json.dumps({"error": f"Scenario not found: {scenario_id}"})
+                
+                scenario_name = existing[0]
+            
+            # Now add entities to scenario_entities table
+            entity_counts = {}
+            entity_ids_added = {}
+            
+            for entity_type, entity_list in params.entities.items():
+                if not entity_list:
+                    continue
+                
+                # Normalize entity type to plural
+                entity_type_normalized = entity_type.lower()
+                if not entity_type_normalized.endswith('s'):
+                    entity_type_normalized += 's'
+                
+                added_ids = []
+                for entity in entity_list:
+                    # Determine entity ID
+                    entity_id = (
+                        entity.get('id') or 
+                        entity.get(f'{entity_type_normalized[:-1]}_id') or
+                        entity.get('patient_id') or
+                        entity.get('member_id') or
+                        str(uuid4())
+                    )
+                    
+                    # Store as JSON in scenario_entities
+                    entity_json = json.dumps(entity, default=str)
+                    
+                    # Upsert: check if exists, update or insert
+                    existing_entity = service.conn.execute("""
+                        SELECT id FROM scenario_entities 
+                        WHERE scenario_id = ? AND entity_type = ? AND entity_id = ?
+                    """, [scenario_id, entity_type_normalized, entity_id]).fetchone()
+                    
+                    if existing_entity:
+                        # Update existing
+                        service.conn.execute("""
+                            UPDATE scenario_entities 
+                            SET entity_data = ?, created_at = ?
+                            WHERE scenario_id = ? AND entity_type = ? AND entity_id = ?
+                        """, [entity_json, datetime.utcnow(), scenario_id, entity_type_normalized, entity_id])
+                    else:
+                        # Insert new
+                        service.conn.execute("""
+                            INSERT INTO scenario_entities (scenario_id, entity_type, entity_id, entity_data, created_at)
+                            VALUES (?, ?, ?, ?, ?)
+                        """, [scenario_id, entity_type_normalized, entity_id, entity_json, datetime.utcnow()])
+                    
+                    added_ids.append(entity_id)
+                
+                entity_counts[entity_type_normalized] = len(added_ids)
+                entity_ids_added[entity_type_normalized] = added_ids[:5]  # Only return first 5 IDs as sample
+            
+            # Update scenario timestamp
+            service.conn.execute("""
+                UPDATE scenarios SET updated_at = ? WHERE scenario_id = ?
+            """, [datetime.utcnow(), scenario_id])
+            
+            # Get total entity count for scenario
+            total_result = service.conn.execute("""
+                SELECT entity_type, COUNT(*) as count 
+                FROM scenario_entities 
+                WHERE scenario_id = ? 
+                GROUP BY entity_type
+            """, [scenario_id]).fetchall()
+            
+            total_by_type = {row[0]: row[1] for row in total_result}
+            total_entities = sum(total_by_type.values())
+        
+        # Build response
+        response = {
+            "status": "added",
+            "scenario_id": scenario_id,
+            "scenario_name": scenario_name,
+            "is_new_scenario": is_new_scenario,
+            "entities_added_this_batch": entity_counts,
+            "sample_ids": entity_ids_added,
+            "scenario_totals": {
+                "by_type": total_by_type,
+                "total_entities": total_entities,
+            },
+        }
+        
+        # Add batch info if provided
+        if params.batch_number is not None:
+            response["batch_number"] = params.batch_number
+        if params.total_batches is not None:
+            response["total_batches"] = params.total_batches
+            if params.batch_number is not None:
+                response["batches_remaining"] = params.total_batches - params.batch_number
+        
+        return json.dumps(response, indent=2, default=str)
+        
+    except Exception as e:
+        return json.dumps({"error": f"Add entities failed: {str(e)}"})
 
 
 @mcp.tool(
