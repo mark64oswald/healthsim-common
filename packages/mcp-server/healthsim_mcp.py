@@ -43,8 +43,10 @@ Environment Variables:
     HEALTHSIM_DB_PATH: Override default database path
 """
 
+import atexit
 import json
 import os
+import signal
 import sys
 from contextlib import contextmanager
 from datetime import datetime
@@ -248,6 +250,29 @@ def _get_manager() -> ConnectionManager:
     if _manager is None:
         _manager = ConnectionManager(DB_PATH)
     return _manager
+
+
+def _cleanup_connections():
+    """Clean up database connections on shutdown."""
+    global _manager
+    if _manager is not None:
+        print("  Cleaning up database connections...", file=sys.stderr)
+        _manager.close()
+        _manager = None
+        print("  Database connections closed", file=sys.stderr)
+
+
+def _signal_handler(signum, frame):
+    """Handle termination signals gracefully."""
+    print(f"  Received signal {signum}, shutting down...", file=sys.stderr)
+    _cleanup_connections()
+    sys.exit(0)
+
+
+# Register cleanup handlers
+atexit.register(_cleanup_connections)
+signal.signal(signal.SIGTERM, _signal_handler)
+signal.signal(signal.SIGINT, _signal_handler)
 
 
 # Initialize the MCP server

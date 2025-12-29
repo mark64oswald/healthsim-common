@@ -8,6 +8,7 @@ Provides:
 - Path configuration (local vs cloud future)
 """
 
+import atexit
 import os
 from pathlib import Path
 from typing import Optional
@@ -137,3 +138,12 @@ def get_read_only_connection(db_path: Optional[Path] = None) -> duckdb.DuckDBPyC
     """
     path = db_path or DEFAULT_DB_PATH
     return duckdb.connect(str(path), read_only=True)
+
+
+def _cleanup_singleton():
+    """Clean up singleton connection on process exit."""
+    DatabaseConnection.reset()
+
+
+# Register cleanup to run when Python exits
+atexit.register(_cleanup_singleton)
