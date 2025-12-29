@@ -808,7 +808,7 @@ def search_providers(params: SearchProvidersInput) -> str:
                  ELSE organization_name END as name,
             credential,
             taxonomy_1 as primary_taxonomy,
-            practice_address,
+            practice_address_1 as practice_address,
             practice_city,
             practice_state,
             practice_zip,
