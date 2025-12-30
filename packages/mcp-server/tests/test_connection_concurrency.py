@@ -550,10 +550,11 @@ class TestNetworkSimConcurrentAccess:
         
         try:
             # Test join between network and population schemas
+            # Join on state (practice_state in providers, st_abbr in svi_county)
             result = conn.execute("""
                 SELECT COUNT(*)
                 FROM network.providers p
-                JOIN population.svi_county s ON p.county_fips = s.stcnty
+                JOIN population.svi_county s ON p.practice_state = s.st_abbr
                 LIMIT 1
             """).fetchone()[0]
             assert result >= 0
