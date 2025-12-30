@@ -494,33 +494,6 @@ def serialize_subject(entity: Dict[str, Any], provenance: Optional[Dict] = None)
 
 
 # ============================================================================
-# PCP Assignment Serialization
-# ============================================================================
-
-def serialize_pcp_assignment(entity: Dict[str, Any], provenance: Optional[Dict] = None) -> Dict[str, Any]:
-    """Prepare a PCP assignment entity for database insertion."""
-    prov = provenance or entity.get('_provenance', {})
-    
-    assignment_id = entity.get('assignment_id') or entity.get('id') or str(uuid4())
-    
-    return {
-        'id': entity.get('id') or assignment_id,
-        'assignment_id': assignment_id,
-        'member_id': entity.get('member_id'),
-        'provider_npi': entity.get('provider_npi'),
-        'provider_name': entity.get('provider_name'),
-        'effective_date': _parse_date(entity.get('effective_date')),
-        'termination_date': _parse_date(entity.get('termination_date')),
-        'assignment_source': entity.get('assignment_source', 'member_selection'),
-        'created_at': datetime.utcnow(),
-        'source_type': prov.get('source_type', 'generated'),
-        'source_system': prov.get('source_system', 'healthsim'),
-        'skill_used': prov.get('skill_used'),
-        'generation_seed': prov.get('seed') or prov.get('generation_seed'),
-    }
-
-
-# ============================================================================
 # Serializer Registry
 # ============================================================================
 
@@ -539,8 +512,7 @@ SERIALIZERS = {
     'prescriptions': serialize_prescription,
     'subject': serialize_subject,
     'subjects': serialize_subject,
-    'pcp_assignment': serialize_pcp_assignment,
-    'pcp_assignments': serialize_pcp_assignment,
+    # pcp_assignments: stored in scenario_entities JSON only, no canonical table
 }
 
 DESERIALIZERS = {
@@ -574,8 +546,7 @@ ENTITY_TABLE_MAP = {
     'prescriptions': ('prescriptions', 'prescription_id'),
     'subject': ('subjects', 'subject_id'),
     'subjects': ('subjects', 'subject_id'),
-    'pcp_assignment': ('pcp_assignments', 'id'),
-    'pcp_assignments': ('pcp_assignments', 'id'),
+    # pcp_assignments: no canonical table - stored in scenario_entities JSON only
 }
 
 
