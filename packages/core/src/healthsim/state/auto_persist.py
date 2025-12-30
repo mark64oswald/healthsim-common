@@ -357,7 +357,7 @@ class AutoPersistService:
         now = datetime.utcnow()
         
         self.conn.execute("""
-            INSERT INTO scenarios (scenario_id, name, description, created_at, updated_at)
+            INSERT INTO scenarios (id, name, description, created_at, updated_at)
             VALUES (?, ?, ?, ?, ?)
         """, [scenario_id, name, description, now, now])
         
@@ -374,14 +374,14 @@ class AutoPersistService:
     def _update_scenario_timestamp(self, scenario_id: str):
         """Update scenario's updated_at timestamp."""
         self.conn.execute("""
-            UPDATE scenarios SET updated_at = ? WHERE scenario_id = ?
+            UPDATE scenarios SET updated_at = ? WHERE id = ?
         """, [datetime.utcnow(), scenario_id])
     
     def _get_scenario_info(self, scenario_id: str) -> Optional[Dict[str, Any]]:
         """Get scenario metadata."""
         result = self.conn.execute("""
-            SELECT scenario_id, name, description, created_at, updated_at
-            FROM scenarios WHERE scenario_id = ?
+            SELECT id, name, description, created_at, updated_at
+            FROM scenarios WHERE id = ?
         """, [scenario_id]).fetchone()
         
         if not result:
@@ -481,7 +481,7 @@ class AutoPersistService:
         else:
             # Get existing scenario name
             result = self.conn.execute("""
-                SELECT name FROM scenarios WHERE scenario_id = ?
+                SELECT name FROM scenarios WHERE id = ?
             """, [scenario_id]).fetchone()
             
             if not result:
@@ -708,7 +708,7 @@ class AutoPersistService:
         # Build query
         query = """
             SELECT 
-                s.scenario_id,
+                s.id,
                 s.name,
                 s.description,
                 s.created_at,
@@ -724,7 +724,7 @@ class AutoPersistService:
             params.append(f"%{filter_pattern}%")
         
         if tag:
-            query += " JOIN scenario_tags t ON s.scenario_id = t.scenario_id"
+            query += " JOIN scenario_tags t ON s.id = t.scenario_id"
             conditions.append("LOWER(t.tag) = LOWER(?)")
             params.append(tag)
         
@@ -795,7 +795,7 @@ class AutoPersistService:
         """
         # Get current name
         result = self.conn.execute("""
-            SELECT name FROM scenarios WHERE scenario_id = ?
+            SELECT name FROM scenarios WHERE id = ?
         """, [scenario_id]).fetchone()
         
         if not result:
@@ -810,7 +810,7 @@ class AutoPersistService:
         # Update
         self.conn.execute("""
             UPDATE scenarios SET name = ?, updated_at = ?
-            WHERE scenario_id = ?
+            WHERE id = ?
         """, [new_name, datetime.utcnow(), scenario_id])
         
         return (old_name, new_name)
@@ -838,7 +838,7 @@ class AutoPersistService:
         
         # Get scenario info
         result = self.conn.execute("""
-            SELECT name, description FROM scenarios WHERE scenario_id = ?
+            SELECT name, description FROM scenarios WHERE id = ?
         """, [scenario_id]).fetchone()
         
         if not result:
@@ -876,7 +876,7 @@ class AutoPersistService:
         
         # Delete scenario
         self.conn.execute("""
-            DELETE FROM scenarios WHERE scenario_id = ?
+            DELETE FROM scenarios WHERE id = ?
         """, [scenario_id])
         
         return {

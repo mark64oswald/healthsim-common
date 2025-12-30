@@ -219,7 +219,7 @@ class TestMCPToolsReadThenWrite:
         # Main schema - must match what StateManager expects
         conn.execute("""
             CREATE TABLE scenarios (
-                scenario_id VARCHAR PRIMARY KEY,
+                id VARCHAR PRIMARY KEY,
                 name VARCHAR UNIQUE NOT NULL,
                 description VARCHAR,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

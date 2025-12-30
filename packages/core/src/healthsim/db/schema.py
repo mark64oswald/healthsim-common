@@ -9,7 +9,7 @@ from typing import List
 import duckdb
 
 # Current schema version
-SCHEMA_VERSION = "1.3"
+SCHEMA_VERSION = "1.4"
 
 # Standard provenance columns included in all canonical tables
 PROVENANCE_COLUMNS = """
@@ -48,7 +48,7 @@ CREATE SEQUENCE IF NOT EXISTS scenario_tags_seq START 1;
 
 SCENARIOS_DDL = """
 CREATE TABLE IF NOT EXISTS scenarios (
-    scenario_id     VARCHAR PRIMARY KEY,
+    id              VARCHAR PRIMARY KEY,
     name            VARCHAR NOT NULL UNIQUE,
     description     VARCHAR,
     created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS scenarios (
 SCENARIO_ENTITIES_DDL = """
 CREATE TABLE IF NOT EXISTS scenario_entities (
     id              INTEGER PRIMARY KEY DEFAULT nextval('scenario_entities_seq'),
-    scenario_id     VARCHAR NOT NULL REFERENCES scenarios(scenario_id),
+    scenario_id     VARCHAR NOT NULL REFERENCES scenarios(id),
     entity_type     VARCHAR NOT NULL,  -- 'patient', 'encounter', 'claim', etc.
     entity_id       VARCHAR NOT NULL,
     entity_data     JSON,              -- Full entity JSON for export
@@ -72,7 +72,7 @@ CREATE TABLE IF NOT EXISTS scenario_entities (
 SCENARIO_TAGS_DDL = """
 CREATE TABLE IF NOT EXISTS scenario_tags (
     id              INTEGER PRIMARY KEY DEFAULT nextval('scenario_tags_seq'),
-    scenario_id     VARCHAR NOT NULL REFERENCES scenarios(scenario_id),
+    scenario_id     VARCHAR NOT NULL REFERENCES scenarios(id),
     tag             VARCHAR NOT NULL,
     UNIQUE(scenario_id, tag)
 );

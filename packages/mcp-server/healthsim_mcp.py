@@ -1262,7 +1262,7 @@ def add_entities(params: AddEntitiesInput) -> str:
                 if scenario_name:
                     # Check if scenario exists
                     existing = service.conn.execute(
-                        "SELECT scenario_id FROM scenarios WHERE name = ?",
+                        "SELECT id FROM scenarios WHERE name = ?",
                         [scenario_name]
                     ).fetchone()
                     
@@ -1275,7 +1275,7 @@ def add_entities(params: AddEntitiesInput) -> str:
                         now = datetime.utcnow()
                         
                         service.conn.execute("""
-                            INSERT INTO scenarios (scenario_id, name, description, created_at, updated_at)
+                            INSERT INTO scenarios (id, name, description, created_at, updated_at)
                             VALUES (?, ?, ?, ?, ?)
                         """, [scenario_id, scenario_name, params.description, now, now])
                         
@@ -1294,13 +1294,13 @@ def add_entities(params: AddEntitiesInput) -> str:
                     now = datetime.utcnow()
                     
                     service.conn.execute("""
-                        INSERT INTO scenarios (scenario_id, name, description, created_at, updated_at)
+                        INSERT INTO scenarios (id, name, description, created_at, updated_at)
                         VALUES (?, ?, ?, ?, ?)
                     """, [scenario_id, scenario_name, params.description, now, now])
             else:
                 # Verify scenario exists
                 existing = service.conn.execute(
-                    "SELECT name FROM scenarios WHERE scenario_id = ?",
+                    "SELECT name FROM scenarios WHERE id = ?",
                     [scenario_id]
                 ).fetchone()
                 
@@ -1378,7 +1378,7 @@ def add_entities(params: AddEntitiesInput) -> str:
             
             # Update scenario timestamp
             service.conn.execute("""
-                UPDATE scenarios SET updated_at = ? WHERE scenario_id = ?
+                UPDATE scenarios SET updated_at = ? WHERE id = ?
             """, [datetime.utcnow(), scenario_id])
             
             # Get total entity count for scenario

@@ -397,9 +397,9 @@ def generate_summary(
     
     # Get scenario metadata
     result = conn.execute("""
-        SELECT scenario_id, name, description, created_at, updated_at
+        SELECT id, name, description, created_at, updated_at
         FROM scenarios
-        WHERE scenario_id = ?
+        WHERE id = ?
     """, [scenario_id]).fetchone()
     
     if not result:
@@ -487,7 +487,7 @@ def get_scenario_by_name(
     
     # Try exact match first
     result = conn.execute("""
-        SELECT scenario_id FROM scenarios
+        SELECT id FROM scenarios
         WHERE name = ?
     """, [name]).fetchone()
     
@@ -496,7 +496,7 @@ def get_scenario_by_name(
     
     # Try case-insensitive match
     result = conn.execute("""
-        SELECT scenario_id FROM scenarios
+        SELECT id FROM scenarios
         WHERE LOWER(name) = LOWER(?)
     """, [name]).fetchone()
     
@@ -505,7 +505,7 @@ def get_scenario_by_name(
     
     # Try contains match
     result = conn.execute("""
-        SELECT scenario_id FROM scenarios
+        SELECT id FROM scenarios
         WHERE LOWER(name) LIKE LOWER(?)
         ORDER BY updated_at DESC
         LIMIT 1

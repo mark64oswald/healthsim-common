@@ -112,7 +112,7 @@ class TestSchemaApplication:
         column_names = {row[0] for row in columns}
         
         required_columns = {
-            'scenario_id', 'name', 'description', 
+            'id', 'name', 'description', 
             'created_at', 'updated_at', 'metadata'
         }
         for col in required_columns:

@@ -33,16 +33,16 @@ def scenario_with_data(test_db):
     
     # Create scenario
     test_db.execute("""
-        INSERT INTO scenarios (scenario_id, name, description, created_at, updated_at)
+        INSERT INTO scenarios (id, name, description, created_at, updated_at)
         VALUES (?, ?, ?, ?, ?)
     """, [scenario_id, 'test-scenario', 'A test scenario', now, now])
     
     # Add tags
     test_db.execute("""
-        INSERT INTO scenario_tags (scenario_id, tag) VALUES (?, ?)
+        INSERT INTO scenario_tags (id, scenario_id, tag) VALUES (nextval('scenario_tags_seq'), ?, ?)
     """, [scenario_id, 'diabetes'])
     test_db.execute("""
-        INSERT INTO scenario_tags (scenario_id, tag) VALUES (?, ?)
+        INSERT INTO scenario_tags (id, scenario_id, tag) VALUES (nextval('scenario_tags_seq'), ?, ?)
     """, [scenario_id, 'test'])
     
     # Add patients (using correct column names from schema)

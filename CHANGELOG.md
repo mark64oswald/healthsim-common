@@ -7,7 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- **[Core]** Schema v1.4 - Renamed `scenarios.scenario_id` to `scenarios.id` for consistency (2024-12-30)
+  - All HealthSim tables now use `id` as the primary key column name
+  - Added migration v1.4 to rename column in existing databases
+  - Updated auto_persist.py, manager.py, summary.py, and healthsim_mcp.py
+  - Updated MCP server test fixtures to use new schema
+  - All 716 core tests + 125 MCP tests passing
+
 ### Fixed
+
+- **[Core]** Members relationship_code now correctly maps X12 codes (2024-12-30)
+  - Fixed serialize_member() to accept both 'relationship_code' and 'relationship' keys
+  - Added RELATIONSHIP_CODE_MAP for friendly text → X12 code conversion (SELF→18, SPOUSE→01, CHILD→19)
+  - Previously all members defaulted to "18" (Self) even for spouses and children
 
 - **[MCP Server]** DuckDB connection configuration conflict resolved (2024-12-29)
   - Root cause: DuckDB does NOT allow simultaneous connections with different `read_only` configurations to the same database file, even within the same process

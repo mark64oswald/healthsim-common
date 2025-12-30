@@ -295,6 +295,57 @@ def serialize_diagnosis(entity: Dict[str, Any], provenance: Optional[Dict] = Non
 # Member Serialization (MemberSim)
 # ============================================================================
 
+# X12 270/271 Subscriber Relationship Codes (INS03)
+RELATIONSHIP_CODE_MAP = {
+    'self': '18',
+    'subscriber': '18',
+    'spouse': '01',
+    'child': '19',
+    'dependent': '19',  # Generic dependent → child
+    'parent': '32',
+    'grandparent': '04',
+    'grandchild': '05',
+    'nephew_niece': '07',
+    'foster_child': '10',
+    'ward': '15',
+    'stepchild': '17',
+    'employee': '20',
+    'other': '21',
+    'life_partner': '53',
+    'domestic_partner': '53',
+}
+
+
+def _resolve_relationship_code(entity: Dict[str, Any]) -> str:
+    """
+    Resolve relationship code from various input formats.
+    
+    Accepts:
+    - relationship_code: Direct X12 code ("18", "01", "19")
+    - relationship: Friendly text ("SELF", "spouse", "Child")
+    
+    Returns X12 relationship code, defaulting to "18" (Self).
+    """
+    # Try direct code first
+    code = entity.get('relationship_code')
+    if code:
+        return str(code)
+    
+    # Try friendly text and map to code
+    relationship = entity.get('relationship')
+    if relationship:
+        # Normalize: lowercase, strip whitespace, replace spaces/underscores
+        normalized = relationship.lower().strip().replace(' ', '_').replace('-', '_')
+        if normalized in RELATIONSHIP_CODE_MAP:
+            return RELATIONSHIP_CODE_MAP[normalized]
+        # If it looks like a code already (numeric), use it
+        if relationship.isdigit():
+            return relationship
+    
+    # Default to Self
+    return '18'
+
+
 def serialize_member(entity: Dict[str, Any], provenance: Optional[Dict] = None) -> Dict[str, Any]:
     """
     Prepare a member entity for database insertion.
@@ -303,6 +354,10 @@ def serialize_member(entity: Dict[str, Any], provenance: Optional[Dict] = None) 
     - Flat simple: {first_name, last_name, address_line1, enrollment_start_date, plan_id...}
     - Standard: {given_name, family_name, street_address, coverage_start, group_id...}
     - Nested FHIR-like: {name: {given: ...}, address: {line1: ...}}
+    
+    Relationship codes can be provided as:
+    - relationship_code: X12 code ("18", "01", "19")
+    - relationship: Friendly text ("self", "spouse", "child")
     """
     prov = provenance or entity.get('_provenance', {})
     
@@ -381,7 +436,7 @@ def serialize_member(entity: Dict[str, Any], provenance: Optional[Dict] = None) 
         'id': entity.get('id') or member_id,  # PK matches table schema
         'member_id': member_id,
         'subscriber_id': entity.get('subscriber_id') or entity.get('patient_id'),  # Link to patient
-        'relationship_code': entity.get('relationship_code', '18'),  # Self
+        'relationship_code': _resolve_relationship_code(entity),
         'ssn': entity.get('ssn'),
         'given_name': given_name,
         'middle_name': entity.get('middle_name') or _get_nested(entity, 'name', 'middle'),

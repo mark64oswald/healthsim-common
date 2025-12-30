@@ -66,6 +66,63 @@ MIGRATIONS: List[Tuple[str, str, str]] = [
         CREATE INDEX IF NOT EXISTS idx_adverse_events_scenario ON adverse_events(scenario_id);
         CREATE INDEX IF NOT EXISTS idx_exposures_scenario ON exposures(scenario_id);
     """),
+    
+    # Rename scenario_id to id in scenarios table for consistency
+    ("1.4", "Rename scenarios.scenario_id to scenarios.id for consistency", """
+        -- DuckDB doesn't support RENAME COLUMN directly, so we recreate the table
+        -- Step 1: Create new table with correct schema
+        CREATE TABLE scenarios_new (
+            id              VARCHAR PRIMARY KEY,
+            name            VARCHAR NOT NULL UNIQUE,
+            description     VARCHAR,
+            created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            metadata        JSON
+        );
+        
+        -- Step 2: Copy data from old table
+        INSERT INTO scenarios_new (id, name, description, created_at, updated_at, metadata)
+        SELECT scenario_id, name, description, created_at, updated_at, metadata
+        FROM scenarios;
+        
+        -- Step 3: Drop foreign key constraints by recreating child tables
+        -- Note: DuckDB doesn't enforce FK constraints strictly, but we update for correctness
+        
+        -- Recreate scenario_entities with updated FK reference
+        CREATE TABLE scenario_entities_new (
+            id              INTEGER PRIMARY KEY,
+            scenario_id     VARCHAR NOT NULL,
+            entity_type     VARCHAR NOT NULL,
+            entity_id       VARCHAR NOT NULL,
+            entity_data     JSON,
+            created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            UNIQUE(scenario_id, entity_type, entity_id)
+        );
+        INSERT INTO scenario_entities_new SELECT * FROM scenario_entities;
+        DROP TABLE scenario_entities;
+        ALTER TABLE scenario_entities_new RENAME TO scenario_entities;
+        
+        -- Recreate scenario_tags with updated FK reference  
+        CREATE TABLE scenario_tags_new (
+            id              INTEGER PRIMARY KEY,
+            scenario_id     VARCHAR NOT NULL,
+            tag             VARCHAR NOT NULL,
+            UNIQUE(scenario_id, tag)
+        );
+        INSERT INTO scenario_tags_new SELECT * FROM scenario_tags;
+        DROP TABLE scenario_tags;
+        ALTER TABLE scenario_tags_new RENAME TO scenario_tags;
+        
+        -- Step 4: Drop old scenarios table and rename new one
+        DROP TABLE scenarios;
+        ALTER TABLE scenarios_new RENAME TO scenarios;
+        
+        -- Step 5: Recreate indexes
+        CREATE INDEX IF NOT EXISTS idx_scenario_entities_scenario ON scenario_entities(scenario_id);
+        CREATE INDEX IF NOT EXISTS idx_scenario_entities_type ON scenario_entities(entity_type);
+        CREATE INDEX IF NOT EXISTS idx_scenario_tags_scenario ON scenario_tags(scenario_id);
+        CREATE INDEX IF NOT EXISTS idx_scenario_tags_tag ON scenario_tags(tag);
+    """),
 ]
 
 

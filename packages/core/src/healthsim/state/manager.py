@@ -310,11 +310,11 @@ class StateManager:
                     description = ?,
                     updated_at = ?,
                     metadata = ?
-                WHERE scenario_id = ?
+                WHERE id = ?
             """, [description, now, json.dumps(metadata), scenario_id])
         else:
             self.conn.execute("""
-                INSERT INTO scenarios (scenario_id, name, description, created_at, updated_at, metadata)
+                INSERT INTO scenarios (id, name, description, created_at, updated_at, metadata)
                 VALUES (?, ?, ?, ?, ?, ?)
             """, [scenario_id, name, description, now, now, json.dumps(metadata)])
         
@@ -414,7 +414,7 @@ class StateManager:
             List of scenario summaries (without full entity data)
         """
         query = """
-            SELECT DISTINCT s.scenario_id, s.name, s.description, 
+            SELECT DISTINCT s.id, s.name, s.description, 
                    s.created_at, s.updated_at, s.metadata
             FROM scenarios s
         """
@@ -422,7 +422,7 @@ class StateManager:
         conditions = []
         
         if tag:
-            query += " JOIN scenario_tags t ON s.scenario_id = t.scenario_id"
+            query += " JOIN scenario_tags t ON s.id = t.scenario_id"
             conditions.append("t.tag = ?")
             params.append(tag)
         
@@ -514,7 +514,7 @@ class StateManager:
         # Delete in order: tags, entity links, scenario
         self.conn.execute("DELETE FROM scenario_tags WHERE scenario_id = ?", [scenario_id])
         self.conn.execute("DELETE FROM scenario_entities WHERE scenario_id = ?", [scenario_id])
-        self.conn.execute("DELETE FROM scenarios WHERE scenario_id = ?", [scenario_id])
+        self.conn.execute("DELETE FROM scenarios WHERE id = ?", [scenario_id])
         
         return True
     
@@ -578,7 +578,7 @@ class StateManager:
     def _get_scenario_by_name(self, name: str) -> Optional[Dict]:
         """Get scenario by name."""
         result = self.conn.execute(
-            "SELECT scenario_id, name, description, created_at, updated_at, metadata FROM scenarios WHERE name = ?",
+            "SELECT id, name, description, created_at, updated_at, metadata FROM scenarios WHERE name = ?",
             [name]
         ).fetchone()
         if result:
@@ -596,7 +596,7 @@ class StateManager:
         """Get scenario by ID."""
         try:
             result = self.conn.execute(
-                "SELECT scenario_id, name, description, created_at, updated_at, metadata FROM scenarios WHERE scenario_id = ?",
+                "SELECT id, name, description, created_at, updated_at, metadata FROM scenarios WHERE id = ?",
                 [scenario_id]
             ).fetchone()
             if result:
