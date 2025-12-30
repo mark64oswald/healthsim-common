@@ -58,22 +58,74 @@ def serialize_patient(entity: Dict[str, Any], provenance: Optional[Dict] = None)
     """
     Prepare a patient entity for database insertion.
     
-    Handles multiple input formats (FHIR-like, flat, nested).
+    Handles multiple input formats:
+    - FHIR-like nested: {name: {given: ..., family: ...}, address: {line1: ...}}
+    - Flat simple: {first_name: ..., last_name: ..., address_line1: ...}
+    - Standard: {given_name: ..., family_name: ..., street_address: ...}
     """
     prov = provenance or entity.get('_provenance', {})
     
-    # Handle various name formats
+    # Handle various name formats (priority: given_name > first_name > nested)
     given_name = (
         entity.get('given_name') or 
+        entity.get('first_name') or  # Flat format
         _get_nested(entity, 'name', 'given') or
         _get_nested(entity, 'name', 0, 'given', 0) or
         'Unknown'
     )
     family_name = (
         entity.get('family_name') or 
+        entity.get('last_name') or  # Flat format
         _get_nested(entity, 'name', 'family') or
         _get_nested(entity, 'name', 0, 'family') or
         'Unknown'
+    )
+    
+    # Handle various address formats (priority: standard > flat > nested)
+    street_address = (
+        entity.get('street_address') or
+        entity.get('address_line1') or  # Flat format
+        _get_nested(entity, 'address', 'line1') or 
+        _get_nested(entity, 'address', 'line', 0)
+    )
+    street_address_2 = (
+        entity.get('street_address_2') or
+        entity.get('address_line2') or  # Flat format
+        _get_nested(entity, 'address', 'line2')
+    )
+    city = (
+        entity.get('city') or  # Flat format at top level
+        _get_nested(entity, 'address', 'city')
+    )
+    state = (
+        entity.get('state') or  # Flat format at top level
+        _get_nested(entity, 'address', 'state')
+    )
+    postal_code = (
+        entity.get('postal_code') or
+        entity.get('zip_code') or  # Flat format
+        entity.get('zip') or  # Short form
+        _get_nested(entity, 'address', 'postalCode') or 
+        _get_nested(entity, 'address', 'postal_code')
+    )
+    country = (
+        entity.get('country') or
+        _get_nested(entity, 'address', 'country') or
+        'US'
+    )
+    
+    # Handle various phone formats (priority: top-level > nested)
+    phone = (
+        entity.get('phone') or  # Flat format at top level
+        _get_nested(entity, 'telecom', 'phone')
+    )
+    
+    # Handle various date formats
+    birth_date = _parse_date(
+        entity.get('birth_date') or 
+        entity.get('date_of_birth') or  # Flat format
+        entity.get('birthDate') or  # FHIR format
+        entity.get('dob')  # Short form
     )
     
     return {
@@ -85,20 +137,20 @@ def serialize_patient(entity: Dict[str, Any], provenance: Optional[Dict] = None)
         'family_name': family_name,
         'suffix': entity.get('suffix') or _get_nested(entity, 'name', 'suffix'),
         'prefix': entity.get('prefix') or _get_nested(entity, 'name', 'prefix'),
-        'birth_date': _parse_date(entity.get('birth_date') or entity.get('birthDate')),
-        'gender': entity.get('gender'),
+        'birth_date': birth_date,
+        'gender': entity.get('gender') or entity.get('sex'),  # Accept 'sex' as alias
         'race': entity.get('race'),
         'ethnicity': entity.get('ethnicity'),
         'language': entity.get('language', 'en'),
-        'street_address': _get_nested(entity, 'address', 'line1') or _get_nested(entity, 'address', 'line', 0),
-        'street_address_2': _get_nested(entity, 'address', 'line2'),
-        'city': _get_nested(entity, 'address', 'city'),
-        'state': _get_nested(entity, 'address', 'state'),
-        'postal_code': _get_nested(entity, 'address', 'postalCode') or _get_nested(entity, 'address', 'postal_code'),
-        'country': _get_nested(entity, 'address', 'country', default='US'),
-        'phone': _get_nested(entity, 'telecom', 'phone'),
-        'phone_mobile': _get_nested(entity, 'telecom', 'mobile'),
-        'email': _get_nested(entity, 'telecom', 'email'),
+        'street_address': street_address,
+        'street_address_2': street_address_2,
+        'city': city,
+        'state': state,
+        'postal_code': postal_code,
+        'country': country,
+        'phone': phone,
+        'phone_mobile': entity.get('phone_mobile') or _get_nested(entity, 'telecom', 'mobile'),
+        'email': entity.get('email') or _get_nested(entity, 'telecom', 'email'),
         'deceased': entity.get('deceased', False),
         'death_date': _parse_date(entity.get('death_date') or entity.get('deceasedDateTime')),
         'created_at': datetime.utcnow(),
@@ -244,33 +296,108 @@ def serialize_diagnosis(entity: Dict[str, Any], provenance: Optional[Dict] = Non
 # ============================================================================
 
 def serialize_member(entity: Dict[str, Any], provenance: Optional[Dict] = None) -> Dict[str, Any]:
-    """Prepare a member entity for database insertion."""
+    """
+    Prepare a member entity for database insertion.
+    
+    Handles multiple input formats:
+    - Flat simple: {first_name, last_name, address_line1, enrollment_start_date, plan_id...}
+    - Standard: {given_name, family_name, street_address, coverage_start, group_id...}
+    - Nested FHIR-like: {name: {given: ...}, address: {line1: ...}}
+    """
     prov = provenance or entity.get('_provenance', {})
     
     # Primary key: use 'id' if present, otherwise generate from member_id or uuid
     member_id = entity.get('member_id') or entity.get('id') or str(uuid4())
     
+    # Handle various name formats
+    given_name = (
+        entity.get('given_name') or 
+        entity.get('first_name') or  # Flat format
+        _get_nested(entity, 'name', 'given')
+    )
+    family_name = (
+        entity.get('family_name') or 
+        entity.get('last_name') or  # Flat format
+        _get_nested(entity, 'name', 'family')
+    )
+    
+    # Handle various address formats
+    street_address = (
+        entity.get('street_address') or
+        entity.get('address_line1') or  # Flat format
+        _get_nested(entity, 'address', 'line1') or 
+        _get_nested(entity, 'address', 'line', 0)
+    )
+    city = (
+        entity.get('city') or
+        _get_nested(entity, 'address', 'city')
+    )
+    state = (
+        entity.get('state') or
+        _get_nested(entity, 'address', 'state')
+    )
+    postal_code = (
+        entity.get('postal_code') or
+        entity.get('zip_code') or
+        entity.get('zip') or
+        _get_nested(entity, 'address', 'postalCode') or 
+        _get_nested(entity, 'address', 'postal_code')
+    )
+    
+    # Handle phone (top-level or nested)
+    phone = (
+        entity.get('phone') or
+        _get_nested(entity, 'telecom', 'phone')
+    )
+    
+    # Handle coverage dates (map from various formats)
+    coverage_start = _parse_date(
+        entity.get('coverage_start') or 
+        entity.get('enrollment_start_date') or  # Flat format
+        entity.get('effective_date') or
+        entity.get('start_date')
+    )
+    coverage_end = _parse_date(
+        entity.get('coverage_end') or
+        entity.get('enrollment_end_date') or  # Flat format
+        entity.get('termination_date') or
+        entity.get('end_date')
+    )
+    
+    # Handle plan identifiers (map from various formats)
+    group_id = (
+        entity.get('group_id') or 
+        entity.get('group_number') or
+        entity.get('contract_id') or  # Medicare contract
+        entity.get('employer_name')  # Fallback to employer
+    )
+    plan_code = (
+        entity.get('plan_code') or
+        entity.get('plan_id') or
+        entity.get('pbp_id')  # Medicare plan benefit package
+    )
+    
     return {
         'id': entity.get('id') or member_id,  # PK matches table schema
         'member_id': member_id,
-        'subscriber_id': entity.get('subscriber_id'),
+        'subscriber_id': entity.get('subscriber_id') or entity.get('patient_id'),  # Link to patient
         'relationship_code': entity.get('relationship_code', '18'),  # Self
         'ssn': entity.get('ssn'),
-        'given_name': entity.get('given_name') or _get_nested(entity, 'name', 'given'),
+        'given_name': given_name,
         'middle_name': entity.get('middle_name') or _get_nested(entity, 'name', 'middle'),
-        'family_name': entity.get('family_name') or _get_nested(entity, 'name', 'family'),
-        'birth_date': _parse_date(entity.get('birth_date') or entity.get('birthDate')),
-        'gender': entity.get('gender'),
-        'street_address': _get_nested(entity, 'address', 'line1') or _get_nested(entity, 'address', 'line', 0),
-        'city': _get_nested(entity, 'address', 'city'),
-        'state': _get_nested(entity, 'address', 'state'),
-        'postal_code': _get_nested(entity, 'address', 'postalCode') or _get_nested(entity, 'address', 'postal_code'),
-        'phone': _get_nested(entity, 'telecom', 'phone') or entity.get('phone'),
-        'email': _get_nested(entity, 'telecom', 'email') or entity.get('email'),
-        'group_id': entity.get('group_id') or entity.get('group_number'),  # Support both names
-        'plan_code': entity.get('plan_code'),
-        'coverage_start': _parse_date(entity.get('coverage_start')),
-        'coverage_end': _parse_date(entity.get('coverage_end')),
+        'family_name': family_name,
+        'birth_date': _parse_date(entity.get('birth_date') or entity.get('date_of_birth') or entity.get('birthDate')),
+        'gender': entity.get('gender') or entity.get('sex'),
+        'street_address': street_address,
+        'city': city,
+        'state': state,
+        'postal_code': postal_code,
+        'phone': phone,
+        'email': entity.get('email') or _get_nested(entity, 'telecom', 'email'),
+        'group_id': group_id,
+        'plan_code': plan_code,
+        'coverage_start': coverage_start,
+        'coverage_end': coverage_end,
         'pcp_npi': entity.get('pcp_npi'),
         'created_at': datetime.utcnow(),
         'source_type': prov.get('source_type', 'generated'),

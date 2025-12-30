@@ -307,6 +307,70 @@ signal.signal(signal.SIGTERM, _signal_handler)
 signal.signal(signal.SIGINT, _signal_handler)
 
 
+def _run_startup_migrations():
+    """
+    Run any pending schema migrations on MCP server startup.
+    
+    This ensures canonical tables exist before any tools are called.
+    Uses a brief write connection, then releases it for normal read-only operations.
+    """
+    print("  Checking for schema migrations...", file=sys.stderr)
+    
+    try:
+        conn = duckdb.connect(str(DB_PATH))  # read-write
+        
+        # List of migrations to apply (table_name, ddl)
+        migrations = [
+            ("pcp_assignments", """
+                CREATE TABLE IF NOT EXISTS pcp_assignments (
+                    id              VARCHAR PRIMARY KEY,
+                    assignment_id   VARCHAR NOT NULL,
+                    member_id       VARCHAR NOT NULL,
+                    provider_npi    VARCHAR NOT NULL,
+                    provider_name   VARCHAR,
+                    effective_date  DATE NOT NULL,
+                    termination_date DATE,
+                    assignment_source VARCHAR DEFAULT 'member_selection',
+                    scenario_id     VARCHAR,
+                    created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    source_type     VARCHAR,
+                    source_system   VARCHAR,
+                    skill_used      VARCHAR,
+                    generation_seed INTEGER
+                )
+            """),
+        ]
+        
+        for table_name, ddl in migrations:
+            # Check if table exists
+            exists = conn.execute(f"""
+                SELECT COUNT(*) FROM information_schema.tables 
+                WHERE table_name = '{table_name}'
+            """).fetchone()[0] > 0
+            
+            if not exists:
+                conn.execute(ddl)
+                print(f"  ✓ Created table: {table_name}", file=sys.stderr)
+                
+                # Create indexes for pcp_assignments
+                if table_name == "pcp_assignments":
+                    conn.execute("CREATE INDEX IF NOT EXISTS idx_pcp_assignments_member ON pcp_assignments(member_id)")
+                    conn.execute("CREATE INDEX IF NOT EXISTS idx_pcp_assignments_provider ON pcp_assignments(provider_npi)")
+                    conn.execute("CREATE INDEX IF NOT EXISTS idx_pcp_assignments_scenario ON pcp_assignments(scenario_id)")
+                    print(f"  ✓ Created indexes for: {table_name}", file=sys.stderr)
+        
+        conn.close()
+        print("  Schema migrations complete", file=sys.stderr)
+        
+    except Exception as e:
+        print(f"  Warning: Schema migration failed: {e}", file=sys.stderr)
+        # Don't fail startup - tables might already exist or be created later
+
+
+# Run migrations on import (server startup)
+_run_startup_migrations()
+
+
 # Initialize the MCP server
 mcp = FastMCP("healthsim_mcp")
 
@@ -469,7 +533,7 @@ def insert_into_canonical_table(
     scenario_id: str,
     entity_type: str,
     entity: Dict[str, Any]
-) -> bool:
+) -> tuple:
     """
     Insert entity into canonical table using serializer.
     
@@ -483,12 +547,12 @@ def insert_into_canonical_table(
         entity: Entity data dict
         
     Returns:
-        True if inserted successfully, False otherwise
+        Tuple of (success: bool, error_message: str or None)
     """
     serializer = get_serializer(entity_type)
     if not serializer:
         # No serializer for this entity type - skip canonical insert
-        return False
+        return (False, f"No serializer for entity type: {entity_type}")
     
     try:
         table_name, id_column = get_table_info(entity_type)
@@ -506,26 +570,48 @@ def insert_into_canonical_table(
         # Add scenario_id to data
         data['scenario_id'] = scenario_id
         
+        # Filter to only columns that exist in the table
+        schema_result = conn.execute(f"""
+            SELECT column_name 
+            FROM information_schema.columns 
+            WHERE table_name = '{table_name}'
+        """).fetchall()
+        valid_columns = {row[0] for row in schema_result}
+        
+        if not valid_columns:
+            return (False, f"Table '{table_name}' not found or has no columns")
+        
+        # Filter data to only include valid columns
+        filtered_data = {k: v for k, v in data.items() if k in valid_columns}
+        removed_columns = set(data.keys()) - set(filtered_data.keys())
+        
+        if not filtered_data:
+            return (False, f"No valid columns for {table_name}. Data keys: {list(data.keys())}, Table columns: {list(valid_columns)}")
+        
         # Build INSERT statement with conflict handling
-        columns = list(data.keys())
+        columns = list(filtered_data.keys())
         placeholders = ', '.join(['?' for _ in columns])
         
         # For conflict handling, update all columns except the primary key
         non_pk_columns = [c for c in columns if c != id_column]
         updates = ', '.join([f"{col} = excluded.{col}" for col in non_pk_columns])
         
-        conn.execute(f"""
+        sql = f"""
             INSERT INTO {table_name} ({', '.join(columns)})
             VALUES ({placeholders})
             ON CONFLICT ({id_column}) DO UPDATE SET {updates}
-        """, list(data.values()))
+        """
         
-        return True
+        conn.execute(sql, list(filtered_data.values()))
+        return (True, None)
         
-    except Exception:
-        # Canonical insert is optional - JSON storage is the primary source
-        # Table might not exist or columns might not match - this is OK
-        return False
+    except Exception as e:
+        # Return the actual error for diagnosis
+        import traceback
+        error_detail = f"{type(e).__name__}: {e}"
+        print(f"[CANONICAL INSERT ERROR] {entity_type}: {error_detail}", file=sys.stderr)
+        print(traceback.format_exc(), file=sys.stderr)
+        return (False, error_detail)
 
 
 # =============================================================================
@@ -1276,6 +1362,7 @@ def add_entities(params: AddEntitiesInput) -> str:
             # Now add entities to scenario_entities table
             entity_counts = {}
             entity_ids_added = {}
+            canonical_errors = {}  # Track canonical table insert failures
             
             for entity_type, entity_list in params.entities.items():
                 if not entity_list:
@@ -1287,6 +1374,7 @@ def add_entities(params: AddEntitiesInput) -> str:
                     entity_type_normalized += 's'
                 
                 added_ids = []
+                canonical_failures = []  # Track canonical insert failures
                 for entity in entity_list:
                     # Determine entity ID
                     entity_id = (
@@ -1322,17 +1410,21 @@ def add_entities(params: AddEntitiesInput) -> str:
                     
                     # Also insert into canonical table for query consistency
                     # This ensures get_summary and direct table queries work correctly
-                    insert_into_canonical_table(
+                    success, error = insert_into_canonical_table(
                         service.conn,
                         scenario_id,
                         entity_type_normalized,
                         entity
                     )
+                    if not success and len(canonical_failures) < 3:  # Limit to first 3 errors
+                        canonical_failures.append({"entity_id": entity_id, "error": error})
                     
                     added_ids.append(entity_id)
                 
                 entity_counts[entity_type_normalized] = len(added_ids)
                 entity_ids_added[entity_type_normalized] = added_ids[:5]  # Only return first 5 IDs as sample
+                if canonical_failures:
+                    canonical_errors[entity_type_normalized] = canonical_failures
             
             # Update scenario timestamp
             service.conn.execute("""
@@ -1363,6 +1455,11 @@ def add_entities(params: AddEntitiesInput) -> str:
                 "total_entities": total_entities,
             },
         }
+        
+        # Include canonical insert errors if any occurred
+        if canonical_errors:
+            response["canonical_insert_errors"] = canonical_errors
+            response["warning"] = "Some entities failed to insert into canonical tables. They exist in scenario_entities (JSON) but not in queryable tables."
         
         # Add batch info if provided
         if params.batch_number is not None:

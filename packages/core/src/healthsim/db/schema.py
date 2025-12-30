@@ -9,7 +9,7 @@ from typing import List
 import duckdb
 
 # Current schema version
-SCHEMA_VERSION = "1.2"
+SCHEMA_VERSION = "1.3"
 
 # Standard provenance columns included in all canonical tables
 PROVENANCE_COLUMNS = """
@@ -313,6 +313,21 @@ CREATE TABLE IF NOT EXISTS claim_lines (
 );
 """
 
+# Relationship table linking members to providers
+PCP_ASSIGNMENTS_DDL = f"""
+CREATE TABLE IF NOT EXISTS pcp_assignments (
+    id              VARCHAR PRIMARY KEY,
+    assignment_id   VARCHAR NOT NULL,
+    member_id       VARCHAR NOT NULL,
+    provider_npi    VARCHAR NOT NULL,  -- Links to network.providers (NPPES)
+    provider_name   VARCHAR,           -- Denormalized for convenience
+    effective_date  DATE NOT NULL,
+    termination_date DATE,
+    assignment_source VARCHAR DEFAULT 'member_selection',  -- member_selection, auto_assign, plan_default
+    {PROVENANCE_COLUMNS}
+);
+"""
+
 # ============================================================================
 # CANONICAL TABLES - RxMemberSim
 # ============================================================================
@@ -490,6 +505,11 @@ CREATE INDEX IF NOT EXISTS idx_claims_scenario ON claims(scenario_id);
 CREATE INDEX IF NOT EXISTS idx_claim_lines_claim ON claim_lines(claim_id);
 CREATE INDEX IF NOT EXISTS idx_claim_lines_scenario ON claim_lines(scenario_id);
 
+-- PCP assignment lookups
+CREATE INDEX IF NOT EXISTS idx_pcp_assignments_member ON pcp_assignments(member_id);
+CREATE INDEX IF NOT EXISTS idx_pcp_assignments_provider ON pcp_assignments(provider_npi);
+CREATE INDEX IF NOT EXISTS idx_pcp_assignments_scenario ON pcp_assignments(scenario_id);
+
 -- Pharmacy claim lookups
 CREATE INDEX IF NOT EXISTS idx_pharmacy_claims_member ON pharmacy_claims(member_id);
 CREATE INDEX IF NOT EXISTS idx_pharmacy_claims_ndc ON pharmacy_claims(ndc);
@@ -556,6 +576,7 @@ ALL_DDL = [
     MEMBERS_DDL,
     CLAIMS_DDL,
     CLAIM_LINES_DDL,
+    PCP_ASSIGNMENTS_DDL,
     
     # RxMemberSim canonical tables
     PRESCRIPTIONS_DDL,
@@ -594,7 +615,7 @@ def get_canonical_tables() -> List[str]:
     return [
         'patients', 'encounters', 'diagnoses', 'medications',
         'lab_results', 'vital_signs', 'orders', 'clinical_notes',
-        'members', 'claims', 'claim_lines',
+        'members', 'claims', 'claim_lines', 'pcp_assignments',
         'prescriptions', 'pharmacy_claims',
         'subjects', 'trial_visits', 'adverse_events', 'exposures'
     ]

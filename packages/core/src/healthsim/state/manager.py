@@ -12,6 +12,7 @@ from uuid import uuid4
 from datetime import datetime
 from pathlib import Path
 import json
+import re
 
 import duckdb
 
@@ -166,11 +167,22 @@ class StateManager:
             print(f"Scenario has {summary.total_entities()} entities")
             print(f"Token cost: ~{summary.token_estimate()} tokens")
         """
-        return self.auto_persist.get_scenario_summary(
-            scenario_id_or_name=scenario_id_or_name,
-            include_samples=include_samples,
-            samples_per_type=samples_per_type,
-        )
+        # Determine if input looks like a UUID or a name
+        import re
+        uuid_pattern = re.compile(r'^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$', re.IGNORECASE)
+        
+        if uuid_pattern.match(scenario_id_or_name):
+            return self.auto_persist.get_scenario_summary(
+                scenario_id=scenario_id_or_name,
+                include_samples=include_samples,
+                samples_per_type=samples_per_type,
+            )
+        else:
+            return self.auto_persist.get_scenario_summary(
+                scenario_name=scenario_id_or_name,
+                include_samples=include_samples,
+                samples_per_type=samples_per_type,
+            )
     
     def query(
         self,
