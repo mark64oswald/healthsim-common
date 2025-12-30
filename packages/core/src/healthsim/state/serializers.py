@@ -247,19 +247,31 @@ def serialize_member(entity: Dict[str, Any], provenance: Optional[Dict] = None) 
     """Prepare a member entity for database insertion."""
     prov = provenance or entity.get('_provenance', {})
     
+    # Primary key: use 'id' if present, otherwise generate from member_id or uuid
+    member_id = entity.get('member_id') or entity.get('id') or str(uuid4())
+    
     return {
-        'member_id': entity.get('member_id') or entity.get('id') or str(uuid4()),
+        'id': entity.get('id') or member_id,  # PK matches table schema
+        'member_id': member_id,
+        'subscriber_id': entity.get('subscriber_id'),
+        'relationship_code': entity.get('relationship_code', '18'),  # Self
         'ssn': entity.get('ssn'),
         'given_name': entity.get('given_name') or _get_nested(entity, 'name', 'given'),
+        'middle_name': entity.get('middle_name') or _get_nested(entity, 'name', 'middle'),
         'family_name': entity.get('family_name') or _get_nested(entity, 'name', 'family'),
         'birth_date': _parse_date(entity.get('birth_date') or entity.get('birthDate')),
         'gender': entity.get('gender'),
-        'subscriber_id': entity.get('subscriber_id'),
-        'group_number': entity.get('group_number'),
+        'street_address': _get_nested(entity, 'address', 'line1') or _get_nested(entity, 'address', 'line', 0),
+        'city': _get_nested(entity, 'address', 'city'),
+        'state': _get_nested(entity, 'address', 'state'),
+        'postal_code': _get_nested(entity, 'address', 'postalCode') or _get_nested(entity, 'address', 'postal_code'),
+        'phone': _get_nested(entity, 'telecom', 'phone') or entity.get('phone'),
+        'email': _get_nested(entity, 'telecom', 'email') or entity.get('email'),
+        'group_id': entity.get('group_id') or entity.get('group_number'),  # Support both names
         'plan_code': entity.get('plan_code'),
         'coverage_start': _parse_date(entity.get('coverage_start')),
         'coverage_end': _parse_date(entity.get('coverage_end')),
-        'relationship_code': entity.get('relationship_code', '18'),  # Self
+        'pcp_npi': entity.get('pcp_npi'),
         'created_at': datetime.utcnow(),
         'source_type': prov.get('source_type', 'generated'),
         'source_system': prov.get('source_system', 'membersim'),
@@ -355,6 +367,33 @@ def serialize_subject(entity: Dict[str, Any], provenance: Optional[Dict] = None)
 
 
 # ============================================================================
+# PCP Assignment Serialization
+# ============================================================================
+
+def serialize_pcp_assignment(entity: Dict[str, Any], provenance: Optional[Dict] = None) -> Dict[str, Any]:
+    """Prepare a PCP assignment entity for database insertion."""
+    prov = provenance or entity.get('_provenance', {})
+    
+    assignment_id = entity.get('assignment_id') or entity.get('id') or str(uuid4())
+    
+    return {
+        'id': entity.get('id') or assignment_id,
+        'assignment_id': assignment_id,
+        'member_id': entity.get('member_id'),
+        'provider_npi': entity.get('provider_npi'),
+        'provider_name': entity.get('provider_name'),
+        'effective_date': _parse_date(entity.get('effective_date')),
+        'termination_date': _parse_date(entity.get('termination_date')),
+        'assignment_source': entity.get('assignment_source', 'member_selection'),
+        'created_at': datetime.utcnow(),
+        'source_type': prov.get('source_type', 'generated'),
+        'source_system': prov.get('source_system', 'healthsim'),
+        'skill_used': prov.get('skill_used'),
+        'generation_seed': prov.get('seed') or prov.get('generation_seed'),
+    }
+
+
+# ============================================================================
 # Serializer Registry
 # ============================================================================
 
@@ -373,6 +412,8 @@ SERIALIZERS = {
     'prescriptions': serialize_prescription,
     'subject': serialize_subject,
     'subjects': serialize_subject,
+    'pcp_assignment': serialize_pcp_assignment,
+    'pcp_assignments': serialize_pcp_assignment,
 }
 
 DESERIALIZERS = {
@@ -382,7 +423,7 @@ DESERIALIZERS = {
     'encounters': deserialize_encounter,
 }
 
-# Mapping from entity type to table name and ID column
+# Mapping from entity type to table name and ID column (must match actual table PKs)
 ENTITY_TABLE_MAP = {
     'patient': ('patients', 'id'),
     'patients': ('patients', 'id'),
@@ -396,8 +437,8 @@ ENTITY_TABLE_MAP = {
     'lab_results': ('lab_results', 'id'),
     'vital_sign': ('vital_signs', 'id'),
     'vital_signs': ('vital_signs', 'id'),
-    'member': ('members', 'member_id'),
-    'members': ('members', 'member_id'),
+    'member': ('members', 'id'),  # PK is 'id', not 'member_id'
+    'members': ('members', 'id'),  # PK is 'id', not 'member_id'
     'claim': ('claims', 'claim_id'),
     'claims': ('claims', 'claim_id'),
     'claim_line': ('claim_lines', 'id'),
@@ -406,6 +447,8 @@ ENTITY_TABLE_MAP = {
     'prescriptions': ('prescriptions', 'prescription_id'),
     'subject': ('subjects', 'subject_id'),
     'subjects': ('subjects', 'subject_id'),
+    'pcp_assignment': ('pcp_assignments', 'id'),
+    'pcp_assignments': ('pcp_assignments', 'id'),
 }
 
 

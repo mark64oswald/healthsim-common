@@ -65,6 +65,7 @@ sys.path.insert(0, str(WORKSPACE_ROOT / "packages" / "core" / "src"))
 from healthsim.db import DEFAULT_DB_PATH
 from healthsim.state import StateManager
 from healthsim.state.auto_persist import AutoPersistService
+from healthsim.state.serializers import get_serializer, get_table_info
 
 
 # =============================================================================
@@ -457,6 +458,74 @@ class SearchProvidersInput(BaseModel):
     
     # Results
     limit: int = Field(default=50, description="Max results to return", ge=1, le=200)
+
+
+# =============================================================================
+# Canonical Table Helpers
+# =============================================================================
+
+def insert_into_canonical_table(
+    conn,
+    scenario_id: str,
+    entity_type: str,
+    entity: Dict[str, Any]
+) -> bool:
+    """
+    Insert entity into canonical table using serializer.
+    
+    This mirrors the behavior of StateManager._insert_canonical_entity to ensure
+    that add_entities writes to both scenario_entities AND canonical tables.
+    
+    Args:
+        conn: DuckDB connection
+        scenario_id: Scenario UUID
+        entity_type: Normalized entity type (e.g., 'patients', 'members')
+        entity: Entity data dict
+        
+    Returns:
+        True if inserted successfully, False otherwise
+    """
+    serializer = get_serializer(entity_type)
+    if not serializer:
+        # No serializer for this entity type - skip canonical insert
+        return False
+    
+    try:
+        table_name, id_column = get_table_info(entity_type)
+        
+        # Get provenance from entity (supports both '_provenance' and 'provenance' keys)
+        provenance = entity.get('_provenance', {})
+        if 'provenance' in entity:
+            prov_data = entity['provenance']
+            if isinstance(prov_data, dict):
+                provenance = prov_data
+        
+        # Serialize entity to canonical format
+        data = serializer(entity, provenance)
+        
+        # Add scenario_id to data
+        data['scenario_id'] = scenario_id
+        
+        # Build INSERT statement with conflict handling
+        columns = list(data.keys())
+        placeholders = ', '.join(['?' for _ in columns])
+        
+        # For conflict handling, update all columns except the primary key
+        non_pk_columns = [c for c in columns if c != id_column]
+        updates = ', '.join([f"{col} = excluded.{col}" for col in non_pk_columns])
+        
+        conn.execute(f"""
+            INSERT INTO {table_name} ({', '.join(columns)})
+            VALUES ({placeholders})
+            ON CONFLICT ({id_column}) DO UPDATE SET {updates}
+        """, list(data.values()))
+        
+        return True
+        
+    except Exception:
+        # Canonical insert is optional - JSON storage is the primary source
+        # Table might not exist or columns might not match - this is OK
+        return False
 
 
 # =============================================================================
@@ -1250,6 +1319,15 @@ def add_entities(params: AddEntitiesInput) -> str:
                             INSERT INTO scenario_entities 
                             VALUES (nextval('scenario_entities_seq'), ?, ?, ?, ?, ?)
                         """, [scenario_id, entity_type_normalized, entity_id, entity_json, datetime.utcnow()])
+                    
+                    # Also insert into canonical table for query consistency
+                    # This ensures get_summary and direct table queries work correctly
+                    insert_into_canonical_table(
+                        service.conn,
+                        scenario_id,
+                        entity_type_normalized,
+                        entity
+                    )
                     
                     added_ids.append(entity_id)
                 
