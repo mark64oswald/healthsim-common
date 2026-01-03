@@ -30,7 +30,7 @@ Learn to generate data for specific clinical conditions.
 |--------|----------------|-------|
 | **Diabetes** | "Generate a 62-year-old with Type 2 diabetes and A1C of 8.5" | [PatientSim Example 2](patientsim-examples.md#example-2-diabetic-patient) |
 | **Heart Failure** | "Generate a patient with HFrEF and NYHA Class III" | [PatientSim Example 3](patientsim-examples.md#example-3-heart-failure-patient) |
-| **CKD** | "Generate a patient with Stage 4 CKD" | [PatientSim Example 4](patientsim-examples.md#example-4-ckd-patient) |
+| **CKD** | "Generate a patient with Stage 4 CKD" | [PatientSim Example 4](patientsim-examples.md#example-4-patient-with-encounter) |
 | **Oncology** | "Generate a Stage IIA breast cancer patient" | [Oncology Examples](oncology-examples.md) |
 | **Behavioral Health** | "Generate a psychotherapy claim for depression" | [MemberSim](membersim-examples.md) |
 
@@ -45,7 +45,7 @@ Generate clinical trial data with CDISC compliance.
 | **Phase 3 Trial** | "Generate Phase 3 oncology trial with 100 subjects" | [TrialSim Quick Start](trialsim-examples.md#quick-start-examples) |
 | **Dose Escalation** | "Generate Phase 1 3+3 dose escalation study" | [Phase 1 Examples](trialsim-examples.md#phase-i-dose-escalation-examples) |
 | **Adverse Events** | "Generate AEs with MedDRA coding for 50 subjects" | [TrialSim AE Example](trialsim-examples.md#example-2-generate-adverse-events) |
-| **SDTM Output** | "Generate DM and AE domains as SDTM" | [SDTM Domain Examples](trialsim-examples.md#sdtm-domain-output-examples) |
+| **SDTM Output** | "Generate DM and AE domains as SDTM" | [SDTM Domain Examples](trialsim-examples.md#sdtm-domain-examples) |
 | **Trial Analytics** | "Generate trial data as star schema for DuckDB" | [Dimensional Analytics](trialsim-examples.md#dimensional-analytics-examples) |
 
 ---
@@ -69,10 +69,10 @@ Generate providers, facilities, pharmacies, and network configurations.
 
 | Scenario | Example Prompt | Guide |
 |----------|----------------|-------|
-| **Provider** | "Generate a cardiologist in Houston with full credentials" | [NetworkSim Example 1](networksim-examples.md#generate-specialist-with-credentials) |
-| **Hospital** | "Generate a 200-bed community hospital in Dallas" | [NetworkSim Example 2](networksim-examples.md#generate-community-hospital) |
-| **Specialty Pharmacy** | "Generate a specialty pharmacy for oncology" | [NetworkSim Example 3](networksim-examples.md#generate-specialty-pharmacy) |
-| **Network Config** | "Generate a tiered PPO network with 3 tiers" | [NetworkSim Example 4](networksim-examples.md#tiered-ppo-network) |
+| **Provider** | "Generate a cardiologist in Houston with full credentials" | [NetworkSim - Find Providers](networksim-examples.md#find-providers-by-specialty-and-location) |
+| **Hospital** | "Generate a 200-bed community hospital in Dallas" | [NetworkSim - Generate Hospital](networksim-examples.md#generate-a-hospital) |
+| **Specialty Pharmacy** | "Generate a specialty pharmacy for oncology" | [NetworkSim - Generate Pharmacy](networksim-examples.md#generate-a-pharmacy) |
+| **Network Config** | "Generate a tiered PPO network with 3 tiers" | [NetworkSim - Network Types](networksim-examples.md#explain-network-types) |
 
 ---
 
@@ -84,8 +84,8 @@ Understand healthcare payment workflows.
 |----------|----------------|-------|
 | **Paid Claim** | "Generate a paid claim with copay applied" | [MemberSim Example 1](membersim-examples.md#example-1-simple-office-visit-claim) |
 | **Denied Claim** | "Generate a denied MRI claim requiring prior auth" | [MemberSim Example 2](membersim-examples.md#example-2-denied-claim) |
-| **Facility Claim** | "Generate a hospital admission claim with DRG" | [MemberSim Example 3](membersim-examples.md#example-3-facility-claim-with-drg) |
-| **Deductible Applied** | "Generate a claim where deductible applies" | [MemberSim Example 4](membersim-examples.md#example-4-claim-with-deductible) |
+| **Facility Claim** | "Generate a hospital admission claim with DRG" | [MemberSim Example 4](membersim-examples.md#example-4-facilityinpatient-claim) |
+| **Deductible Applied** | "Generate a claim where deductible applies" | [MemberSim Example 3](membersim-examples.md#example-3-claim-with-deductible) |
 
 ---
 
@@ -96,9 +96,9 @@ Test pharmacy benefit workflows and drug utilization review.
 | Scenario | Example Prompt | Guide |
 |----------|----------------|-------|
 | **Drug Interaction** | "Generate a pharmacy claim with drug-drug interaction" | [RxMemberSim Example 2](rxmembersim-examples.md#example-2-drug-interaction-alert) |
-| **Early Refill** | "Generate a pharmacy claim rejected for early refill" | [RxMemberSim Example 3](rxmembersim-examples.md#example-3-early-refill-rejection) |
-| **Step Therapy** | "Generate a step therapy rejection" | [RxMemberSim Example 4](rxmembersim-examples.md#example-4-step-therapy) |
-| **Specialty Drug** | "Generate a specialty pharmacy claim with PA" | [RxMemberSim Example 5](rxmembersim-examples.md#example-5-specialty-pharmacy) |
+| **Prior Auth Required** | "Generate a pharmacy claim rejected for prior authorization" | [RxMemberSim Example 3](rxmembersim-examples.md#example-3-prior-authorization-required) |
+| **Specialty Drug** | "Generate a specialty pharmacy claim with copay card" | [RxMemberSim Example 4](rxmembersim-examples.md#example-4-specialty-drug-with-copay-assistance) |
+| **Early Refill** | "Generate a pharmacy claim rejected for early refill" | [RxMemberSim Example 5](rxmembersim-examples.md#example-5-early-refill-scenario) |
 
 ---
 
@@ -108,11 +108,11 @@ Generate and persist large batches without filling context.
 
 | Scenario | Example Prompt | Guide |
 |----------|----------------|-------|
-| **Batch Generation** | "Generate 100 Medicare members over 65 in California" | [Auto-Persist Example 1](auto-persist-examples.md#example-1-generate-100-medicare-members) |
-| **Query Saved Data** | "From my medicare scenario, show female members with diabetes" | [Auto-Persist Example 2](auto-persist-examples.md#example-2-query-saved-scenario-data) |
+| **Batch Generation** | "Generate 100 Medicare members over 65 in California" | [Auto-Persist Example 1](auto-persist-examples.md#example-1-generate-large-member-cohort) |
+| **Query Saved Data** | "From my medicare scenario, show female members with diabetes" | [Auto-Persist Example 2](auto-persist-examples.md#example-2-query-saved-data) |
 | **Resume with Summary** | "Load my diabetes cohort from yesterday" | [Auto-Persist Example 3](auto-persist-examples.md#example-3-resume-work-with-summary) |
 | **Get Samples** | "Show me a few example patients from that cohort" | [Auto-Persist Example 4](auto-persist-examples.md#example-4-get-sample-entities) |
-| **Batch Trial Data** | "Generate a trial with 200 subjects" | [Auto-Persist Example 5](auto-persist-examples.md#example-5-batch-generation-workflow) |
+| **Batch Trial Data** | "Generate a trial with 200 subjects" | [Auto-Persist Example 5](auto-persist-examples.md#example-5-generate-clinical-trial-scenario) |
 
 ---
 
@@ -126,7 +126,7 @@ Transform data to healthcare standards.
 | **C-CDA** | "Generate a discharge summary as C-CDA" | [Format Examples - C-CDA](format-examples.md#c-cda-examples) |
 | **HL7v2 ADT** | "Generate an admission as ADT A01 message" | [Format Examples - HL7v2](format-examples.md#hl7v2-examples) |
 | **X12 837** | "Generate a professional claim as X12 837P" | [Format Examples - X12](format-examples.md#x12-examples) |
-| **CSV** | "Generate 10 patients as CSV" | [Format Examples - CSV](format-examples.md#csv-examples) |
+| **CSV** | "Generate 10 patients as CSV" | [Format Examples - CSV](format-examples.md#csv-export-example) |
 
 ---
 
@@ -140,9 +140,9 @@ Create realistic end-to-end test data spanning multiple products.
 | **Hospitalization Episode** | Inpatient admission, follow-up, discharge meds | [Cross-Domain Example 2](cross-domain-examples.md#example-2-hospitalization-with-follow-up) |
 | **Prior Auth Flow** | Rejection → PA submission → Approval → Fill | [Cross-Domain Example 3](cross-domain-examples.md#example-3-prior-auth-flow) |
 | **Value-Based Care** | Patient with quality measures and care gaps | [Cross-Domain Example 4](cross-domain-examples.md#example-4-value-based-care-report) |
-| **Trial + EMR Linkage** | Trial subject linked to PatientSim medical history | [Cross-Domain Example 5](cross-domain-examples.md#example-5-clinical-trial-subject-with-emr-linkage) |
-| **Trial + Provider Network** | Trial site linked to NetworkSim facilities | [Cross-Domain Example 6](cross-domain-examples.md#example-6-trial-subject-with-site-provider-linkage) |
-| **Trial Analytics** | Cross-product dimensional analytics | [Cross-Domain Example 7](cross-domain-examples.md#example-7-cross-product-dimensional-analytics) |
+| **Trial + EMR Linkage** | Trial subject linked to PatientSim medical history | [Cross-Domain Example 6](cross-domain-examples.md#example-6-clinical-trial-subject-with-emr-linkage-trialsim--patientsim) |
+| **Trial + Provider Network** | Trial site linked to NetworkSim facilities | [Cross-Domain Example 7](cross-domain-examples.md#example-7-trial-subject-with-site-provider-linkage-trialsim--networksim) |
+| **Trial Analytics** | Cross-product dimensional analytics | [Cross-Domain Example 8](cross-domain-examples.md#example-8-cross-product-dimensional-analytics-trialsim--patientsim) |
 
 ---
 

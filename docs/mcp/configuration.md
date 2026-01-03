@@ -510,5 +510,5 @@ MCP servers can:
 ## See Also
 
 - [MCP Integration Guide](integration-guide.md)
-- [State Management](../state-management/user-guide.md)
+- [MCP Development Guide](development-guide.md)
 - [MCP Protocol Specification](https://spec.modelcontextprotocol.io/)

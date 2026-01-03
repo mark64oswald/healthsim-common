@@ -451,9 +451,9 @@ Thank you for making HealthSim better!
 1. **Pick an issue:** Check Good First Issues labels
 2. **Join discussion:** Introduce yourself in Discussions
 3. **Read the guides:**
-   - [Architecture](architecture/layered-pattern.md) - System design
+   - [Architecture](HEALTHSIM-ARCHITECTURE-GUIDE.md) - System design
    - [Extension Philosophy](extensions/philosophy.md) - Adding capabilities
-   - [Creating Skills](skills/creating-skills.md) - Add scenarios
+   - [Creating Skills](extensions/skills.md) - Add scenarios
    - [MCP Tools](extensions/mcp-tools.md) - Add MCP tools
 
 **Questions?** Open a Discussion or ask in your PR!

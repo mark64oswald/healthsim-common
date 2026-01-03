@@ -104,7 +104,7 @@ For complete generation parameters, examples, and validation rules, see:
 ## Related Documentation
 
 - [hello-healthsim PatientSim Examples](../../hello-healthsim/examples/patientsim-examples.md)
-- [Cross-Product Integration Guide](../../docs/HEALTHSIM-ARCHITECTURE-GUIDE.md#83-cross-product-integration)
+- [Cross-Product Integration Guide](../../docs/HEALTHSIM-ARCHITECTURE-GUIDE.md#93-cross-product-integration)
 - [Output Formats](../../formats/)
 - [Code Systems Reference](../../references/code-systems.md)
 

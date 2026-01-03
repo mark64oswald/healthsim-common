@@ -109,7 +109,7 @@ For complete generation parameters, examples, and validation rules, see:
 
 - [hello-healthsim PopulationSim Examples](../../hello-healthsim/examples/populationsim-examples.md)
 - [Data Integration Guide](../patientsim/data-integration.md)
-- [Cross-Product Integration Guide](../../docs/HEALTHSIM-ARCHITECTURE-GUIDE.md#83-cross-product-integration)
+- [Cross-Product Integration Guide](../../docs/HEALTHSIM-ARCHITECTURE-GUIDE.md#93-cross-product-integration)
 
 ---
 

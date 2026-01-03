@@ -88,7 +88,7 @@ This grounds the members in:
 - Expected utilization based on CDC PLACES data
 - SDOH factors affecting plan selection and adherence
 
-See [SKILL.md](SKILL.md#cross-product-populationsim-demographics--sdoh---v20-data-integration) for full integration details.
+See [SKILL.md](SKILL.md) for full integration details.
 
 ## Skills Reference
 
@@ -100,7 +100,7 @@ For complete generation parameters, examples, and validation rules, see:
 ## Related Documentation
 
 - [hello-healthsim MemberSim Examples](../../hello-healthsim/examples/membersim-examples.md)
-- [Cross-Product Integration Guide](../../docs/HEALTHSIM-ARCHITECTURE-GUIDE.md#83-cross-product-integration)
+- [Cross-Product Integration Guide](../../docs/HEALTHSIM-ARCHITECTURE-GUIDE.md#93-cross-product-integration)
 - [X12 Format Specifications](../../formats/)
 - [Code Systems Reference](../../references/code-systems.md)
 

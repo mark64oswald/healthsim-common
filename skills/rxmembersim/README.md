@@ -83,7 +83,7 @@ This grounds the claims in:
 - Channel preferences (more mail-order with transportation barriers)
 - Generic utilization patterns based on poverty rates
 
-See [SKILL.md](SKILL.md#cross-product-populationsim-demographics--sdoh---v20-data-integration) for full integration details.
+See [SKILL.md](SKILL.md#cross-product-populationsim-demographics--sdoh--v20-data-integration) for full integration details.
 
 ## DUR Alert Types
 
@@ -106,7 +106,7 @@ For complete generation parameters, examples, and validation rules, see:
 ## Related Documentation
 
 - [hello-healthsim RxMemberSim Examples](../../hello-healthsim/examples/rxmembersim-examples.md)
-- [Cross-Product Integration Guide](../../docs/HEALTHSIM-ARCHITECTURE-GUIDE.md#83-cross-product-integration)
+- [Cross-Product Integration Guide](../../docs/HEALTHSIM-ARCHITECTURE-GUIDE.md#93-cross-product-integration)
 - [NCPDP Format Specification](../../formats/ncpdp-d0.md)
 - [Code Systems Reference](../../references/code-systems.md)
 
