@@ -1,5 +1,5 @@
 """
-Scenario summary generation for context-efficient loading.
+Cohort summary generation for context-efficient loading.
 
 Generates statistical summaries that fit within token budget (~500 tokens)
 while providing enough information for generation consistency.
@@ -20,9 +20,9 @@ from ..db import get_connection
 
 
 @dataclass
-class ScenarioSummary:
+class CohortSummary:
     """
-    Token-efficient scenario summary.
+    Token-efficient cohort summary.
     
     Target budget:
     - Metadata: ~100 tokens
@@ -33,7 +33,7 @@ class ScenarioSummary:
     Total: ~3,500 tokens for full summary with samples
     """
     
-    scenario_id: str
+    cohort_id: str
     name: str
     description: Optional[str] = None
     created_at: Optional[datetime] = None
@@ -54,7 +54,7 @@ class ScenarioSummary:
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dict for JSON serialization."""
         return {
-            'scenario_id': self.scenario_id,
+            'cohort_id': self.cohort_id,
             'name': self.name,
             'description': self.description,
             'created_at': self.created_at.isoformat() if self.created_at else None,
@@ -70,10 +70,10 @@ class ScenarioSummary:
         return json.dumps(self.to_dict(), indent=indent, default=str)
     
     @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> 'ScenarioSummary':
+    def from_dict(cls, data: Dict[str, Any]) -> 'CohortSummary':
         """Create from dictionary."""
         return cls(
-            scenario_id=data['scenario_id'],
+            cohort_id=data['cohort_id'],
             name=data['name'],
             description=data.get('description'),
             created_at=datetime.fromisoformat(data['created_at']) if data.get('created_at') else None,
@@ -141,8 +141,8 @@ ENTITY_COUNT_TABLES = {
 }
 
 
-def _get_entity_counts(scenario_id: str, connection=None) -> Dict[str, int]:
-    """Get entity counts for all tables in a scenario."""
+def _get_entity_counts(cohort_id: str, connection=None) -> Dict[str, int]:
+    """Get entity counts for all tables in a cohort."""
     conn = connection or get_connection()
     counts = {}
     
@@ -151,19 +151,19 @@ def _get_entity_counts(scenario_id: str, connection=None) -> Dict[str, int]:
             result = conn.execute(f"""
                 SELECT COUNT(*) FROM {table_name}
                 WHERE cohort_id = ?
-            """, [scenario_id]).fetchone()
+            """, [cohort_id]).fetchone()
             
             count = result[0] if result else 0
             if count > 0:
                 counts[entity_type] = count
         except Exception:
-            # Table may not exist or have scenario_id column
+            # Table may not exist or have cohort_id column
             pass
     
     return counts
 
 
-def _calculate_patient_statistics(scenario_id: str, connection=None) -> Dict[str, Any]:
+def _calculate_patient_statistics(cohort_id: str, connection=None) -> Dict[str, Any]:
     """Calculate statistics for patient data."""
     conn = connection or get_connection()
     stats = {}
@@ -177,7 +177,7 @@ def _calculate_patient_statistics(scenario_id: str, connection=None) -> Dict[str
                 AVG(CAST((julianday('now') - julianday(birth_date)) / 365.25 AS INTEGER)) as avg_age
             FROM patients
             WHERE cohort_id = ? AND birth_date IS NOT NULL
-        """, [scenario_id]).fetchone()
+        """, [cohort_id]).fetchone()
         
         if result and result[0] is not None:
             stats['age_range'] = {
@@ -192,7 +192,7 @@ def _calculate_patient_statistics(scenario_id: str, connection=None) -> Dict[str
             FROM patients
             WHERE cohort_id = ?
             GROUP BY gender
-        """, [scenario_id]).fetchall()
+        """, [cohort_id]).fetchall()
         
         if result:
             stats['gender_distribution'] = {row[0]: row[1] for row in result if row[0]}
@@ -203,7 +203,7 @@ def _calculate_patient_statistics(scenario_id: str, connection=None) -> Dict[str
     return stats
 
 
-def _calculate_encounter_statistics(scenario_id: str, connection=None) -> Dict[str, Any]:
+def _calculate_encounter_statistics(cohort_id: str, connection=None) -> Dict[str, Any]:
     """Calculate statistics for encounter data."""
     conn = connection or get_connection()
     stats = {}
@@ -216,7 +216,7 @@ def _calculate_encounter_statistics(scenario_id: str, connection=None) -> Dict[s
                 MAX(DATE(admission_time)) as max_date
             FROM encounters
             WHERE cohort_id = ? AND admission_time IS NOT NULL
-        """, [scenario_id]).fetchone()
+        """, [cohort_id]).fetchone()
         
         if result and result[0]:
             stats['date_range'] = {
@@ -232,7 +232,7 @@ def _calculate_encounter_statistics(scenario_id: str, connection=None) -> Dict[s
             GROUP BY class_code
             ORDER BY count DESC
             LIMIT 5
-        """, [scenario_id]).fetchall()
+        """, [cohort_id]).fetchall()
         
         if result:
             stats['encounter_types'] = {row[0]: row[1] for row in result if row[0]}
@@ -243,7 +243,7 @@ def _calculate_encounter_statistics(scenario_id: str, connection=None) -> Dict[s
     return stats
 
 
-def _calculate_claims_statistics(scenario_id: str, connection=None) -> Dict[str, Any]:
+def _calculate_claims_statistics(cohort_id: str, connection=None) -> Dict[str, Any]:
     """Calculate statistics for claims data."""
     conn = connection or get_connection()
     stats = {}
@@ -258,7 +258,7 @@ def _calculate_claims_statistics(scenario_id: str, connection=None) -> Dict[str,
                 AVG(total_charge) as avg_charge
             FROM claims
             WHERE cohort_id = ?
-        """, [scenario_id]).fetchone()
+        """, [cohort_id]).fetchone()
         
         if result and result[0]:
             stats['financials'] = {
@@ -274,7 +274,7 @@ def _calculate_claims_statistics(scenario_id: str, connection=None) -> Dict[str,
             FROM claims
             WHERE cohort_id = ?
             GROUP BY claim_type
-        """, [scenario_id]).fetchall()
+        """, [cohort_id]).fetchall()
         
         if result:
             stats['claim_types'] = {row[0]: row[1] for row in result if row[0]}
@@ -285,7 +285,7 @@ def _calculate_claims_statistics(scenario_id: str, connection=None) -> Dict[str,
     return stats
 
 
-def _calculate_diagnosis_statistics(scenario_id: str, connection=None) -> Dict[str, Any]:
+def _calculate_diagnosis_statistics(cohort_id: str, connection=None) -> Dict[str, Any]:
     """Calculate statistics for diagnosis data."""
     conn = connection or get_connection()
     stats = {}
@@ -299,7 +299,7 @@ def _calculate_diagnosis_statistics(scenario_id: str, connection=None) -> Dict[s
             GROUP BY code, description
             ORDER BY count DESC
             LIMIT 5
-        """, [scenario_id]).fetchall()
+        """, [cohort_id]).fetchall()
         
         if result:
             stats['top_diagnoses'] = [
@@ -314,7 +314,7 @@ def _calculate_diagnosis_statistics(scenario_id: str, connection=None) -> Dict[s
 
 
 def _get_diverse_samples(
-    scenario_id: str,
+    cohort_id: str,
     entity_type: str,
     table_name: str,
     count: int = 3,
@@ -339,7 +339,7 @@ def _get_diverse_samples(
             SELECT * FROM {table_name}
             WHERE cohort_id = ?
             ORDER BY created_at
-        """, [scenario_id]).fetchall()
+        """, [cohort_id]).fetchall()
         
         if result:
             total = len(result)
@@ -372,22 +372,22 @@ def _get_diverse_samples(
 
 
 def generate_summary(
-    scenario_id: str,
+    cohort_id: str,
     include_samples: bool = True,
     samples_per_type: int = 3,
     connection=None,
-) -> ScenarioSummary:
+) -> CohortSummary:
     """
-    Generate a token-efficient summary of a scenario.
+    Generate a token-efficient summary of a cohort.
     
     Args:
-        scenario_id: UUID of the scenario
+        cohort_id: UUID of the cohort
         include_samples: Whether to include sample entities
         samples_per_type: Number of samples per major entity type
         connection: Optional database connection
         
     Returns:
-        ScenarioSummary with counts, statistics, and optional samples
+        CohortSummary with counts, statistics, and optional samples
         
     Target token budget:
     - Without samples: ~500 tokens
@@ -395,18 +395,18 @@ def generate_summary(
     """
     conn = connection or get_connection()
     
-    # Get scenario metadata
+    # Get cohort metadata
     result = conn.execute("""
         SELECT id, name, description, created_at, updated_at
         FROM cohorts
         WHERE id = ?
-    """, [scenario_id]).fetchone()
+    """, [cohort_id]).fetchone()
     
     if not result:
-        raise ValueError(f"Scenario not found: {scenario_id}")
+        raise ValueError(f"Cohort not found: {cohort_id}")
     
-    summary = ScenarioSummary(
-        scenario_id=str(result[0]),
+    summary = CohortSummary(
+        cohort_id=str(result[0]),
         name=result[1],
         description=result[2],
         created_at=result[3],
@@ -418,26 +418,26 @@ def generate_summary(
         SELECT tag FROM cohort_tags
         WHERE cohort_id = ?
         ORDER BY tag
-    """, [scenario_id]).fetchall()
+    """, [cohort_id]).fetchall()
     summary.tags = [row[0] for row in tags_result]
     
     # Get entity counts
-    summary.entity_counts = _get_entity_counts(scenario_id, conn)
+    summary.entity_counts = _get_entity_counts(cohort_id, conn)
     
     # Calculate statistics based on what entities exist
     statistics = {}
     
     if summary.entity_counts.get('patients', 0) > 0:
-        statistics.update(_calculate_patient_statistics(scenario_id, conn))
+        statistics.update(_calculate_patient_statistics(cohort_id, conn))
     
     if summary.entity_counts.get('encounters', 0) > 0:
-        statistics.update(_calculate_encounter_statistics(scenario_id, conn))
+        statistics.update(_calculate_encounter_statistics(cohort_id, conn))
     
     if summary.entity_counts.get('claims', 0) > 0:
-        statistics.update(_calculate_claims_statistics(scenario_id, conn))
+        statistics.update(_calculate_claims_statistics(cohort_id, conn))
     
     if summary.entity_counts.get('diagnoses', 0) > 0:
-        statistics.update(_calculate_diagnosis_statistics(scenario_id, conn))
+        statistics.update(_calculate_diagnosis_statistics(cohort_id, conn))
     
     summary.statistics = statistics
     
@@ -458,7 +458,7 @@ def generate_summary(
         for entity_type, table_name in sample_types:
             if summary.entity_counts.get(entity_type, 0) > 0:
                 entity_samples = _get_diverse_samples(
-                    scenario_id, entity_type, table_name,
+                    cohort_id, entity_type, table_name,
                     count=samples_per_type, connection=conn
                 )
                 if entity_samples:
@@ -469,19 +469,19 @@ def generate_summary(
     return summary
 
 
-def get_scenario_by_name(
+def get_cohort_by_name(
     name: str,
     connection=None,
 ) -> Optional[str]:
     """
-    Find scenario ID by name (fuzzy match).
+    Find cohort ID by name (fuzzy match).
     
     Args:
-        name: Scenario name to search for
+        name: Cohort name to search for
         connection: Optional database connection
         
     Returns:
-        Scenario ID if found, None otherwise
+        Cohort ID if found, None otherwise
     """
     conn = connection or get_connection()
     

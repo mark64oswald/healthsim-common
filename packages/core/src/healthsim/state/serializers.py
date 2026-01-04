@@ -567,7 +567,7 @@ SERIALIZERS = {
     'prescriptions': serialize_prescription,
     'subject': serialize_subject,
     'subjects': serialize_subject,
-    # pcp_assignments: stored in scenario_entities JSON only, no canonical table
+    # pcp_assignments: stored in cohort_entities JSON only, no canonical table
 }
 
 DESERIALIZERS = {
@@ -601,7 +601,7 @@ ENTITY_TABLE_MAP = {
     'prescriptions': ('prescriptions', 'prescription_id'),
     'subject': ('subjects', 'subject_id'),
     'subjects': ('subjects', 'subject_id'),
-    # pcp_assignments: no canonical table - stored in scenario_entities JSON only
+    # pcp_assignments: no canonical table - stored in cohort_entities JSON only
 }
 
 

@@ -21,8 +21,8 @@ Auto-Persist Classes (Structured RAG Pattern):
     AutoPersistService: Main service for auto-persistence
     PersistResult: Result of entity persistence
     QueryResult: Paginated query results
-    ScenarioSummary: Token-efficient scenario summary
-    ScenarioBrief: Brief scenario info for listing
+    CohortSummary: Token-efficient cohort summary
+    CohortBrief: Brief cohort info for listing
 
 Usage:
     Products extend Session and SessionManager with their entity types:
@@ -44,7 +44,7 @@ Usage:
     For auto-persist (recommended for token efficiency):
 
     ```python
-    from healthsim.state import persist, get_summary, query_scenario
+    from healthsim.state import persist, get_summary, query_cohort
 
     # Persist entities - returns summary, not full data
     result = persist({'patients': patient_list}, context='diabetes cohort')
@@ -53,7 +53,7 @@ Usage:
     summary = get_summary('diabetes-cohort-20241227')
     
     # Query for specific data with pagination
-    results = query_scenario(scenario_id, "SELECT * FROM patients WHERE gender = 'F'")
+    results = query_cohort(cohort_id, "SELECT * FROM patients WHERE gender = 'F'")
     ```
 """
 
@@ -66,45 +66,45 @@ from .manager import (
     get_manager,
     reset_manager,
     # Traditional methods (full data)
-    save_scenario,
-    load_scenario,
-    list_scenarios,
-    delete_scenario,
-    scenario_exists,
-    export_scenario_to_json,
-    import_scenario_from_json,
+    save_cohort,
+    load_cohort,
+    list_cohorts,
+    delete_cohort,
+    cohort_exists,
+    export_cohort_to_json,
+    import_cohort_from_json,
     # Auto-persist convenience functions
     persist,
     get_summary,
-    query_scenario,
+    query_cohort,
 )
 from .legacy import (
     export_to_json,
     import_from_json,
-    list_legacy_scenarios,
-    migrate_legacy_scenario,
-    migrate_all_legacy_scenarios,
-    LEGACY_SCENARIOS_PATH,
+    list_legacy_cohorts,
+    migrate_legacy_cohort,
+    migrate_all_legacy_cohorts,
+    LEGACY_COHORTS_PATH,
 )
 
 # Auto-persist (Structured RAG Pattern)
 from .auto_naming import (
-    generate_scenario_name,
+    generate_cohort_name,
     extract_keywords,
     ensure_unique_name,
     sanitize_name,
-    parse_scenario_name,
+    parse_cohort_name,
 )
 from .summary import (
-    ScenarioSummary,
+    CohortSummary,
     generate_summary,
-    get_scenario_by_name,
+    get_cohort_by_name,
 )
 from .auto_persist import (
     AutoPersistService,
     PersistResult,
     QueryResult,
-    ScenarioBrief,
+    CohortBrief,
     get_auto_persist_service,
     reset_service,
 )
@@ -128,39 +128,39 @@ __all__ = [
     "get_manager",
     "reset_manager",
     # Traditional methods (full data in context)
-    "save_scenario",
-    "load_scenario",
-    "list_scenarios",
-    "delete_scenario",
-    "scenario_exists",
-    "export_scenario_to_json",
-    "import_scenario_from_json",
+    "save_cohort",
+    "load_cohort",
+    "list_cohorts",
+    "delete_cohort",
+    "cohort_exists",
+    "export_cohort_to_json",
+    "import_cohort_from_json",
     # Auto-persist convenience functions (token-efficient)
     "persist",
     "get_summary",
-    "query_scenario",
+    "query_cohort",
     # Legacy JSON support
     "export_to_json",
     "import_from_json",
-    "list_legacy_scenarios",
-    "migrate_legacy_scenario",
-    "migrate_all_legacy_scenarios",
-    "LEGACY_SCENARIOS_PATH",
+    "list_legacy_cohorts",
+    "migrate_legacy_cohort",
+    "migrate_all_legacy_cohorts",
+    "LEGACY_COHORTS_PATH",
     # Auto-Naming
-    "generate_scenario_name",
+    "generate_cohort_name",
     "extract_keywords",
     "ensure_unique_name",
     "sanitize_name",
-    "parse_scenario_name",
+    "parse_cohort_name",
     # Summary
-    "ScenarioSummary",
+    "CohortSummary",
     "generate_summary",
-    "get_scenario_by_name",
+    "get_cohort_by_name",
     # Auto-Persist Service
     "AutoPersistService",
     "PersistResult",
     "QueryResult",
-    "ScenarioBrief",
+    "CohortBrief",
     "get_auto_persist_service",
     "reset_service",
 ]

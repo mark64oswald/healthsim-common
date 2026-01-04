@@ -21,33 +21,33 @@ import json
 
 from ..db import get_connection
 from .serializers import get_serializer, get_table_info, ENTITY_TABLE_MAP
-from .auto_naming import generate_scenario_name, ensure_unique_name, sanitize_name
-from .summary import ScenarioSummary, generate_summary, get_scenario_by_name
+from .auto_naming import generate_cohort_name, ensure_unique_name, sanitize_name
+from .summary import CohortSummary, generate_summary, get_cohort_by_name
 
 
 @dataclass
 class PersistResult:
     """Result of a persist operation."""
     
-    scenario_id: str
-    scenario_name: str
+    cohort_id: str
+    cohort_name: str
     entity_type: str
     entities_persisted: int
     entity_ids: List[str]
-    summary: ScenarioSummary
-    is_new_scenario: bool
+    summary: CohortSummary
+    is_new_cohort: bool
     batch_number: Optional[int] = None
     total_batches: Optional[int] = None
     
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary."""
         return {
-            'scenario_id': self.scenario_id,
-            'scenario_name': self.scenario_name,
+            'cohort_id': self.cohort_id,
+            'cohort_name': self.cohort_name,
             'entity_type': self.entity_type,
             'entities_persisted': self.entities_persisted,
             'entity_ids': self.entity_ids,
-            'is_new_scenario': self.is_new_scenario,
+            'is_new_cohort': self.is_new_cohort,
             'batch_number': self.batch_number,
             'total_batches': self.total_batches,
             'summary': self.summary.to_dict(),
@@ -83,10 +83,10 @@ class QueryResult:
 
 
 @dataclass
-class ScenarioBrief:
-    """Brief scenario info for listing."""
+class CohortBrief:
+    """Brief cohort info for listing."""
     
-    scenario_id: str
+    cohort_id: str
     name: str
     description: Optional[str]
     entity_count: int
@@ -97,7 +97,7 @@ class ScenarioBrief:
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary."""
         return {
-            'scenario_id': self.scenario_id,
+            'cohort_id': self.cohort_id,
             'name': self.name,
             'description': self.description,
             'entity_count': self.entity_count,
@@ -111,20 +111,20 @@ class ScenarioBrief:
 class CloneResult:
     """Result of a clone operation."""
     
-    source_scenario_id: str
-    source_scenario_name: str
-    new_scenario_id: str
-    new_scenario_name: str
+    source_cohort_id: str
+    source_cohort_name: str
+    new_cohort_id: str
+    new_cohort_name: str
     entities_cloned: Dict[str, int]
     total_entities: int
     
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary."""
         return {
-            'source_scenario_id': self.source_scenario_id,
-            'source_scenario_name': self.source_scenario_name,
-            'new_scenario_id': self.new_scenario_id,
-            'new_scenario_name': self.new_scenario_name,
+            'source_cohort_id': self.source_cohort_id,
+            'source_cohort_name': self.source_cohort_name,
+            'new_cohort_id': self.new_cohort_id,
+            'new_cohort_name': self.new_cohort_name,
             'entities_cloned': self.entities_cloned,
             'total_entities': self.total_entities,
         }
@@ -134,10 +134,10 @@ class CloneResult:
 class MergeResult:
     """Result of a merge operation."""
     
-    source_scenario_ids: List[str]
-    source_scenario_names: List[str]
-    target_scenario_id: str
-    target_scenario_name: str
+    source_cohort_ids: List[str]
+    source_cohort_names: List[str]
+    target_cohort_id: str
+    target_cohort_name: str
     entities_merged: Dict[str, int]
     total_entities: int
     conflicts_resolved: int
@@ -145,10 +145,10 @@ class MergeResult:
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary."""
         return {
-            'source_scenario_ids': self.source_scenario_ids,
-            'source_scenario_names': self.source_scenario_names,
-            'target_scenario_id': self.target_scenario_id,
-            'target_scenario_name': self.target_scenario_name,
+            'source_cohort_ids': self.source_cohort_ids,
+            'source_cohort_names': self.source_cohort_names,
+            'target_cohort_id': self.target_cohort_id,
+            'target_cohort_name': self.target_cohort_name,
             'entities_merged': self.entities_merged,
             'total_entities': self.total_entities,
             'conflicts_resolved': self.conflicts_resolved,
@@ -159,8 +159,8 @@ class MergeResult:
 class ExportResult:
     """Result of an export operation."""
     
-    scenario_id: str
-    scenario_name: str
+    cohort_id: str
+    cohort_name: str
     format: str
     file_path: str
     entities_exported: Dict[str, int]
@@ -170,8 +170,8 @@ class ExportResult:
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary."""
         return {
-            'scenario_id': self.scenario_id,
-            'scenario_name': self.scenario_name,
+            'cohort_id': self.cohort_id,
+            'cohort_name': self.cohort_name,
             'format': self.format,
             'file_path': self.file_path,
             'entities_exported': self.entities_exported,
@@ -284,7 +284,7 @@ class AutoPersistService:
     3. Provide paginated queries for data retrieval
     
     Also provides:
-    - Tag management for scenario organization
+    - Tag management for cohort organization
     - Scenario cloning for creating variations
     - Scenario merging for combining datasets
     - Export utilities for data portability
@@ -300,20 +300,20 @@ class AutoPersistService:
         )
         
         # Query data
-        query_result = service.query_scenario(
-            scenario_id=result.scenario_id,
+        query_result = service.query_cohort(
+            cohort_id=result.cohort_id,
             query="SELECT * FROM patients WHERE gender = 'F'"
         )
         
         # Tag management
-        service.add_tag(scenario_id, 'training')
-        service.remove_tag(scenario_id, 'draft')
+        service.add_tag(cohort_id, 'training')
+        service.remove_tag(cohort_id, 'draft')
         
-        # Clone scenario
-        clone = service.clone_scenario(scenario_id, 'new-name')
+        # Clone cohort
+        clone = service.clone_cohort(cohort_id, 'new-name')
         
         # Export
-        export = service.export_scenario(scenario_id, format='json')
+        export = service.export_cohort(cohort_id, format='json')
     """
     
     def __init__(self, connection=None):
@@ -336,14 +336,14 @@ class AutoPersistService:
     # Core Scenario Management
     # ========================================================================
     
-    def _create_scenario(
+    def _create_cohort(
         self,
         name: str,
         description: Optional[str] = None,
         tags: Optional[List[str]] = None,
     ) -> str:
         """
-        Create a new scenario.
+        Create a new cohort.
         
         Args:
             name: Scenario name
@@ -351,15 +351,15 @@ class AutoPersistService:
             tags: Optional list of tags
             
         Returns:
-            New scenario ID
+            New cohort ID
         """
-        scenario_id = str(uuid4())
+        cohort_id = str(uuid4())
         now = datetime.utcnow()
         
         self.conn.execute("""
             INSERT INTO cohorts (id, name, description, created_at, updated_at)
             VALUES (?, ?, ?, ?, ?)
-        """, [scenario_id, name, description, now, now])
+        """, [cohort_id, name, description, now, now])
         
         # Add tags
         if tags:
@@ -367,28 +367,28 @@ class AutoPersistService:
                 self.conn.execute("""
                     INSERT INTO cohort_tags (id, cohort_id, tag)
                     VALUES (nextval('cohort_tags_seq'), ?, ?)
-                """, [scenario_id, tag.lower()])
+                """, [cohort_id, tag.lower()])
         
-        return scenario_id
+        return cohort_id
     
-    def _update_scenario_timestamp(self, scenario_id: str):
-        """Update scenario's updated_at timestamp."""
+    def _update_cohort_timestamp(self, cohort_id: str):
+        """Update cohort's updated_at timestamp."""
         self.conn.execute("""
             UPDATE cohorts SET updated_at = ? WHERE id = ?
-        """, [datetime.utcnow(), scenario_id])
+        """, [datetime.utcnow(), cohort_id])
     
-    def _get_scenario_info(self, scenario_id: str) -> Optional[Dict[str, Any]]:
-        """Get scenario metadata."""
+    def _get_cohort_info(self, cohort_id: str) -> Optional[Dict[str, Any]]:
+        """Get cohort metadata."""
         result = self.conn.execute("""
             SELECT id, name, description, created_at, updated_at
             FROM cohorts WHERE id = ?
-        """, [scenario_id]).fetchone()
+        """, [cohort_id]).fetchone()
         
         if not result:
             return None
         
         return {
-            'scenario_id': result[0],
+            'cohort_id': result[0],
             'name': result[1],
             'description': result[2],
             'created_at': result[3],
@@ -410,9 +410,9 @@ class AutoPersistService:
         self,
         entities: List[Dict],
         entity_type: str,
-        scenario_id: Optional[str] = None,
-        scenario_name: Optional[str] = None,
-        scenario_description: Optional[str] = None,
+        cohort_id: Optional[str] = None,
+        cohort_name: Optional[str] = None,
+        cohort_description: Optional[str] = None,
         context_keywords: Optional[List[str]] = None,
         tags: Optional[List[str]] = None,
         batch_number: Optional[int] = None,
@@ -421,18 +421,18 @@ class AutoPersistService:
         """
         Persist entities to DuckDB and return summary.
         
-        If no scenario_id provided:
-        - Creates new scenario with auto-generated name
+        If no cohort_id provided:
+        - Creates new cohort with auto-generated name
         - Uses context_keywords for naming if available
         
         Args:
             entities: List of entity dictionaries to persist
             entity_type: Type of entities (patient, claim, etc.)
-            scenario_id: Existing scenario ID to add to (optional)
-            scenario_name: Name for new scenario (optional, auto-generated if not provided)
-            scenario_description: Description for new scenario (optional)
+            cohort_id: Existing cohort ID to add to (optional)
+            cohort_name: Name for new cohort (optional, auto-generated if not provided)
+            cohort_description: Description for cohort (optional)
             context_keywords: Keywords from generation context for auto-naming
-            tags: Tags for the scenario
+            tags: Tags for the cohort
             batch_number: Current batch number (for progress tracking)
             total_batches: Total number of batches (for progress tracking)
             
@@ -455,39 +455,39 @@ class AutoPersistService:
         # Get serializer
         serializer = get_serializer(entity_type)
         
-        # Create or use existing scenario
-        is_new_scenario = False
-        if not scenario_id:
-            is_new_scenario = True
+        # Create or use existing cohort
+        is_new_cohort = False
+        if not cohort_id:
+            is_new_cohort = True
             
             # Generate name if not provided
-            if not scenario_name:
-                scenario_name = generate_scenario_name(
+            if not cohort_name:
+                cohort_name = generate_cohort_name(
                     keywords=context_keywords,
                     entity_type=entity_type,
                     connection=self.conn,
                 )
             else:
-                scenario_name = ensure_unique_name(
-                    sanitize_name(scenario_name),
+                cohort_name = ensure_unique_name(
+                    sanitize_name(cohort_name),
                     connection=self.conn,
                 )
             
-            scenario_id = self._create_scenario(
-                name=scenario_name,
-                description=scenario_description,
+            cohort_id = self._create_cohort(
+                name=cohort_name,
+                description=cohort_description,
                 tags=tags,
             )
         else:
-            # Get existing scenario name
+            # Get existing cohort name
             result = self.conn.execute("""
                 SELECT name FROM cohorts WHERE id = ?
-            """, [scenario_id]).fetchone()
+            """, [cohort_id]).fetchone()
             
             if not result:
-                raise ValueError(f"Scenario not found: {scenario_id}")
+                raise ValueError(f"Cohort not found: {cohort_id}")
             
-            scenario_name = result[0]
+            cohort_name = result[0]
         
         # Persist entities
         entity_ids = []
@@ -500,7 +500,7 @@ class AutoPersistService:
                 serialized = entity.copy()
             
             # Add cohort_id (database column)
-            serialized['cohort_id'] = scenario_id
+            serialized['cohort_id'] = cohort_id
             
             # Get or generate entity ID
             entity_id = serialized.get(id_column) or str(uuid4())
@@ -533,79 +533,79 @@ class AutoPersistService:
                 else:
                     raise
         
-        # Update scenario timestamp
-        self._update_scenario_timestamp(scenario_id)
+        # Update cohort timestamp
+        self._update_cohort_timestamp(cohort_id)
         
         # Generate summary
         summary = generate_summary(
-            scenario_id=scenario_id,
+            cohort_id=cohort_id,
             include_samples=True,
             samples_per_type=3,
             connection=self.conn,
         )
         
         return PersistResult(
-            scenario_id=scenario_id,
-            scenario_name=scenario_name,
+            cohort_id=cohort_id,
+            cohort_name=cohort_name,
             entity_type=entity_type,
             entities_persisted=len(entities),
             entity_ids=entity_ids,
             summary=summary,
-            is_new_scenario=is_new_scenario,
+            is_new_cohort=is_new_cohort,
             batch_number=batch_number,
             total_batches=total_batches,
         )
     
-    def get_scenario_summary(
+    def get_cohort_summary(
         self,
-        scenario_id: Optional[str] = None,
-        scenario_name: Optional[str] = None,
+        cohort_id: Optional[str] = None,
+        cohort_name: Optional[str] = None,
         include_samples: bool = True,
         samples_per_type: int = 3,
-    ) -> ScenarioSummary:
+    ) -> CohortSummary:
         """
-        Get scenario summary for loading into context.
+        Get cohort summary for loading into context.
         
         IMPORTANT: Never loads full entity data!
         Returns summary (~500 tokens) + samples (~3000 tokens)
         
         Args:
-            scenario_id: Scenario UUID (optional if name provided)
-            scenario_name: Scenario name for fuzzy lookup (optional if ID provided)
+            cohort_id: Scenario UUID (optional if name provided)
+            cohort_name: Scenario name for fuzzy lookup (optional if ID provided)
             include_samples: Whether to include sample entities
             samples_per_type: Number of samples per entity type
             
         Returns:
-            ScenarioSummary with counts, statistics, and samples
+            CohortSummary with counts, statistics, and samples
         """
-        # Resolve scenario ID
-        if not scenario_id:
-            if not scenario_name:
-                raise ValueError("Either scenario_id or scenario_name required")
+        # Resolve cohort ID
+        if not cohort_id:
+            if not cohort_name:
+                raise ValueError("Either cohort_id or cohort_name required")
             
-            scenario_id = get_scenario_by_name(scenario_name, self.conn)
-            if not scenario_id:
-                raise ValueError(f"Scenario not found: {scenario_name}")
+            cohort_id = get_cohort_by_name(cohort_name, self.conn)
+            if not cohort_id:
+                raise ValueError(f"Cohort not found: {cohort_name}")
         
         return generate_summary(
-            scenario_id=scenario_id,
+            cohort_id=cohort_id,
             include_samples=include_samples,
             samples_per_type=samples_per_type,
             connection=self.conn,
         )
     
-    def query_scenario(
+    def query_cohort(
         self,
-        scenario_id: str,
+        cohort_id: str,
         query: str,
         limit: int = 20,
         offset: int = 0,
     ) -> QueryResult:
         """
-        Execute paginated query against scenario data.
+        Execute paginated query against cohort data.
         
         Args:
-            scenario_id: Scenario to query
+            cohort_id: Scenario to query
             query: SQL SELECT query
             limit: Results per page (default 20, max 100)
             offset: Starting offset
@@ -622,24 +622,24 @@ class AutoPersistService:
         # Enforce limits
         limit = min(limit, 100)
         
-        # Modify query to add pagination and scenario filter
+        # Modify query to add pagination and cohort filter
         # This is a simplified approach - assumes query doesn't already have LIMIT
         query_lower = query.lower().strip()
         
-        # Add scenario_id filter if not already present
+        # Add cohort_id filter if not already present
         if 'cohort_id' not in query_lower:
             # Find WHERE clause or add one
             if ' where ' in query_lower:
                 # Add to existing WHERE
                 where_idx = query_lower.index(' where ') + 7
-                query = query[:where_idx] + f"cohort_id = '{scenario_id}' AND " + query[where_idx:]
+                query = query[:where_idx] + f"cohort_id = '{cohort_id}' AND " + query[where_idx:]
             else:
                 # Find FROM clause and add WHERE after table name
                 # This is simplified - proper SQL parsing would be more robust
                 from_match = re.search(r'\bFROM\s+(\w+)', query, re.IGNORECASE)
                 if from_match:
                     table_end = from_match.end()
-                    query = query[:table_end] + f" WHERE cohort_id = '{scenario_id}'" + query[table_end:]
+                    query = query[:table_end] + f" WHERE cohort_id = '{cohort_id}'" + query[table_end:]
         
         # Remove any existing LIMIT/OFFSET
         query = re.sub(r'\bLIMIT\s+\d+', '', query, flags=re.IGNORECASE)
@@ -686,15 +686,15 @@ class AutoPersistService:
             query_executed=paginated_query,
         )
     
-    def list_scenarios(
+    def list_cohorts(
         self,
         filter_pattern: Optional[str] = None,
         tag: Optional[str] = None,
         limit: int = 20,
         sort_by: str = "updated_at",
-    ) -> List[ScenarioBrief]:
+    ) -> List[CohortBrief]:
         """
-        List available scenarios with brief stats.
+        List available cohorts with brief stats.
         
         Args:
             filter_pattern: Filter by name pattern (case-insensitive)
@@ -703,7 +703,7 @@ class AutoPersistService:
             sort_by: Sort field (updated_at, created_at, name)
             
         Returns:
-            List of ScenarioBrief objects
+            List of CohortBrief objects
         """
         # Build query
         query = """
@@ -742,9 +742,9 @@ class AutoPersistService:
         
         result = self.conn.execute(query, params).fetchall()
         
-        scenarios = []
+        cohorts = []
         for row in result:
-            scenario_id = str(row[0])
+            cohort_id = str(row[0])
             
             # Get entity count
             count = 0
@@ -752,7 +752,7 @@ class AutoPersistService:
                 try:
                     cnt_result = self.conn.execute(f"""
                         SELECT COUNT(*) FROM {table} WHERE cohort_id = ?
-                    """, [scenario_id]).fetchone()
+                    """, [cohort_id]).fetchone()
                     count += cnt_result[0] if cnt_result else 0
                 except Exception:
                     pass
@@ -760,11 +760,11 @@ class AutoPersistService:
             # Get tags
             tags_result = self.conn.execute("""
                 SELECT tag FROM cohort_tags WHERE cohort_id = ?
-            """, [scenario_id]).fetchall()
+            """, [cohort_id]).fetchall()
             tags = [t[0] for t in tags_result]
             
-            scenarios.append(ScenarioBrief(
-                scenario_id=scenario_id,
+            cohorts.append(CohortBrief(
+                cohort_id=cohort_id,
                 name=row[1],
                 description=row[2],
                 entity_count=count,
@@ -773,33 +773,33 @@ class AutoPersistService:
                 tags=tags,
             ))
         
-        return scenarios
+        return cohorts
     
-    def rename_scenario(
+    def rename_cohort(
         self,
-        scenario_id: str,
+        cohort_id: str,
         new_name: str,
     ) -> Tuple[str, str]:
         """
-        Rename a scenario.
+        Rename a cohort.
         
         Args:
-            scenario_id: Scenario to rename
-            new_name: New name for the scenario
+            cohort_id: Cohort to rename
+            new_name: New name for the cohort
             
         Returns:
             Tuple of (old_name, new_name)
             
         Raises:
-            ValueError: If scenario not found or name already exists
+            ValueError: If cohort not found or name already exists
         """
         # Get current name
         result = self.conn.execute("""
             SELECT name FROM cohorts WHERE id = ?
-        """, [scenario_id]).fetchone()
+        """, [cohort_id]).fetchone()
         
         if not result:
-            raise ValueError(f"Scenario not found: {scenario_id}")
+            raise ValueError(f"Cohort not found: {cohort_id}")
         
         old_name = result[0]
         
@@ -811,38 +811,38 @@ class AutoPersistService:
         self.conn.execute("""
             UPDATE cohorts SET name = ?, updated_at = ?
             WHERE id = ?
-        """, [new_name, datetime.utcnow(), scenario_id])
+        """, [new_name, datetime.utcnow(), cohort_id])
         
         return (old_name, new_name)
     
-    def delete_scenario(
+    def delete_cohort(
         self,
-        scenario_id: str,
+        cohort_id: str,
         confirm: bool = False,
     ) -> Dict[str, Any]:
         """
-        Delete scenario and all linked entities.
+        Delete cohort and all linked entities.
         
         Args:
-            scenario_id: Scenario to delete
+            cohort_id: Scenario to delete
             confirm: Must be True to proceed with deletion
             
         Returns:
-            Dict with deleted scenario info
+            Dict with deleted cohort info
             
         Raises:
-            ValueError: If confirm is not True or scenario not found
+            ValueError: If confirm is not True or cohort not found
         """
         if not confirm:
             raise ValueError("Deletion requires confirm=True")
         
-        # Get scenario info
+        # Get cohort info
         result = self.conn.execute("""
             SELECT name, description FROM cohorts WHERE id = ?
-        """, [scenario_id]).fetchone()
+        """, [cohort_id]).fetchone()
         
         if not result:
-            raise ValueError(f"Scenario not found: {scenario_id}")
+            raise ValueError(f"Cohort not found: {cohort_id}")
         
         name = result[0]
         description = result[1]
@@ -854,7 +854,7 @@ class AutoPersistService:
                 try:
                     cnt = self.conn.execute(f"""
                         SELECT COUNT(*) FROM {table_name} WHERE cohort_id = ?
-                    """, [scenario_id]).fetchone()
+                    """, [cohort_id]).fetchone()
                     entity_count += cnt[0] if cnt else 0
                 except Exception:
                     pass
@@ -865,22 +865,22 @@ class AutoPersistService:
                 try:
                     self.conn.execute(f"""
                         DELETE FROM {table_name} WHERE cohort_id = ?
-                    """, [scenario_id])
+                    """, [cohort_id])
                 except Exception:
                     pass
         
         # Delete tags
         self.conn.execute("""
             DELETE FROM cohort_tags WHERE cohort_id = ?
-        """, [scenario_id])
+        """, [cohort_id])
         
-        # Delete scenario
+        # Delete cohort
         self.conn.execute("""
             DELETE FROM cohorts WHERE id = ?
-        """, [scenario_id])
+        """, [cohort_id])
         
         return {
-            'scenario_id': scenario_id,
+            'cohort_id': cohort_id,
             'name': name,
             'description': description,
             'entity_count': entity_count,
@@ -888,7 +888,7 @@ class AutoPersistService:
     
     def get_entity_samples(
         self,
-        scenario_id: str,
+        cohort_id: str,
         entity_type: str,
         count: int = 3,
         strategy: str = "diverse",
@@ -897,7 +897,7 @@ class AutoPersistService:
         Get sample entities for pattern consistency.
         
         Args:
-            scenario_id: Scenario to get samples from
+            cohort_id: Scenario to get samples from
             entity_type: Type of entities to sample
             count: Number of samples (default 3)
             strategy: Sampling strategy
@@ -934,7 +934,7 @@ class AutoPersistService:
                 SELECT * FROM {table_name}
                 WHERE cohort_id = ?
                 {order_clause}
-            """, [scenario_id]).fetchall()
+            """, [cohort_id]).fetchall()
             
             columns = [desc[0] for desc in self.conn.execute(
                 f"SELECT * FROM {table_name} LIMIT 1"
@@ -972,23 +972,23 @@ class AutoPersistService:
     # Tag Management (Phase 2)
     # ========================================================================
     
-    def add_tag(self, scenario_id: str, tag: str) -> List[str]:
+    def add_tag(self, cohort_id: str, tag: str) -> List[str]:
         """
-        Add a tag to a scenario.
+        Add a tag to a cohort.
         
         Args:
-            scenario_id: Scenario to tag
+            cohort_id: Scenario to tag
             tag: Tag to add (case-insensitive, stored lowercase)
             
         Returns:
-            List of all tags on the scenario
+            List of all tags on the cohort
             
         Raises:
-            ValueError: If scenario not found
+            ValueError: If cohort not found
         """
-        # Verify scenario exists
-        if not self._get_scenario_info(scenario_id):
-            raise ValueError(f"Scenario not found: {scenario_id}")
+        # Verify cohort exists
+        if not self._get_cohort_info(cohort_id):
+            raise ValueError(f"Cohort not found: {cohort_id}")
         
         tag = tag.lower().strip()
         if not tag:
@@ -998,52 +998,52 @@ class AutoPersistService:
         existing = self.conn.execute("""
             SELECT COUNT(*) FROM cohort_tags
             WHERE cohort_id = ? AND tag = ?
-        """, [scenario_id, tag]).fetchone()[0]
+        """, [cohort_id, tag]).fetchone()[0]
         
         if existing == 0:
             self.conn.execute("""
                 INSERT INTO cohort_tags (cohort_id, tag)
                 VALUES (?, ?)
-            """, [scenario_id, tag])
-            self._update_scenario_timestamp(scenario_id)
+            """, [cohort_id, tag])
+            self._update_cohort_timestamp(cohort_id)
         
-        return self.get_tags(scenario_id)
+        return self.get_tags(cohort_id)
     
-    def remove_tag(self, scenario_id: str, tag: str) -> List[str]:
+    def remove_tag(self, cohort_id: str, tag: str) -> List[str]:
         """
-        Remove a tag from a scenario.
+        Remove a tag from a cohort.
         
         Args:
-            scenario_id: Scenario to modify
+            cohort_id: Scenario to modify
             tag: Tag to remove (case-insensitive)
             
         Returns:
-            List of remaining tags on the scenario
+            List of remaining tags on the cohort
             
         Raises:
-            ValueError: If scenario not found
+            ValueError: If cohort not found
         """
-        # Verify scenario exists
-        if not self._get_scenario_info(scenario_id):
-            raise ValueError(f"Scenario not found: {scenario_id}")
+        # Verify cohort exists
+        if not self._get_cohort_info(cohort_id):
+            raise ValueError(f"Cohort not found: {cohort_id}")
         
         tag = tag.lower().strip()
         
         self.conn.execute("""
             DELETE FROM cohort_tags
             WHERE cohort_id = ? AND tag = ?
-        """, [scenario_id, tag])
+        """, [cohort_id, tag])
         
-        self._update_scenario_timestamp(scenario_id)
+        self._update_cohort_timestamp(cohort_id)
         
-        return self.get_tags(scenario_id)
+        return self.get_tags(cohort_id)
     
-    def get_tags(self, scenario_id: str) -> List[str]:
+    def get_tags(self, cohort_id: str) -> List[str]:
         """
-        Get all tags for a scenario.
+        Get all tags for a cohort.
         
         Args:
-            scenario_id: Scenario to get tags for
+            cohort_id: Scenario to get tags for
             
         Returns:
             List of tags (sorted alphabetically)
@@ -1052,7 +1052,7 @@ class AutoPersistService:
             SELECT tag FROM cohort_tags
             WHERE cohort_id = ?
             ORDER BY tag
-        """, [scenario_id]).fetchall()
+        """, [cohort_id]).fetchall()
         
         return [row[0] for row in result]
     
@@ -1072,41 +1072,41 @@ class AutoPersistService:
         
         return [{'tag': row[0], 'count': row[1]} for row in result]
     
-    def scenarios_by_tag(self, tag: str) -> List[ScenarioBrief]:
+    def cohorts_by_tag(self, tag: str) -> List[CohortBrief]:
         """
-        Get all scenarios with a specific tag.
+        Get all cohorts with a specific tag.
         
         Args:
             tag: Tag to filter by (case-insensitive)
             
         Returns:
-            List of ScenarioBrief objects
+            List of CohortBrief objects
         """
-        return self.list_scenarios(tag=tag, limit=100)
+        return self.list_cohorts(tag=tag, limit=100)
     
     # ========================================================================
     # Scenario Cloning (Phase 2)
     # ========================================================================
     
-    def clone_scenario(
+    def clone_cohort(
         self,
-        source_scenario_id: str,
+        source_cohort_id: str,
         new_name: Optional[str] = None,
         description: Optional[str] = None,
         tags: Optional[List[str]] = None,
         include_entity_types: Optional[List[str]] = None,
     ) -> CloneResult:
         """
-        Clone a scenario with all its entities.
+        Clone a cohort with all its entities.
         
-        Creates an exact copy of the scenario with a new ID and name.
+        Creates an exact copy of the cohort with a new ID and name.
         All entity IDs are regenerated to ensure uniqueness.
         
         Args:
-            source_scenario_id: Scenario to clone
-            new_name: Name for the new scenario (auto-generated if not provided)
-            description: Description for new scenario (copied from source if not provided)
-            tags: Tags for new scenario (copied from source if not provided)
+            source_cohort_id: Scenario to clone
+            new_name: Name for the new cohort (auto-generated if not provided)
+            description: Description for cohort (copied from source if not provided)
+            tags: Tags for new cohort (copied from source if not provided)
             include_entity_types: Optional list of entity types to include
                                   (all types if not specified)
             
@@ -1114,12 +1114,12 @@ class AutoPersistService:
             CloneResult with clone details
             
         Raises:
-            ValueError: If source scenario not found
+            ValueError: If source cohort not found
         """
-        # Get source scenario info
-        source_info = self._get_scenario_info(source_scenario_id)
+        # Get source cohort info
+        source_info = self._get_cohort_info(source_cohort_id)
         if not source_info:
-            raise ValueError(f"Source scenario not found: {source_scenario_id}")
+            raise ValueError(f"Source cohort not found: {source_cohort_id}")
         
         source_name = source_info['name']
         
@@ -1134,10 +1134,10 @@ class AutoPersistService:
         
         # Get source tags if not provided
         if tags is None:
-            tags = self.get_tags(source_scenario_id)
+            tags = self.get_tags(source_cohort_id)
         
-        # Create new scenario
-        new_scenario_id = self._create_scenario(
+        # Create new cohort
+        new_cohort_id = self._create_cohort(
             name=new_name,
             description=description,
             tags=tags,
@@ -1165,7 +1165,7 @@ class AutoPersistService:
                 source_entities = self.conn.execute(f"""
                     SELECT * FROM {table_name}
                     WHERE cohort_id = ?
-                """, [source_scenario_id]).fetchall()
+                """, [source_cohort_id]).fetchall()
                 
                 if not source_entities:
                     continue
@@ -1176,7 +1176,7 @@ class AutoPersistService:
                     row_dict = dict(zip(columns, row))
                     
                     # Generate new IDs
-                    row_dict['cohort_id'] = new_scenario_id
+                    row_dict['cohort_id'] = new_cohort_id
                     row_dict[id_column] = str(uuid4())
                     
                     # Reset timestamps
@@ -1203,13 +1203,13 @@ class AutoPersistService:
                 # Log but continue with other tables
                 continue
         
-        self._update_scenario_timestamp(new_scenario_id)
+        self._update_cohort_timestamp(new_cohort_id)
         
         return CloneResult(
-            source_scenario_id=source_scenario_id,
-            source_scenario_name=source_name,
-            new_scenario_id=new_scenario_id,
-            new_scenario_name=new_name,
+            source_cohort_id=source_cohort_id,
+            source_cohort_name=source_name,
+            new_cohort_id=new_cohort_id,
+            new_cohort_name=new_name,
             entities_cloned=entities_cloned,
             total_entities=total_entities,
         )
@@ -1218,25 +1218,25 @@ class AutoPersistService:
     # Scenario Merging (Phase 2)
     # ========================================================================
     
-    def merge_scenarios(
+    def merge_cohorts(
         self,
-        source_scenario_ids: List[str],
+        source_cohort_ids: List[str],
         target_name: Optional[str] = None,
         description: Optional[str] = None,
         tags: Optional[List[str]] = None,
         conflict_strategy: str = "skip",
     ) -> MergeResult:
         """
-        Merge multiple scenarios into a new scenario.
+        Merge multiple cohorts into a new cohort.
         
-        Creates a new scenario containing entities from all source scenarios.
+        Creates a new cohort containing entities from all source cohorts.
         Entity IDs are regenerated to avoid conflicts.
         
         Args:
-            source_scenario_ids: List of scenario IDs to merge
-            target_name: Name for the merged scenario (auto-generated if not provided)
-            description: Description for merged scenario
-            tags: Tags for merged scenario (union of source tags if not provided)
+            source_cohort_ids: List of cohort IDs to merge
+            target_name: Name for the merged cohort (auto-generated if not provided)
+            description: Description for merged cohort
+            tags: Tags for merged cohort (union of source tags if not provided)
             conflict_strategy: How to handle duplicate entities
                 - "skip": Skip duplicates (default)
                 - "overwrite": Later sources overwrite earlier
@@ -1246,19 +1246,19 @@ class AutoPersistService:
             MergeResult with merge details
             
         Raises:
-            ValueError: If any source scenario not found or less than 2 sources
+            ValueError: If any source cohort not found or less than 2 sources
         """
-        if len(source_scenario_ids) < 2:
-            raise ValueError("At least 2 source scenarios required for merge")
+        if len(source_cohort_ids) < 2:
+            raise ValueError("At least 2 source cohorts required for merge")
         
-        # Validate all source scenarios exist
+        # Validate all source cohorts exist
         source_names = []
         all_tags = set()
         
-        for sid in source_scenario_ids:
-            info = self._get_scenario_info(sid)
+        for sid in source_cohort_ids:
+            info = self._get_cohort_info(sid)
             if not info:
-                raise ValueError(f"Source scenario not found: {sid}")
+                raise ValueError(f"Source cohort not found: {sid}")
             source_names.append(info['name'])
             all_tags.update(self.get_tags(sid))
         
@@ -1275,8 +1275,8 @@ class AutoPersistService:
         if description is None:
             description = f"Merged from: {', '.join(source_names)}"
         
-        # Create target scenario
-        target_scenario_id = self._create_scenario(
+        # Create target cohort
+        target_cohort_id = self._create_cohort(
             name=target_name,
             description=description,
             tags=tags,
@@ -1288,7 +1288,7 @@ class AutoPersistService:
         conflicts_resolved = 0
         seen_ids = {}  # Track seen IDs per table for conflict detection
         
-        for source_id in source_scenario_ids:
+        for source_id in source_cohort_ids:
             for table_name, id_column in CANONICAL_TABLES:
                 if not self._table_exists(table_name):
                     continue
@@ -1325,7 +1325,7 @@ class AutoPersistService:
                         seen_ids[table_name].add(original_id)
                         
                         # Generate new IDs
-                        row_dict['cohort_id'] = target_scenario_id
+                        row_dict['cohort_id'] = target_cohort_id
                         row_dict[id_column] = str(uuid4())
                         
                         # Reset timestamps
@@ -1350,13 +1350,13 @@ class AutoPersistService:
                 except Exception:
                     continue
         
-        self._update_scenario_timestamp(target_scenario_id)
+        self._update_cohort_timestamp(target_cohort_id)
         
         return MergeResult(
-            source_scenario_ids=source_scenario_ids,
-            source_scenario_names=source_names,
-            target_scenario_id=target_scenario_id,
-            target_scenario_name=target_name,
+            source_cohort_ids=source_cohort_ids,
+            source_cohort_names=source_names,
+            target_cohort_id=target_cohort_id,
+            target_cohort_name=target_name,
             entities_merged=entities_merged,
             total_entities=total_entities,
             conflicts_resolved=conflicts_resolved,
@@ -1366,19 +1366,19 @@ class AutoPersistService:
     # Export Utilities (Phase 2)
     # ========================================================================
     
-    def export_scenario(
+    def export_cohort(
         self,
-        scenario_id: str,
+        cohort_id: str,
         format: str = "json",
         output_path: Optional[str] = None,
         include_entity_types: Optional[List[str]] = None,
         include_provenance: bool = True,
     ) -> ExportResult:
         """
-        Export a scenario to a file.
+        Export a cohort to a file.
         
         Args:
-            scenario_id: Scenario to export
+            cohort_id: Scenario to export
             format: Export format ("json", "csv", "parquet")
             output_path: Path to save the export (defaults to ~/Downloads)
             include_entity_types: Optional list of entity types to include
@@ -1388,30 +1388,30 @@ class AutoPersistService:
             ExportResult with export details
             
         Raises:
-            ValueError: If scenario not found or unsupported format
+            ValueError: If cohort not found or unsupported format
         """
         # Validate format
         format = format.lower()
         if format not in ('json', 'csv', 'parquet'):
             raise ValueError(f"Unsupported export format: {format}")
         
-        # Get scenario info
-        info = self._get_scenario_info(scenario_id)
+        # Get cohort info
+        info = self._get_cohort_info(cohort_id)
         if not info:
-            raise ValueError(f"Scenario not found: {scenario_id}")
+            raise ValueError(f"Cohort not found: {cohort_id}")
         
-        scenario_name = info['name']
+        cohort_name = info['name']
         
         # Set output path
         if not output_path:
             downloads_dir = Path.home() / "Downloads"
             downloads_dir.mkdir(exist_ok=True)
-            output_path = str(downloads_dir / f"{scenario_name}.{format}")
+            output_path = str(downloads_dir / f"{cohort_name}.{format}")
         else:
             # If output_path is a directory, create filename within it
             output_path_obj = Path(output_path)
             if output_path_obj.is_dir():
-                output_path = str(output_path_obj / f"{scenario_name}.{format}")
+                output_path = str(output_path_obj / f"{cohort_name}.{format}")
         
         # Columns to exclude if not including provenance
         provenance_columns = {
@@ -1437,7 +1437,7 @@ class AutoPersistService:
                 result = self.conn.execute(f"""
                     SELECT * FROM {table_name}
                     WHERE cohort_id = ?
-                """, [scenario_id])
+                """, [cohort_id])
                 
                 columns = [desc[0] for desc in result.description]
                 rows = result.fetchall()
@@ -1475,10 +1475,10 @@ class AutoPersistService:
         # Write to file based on format
         if format == 'json':
             export_obj = {
-                'scenario_id': scenario_id,
-                'scenario_name': scenario_name,
+                'cohort_id': cohort_id,
+                'cohort_name': cohort_name,
                 'description': info.get('description'),
-                'tags': self.get_tags(scenario_id),
+                'tags': self.get_tags(cohort_id),
                 'exported_at': datetime.utcnow().isoformat(),
                 'entities': all_data,
             }
@@ -1536,8 +1536,8 @@ class AutoPersistService:
             file_size = output_path_obj.stat().st_size
         
         return ExportResult(
-            scenario_id=scenario_id,
-            scenario_name=scenario_name,
+            cohort_id=cohort_id,
+            cohort_name=cohort_name,
             format=format,
             file_path=output_path,
             entities_exported=entities_exported,
@@ -1547,27 +1547,27 @@ class AutoPersistService:
     
     def export_to_csv(
         self,
-        scenario_id: str,
+        cohort_id: str,
         output_path: Optional[str] = None,
     ) -> ExportResult:
         """Convenience method for CSV export."""
-        return self.export_scenario(scenario_id, format='csv', output_path=output_path)
+        return self.export_cohort(cohort_id, format='csv', output_path=output_path)
     
     def export_to_json(
         self,
-        scenario_id: str,
+        cohort_id: str,
         output_path: Optional[str] = None,
     ) -> ExportResult:
         """Convenience method for JSON export."""
-        return self.export_scenario(scenario_id, format='json', output_path=output_path)
+        return self.export_cohort(cohort_id, format='json', output_path=output_path)
     
     def export_to_parquet(
         self,
-        scenario_id: str,
+        cohort_id: str,
         output_path: Optional[str] = None,
     ) -> ExportResult:
         """Convenience method for Parquet export."""
-        return self.export_scenario(scenario_id, format='parquet', output_path=output_path)
+        return self.export_cohort(cohort_id, format='parquet', output_path=output_path)
 
 
 # Module-level singleton

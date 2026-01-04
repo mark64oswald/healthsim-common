@@ -1,7 +1,7 @@
 """
-Auto-naming service for HealthSim scenarios.
+Auto-naming service for HealthSim cohorts.
 
-Generates descriptive scenario names from generation context,
+Generates descriptive cohort names from generation context,
 following the pattern: {keywords}-{YYYYMMDD}
 
 Examples:
@@ -112,7 +112,7 @@ def extract_keywords(
 
 def sanitize_name(name: str) -> str:
     """
-    Sanitize a scenario name for safe storage.
+    Sanitize a cohort name for safe storage.
     
     - Converts to lowercase
     - Replaces spaces and underscores with hyphens
@@ -123,7 +123,7 @@ def sanitize_name(name: str) -> str:
         name: Raw name string
         
     Returns:
-        Sanitized name suitable for scenario identifier
+        Sanitized name suitable for cohort identifier
     """
     # Lowercase
     name = name.lower()
@@ -152,14 +152,14 @@ def ensure_unique_name(
     connection=None,
 ) -> str:
     """
-    Ensure scenario name is unique by appending counter if needed.
+    Ensure cohort name is unique by appending counter if needed.
     
     Args:
-        base_name: Proposed scenario name
+        base_name: Proposed cohort name
         connection: Optional database connection
         
     Returns:
-        Unique scenario name (may have -2, -3, etc. suffix)
+        Unique cohort name (may have -2, -3, etc. suffix)
     """
     conn = connection or get_connection()
     
@@ -193,7 +193,7 @@ def ensure_unique_name(
             return f"{base_name}-{timestamp}"
 
 
-def generate_scenario_name(
+def generate_cohort_name(
     keywords: Optional[List[str]] = None,
     context: Optional[str] = None,
     entity_type: Optional[str] = None,
@@ -202,7 +202,7 @@ def generate_scenario_name(
     connection=None,
 ) -> str:
     """
-    Generate a unique, descriptive scenario name.
+    Generate a unique, descriptive cohort name.
     
     Priority for name components:
     1. Explicit keywords provided
@@ -220,13 +220,13 @@ def generate_scenario_name(
         connection: Optional database connection
         
     Returns:
-        Unique scenario name like "diabetes-patients-20241226"
+        Unique cohort name like "diabetes-patients-20241226"
         
     Examples:
-        >>> generate_scenario_name(context="Generate 50 diabetic patients over 65")
+        >>> generate_cohort_name(context="Generate 50 diabetic patients over 65")
         "diabetic-patients-20241226"
         
-        >>> generate_scenario_name(entity_type="claim", prefix="membersim")
+        >>> generate_cohort_name(entity_type="claim", prefix="membersim")
         "membersim-claims-20241226"
     """
     parts: List[str] = []
@@ -247,7 +247,7 @@ def generate_scenario_name(
     
     # Build base name
     if not parts:
-        parts = ['scenario']
+        parts = ['cohort']
     
     base_name = '-'.join(parts)
     
@@ -260,18 +260,18 @@ def generate_scenario_name(
     return ensure_unique_name(base_name, connection)
 
 
-def parse_scenario_name(name: str) -> dict:
+def parse_cohort_name(name: str) -> dict:
     """
-    Parse a scenario name into its components.
+    Parse a cohort name into its components.
     
     Args:
-        name: Scenario name to parse
+        name: Cohort name to parse
         
     Returns:
         Dict with 'keywords', 'date', 'counter' if present
         
     Example:
-        >>> parse_scenario_name("diabetes-patients-20241226-2")
+        >>> parse_cohort_name("diabetes-patients-20241226-2")
         {'keywords': ['diabetes', 'patients'], 'date': '20241226', 'counter': 2}
     """
     result = {'keywords': [], 'date': None, 'counter': None}

@@ -1,10 +1,10 @@
 """
 HealthSim State Manager - DuckDB Backend.
 
-Provides save/load/list/delete operations for scenarios using DuckDB
+Provides save/load/list/delete operations for cohorts using DuckDB
 as the storage backend instead of JSON files.
 
-Extended with auto-persist capabilities for token-efficient scenario management.
+Extended with auto-persist capabilities for token-efficient cohort management.
 """
 
 from typing import Any, Dict, List, Optional, Union
@@ -26,35 +26,35 @@ from .auto_persist import (
     AutoPersistService,
     PersistResult,
     QueryResult,
-    ScenarioBrief,
+    CohortBrief,
     get_auto_persist_service,
 )
-from .summary import ScenarioSummary
+from .summary import CohortSummary
 
 
 class StateManager:
     """
-    Manages scenario persistence in DuckDB.
+    Manages cohort persistence in DuckDB.
     
-    Scenarios are collections of entities (patients, encounters, claims, etc.)
+    Cohorts are collections of entities (patients, encounters, claims, etc.)
     that can be saved, loaded, listed, and deleted. Entity data is stored both:
     1. In typed canonical tables (patients, encounters, etc.) for SQL queries
-    2. In scenario_entities.entity_data as JSON for round-trip compatibility
+    2. In cohort_entities.entity_data as JSON for round-trip compatibility
     
     Extended Features (Auto-Persist):
     - `persist()` - Token-efficient persist that stores in canonical tables
     - `get_summary()` - Load only summary (~500 tokens) instead of full data
-    - `query()` - Run SQL queries against scenario data with pagination
+    - `query()` - Run SQL queries against cohort data with pagination
     
     Usage:
         manager = StateManager()
         
         # Traditional save/load (full data in context)
-        scenario_id = manager.save_scenario(
+        cohort_id = manager.save_cohort(
             name='diabetes-cohort',
             entities={'patients': [...], 'encounters': [...]},
         )
-        scenario = manager.load_scenario('diabetes-cohort')  # Full data
+        cohort = manager.load_cohort('diabetes-cohort')  # Full data
         
         # Auto-persist pattern (token-efficient)
         result = manager.persist(
@@ -65,7 +65,7 @@ class StateManager:
         
         summary = manager.get_summary('diabetes-patients-20241227')
         # Query for specific data
-        results = manager.query(scenario_id, "SELECT * FROM patients WHERE gender = 'F'")
+        results = manager.query(cohort_id, "SELECT * FROM patients WHERE gender = 'F'")
     """
     
     def __init__(self, connection: Optional[duckdb.DuckDBPyConnection] = None):
@@ -99,8 +99,8 @@ class StateManager:
     def persist(
         self,
         entities: Dict[str, List[Dict]],
-        scenario_id: Optional[str] = None,
-        scenario_name: Optional[str] = None,
+        cohort_id: Optional[str] = None,
+        cohort_name: Optional[str] = None,
         context: Optional[str] = None,
         tags: Optional[List[str]] = None,
         description: Optional[str] = None,
@@ -108,14 +108,14 @@ class StateManager:
         """
         Persist entities using the auto-persist pattern.
         
-        This is the recommended method for token-efficient scenario management.
-        Entities are stored directly in canonical tables with scenario_id.
+        This is the recommended method for token-efficient cohort management.
+        Entities are stored directly in canonical tables with cohort_id.
         Returns a summary instead of echoing back all data.
         
         Args:
             entities: Dict mapping entity type to list of entities
-            scenario_id: Optional existing scenario to add to
-            scenario_name: Optional explicit scenario name
+            cohort_id: Optional existing cohort to add to
+            cohort_name: Optional explicit cohort name
             context: Context string for auto-naming (e.g., 'diabetes patients')
             tags: Optional tags for organization
             description: Optional description
@@ -133,8 +133,8 @@ class StateManager:
         """
         return self.auto_persist.persist_entities(
             entities=entities,
-            scenario_id=scenario_id,
-            scenario_name=scenario_name,
+            cohort_id=cohort_id,
+            cohort_name=cohort_name,
             context=context,
             tags=tags,
             description=description,
@@ -142,23 +142,23 @@ class StateManager:
     
     def get_summary(
         self,
-        scenario_id_or_name: str,
+        cohort_id_or_name: str,
         include_samples: bool = True,
         samples_per_type: int = 3,
-    ) -> ScenarioSummary:
+    ) -> CohortSummary:
         """
-        Get a token-efficient summary of a scenario.
+        Get a token-efficient summary of a cohort.
         
-        Use this instead of load_scenario() when you need context
-        about a scenario without loading all entities.
+        Use this instead of load_cohort() when you need context
+        about a cohort without loading all entities.
         
         Args:
-            scenario_id_or_name: Scenario identifier (UUID or name)
+            cohort_id_or_name: Cohort identifier (UUID or name)
             include_samples: Whether to include sample entities
             samples_per_type: Number of samples per entity type
             
         Returns:
-            ScenarioSummary with counts, statistics, and optional samples
+            CohortSummary with counts, statistics, and optional samples
             - Without samples: ~500 tokens
             - With samples: ~3,500 tokens
             
@@ -171,34 +171,34 @@ class StateManager:
         import re
         uuid_pattern = re.compile(r'^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$', re.IGNORECASE)
         
-        if uuid_pattern.match(scenario_id_or_name):
-            return self.auto_persist.get_scenario_summary(
-                scenario_id=scenario_id_or_name,
+        if uuid_pattern.match(cohort_id_or_name):
+            return self.auto_persist.get_cohort_summary(
+                cohort_id=cohort_id_or_name,
                 include_samples=include_samples,
                 samples_per_type=samples_per_type,
             )
         else:
-            return self.auto_persist.get_scenario_summary(
-                scenario_name=scenario_id_or_name,
+            return self.auto_persist.get_cohort_summary(
+                cohort_name=cohort_id_or_name,
                 include_samples=include_samples,
                 samples_per_type=samples_per_type,
             )
     
     def query(
         self,
-        scenario_id_or_name: str,
+        cohort_id_or_name: str,
         sql: str,
         limit: int = 20,
         offset: int = 0,
     ) -> QueryResult:
         """
-        Run a SQL query against scenario data with pagination.
+        Run a SQL query against cohort data with pagination.
         
         Only SELECT queries are allowed. Queries are automatically
-        filtered to the specified scenario.
+        filtered to cohort.
         
         Args:
-            scenario_id_or_name: Scenario identifier
+            cohort_id_or_name: Cohort identifier
             sql: SQL SELECT query
             limit: Max results per page (default 20, max 100)
             offset: Pagination offset
@@ -218,8 +218,8 @@ class StateManager:
                 # Fetch next page
                 result = manager.query(..., offset=10)
         """
-        return self.auto_persist.query_scenario(
-            scenario_id_or_name=scenario_id_or_name,
+        return self.auto_persist.query_cohort(
+            cohort_id_or_name=cohort_id_or_name,
             query=sql,
             limit=limit,
             offset=offset,
@@ -227,16 +227,16 @@ class StateManager:
     
     def get_samples(
         self,
-        scenario_id_or_name: str,
+        cohort_id_or_name: str,
         entity_type: str,
         count: int = 3,
         strategy: str = 'diverse',
     ) -> List[Dict]:
         """
-        Get sample entities from a scenario.
+        Get sample entities from a cohort.
         
         Args:
-            scenario_id_or_name: Scenario identifier
+            cohort_id_or_name: Cohort identifier
             entity_type: Type of entity to sample
             count: Number of samples (default 3)
             strategy: 'diverse', 'random', or 'recent'
@@ -245,7 +245,7 @@ class StateManager:
             List of entity dicts (without internal fields)
         """
         return self.auto_persist.get_entity_samples(
-            scenario_id_or_name=scenario_id_or_name,
+            cohort_id_or_name=cohort_id_or_name,
             entity_type=entity_type,
             count=count,
             strategy=strategy,
@@ -255,7 +255,7 @@ class StateManager:
     # Traditional Methods (Full Data Loading)
     # =========================================================================
     
-    def save_scenario(
+    def save_cohort(
         self,
         name: str,
         entities: Dict[str, List[Dict]],
@@ -265,36 +265,36 @@ class StateManager:
         product: str = 'healthsim',
     ) -> str:
         """
-        Save a scenario to the database (traditional method).
+        Save cohort to the database (traditional method).
         
         Note: For token-efficient persistence, use persist() instead.
         
         Args:
-            name: Unique scenario name
+            name: Unique cohort name
             entities: Dict mapping entity type to list of entities
             description: Optional description
             tags: Optional list of tags for filtering
-            overwrite: If True, replace existing scenario with same name
+            overwrite: If True, replace cohort with same name
             product: Product identifier (patientsim, membersim, etc.)
             
         Returns:
-            Scenario ID (UUID string)
+            Cohort ID (UUID string)
             
         Raises:
-            ValueError: If scenario exists and overwrite=False
+            ValueError: If cohort exists and overwrite=False
         """
-        # Check for existing scenario
-        existing = self._get_scenario_by_name(name)
+        # Check for existing cohort
+        existing = self._get_cohort_by_name(name)
         if existing and not overwrite:
             raise ValueError(f"Scenario '{name}' already exists. Use overwrite=True to replace.")
         
-        scenario_id = existing['scenario_id'] if existing else str(uuid4())
+        cohort_id = existing['cohort_id'] if existing else str(uuid4())
         now = datetime.utcnow()
         
         # If overwriting, clear existing entity links
         if existing and overwrite:
-            self._delete_scenario_entities(scenario_id)
-            self.conn.execute("DELETE FROM cohort_tags WHERE cohort_id = ?", [scenario_id])
+            self._delete_cohort_entities(cohort_id)
+            self.conn.execute("DELETE FROM cohort_tags WHERE cohort_id = ?", [cohort_id])
         
         # Build metadata JSON
         metadata = {
@@ -303,7 +303,7 @@ class StateManager:
             'entity_counts': {k: len(v) for k, v in entities.items()},
         }
         
-        # Create or update scenario record
+        # Create or update cohort record
         if existing:
             self.conn.execute("""
                 UPDATE cohorts SET
@@ -311,18 +311,18 @@ class StateManager:
                     updated_at = ?,
                     metadata = ?
                 WHERE id = ?
-            """, [description, now, json.dumps(metadata), scenario_id])
+            """, [description, now, json.dumps(metadata), cohort_id])
         else:
             self.conn.execute("""
                 INSERT INTO cohorts (id, name, description, created_at, updated_at, metadata)
                 VALUES (?, ?, ?, ?, ?, ?)
-            """, [scenario_id, name, description, now, now, json.dumps(metadata)])
+            """, [cohort_id, name, description, now, now, json.dumps(metadata)])
         
         # Insert entities
         entity_count = 0
         for entity_type, entity_list in entities.items():
             for entity in entity_list:
-                self._save_entity(scenario_id, entity_type, entity)
+                self._save_entity(cohort_id, entity_type, entity)
                 entity_count += 1
         
         # Save tags
@@ -331,19 +331,19 @@ class StateManager:
                 # Check if tag already exists
                 existing = self.conn.execute("""
                     SELECT id FROM cohort_tags WHERE cohort_id = ? AND tag = ?
-                """, [scenario_id, tag]).fetchone()
+                """, [cohort_id, tag]).fetchone()
                 
                 if not existing:
                     self.conn.execute("""
                         INSERT INTO cohort_tags (id, cohort_id, tag)
                         VALUES (nextval('cohort_tags_seq'), ?, ?)
-                    """, [scenario_id, tag])
+                    """, [cohort_id, tag])
         
-        return scenario_id
+        return cohort_id
     
-    def load_scenario(self, name_or_id: str) -> Dict[str, Any]:
+    def load_cohort(self, name_or_id: str) -> Dict[str, Any]:
         """
-        Load a scenario from the database (full data).
+        Load cohort from the database (full data).
         
         Note: For token-efficient loading, use get_summary() instead.
         
@@ -351,50 +351,50 @@ class StateManager:
             name_or_id: Scenario name or UUID
             
         Returns:
-            Dict with scenario metadata and all entities
+            Dict with cohort metadata and all entities
             
         Raises:
-            ValueError: If scenario not found
+            ValueError: If cohort not found
         """
         # Try as name first, then as UUID
-        scenario = self._get_scenario_by_name(name_or_id)
-        if not scenario:
-            scenario = self._get_scenario_by_id(name_or_id)
-        if not scenario:
+        cohort = self._get_cohort_by_name(name_or_id)
+        if not cohort:
+            cohort = self._get_cohort_by_id(name_or_id)
+        if not cohort:
             raise ValueError(f"Scenario '{name_or_id}' not found")
         
-        scenario_id = scenario['scenario_id']
+        cohort_id = cohort['cohort_id']
         
-        # Load all entities for this scenario from scenario_entities
-        entities = self._load_scenario_entities(scenario_id)
+        # Load all entities for this cohort from cohort_entities
+        entities = self._load_cohort_entities(cohort_id)
         
         # Load tags
         tags_result = self.conn.execute("""
             SELECT tag FROM cohort_tags WHERE cohort_id = ?
-        """, [scenario_id]).fetchall()
+        """, [cohort_id]).fetchall()
         tags = [t[0] for t in tags_result]
         
         # Parse metadata
         metadata = {}
-        if scenario.get('metadata'):
+        if cohort.get('metadata'):
             try:
-                metadata = json.loads(scenario['metadata']) if isinstance(scenario['metadata'], str) else scenario['metadata']
+                metadata = json.loads(cohort['metadata']) if isinstance(cohort['metadata'], str) else cohort['metadata']
             except (json.JSONDecodeError, TypeError):
                 pass
         
         return {
-            'scenario_id': scenario_id,
-            'name': scenario['name'],
-            'description': scenario['description'],
-            'created_at': scenario['created_at'],
-            'updated_at': scenario['updated_at'],
+            'cohort_id': cohort_id,
+            'name': cohort['name'],
+            'description': cohort['description'],
+            'created_at': cohort['created_at'],
+            'updated_at': cohort['updated_at'],
             'tags': tags,
             'metadata': metadata,
             'entities': entities,
             'entity_count': sum(len(v) for v in entities.values()),
         }
     
-    def list_scenarios(
+    def list_cohorts(
         self,
         tag: Optional[str] = None,
         search: Optional[str] = None,
@@ -402,7 +402,7 @@ class StateManager:
         limit: int = 100,
     ) -> List[Dict[str, Any]]:
         """
-        List available scenarios.
+        List available cohorts.
         
         Args:
             tag: Filter by tag
@@ -411,7 +411,7 @@ class StateManager:
             limit: Max results (default 100)
             
         Returns:
-            List of scenario summaries (without full entity data)
+            List of cohort summaries (without full entity data)
         """
         query = """
             SELECT DISTINCT s.id, s.name, s.description, 
@@ -438,7 +438,7 @@ class StateManager:
         
         results = self.conn.execute(query, params).fetchall()
         
-        scenarios = []
+        cohorts = []
         for row in results:
             metadata = {}
             if row[5]:
@@ -461,8 +461,8 @@ class StateManager:
                 SELECT tag FROM cohort_tags WHERE cohort_id = ?
             """, [row[0]]).fetchall()
             
-            scenarios.append({
-                'scenario_id': row[0],
+            cohorts.append({
+                'cohort_id': row[0],
                 'name': row[1],
                 'description': row[2],
                 'created_at': row[3],
@@ -472,14 +472,14 @@ class StateManager:
                 'metadata': metadata,
             })
         
-        return scenarios
+        return cohorts
     
-    def delete_scenario(self, name_or_id: str, confirm: bool = False) -> bool:
+    def delete_cohort(self, name_or_id: str, confirm: bool = False) -> bool:
         """
-        Delete a scenario.
+        Delete a cohort.
         
-        Note: This removes the scenario and all associated entities from
-        canonical tables where scenario_id matches.
+        Note: This removes the cohort and all associated entities from
+        canonical tables where cohort_id matches.
         
         Args:
             name_or_id: Scenario name or UUID
@@ -489,15 +489,15 @@ class StateManager:
             True if deleted, False if not found
         """
         if not confirm:
-            raise ValueError("Must pass confirm=True to delete scenario")
+            raise ValueError("Must pass confirm=True to delete cohort")
         
-        scenario = self._get_scenario_by_name(name_or_id) or self._get_scenario_by_id(name_or_id)
-        if not scenario:
+        cohort = self._get_cohort_by_name(name_or_id) or self._get_cohort_by_id(name_or_id)
+        if not cohort:
             return False
         
-        scenario_id = scenario['scenario_id']
+        cohort_id = cohort['cohort_id']
         
-        # Delete from canonical tables (entities with this scenario_id)
+        # Delete from canonical tables (entities with this cohort_id)
         canonical_tables = [
             'patients', 'encounters', 'diagnoses', 'medications',
             'lab_results', 'vital_signs', 'orders', 'clinical_notes',
@@ -507,83 +507,83 @@ class StateManager:
         ]
         for table in canonical_tables:
             try:
-                self.conn.execute(f"DELETE FROM {table} WHERE cohort_id = ?", [scenario_id])
+                self.conn.execute(f"DELETE FROM {table} WHERE cohort_id = ?", [cohort_id])
             except Exception:
-                pass  # Table may not have scenario_id column yet
+                pass  # Table may not have cohort_id column yet
         
-        # Delete in order: tags, entity links, scenario
-        self.conn.execute("DELETE FROM cohort_tags WHERE cohort_id = ?", [scenario_id])
-        self.conn.execute("DELETE FROM cohort_entities WHERE cohort_id = ?", [scenario_id])
-        self.conn.execute("DELETE FROM cohorts WHERE id = ?", [scenario_id])
+        # Delete in order: tags, entity links, cohort
+        self.conn.execute("DELETE FROM cohort_tags WHERE cohort_id = ?", [cohort_id])
+        self.conn.execute("DELETE FROM cohort_entities WHERE cohort_id = ?", [cohort_id])
+        self.conn.execute("DELETE FROM cohorts WHERE id = ?", [cohort_id])
         
         return True
     
-    def rename_scenario(self, old_name_or_id: str, new_name: str) -> bool:
+    def rename_cohort(self, old_name_or_id: str, new_name: str) -> bool:
         """
-        Rename a scenario.
+        Rename a cohort.
         
         Args:
-            old_name_or_id: Current scenario name or UUID
-            new_name: New scenario name
+            old_name_or_id: Current cohort name or UUID
+            new_name: New cohort name
             
         Returns:
             True if renamed successfully
             
         Raises:
-            ValueError: If scenario not found or new name already exists
+            ValueError: If cohort not found or new name already exists
         """
-        return self.auto_persist.rename_scenario(old_name_or_id, new_name)
+        return self.auto_persist.rename_cohort(old_name_or_id, new_name)
     
-    def scenario_exists(self, name_or_id: str) -> bool:
-        """Check if a scenario exists."""
+    def cohort_exists(self, name_or_id: str) -> bool:
+        """Check if a cohort exists."""
         return (
-            self._get_scenario_by_name(name_or_id) is not None or
-            self._get_scenario_by_id(name_or_id) is not None
+            self._get_cohort_by_name(name_or_id) is not None or
+            self._get_cohort_by_id(name_or_id) is not None
         )
     
-    def get_scenario_tags(self, name_or_id: str) -> List[str]:
-        """Get tags for a scenario."""
-        scenario = self._get_scenario_by_name(name_or_id) or self._get_scenario_by_id(name_or_id)
-        if not scenario:
+    def get_cohort_tags(self, name_or_id: str) -> List[str]:
+        """Get tags for a cohort."""
+        cohort = self._get_cohort_by_name(name_or_id) or self._get_cohort_by_id(name_or_id)
+        if not cohort:
             return []
         
         result = self.conn.execute("""
             SELECT tag FROM cohort_tags WHERE cohort_id = ?
-        """, [scenario['scenario_id']]).fetchall()
+        """, [cohort['cohort_id']]).fetchall()
         return [t[0] for t in result]
     
-    def add_scenario_tags(self, name_or_id: str, tags: List[str]) -> bool:
-        """Add tags to a scenario."""
-        scenario = self._get_scenario_by_name(name_or_id) or self._get_scenario_by_id(name_or_id)
-        if not scenario:
+    def add_cohort_tags(self, name_or_id: str, tags: List[str]) -> bool:
+        """Add tags to a cohort."""
+        cohort = self._get_cohort_by_name(name_or_id) or self._get_cohort_by_id(name_or_id)
+        if not cohort:
             return False
         
         for tag in tags:
             # Check if tag already exists
             existing = self.conn.execute("""
                 SELECT id FROM cohort_tags WHERE cohort_id = ? AND tag = ?
-            """, [scenario['scenario_id'], tag]).fetchone()
+            """, [cohort['cohort_id'], tag]).fetchone()
             
             if not existing:
                 self.conn.execute("""
                     INSERT INTO cohort_tags (id, cohort_id, tag)
                     VALUES (nextval('cohort_tags_seq'), ?, ?)
-                """, [scenario['scenario_id'], tag])
+                """, [cohort['cohort_id'], tag])
         return True
     
     # =========================================================================
     # Private helper methods
     # =========================================================================
     
-    def _get_scenario_by_name(self, name: str) -> Optional[Dict]:
-        """Get scenario by name."""
+    def _get_cohort_by_name(self, name: str) -> Optional[Dict]:
+        """Get cohort by name."""
         result = self.conn.execute(
             "SELECT id, name, description, created_at, updated_at, metadata FROM cohorts WHERE name = ?",
             [name]
         ).fetchone()
         if result:
             return {
-                'scenario_id': result[0],
+                'cohort_id': result[0],
                 'name': result[1],
                 'description': result[2],
                 'created_at': result[3],
@@ -592,16 +592,16 @@ class StateManager:
             }
         return None
     
-    def _get_scenario_by_id(self, scenario_id: str) -> Optional[Dict]:
-        """Get scenario by ID."""
+    def _get_cohort_by_id(self, cohort_id: str) -> Optional[Dict]:
+        """Get cohort by ID."""
         try:
             result = self.conn.execute(
                 "SELECT id, name, description, created_at, updated_at, metadata FROM cohorts WHERE id = ?",
-                [scenario_id]
+                [cohort_id]
             ).fetchone()
             if result:
                 return {
-                    'scenario_id': result[0],
+                    'cohort_id': result[0],
                     'name': result[1],
                     'description': result[2],
                     'created_at': result[3],
@@ -612,9 +612,9 @@ class StateManager:
             pass
         return None
     
-    def _save_entity(self, scenario_id: str, entity_type: str, entity: Dict) -> str:
+    def _save_entity(self, cohort_id: str, entity_type: str, entity: Dict) -> str:
         """
-        Save entity to scenario_entities table (and optionally to canonical table).
+        Save entity to cohort_entities table (and optionally to canonical table).
         
         Returns entity_id.
         """
@@ -622,14 +622,14 @@ class StateManager:
         table_name, id_column = get_table_info(entity_type)
         entity_id = entity.get(id_column) or entity.get('id') or entity.get(f'{entity_type}_id') or str(uuid4())
         
-        # Store full entity as JSON in scenario_entities
+        # Store full entity as JSON in cohort_entities
         entity_json = json.dumps(entity, default=str)
         
-        # Check if entity already exists for this scenario
+        # Check if entity already exists for this cohort
         existing = self.conn.execute("""
             SELECT id FROM cohort_entities 
             WHERE cohort_id = ? AND entity_type = ? AND entity_id = ?
-        """, [scenario_id, entity_type, entity_id]).fetchone()
+        """, [cohort_id, entity_type, entity_id]).fetchone()
         
         if existing:
             # Update existing
@@ -637,26 +637,26 @@ class StateManager:
                 UPDATE cohort_entities 
                 SET entity_data = ?
                 WHERE cohort_id = ? AND entity_type = ? AND entity_id = ?
-            """, [entity_json, scenario_id, entity_type, entity_id])
+            """, [entity_json, cohort_id, entity_type, entity_id])
         else:
             # Insert new (explicitly use sequence for id)
             self.conn.execute("""
                 INSERT INTO cohort_entities (id, cohort_id, entity_type, entity_id, entity_data, created_at)
                 VALUES (nextval('cohort_entities_seq'), ?, ?, ?, ?, ?)
-            """, [scenario_id, entity_type, entity_id, entity_json, datetime.utcnow()])
+            """, [cohort_id, entity_type, entity_id, entity_json, datetime.utcnow()])
         
         # Also try to insert into canonical table if serializer exists
         serializer = get_serializer(entity_type)
         if serializer:
             try:
-                self._insert_canonical_entity(scenario_id, entity_type, entity, serializer)
+                self._insert_canonical_entity(cohort_id, entity_type, entity, serializer)
             except Exception:
                 # Canonical insert is optional - JSON storage is the primary
                 pass
         
         return entity_id
     
-    def _insert_canonical_entity(self, scenario_id: str, entity_type: str, entity: Dict, serializer) -> None:
+    def _insert_canonical_entity(self, cohort_id: str, entity_type: str, entity: Dict, serializer) -> None:
         """Insert entity into canonical table using serializer."""
         table_name, id_column = get_table_info(entity_type)
         
@@ -670,8 +670,8 @@ class StateManager:
         # Serialize entity
         data = serializer(entity, provenance)
         
-        # Add scenario_id to data
-        data['scenario_id'] = scenario_id
+        # Add cohort_id to data
+        data['cohort_id'] = cohort_id
         
         # Build INSERT statement
         columns = list(data.keys())
@@ -691,14 +691,14 @@ class StateManager:
             # Table might not exist or columns might not match - this is OK
             pass
     
-    def _load_scenario_entities(self, scenario_id: str) -> Dict[str, List[Dict]]:
-        """Load all entities for a scenario from scenario_entities table."""
+    def _load_cohort_entities(self, cohort_id: str) -> Dict[str, List[Dict]]:
+        """Load all entities for a cohort from cohort_entities table."""
         results = self.conn.execute("""
             SELECT entity_type, entity_id, entity_data
             FROM cohort_entities
             WHERE cohort_id = ?
             ORDER BY entity_type, created_at
-        """, [scenario_id]).fetchall()
+        """, [cohort_id]).fetchall()
         
         entities: Dict[str, List[Dict]] = {}
         for row in results:
@@ -720,11 +720,11 @@ class StateManager:
         
         return entities
     
-    def _delete_scenario_entities(self, scenario_id: str) -> None:
-        """Remove all entity links for a scenario."""
+    def _delete_cohort_entities(self, cohort_id: str) -> None:
+        """Remove all entity links for a cohort."""
         self.conn.execute(
             "DELETE FROM cohort_entities WHERE cohort_id = ?",
-            [scenario_id]
+            [cohort_id]
         )
     
     # =========================================================================
@@ -737,7 +737,7 @@ class StateManager:
         output_path: Optional[Path] = None,
     ) -> Path:
         """
-        Export a scenario to JSON file for sharing.
+        Export a cohort to JSON file for sharing.
         
         Args:
             name_or_id: Scenario name or UUID
@@ -746,20 +746,20 @@ class StateManager:
         Returns:
             Path to exported file
         """
-        from .legacy import export_to_json as _export, export_scenario_for_sharing
+        from .legacy import export_to_json as _export, export_cohort_for_sharing
         
-        scenario = self.load_scenario(name_or_id)
+        cohort = self.load_cohort(name_or_id)
         
         # Use default path if not specified
         if output_path is None:
             downloads = Path.home() / "Downloads"
             downloads.mkdir(exist_ok=True)
             # Clean name for filename
-            safe_name = scenario['name'].replace(' ', '_').replace('/', '-')
+            safe_name = cohort['name'].replace(' ', '_').replace('/', '-')
             output_path = downloads / f"{safe_name}.json"
         
         # Prepare for export (remove internal fields)
-        export_data = export_scenario_for_sharing(scenario)
+        export_data = export_cohort_for_sharing(cohort)
         
         return _export(export_data, Path(output_path))
     
@@ -770,22 +770,22 @@ class StateManager:
         overwrite: bool = False,
     ) -> str:
         """
-        Import a scenario from JSON file.
+        Import a cohort from JSON file.
         
         Args:
             json_path: Path to JSON file
-            name: Override scenario name (default: use filename or embedded name)
-            overwrite: Replace existing scenario with same name
+            name: Override cohort name (default: use filename or embedded name)
+            overwrite: Replace existing cohort with same name
             
         Returns:
-            Scenario ID
+            Cohort ID
         """
         from .legacy import import_from_json as _import
         
         data = _import(Path(json_path))
         
         # Determine name (priority: argument > embedded > filename)
-        scenario_name = name or data.get('name') or Path(json_path).stem
+        cohort_name = name or data.get('name') or Path(json_path).stem
         
         # Get description and tags
         description = data.get('description')
@@ -823,8 +823,8 @@ class StateManager:
                         for e in entity_list
                     ]
         
-        return self.save_scenario(
-            name=scenario_name,
+        return self.save_cohort(
+            name=cohort_name,
             entities=entities,
             description=description,
             tags=tags,
@@ -853,37 +853,37 @@ def reset_manager() -> None:
     _manager = None
 
 
-def save_scenario(name: str, entities: Dict, **kwargs) -> str:
-    """Convenience function for save_scenario."""
-    return get_manager().save_scenario(name, entities, **kwargs)
+def save_cohort(name: str, entities: Dict, **kwargs) -> str:
+    """Convenience function for save_cohort."""
+    return get_manager().save_cohort(name, entities, **kwargs)
 
 
-def load_scenario(name_or_id: str) -> Dict:
-    """Convenience function for load_scenario."""
-    return get_manager().load_scenario(name_or_id)
+def load_cohort(name_or_id: str) -> Dict:
+    """Convenience function for load_cohort."""
+    return get_manager().load_cohort(name_or_id)
 
 
-def list_scenarios(**kwargs) -> List[Dict]:
-    """Convenience function for list_scenarios."""
-    return get_manager().list_scenarios(**kwargs)
+def list_cohorts(**kwargs) -> List[Dict]:
+    """Convenience function for list_cohorts."""
+    return get_manager().list_cohorts(**kwargs)
 
 
-def delete_scenario(name_or_id: str, confirm: bool = False) -> bool:
-    """Convenience function for delete_scenario."""
-    return get_manager().delete_scenario(name_or_id, confirm=confirm)
+def delete_cohort(name_or_id: str, confirm: bool = False) -> bool:
+    """Convenience function for delete_cohort."""
+    return get_manager().delete_cohort(name_or_id, confirm=confirm)
 
 
-def scenario_exists(name_or_id: str) -> bool:
-    """Convenience function for scenario_exists."""
-    return get_manager().scenario_exists(name_or_id)
+def cohort_exists(name_or_id: str) -> bool:
+    """Convenience function for cohort_exists."""
+    return get_manager().cohort_exists(name_or_id)
 
 
-def export_scenario_to_json(name_or_id: str, output_path: Optional[Path] = None) -> Path:
+def export_cohort_to_json(name_or_id: str, output_path: Optional[Path] = None) -> Path:
     """Convenience function for export_to_json."""
     return get_manager().export_to_json(name_or_id, output_path)
 
 
-def import_scenario_from_json(json_path: Path, name: Optional[str] = None, overwrite: bool = False) -> str:
+def import_cohort_from_json(json_path: Path, name: Optional[str] = None, overwrite: bool = False) -> str:
     """Convenience function for import_from_json."""
     return get_manager().import_from_json(json_path, name, overwrite)
 
@@ -894,11 +894,11 @@ def persist(entities: Dict[str, List[Dict]], **kwargs) -> PersistResult:
     return get_manager().persist(entities, **kwargs)
 
 
-def get_summary(scenario_id_or_name: str, **kwargs) -> ScenarioSummary:
+def get_summary(cohort_id_or_name: str, **kwargs) -> CohortSummary:
     """Convenience function for get_summary."""
-    return get_manager().get_summary(scenario_id_or_name, **kwargs)
+    return get_manager().get_summary(cohort_id_or_name, **kwargs)
 
 
-def query_scenario(scenario_id_or_name: str, sql: str, **kwargs) -> QueryResult:
+def query_cohort(cohort_id_or_name: str, sql: str, **kwargs) -> QueryResult:
     """Convenience function for query."""
-    return get_manager().query(scenario_id_or_name, sql, **kwargs)
+    return get_manager().query(cohort_id_or_name, sql, **kwargs)
