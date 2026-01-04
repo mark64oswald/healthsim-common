@@ -140,7 +140,7 @@ def migrate_scenario(
     
     try:
         scenario_id = manager.import_from_json(json_path, overwrite=overwrite)
-        scenario = manager.load_scenario(scenario_id)
+        scenario = manager.load_cohort(scenario_id)
         entity_count = sum(len(v) for v in scenario['entities'].values())
         return MigrationResult(name, True, entity_count)
     except Exception as e:
@@ -223,7 +223,7 @@ def verify_migration(original_count: int) -> Dict:
         Verification report
     """
     manager = StateManager()
-    scenarios = manager.list_scenarios()
+    scenarios = manager.list_cohorts()
     
     return {
         'expected': original_count,

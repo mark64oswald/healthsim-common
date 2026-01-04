@@ -199,7 +199,7 @@ enabling scenarios to be saved, loaded, shared, and queried.
 
 ## MCP Tools
 
-### save_scenario
+### save_cohort
 
 Saves entities to the database as a named scenario.
 
@@ -221,7 +221,7 @@ Saves entities to the database as a named scenario.
 }
 ```
 
-### load_scenario
+### load_cohort
 
 Loads a scenario from the database.
 
@@ -244,7 +244,7 @@ Loads a scenario from the database.
 }
 ```
 
-### list_scenarios
+### list_cohorts
 
 Lists available scenarios.
 
@@ -255,7 +255,7 @@ Lists available scenarios.
 | search | string | No | Search in name/description |
 | limit | integer | No | Max results (default: 100) |
 
-### delete_scenario
+### delete_cohort
 
 Deletes a scenario (metadata and links, not entity data).
 

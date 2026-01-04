@@ -74,7 +74,7 @@ You should see the following tools:
 - `generate_patient`
 - `generate_cohort`
 - `generate_patient_with_encounter`
-- `list_scenarios`
+- `list_cohorts`
 
 ## Available Tools
 
@@ -164,7 +164,7 @@ Generate a patient with a complete encounter including admission, diagnoses, lab
 Generate an inpatient sepsis patient with full encounter data in HL7v2 format
 ```
 
-### 4. list_scenarios
+### 4. list_cohorts
 
 List available scenario templates/skills.
 

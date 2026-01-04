@@ -83,7 +83,7 @@ def export_to_json(
     """
     from .legacy import export_to_json as _export
     
-    scenario = self.load_scenario(name_or_id)
+    scenario = self.load_cohort(name_or_id)
     
     if output_path is None:
         downloads = Path.home() / "Downloads"
@@ -125,7 +125,7 @@ def import_from_json(
         entities = {k: v for k, v in data.items() 
                     if k in self.ENTITY_TYPES or k + 's' in [t + 's' for t in self.ENTITY_TYPES]}
     
-    return self.save_scenario(
+    return self.save_cohort(
         name=scenario_name,
         entities=entities,
         description=data.get('description'),
@@ -164,7 +164,7 @@ def export_scenario_json(
     )
     
     # Get entity count
-    scenario = manager.load_scenario(name)
+    scenario = manager.load_cohort(name)
     entity_count = sum(len(v) for v in scenario['entities'].values())
     
     return {
@@ -201,7 +201,7 @@ def import_scenario_json(
     )
     
     # Get details
-    scenario = manager.load_scenario(scenario_id)
+    scenario = manager.load_cohort(scenario_id)
     entity_count = sum(len(v) for v in scenario['entities'].values())
     
     return {
@@ -284,7 +284,7 @@ def sample_scenario():
 
 def test_export_to_json(state_manager, sample_scenario, tmp_path):
     """Test exporting scenario to JSON."""
-    state_manager.save_scenario('export-test', sample_scenario)
+    state_manager.save_cohort('export-test', sample_scenario)
     
     output_path = tmp_path / "exported.json"
     result_path = state_manager.export_to_json('export-test', output_path)
@@ -320,7 +320,7 @@ def test_import_from_json(state_manager, tmp_path):
     
     scenario_id = state_manager.import_from_json(json_path)
     
-    loaded = state_manager.load_scenario(scenario_id)
+    loaded = state_manager.load_cohort(scenario_id)
     assert loaded['name'] == 'imported-scenario'
     assert len(loaded['entities']['patient']) == 1
 
@@ -328,20 +328,20 @@ def test_import_from_json(state_manager, tmp_path):
 def test_round_trip(state_manager, sample_scenario, tmp_path):
     """Test export then import preserves data."""
     # Save original
-    state_manager.save_scenario('round-trip-test', sample_scenario)
+    state_manager.save_cohort('round-trip-test', sample_scenario)
     
     # Export
     json_path = tmp_path / "round-trip.json"
     state_manager.export_to_json('round-trip-test', json_path)
     
     # Delete original
-    state_manager.delete_scenario('round-trip-test')
+    state_manager.delete_cohort('round-trip-test')
     
     # Import
     state_manager.import_from_json(json_path, name='round-trip-restored')
     
     # Verify
-    restored = state_manager.load_scenario('round-trip-restored')
+    restored = state_manager.load_cohort('round-trip-restored')
     assert len(restored['entities']['patient']) == 1
     assert restored['entities']['patient'][0]['given_name'] == 'Test'
 
@@ -359,7 +359,7 @@ def test_import_legacy_format(state_manager, tmp_path):
         json.dump(legacy_json, f)
     
     scenario_id = state_manager.import_from_json(json_path)
-    loaded = state_manager.load_scenario(scenario_id)
+    loaded = state_manager.load_cohort(scenario_id)
     
     assert loaded['entities']['patient'][0]['given_name'] == 'Legacy'
 ```

@@ -75,18 +75,18 @@ User Request → Claude (with skills context) → MCP Tool Call → Generator �
 
 **Tools (spec: [state-management/specification.md](../state-management/specification.md)):**
 
-- `healthsim.save_scenario` - Save workspace to named scenario
-- `healthsim.load_scenario` - Restore workspace from scenario
-- `healthsim.list_scenarios` - List saved scenarios with filtering
-- `healthsim.delete_scenario` - Remove a saved scenario
+- `healthsim.save_cohort` - Save workspace to named scenario
+- `healthsim.load_cohort` - Restore workspace from scenario
+- `healthsim.list_cohorts` - List saved scenarios with filtering
+- `healthsim.delete_cohort` - Remove a saved scenario
 
 **Example:**
 ```text
 User: "Save this as my-baseline before we add the complication"
-Claude: [calls save_scenario] → Saved "my-baseline" with 15 patients
+Claude: [calls save_cohort] → Saved "my-baseline" with 15 patients
 
 User: "Load my-baseline and try a different approach"
-Claude: [calls load_scenario] → Restored to pre-complication state
+Claude: [calls load_cohort] → Restored to pre-complication state
 ```
 
 ### 3. Validation Layer

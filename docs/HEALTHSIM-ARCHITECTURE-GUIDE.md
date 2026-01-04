@@ -361,15 +361,15 @@ Scenarios are named snapshots containing generated entities with full provenance
 
 | Tool | Purpose | Token Cost |
 |------|---------|------------|
-| `healthsim_save_scenario` | Persist entities to database | - |
-| `healthsim_load_scenario` | Load all entities (full data) | High |
-| `healthsim_get_summary` | Load metadata + samples only | ~500 tokens |
+| `healthsim_save_cohort` | Persist entities to database | - |
+| `healthsim_load_cohort` | Load all entities (full data) | High |
+| `healthsim_get_cohort_summary` | Load metadata + samples only | ~500 tokens |
 | `healthsim_query` | SQL query against entities | Variable |
-| `healthsim_list_scenarios` | List saved scenarios | Low |
-| `healthsim_delete_scenario` | Remove scenario | - |
+| `healthsim_list_cohorts` | List saved scenarios | Low |
+| `healthsim_delete_cohort` | Remove scenario | - |
 
 **Pattern Selection**:
-- Small scenarios (<50 entities): Use `load_scenario` for full data
+- Small scenarios (<50 entities): Use `load_cohort` for full data
 - Large scenarios (50+ entities): Use `get_summary` + `query` for token efficiency
 
 See [Data Architecture Guide](data-architecture.md) for complete schema documentation.

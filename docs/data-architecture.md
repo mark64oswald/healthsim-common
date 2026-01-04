@@ -134,8 +134,8 @@ When working with saved scenarios, you have two options for retrieving data:
 
 | Pattern | Use Case | Token Cost | Tool |
 |---------|----------|------------|------|
-| **Full Load** | Small scenarios (<50 entities), need all data immediately | High (1K-50K tokens) | `healthsim_load_scenario` |
-| **Summary + Query** | Large scenarios (50+ entities), token efficiency | Low (~500 tokens) | `healthsim_get_summary` + `healthsim_query` |
+| **Full Load** | Small scenarios (<50 entities), need all data immediately | High (1K-50K tokens) | `healthsim_load_cohort` |
+| **Summary + Query** | Large scenarios (50+ entities), token efficiency | Low (~500 tokens) | `healthsim_get_cohort_summary` + `healthsim_query` |
 
 **Why two patterns?**
 
@@ -147,32 +147,32 @@ When working with saved scenarios, you have two options for retrieving data:
 
 | Operation | Tool | Description |
 |-----------|------|-------------|
-| Save scenario | `healthsim_save_scenario` | Persist entities with name, description, tags |
-| Load full data | `healthsim_load_scenario` | Retrieve all entities (high token cost) |
-| Load summary | `healthsim_get_summary` | Retrieve metadata + samples (~500 tokens) |
+| Save scenario | `healthsim_save_cohort` | Persist entities with name, description, tags |
+| Load full data | `healthsim_load_cohort` | Retrieve all entities (high token cost) |
+| Load summary | `healthsim_get_cohort_summary` | Retrieve metadata + samples (~500 tokens) |
 | Query data | `healthsim_query` | SQL query against saved entities |
-| List scenarios | `healthsim_list_scenarios` | Browse saved scenarios with filtering |
-| Delete scenario | `healthsim_delete_scenario` | Remove scenario (requires confirmation) |
+| List scenarios | `healthsim_list_cohorts` | Browse saved scenarios with filtering |
+| Delete scenario | `healthsim_delete_cohort` | Remove scenario (requires confirmation) |
 
 ### Workflow Examples
 
 **Small Scenario (Full Load)**:
 ```
 User: "Save these 10 patients as 'test-cohort'"
-→ healthsim_save_scenario(name='test-cohort', entities={...})
+→ healthsim_save_cohort(name='test-cohort', entities={...})
 
 User: "Load my test cohort"
-→ healthsim_load_scenario('test-cohort')
+→ healthsim_load_cohort('test-cohort')
 → Returns all 10 patients with full details
 ```
 
 **Large Scenario (Summary + Query)**:
 ```
 User: "Generate 200 diabetic patients and save them"
-→ healthsim_save_scenario(name='diabetes-200', entities={...})
+→ healthsim_save_cohort(name='diabetes-200', entities={...})
 
 User: "What's in my diabetes scenario?"
-→ healthsim_get_summary('diabetes-200')
+→ healthsim_get_cohort_summary('diabetes-200')
 → Returns: 200 patients, age range 35-78, 52% female, 3 samples
 
 User: "Show me female patients over 65"
@@ -250,7 +250,7 @@ healthsim_query_reference(table="places_county", state="CA")
 healthsim_query(sql="SELECT * FROM network.providers WHERE state = 'TX' LIMIT 10")
 
 # Get scenario summary
-healthsim_get_summary(scenario_id_or_name="my-cohort")
+healthsim_get_cohort_summary(scenario_id_or_name="my-cohort")
 ```
 
 ### SQL Query Examples

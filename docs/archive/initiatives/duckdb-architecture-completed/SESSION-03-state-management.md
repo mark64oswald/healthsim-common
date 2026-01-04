@@ -21,10 +21,10 @@ Current state management uses JSON files in `~/.healthsim/scenarios/`. This sess
 
 | Tool | Current Behavior | New Behavior |
 |------|------------------|--------------|
-| `save_scenario` | Write JSON file | INSERT to DuckDB |
-| `load_scenario` | Read JSON file | SELECT from DuckDB |
-| `list_scenarios` | List directory | Query scenarios table |
-| `delete_scenario` | Delete JSON file | DELETE from tables |
+| `save_cohort` | Write JSON file | INSERT to DuckDB |
+| `load_cohort` | Read JSON file | SELECT from DuckDB |
+| `list_cohorts` | List directory | Query scenarios table |
+| `delete_cohort` | Delete JSON file | DELETE from tables |
 
 ### Reference Documents
 
@@ -42,7 +42,7 @@ packages/core/healthsim/db/                         # From SESSION-01
 
 - [ ] SESSION-01 and SESSION-02 complete
 - [ ] Verify database exists: `ls -la ~/.healthsim/healthsim.duckdb`
-- [ ] Current state manager working: test with `save_scenario`/`load_scenario`
+- [ ] Current state manager working: test with `save_cohort`/`load_cohort`
 - [ ] Read current manager.py implementation
 - [ ] Note any existing JSON scenarios to migrate later
 
@@ -225,7 +225,7 @@ class StateManager:
     def __init__(self):
         self.conn = get_connection()
     
-    def save_scenario(
+    def save_cohort(
         self,
         name: str,
         entities: Dict[str, List[Dict]],
@@ -254,7 +254,7 @@ class StateManager:
         scenario_id = existing['scenario_id'] if existing else str(uuid4())
         
         if existing and overwrite:
-            self._delete_scenario_entities(scenario_id)
+            self._delete_cohort_entities(scenario_id)
         
         # Create or update scenario record
         self.conn.execute("""
@@ -290,7 +290,7 @@ class StateManager:
         
         return scenario_id
     
-    def load_scenario(self, name_or_id: str) -> Dict[str, Any]:
+    def load_cohort(self, name_or_id: str) -> Dict[str, Any]:
         """
         Load a scenario from the database.
         
@@ -330,7 +330,7 @@ class StateManager:
             'entities': entities
         }
     
-    def list_scenarios(
+    def list_cohorts(
         self,
         tag: Optional[str] = None,
         search: Optional[str] = None,
@@ -370,7 +370,7 @@ class StateManager:
         
         return [dict(zip(columns, row)) for row in results]
     
-    def delete_scenario(self, name_or_id: str) -> bool:
+    def delete_cohort(self, name_or_id: str) -> bool:
         """
         Delete a scenario.
         
@@ -496,7 +496,7 @@ class StateManager:
         
         return []
     
-    def _delete_scenario_entities(self, scenario_id: str):
+    def _delete_cohort_entities(self, scenario_id: str):
         """Remove all entity links for a scenario (for overwrite)."""
         self.conn.execute(
             "DELETE FROM scenario_entities WHERE scenario_id = ?", 
@@ -514,21 +514,21 @@ def get_manager() -> StateManager:
         _manager = StateManager()
     return _manager
 
-def save_scenario(name: str, entities: Dict, **kwargs) -> str:
-    """Convenience function for save_scenario."""
-    return get_manager().save_scenario(name, entities, **kwargs)
+def save_cohort(name: str, entities: Dict, **kwargs) -> str:
+    """Convenience function for save_cohort."""
+    return get_manager().save_cohort(name, entities, **kwargs)
 
-def load_scenario(name_or_id: str) -> Dict:
-    """Convenience function for load_scenario."""
-    return get_manager().load_scenario(name_or_id)
+def load_cohort(name_or_id: str) -> Dict:
+    """Convenience function for load_cohort."""
+    return get_manager().load_cohort(name_or_id)
 
-def list_scenarios(**kwargs) -> List[Dict]:
-    """Convenience function for list_scenarios."""
-    return get_manager().list_scenarios(**kwargs)
+def list_cohorts(**kwargs) -> List[Dict]:
+    """Convenience function for list_cohorts."""
+    return get_manager().list_cohorts(**kwargs)
 
-def delete_scenario(name_or_id: str) -> bool:
-    """Convenience function for delete_scenario."""
-    return get_manager().delete_scenario(name_or_id)
+def delete_cohort(name_or_id: str) -> bool:
+    """Convenience function for delete_cohort."""
+    return get_manager().delete_cohort(name_or_id)
 ```
 
 ### Step 3: Move Legacy JSON Support
@@ -558,7 +558,7 @@ def export_to_json(scenario: Dict[str, Any], output_path: Path) -> Path:
     Export a scenario to JSON file.
     
     Args:
-        scenario: Scenario dict from load_scenario()
+        scenario: Scenario dict from load_cohort()
         output_path: Where to write the file
         
     Returns:
@@ -582,7 +582,7 @@ def import_from_json(json_path: Path) -> Dict[str, Any]:
         json_path: Path to JSON file
         
     Returns:
-        Scenario dict ready for save_scenario()
+        Scenario dict ready for save_cohort()
     """
     with open(json_path, 'r') as f:
         data = json.load(f)
@@ -649,7 +649,7 @@ def state_manager(tmp_path):
     # ... cleanup
 
 
-def test_save_and_load_scenario(state_manager):
+def test_save_and_load_cohort(state_manager):
     """Test basic save and load cycle."""
     entities = {
         'patient': [{
@@ -662,7 +662,7 @@ def test_save_and_load_scenario(state_manager):
         'encounter': []
     }
     
-    scenario_id = state_manager.save_scenario(
+    scenario_id = state_manager.save_cohort(
         name='test-scenario',
         entities=entities,
         description='Test scenario'
@@ -670,18 +670,18 @@ def test_save_and_load_scenario(state_manager):
     
     assert scenario_id is not None
     
-    loaded = state_manager.load_scenario('test-scenario')
+    loaded = state_manager.load_cohort('test-scenario')
     assert loaded['name'] == 'test-scenario'
     assert len(loaded['entities']['patient']) == 1
     assert loaded['entities']['patient'][0]['given_name'] == 'John'
 
 
-def test_list_scenarios(state_manager):
+def test_list_cohorts(state_manager):
     """Test listing scenarios."""
-    state_manager.save_scenario('scenario-1', {'patient': []})
-    state_manager.save_scenario('scenario-2', {'patient': []})
+    state_manager.save_cohort('scenario-1', {'patient': []})
+    state_manager.save_cohort('scenario-2', {'patient': []})
     
-    scenarios = state_manager.list_scenarios()
+    scenarios = state_manager.list_cohorts()
     assert len(scenarios) >= 2
     
     names = [s['name'] for s in scenarios]
@@ -689,35 +689,35 @@ def test_list_scenarios(state_manager):
     assert 'scenario-2' in names
 
 
-def test_delete_scenario(state_manager):
+def test_delete_cohort(state_manager):
     """Test scenario deletion."""
-    state_manager.save_scenario('to-delete', {'patient': []})
+    state_manager.save_cohort('to-delete', {'patient': []})
     
-    result = state_manager.delete_scenario('to-delete')
+    result = state_manager.delete_cohort('to-delete')
     assert result is True
     
-    scenarios = state_manager.list_scenarios()
+    scenarios = state_manager.list_cohorts()
     names = [s['name'] for s in scenarios]
     assert 'to-delete' not in names
 
 
 def test_overwrite_scenario(state_manager):
     """Test overwriting existing scenario."""
-    state_manager.save_scenario('overwrite-test', {'patient': [{'given_name': 'First'}]})
-    state_manager.save_scenario('overwrite-test', {'patient': [{'given_name': 'Second'}]}, overwrite=True)
+    state_manager.save_cohort('overwrite-test', {'patient': [{'given_name': 'First'}]})
+    state_manager.save_cohort('overwrite-test', {'patient': [{'given_name': 'Second'}]}, overwrite=True)
     
-    loaded = state_manager.load_scenario('overwrite-test')
+    loaded = state_manager.load_cohort('overwrite-test')
     assert loaded['entities']['patient'][0]['given_name'] == 'Second'
 
 
 def test_scenario_tags(state_manager):
     """Test tag filtering."""
-    state_manager.save_scenario('tagged', {'patient': []}, tags=['diabetes', 'test'])
+    state_manager.save_cohort('tagged', {'patient': []}, tags=['diabetes', 'test'])
     
-    scenarios = state_manager.list_scenarios(tag='diabetes')
+    scenarios = state_manager.list_cohorts(tag='diabetes')
     assert any(s['name'] == 'tagged' for s in scenarios)
     
-    scenarios = state_manager.list_scenarios(tag='nonexistent')
+    scenarios = state_manager.list_cohorts(tag='nonexistent')
     assert not any(s['name'] == 'tagged' for s in scenarios)
 ```
 
@@ -740,10 +740,10 @@ pytest tests/ -v
 
 - [ ] StateManager class implemented with all methods
 - [ ] Entity serialization/deserialization working
-- [ ] save_scenario writes to DuckDB
-- [ ] load_scenario reads from DuckDB
-- [ ] list_scenarios queries work (with filters)
-- [ ] delete_scenario removes scenario properly
+- [ ] save_cohort writes to DuckDB
+- [ ] load_cohort reads from DuckDB
+- [ ] list_cohorts queries work (with filters)
+- [ ] delete_cohort removes scenario properly
 - [ ] Overwrite functionality works
 - [ ] Tags filtering works
 - [ ] All new tests pass
@@ -779,10 +779,10 @@ Mark SESSION-03 as complete with commit hash.
 ## Success Criteria
 
 ✅ Session complete when:
-1. save_scenario writes entities to DuckDB tables
-2. load_scenario retrieves entities correctly
-3. list_scenarios shows database scenarios
-4. delete_scenario removes from database
+1. save_cohort writes entities to DuckDB tables
+2. load_cohort retrieves entities correctly
+3. list_cohorts shows database scenarios
+4. delete_cohort removes from database
 5. Entity data round-trips correctly (save → load = same data)
 6. All tests pass
 7. Committed and pushed

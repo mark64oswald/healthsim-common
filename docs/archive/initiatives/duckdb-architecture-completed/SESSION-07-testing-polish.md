@@ -108,7 +108,7 @@ for t in tables[:10]:
 
 ```python
 # test_integration_save_load.py
-from healthsim.state import save_scenario, load_scenario, list_scenarios
+from healthsim.state import save_cohort, load_cohort, list_cohorts
 
 # Create test data
 test_entities = {
@@ -128,7 +128,7 @@ test_entities = {
 }
 
 # Save
-scenario_id = save_scenario(
+scenario_id = save_cohort(
     'integration-test',
     test_entities,
     description='Integration test scenario',
@@ -137,12 +137,12 @@ scenario_id = save_scenario(
 print(f"Saved scenario: {scenario_id}")
 
 # List
-scenarios = list_scenarios()
+scenarios = list_cohorts()
 print(f"Found {len(scenarios)} scenarios")
 assert any(s['name'] == 'integration-test' for s in scenarios)
 
 # Load
-loaded = load_scenario('integration-test')
+loaded = load_cohort('integration-test')
 assert loaded['name'] == 'integration-test'
 assert len(loaded['entities']['patient']) == 1
 assert loaded['entities']['patient'][0]['given_name'] == 'Integration'
@@ -159,7 +159,7 @@ from healthsim.state.manager import StateManager
 manager = StateManager()
 
 # Create scenario
-manager.save_scenario('export-test', {
+manager.save_cohort('export-test', {
     'patient': [{'given_name': 'Export', 'family_name': 'Test'}]
 })
 
@@ -170,19 +170,19 @@ assert result_path.exists()
 print(f"✓ Exported to {result_path}")
 
 # Delete from database
-manager.delete_scenario('export-test')
+manager.delete_cohort('export-test')
 
 # Import
 manager.import_from_json(export_path, name='reimported-test')
 
 # Verify
-loaded = manager.load_scenario('reimported-test')
+loaded = manager.load_cohort('reimported-test')
 assert loaded['entities']['patient'][0]['given_name'] == 'Export'
 print("✓ JSON Export/Import passed")
 
 # Cleanup
 export_path.unlink()
-manager.delete_scenario('reimported-test')
+manager.delete_cohort('reimported-test')
 ```
 
 #### Scenario D: PopulationSim Reference Data
@@ -249,20 +249,20 @@ patients = [
 ]
 
 start = time.time()
-manager.save_scenario('perf-test', {'patient': patients}, overwrite=True)
+manager.save_cohort('perf-test', {'patient': patients}, overwrite=True)
 save_time = time.time() - start
 print(f"  Save time: {save_time:.2f}s ({100/save_time:.0f} patients/sec)")
 
 # Test: Load scenario
 start = time.time()
-loaded = manager.load_scenario('perf-test')
+loaded = manager.load_cohort('perf-test')
 load_time = time.time() - start
 print(f"  Load time: {load_time:.2f}s")
 
 # Test: List scenarios
 start = time.time()
 for _ in range(100):
-    manager.list_scenarios()
+    manager.list_cohorts()
 list_time = time.time() - start
 print(f"  List 100x: {list_time:.2f}s ({list_time/100*1000:.1f}ms/call)")
 
@@ -274,7 +274,7 @@ query_time = time.time() - start
 print(f"  Reference query 100x: {query_time:.2f}s ({query_time/100*1000:.1f}ms/call)")
 
 # Cleanup
-manager.delete_scenario('perf-test')
+manager.delete_cohort('perf-test')
 
 # Performance targets
 assert save_time < 5.0, "Save too slow"

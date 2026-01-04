@@ -49,12 +49,12 @@ Add to `~/Library/Application Support/Claude/claude_desktop_config.json`:
 
 | Tool | Description |
 |------|-------------|
-| `healthsim_list_scenarios` | List all saved scenarios |
-| `healthsim_load_scenario` | Load a scenario by name/ID |
-| `healthsim_save_scenario` | Save entities as a scenario (full replacement) |
+| `healthsim_list_cohorts` | List all saved scenarios |
+| `healthsim_load_cohort` | Load a scenario by name/ID |
+| `healthsim_save_cohort` | Save entities as a scenario (full replacement) |
 | `healthsim_add_entities` | Add entities incrementally (recommended for large datasets) |
-| `healthsim_delete_scenario` | Delete a scenario (requires confirm=True) |
-| `healthsim_get_summary` | Get token-efficient scenario summary |
+| `healthsim_delete_cohort` | Delete a scenario (requires confirm=True) |
+| `healthsim_get_cohort_summary` | Get token-efficient scenario summary |
 
 ### Database Queries
 
@@ -136,7 +136,7 @@ These exist in shared tables and should **NEVER** be added to scenarios:
 
 ### Validation Enforcement
 
-The `healthsim_add_entities` and `healthsim_save_scenario` tools will **suggest using real data** when you try to store reference types, but allow override when synthetic data is explicitly needed:
+The `healthsim_add_entities` and `healthsim_save_cohort` tools will **suggest using real data** when you try to store reference types, but allow override when synthetic data is explicitly needed:
 
 ```
 ⚠️ 'providers' is typically REFERENCE DATA that exists in shared tables.
@@ -246,7 +246,7 @@ healthsim_add_entities(
 
 ### List scenarios
 ```
-Use healthsim_list_scenarios to see what's saved
+Use healthsim_list_cohorts to see what's saved
 ```
 
 ### Query reference data
@@ -256,7 +256,7 @@ Use healthsim_query_reference with table="places_county" and state="CA"
 
 ### Save a scenario (small dataset)
 ```
-Use healthsim_save_scenario with:
+Use healthsim_save_cohort with:
 - name: "my-scenario"
 - entities: {"patients": [...], "encounters": [...]}
 - description: "Test scenario"

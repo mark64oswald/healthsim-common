@@ -90,7 +90,7 @@
 - [x] Added `query()` method for SQL queries with pagination
 - [x] Added `get_samples()` method for entity sampling
 - [x] Added `rename_scenario()` method using AutoPersistService
-- [x] Updated `delete_scenario()` with confirm=True safety requirement
+- [x] Updated `delete_cohort()` with confirm=True safety requirement
 - [x] Added convenience functions: `persist()`, `get_summary()`, `query_scenario()`
 - [x] All 668 tests passing
 
@@ -98,13 +98,13 @@
 
 **Traditional Methods (Full Data)**:
 ```python
-from healthsim.state import save_scenario, load_scenario, list_scenarios, delete_scenario
+from healthsim.state import save_cohort, load_cohort, list_cohorts, delete_cohort
 
 # Save with full entity data
-scenario_id = save_scenario('my-scenario', {'patients': [...]})
+scenario_id = save_cohort('my-scenario', {'patients': [...]})
 
 # Load entire scenario (potentially large context)
-scenario = load_scenario('my-scenario')  # Returns all entities
+scenario = load_cohort('my-scenario')  # Returns all entities
 ```
 
 **Auto-Persist Methods (Token-Efficient)**:

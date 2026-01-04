@@ -309,7 +309,7 @@ class AutoPersistService:
         """
         pass
     
-    def list_scenarios(
+    def list_cohorts(
         self,
         filter_pattern: Optional[str] = None,
         limit: int = 20,
@@ -330,7 +330,7 @@ class AutoPersistService:
         """
         pass
     
-    def delete_scenario(
+    def delete_cohort(
         self,
         scenario_id: str,
         confirm: bool = False,
@@ -376,9 +376,9 @@ Create comprehensive tests for each service:
 - Test persist_entities returns summary not data
 - Test query_scenario enforces SELECT only
 - Test query_scenario respects pagination
-- Test list_scenarios filtering
+- Test list_cohorts filtering
 - Test rename_scenario
-- Test delete_scenario requires confirmation
+- Test delete_cohort requires confirmation
 
 ### Step 5: Update __init__.py
 
@@ -459,9 +459,9 @@ I'm implementing MCP tools that expose the AutoPersistService. These tools will 
 1. `persist_entities` - Save entities, return summary
 2. `get_scenario_summary` - Load summary only  
 3. `query_scenario` - Paginated SQL queries
-4. `list_scenarios` - List available scenarios
+4. `list_cohorts` - List available scenarios
 5. `rename_scenario` - Rename a scenario
-6. `delete_scenario` - Delete with confirmation
+6. `delete_cohort` - Delete with confirmation
 7. `get_entity_samples` - Get samples for consistency
 
 ## Pre-flight Checklist
@@ -500,9 +500,9 @@ Exposes 7 tools for the Structured RAG pattern:
 - persist_entities: Save entities, return summary
 - get_scenario_summary: Load summary (NOT full data)
 - query_scenario: Paginated SQL queries
-- list_scenarios: Browse available scenarios
+- list_cohorts: Browse available scenarios
 - rename_scenario: Rename a scenario
-- delete_scenario: Delete with confirmation
+- delete_cohort: Delete with confirmation
 - get_entity_samples: Get samples for consistency
 """
 
@@ -693,7 +693,7 @@ async def list_tools() -> List[Tool]:
             },
         ),
         Tool(
-            name="list_scenarios",
+            name="list_cohorts",
             description="List available scenarios. Use when user asks 'what scenarios do I have' or 'show my scenarios'.",
             inputSchema={
                 "type": "object",
@@ -734,7 +734,7 @@ async def list_tools() -> List[Tool]:
             },
         ),
         Tool(
-            name="delete_scenario",
+            name="delete_cohort",
             description="Delete a scenario and all its entities. Requires confirmation.",
             inputSchema={
                 "type": "object",
@@ -816,8 +816,8 @@ async def call_tool(name: str, arguments: dict) -> List[TextContent]:
             )
             return [TextContent(type="text", text=format_query_result(result))]
         
-        elif name == "list_scenarios":
-            scenarios = service.list_scenarios(
+        elif name == "list_cohorts":
+            scenarios = service.list_cohorts(
                 filter_pattern=arguments.get("filter_pattern"),
                 limit=arguments.get("limit", 20),
                 sort_by=arguments.get("sort_by", "updated_at"),
@@ -842,13 +842,13 @@ async def call_tool(name: str, arguments: dict) -> List[TextContent]:
                 text=f"Renamed scenario from **{old_name}** to **{new_name}**"
             )]
         
-        elif name == "delete_scenario":
+        elif name == "delete_cohort":
             if not arguments.get("confirm"):
                 return [TextContent(
                     type="text",
                     text="Deletion requires `confirm: true`. This cannot be undone."
                 )]
-            result = service.delete_scenario(
+            result = service.delete_cohort(
                 scenario_id=arguments["scenario_id"],
                 confirm=True,
             )
@@ -1086,7 +1086,7 @@ Add rules about context management:
 | Rule | Description |
 |------|-------------|
 | Auto-persist on generation | All generated entities are automatically persisted |
-| Summary loading only | `load_scenario` returns ~3,500 tokens (summary + samples) |
+| Summary loading only | `load_cohort` returns ~3,500 tokens (summary + samples) |
 | Paginated queries | Queries return max 20 results per page |
 | Batch size | Large generations processed in batches of 50 |
 ```
@@ -1552,9 +1552,9 @@ Tools:
 - `persist_entities` - Save entities, return summary
 - `get_scenario_summary` - Load scenario summary
 - `query_scenario` - Paginated SQL queries
-- `list_scenarios` - Browse scenarios
+- `list_cohorts` - Browse scenarios
 - `rename_scenario` - Rename scenario
-- `delete_scenario` - Delete scenario
+- `delete_cohort` - Delete scenario
 - `get_entity_samples` - Get sample entities
 ```
 
@@ -1700,7 +1700,7 @@ Check all cross-references in:
 - **Auto-Persist Feature**: Generated entities are automatically saved to DuckDB
 - **Structured RAG Pattern**: Summary-in-context, data-in-database approach
 - New MCP tools: persist_entities, get_scenario_summary, query_scenario, 
-  list_scenarios, rename_scenario, delete_scenario, get_entity_samples
+  list_cohorts, rename_scenario, delete_cohort, get_entity_samples
 - Batch generation support for large-scale entity creation (>50 entities)
 - Auto-naming service for scenarios based on generation context
 - Token-efficient scenario summaries (~500 tokens)

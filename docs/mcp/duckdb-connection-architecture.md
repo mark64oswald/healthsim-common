@@ -51,9 +51,9 @@ Since we cannot hold both connection types simultaneously, we use a **close-befo
 │  │ Shared lock                     │                                │
 │  │                                 │                                │
 │  │ → healthsim_query()             │                                │
-│  │ → healthsim_list_scenarios()    │                                │
-│  │ → healthsim_load_scenario()     │                                │
-│  │ → healthsim_get_summary()       │                                │
+│  │ → healthsim_list_cohorts()    │                                │
+│  │ → healthsim_load_cohort()     │                                │
+│  │ → healthsim_get_cohort_summary()       │                                │
 │  │ → healthsim_query_reference()   │                                │
 │  │ → healthsim_tables()            │                                │
 │  └─────────────────────────────────┘                                │
@@ -61,8 +61,8 @@ Since we cannot hold both connection types simultaneously, we use a **close-befo
 │  DURING WRITE (brief transition)                                    │
 │  ┌─────────────────────────────────┐                                │
 │  │ 1. Close read connection        │                                │
-│  │ 2. Open write connection        │  → healthsim_save_scenario()   │
-│  │ 3. Perform write operation      │  → healthsim_delete_scenario() │
+│  │ 2. Open write connection        │  → healthsim_save_cohort()   │
+│  │ 3. Perform write operation      │  → healthsim_delete_cohort() │
 │  │ 4. Close write connection       │                                │
 │  │ 5. (Read reopens lazily)        │                                │
 │  └─────────────────────────────────┘                                │
@@ -159,14 +159,14 @@ class ConnectionManager:
 
 | Tool | Operation Type | Connection | Notes |
 |------|---------------|------------|-------|
-| `healthsim_list_scenarios` | Read | Persistent read | Fast, reusable |
-| `healthsim_load_scenario` | Read | Persistent read | Fast, reusable |
-| `healthsim_get_summary` | Read | Persistent read | Fast, reusable |
+| `healthsim_list_cohorts` | Read | Persistent read | Fast, reusable |
+| `healthsim_load_cohort` | Read | Persistent read | Fast, reusable |
+| `healthsim_get_cohort_summary` | Read | Persistent read | Fast, reusable |
 | `healthsim_query` | Read | Persistent read | Fast, reusable |
 | `healthsim_query_reference` | Read | Persistent read | Fast, reusable |
 | `healthsim_tables` | Read | Persistent read | Fast, reusable |
-| `healthsim_save_scenario` | **Write** | Close-then-write | Closes read first |
-| `healthsim_delete_scenario` | **Write** | Close-then-write | Closes read first |
+| `healthsim_save_cohort` | **Write** | Close-then-write | Closes read first |
+| `healthsim_delete_cohort` | **Write** | Close-then-write | Closes read first |
 
 ## Benefits
 

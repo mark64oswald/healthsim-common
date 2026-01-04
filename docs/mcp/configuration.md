@@ -74,11 +74,11 @@ which python3
 
 | Tool | Description | Read-Only |
 |------|-------------|:---------:|
-| `healthsim_list_scenarios` | List all saved scenarios | ✅ |
-| `healthsim_load_scenario` | Load a scenario by name/ID | ✅ |
-| `healthsim_save_scenario` | Save entities as a scenario | ❌ |
-| `healthsim_delete_scenario` | Delete a scenario (requires confirm=True) | ❌ |
-| `healthsim_get_summary` | Get token-efficient scenario summary | ✅ |
+| `healthsim_list_cohorts` | List all saved scenarios | ✅ |
+| `healthsim_load_cohort` | Load a scenario by name/ID | ✅ |
+| `healthsim_save_cohort` | Save entities as a scenario | ❌ |
+| `healthsim_delete_cohort` | Delete a scenario (requires confirm=True) | ❌ |
+| `healthsim_get_cohort_summary` | Get token-efficient scenario summary | ✅ |
 | `healthsim_query` | Execute read-only SQL queries | ✅ |
 | `healthsim_query_reference` | Query PopulationSim reference data | ✅ |
 | `healthsim_tables` | List all database tables | ✅ |
@@ -97,7 +97,7 @@ which python3
 
 ```
 # List scenarios
-Use healthsim_list_scenarios
+Use healthsim_list_cohorts
 
 # Query reference data
 Use healthsim_query_reference with table="places_county" and state="CA"
@@ -106,7 +106,7 @@ Use healthsim_query_reference with table="places_county" and state="CA"
 Use healthsim_query with sql="SELECT countyname, obesity_crudeprev FROM ref_places_county WHERE stateabbr = 'TX' ORDER BY obesity_crudeprev DESC LIMIT 10"
 
 # Save a scenario
-Use healthsim_save_scenario with:
+Use healthsim_save_cohort with:
 - name: "my-scenario"
 - entities: {"patients": [...], "encounters": [...]}
 - description: "Test scenario"
@@ -280,16 +280,16 @@ If using a specific Python interpreter:
 **Patient/Member Generation:**
 - **`generate_patient`** / **`generate_member`** - Generate a single entity
 - **`generate_cohort`** - Generate multiple entities
-- **`list_scenarios`** - Show available clinical scenarios
+- **`list_cohorts`** - Show available clinical scenarios
 - **`describe_scenario`** - Get scenario details
 - **`modify_patient`** - Modify existing entity
 - **`get_patient_details`** - View entity information
 
 **State Management (Save/Load Scenarios):**
-- **`save_scenario`** - Save current workspace to a named scenario
-- **`load_scenario`** - Load a saved scenario
+- **`save_cohort`** - Save current workspace to a named scenario
+- **`load_cohort`** - Load a saved scenario
 - **`list_saved_scenarios`** - List all saved scenarios
-- **`delete_scenario`** - Delete a saved scenario
+- **`delete_cohort`** - Delete a saved scenario
 - **`workspace_summary`** - View current workspace state
 
 ### Export Server Tools

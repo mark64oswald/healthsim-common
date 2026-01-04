@@ -30,16 +30,16 @@
 | `scenario_id` | `cohort_id` | Column/field name |
 | `scenario_entities` | `cohort_entities` | Table name |
 | `scenario_tags` | `cohort_tags` | Table name |
-| `healthsim_list_scenarios` | `healthsim_list_cohorts` | MCP tool |
-| `healthsim_load_scenario` | `healthsim_load_cohort` | MCP tool |
-| `healthsim_save_scenario` | `healthsim_save_cohort` | MCP tool |
-| `healthsim_delete_scenario` | `healthsim_delete_cohort` | MCP tool |
-| `healthsim_get_summary` | `healthsim_get_cohort_summary` | MCP tool |
+| `healthsim_list_cohorts` | `healthsim_list_cohorts` | MCP tool |
+| `healthsim_load_cohort` | `healthsim_load_cohort` | MCP tool |
+| `healthsim_save_cohort` | `healthsim_save_cohort` | MCP tool |
+| `healthsim_delete_cohort` | `healthsim_delete_cohort` | MCP tool |
+| `healthsim_get_cohort_summary` | `healthsim_get_cohort_summary` | MCP tool |
 | `ScenarioManager` | `CohortManager` | Class name |
-| `save_scenario` | `save_cohort` | Method name |
-| `load_scenario` | `load_cohort` | Method name |
-| `delete_scenario` | `delete_cohort` | Method name |
-| `list_scenarios` | `list_cohorts` | Method name |
+| `save_cohort` | `save_cohort` | Method name |
+| `load_cohort` | `load_cohort` | Method name |
+| `delete_cohort` | `delete_cohort` | Method name |
+| `list_cohorts` | `list_cohorts` | Method name |
 | `scenarios/saved/` | `cohorts/saved/` | Directory path |
 
 ---
@@ -105,10 +105,10 @@
 | Change | Status |
 |--------|--------|
 | Rename class `ScenarioManager` → `CohortManager` | ⬜ |
-| Rename method `save_scenario` → `save_cohort` | ⬜ |
-| Rename method `load_scenario` → `load_cohort` | ⬜ |
-| Rename method `delete_scenario` → `delete_cohort` | ⬜ |
-| Rename method `list_scenarios` → `list_cohorts` | ⬜ |
+| Rename method `save_cohort` → `save_cohort` | ⬜ |
+| Rename method `load_cohort` → `load_cohort` | ⬜ |
+| Rename method `delete_cohort` → `delete_cohort` | ⬜ |
+| Rename method `list_cohorts` → `list_cohorts` | ⬜ |
 | Rename method `get_scenario` → `get_cohort` | ⬜ |
 | Rename method `tag_scenario` → `tag_cohort` | ⬜ |
 | Update all SQL queries | ⬜ |
@@ -184,11 +184,11 @@
 
 | Change | Status |
 |--------|--------|
-| Rename tool `healthsim_list_scenarios` → `healthsim_list_cohorts` | ⬜ |
-| Rename tool `healthsim_load_scenario` → `healthsim_load_cohort` | ⬜ |
-| Rename tool `healthsim_save_scenario` → `healthsim_save_cohort` | ⬜ |
-| Rename tool `healthsim_delete_scenario` → `healthsim_delete_cohort` | ⬜ |
-| Rename tool `healthsim_get_summary` → `healthsim_get_cohort_summary` | ⬜ |
+| Rename tool `healthsim_list_cohorts` → `healthsim_list_cohorts` | ⬜ |
+| Rename tool `healthsim_load_cohort` → `healthsim_load_cohort` | ⬜ |
+| Rename tool `healthsim_save_cohort` → `healthsim_save_cohort` | ⬜ |
+| Rename tool `healthsim_delete_cohort` → `healthsim_delete_cohort` | ⬜ |
+| Rename tool `healthsim_get_cohort_summary` → `healthsim_get_cohort_summary` | ⬜ |
 | Update all docstrings | ⬜ |
 | Update all example code in docstrings | ⬜ |
 | Update header comments | ⬜ |
@@ -423,7 +423,7 @@ If issues are found during migration:
 2. **MCP Tools**: Consider deprecation period with aliases
    ```python
    # Alias old names to new
-   healthsim_list_scenarios = healthsim_list_cohorts
+   healthsim_list_cohorts = healthsim_list_cohorts
    ```
 
 3. **Git**: Tag before starting (`pre-cohort-refactor`)

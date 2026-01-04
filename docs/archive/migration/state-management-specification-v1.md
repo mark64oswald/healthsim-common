@@ -14,7 +14,7 @@ State Management enables users to save and load workspace scenarios - complete s
 
 ## API Reference
 
-### save_scenario
+### save_cohort
 
 Saves entities as a named scenario.
 
@@ -46,9 +46,9 @@ Saves entities as a named scenario.
 #### Python Usage
 
 ```python
-from healthsim.state import save_scenario
+from healthsim.state import save_cohort
 
-scenario_id = save_scenario(
+scenario_id = save_cohort(
     name='diabetes-cohort',
     entities={
         'patients': [patient1, patient2],
@@ -61,7 +61,7 @@ scenario_id = save_scenario(
 
 ---
 
-### load_scenario
+### load_cohort
 
 Loads a scenario from the database.
 
@@ -90,15 +90,15 @@ Loads a scenario from the database.
 #### Python Usage
 
 ```python
-from healthsim.state import load_scenario
+from healthsim.state import load_cohort
 
-scenario = load_scenario('diabetes-cohort')
+scenario = load_cohort('diabetes-cohort')
 patients = scenario['entities']['patients']
 ```
 
 ---
 
-### list_scenarios
+### list_cohorts
 
 Lists available scenarios with optional filtering.
 
@@ -131,21 +131,21 @@ Lists available scenarios with optional filtering.
 #### Python Usage
 
 ```python
-from healthsim.state import list_scenarios
+from healthsim.state import list_cohorts
 
 # List all
-scenarios = list_scenarios()
+scenarios = list_cohorts()
 
 # Filter by tag
-diabetes_scenarios = list_scenarios(tag='diabetes')
+diabetes_scenarios = list_cohorts(tag='diabetes')
 
 # Search
-matches = list_scenarios(search='cohort')
+matches = list_cohorts(search='cohort')
 ```
 
 ---
 
-### delete_scenario
+### delete_cohort
 
 Deletes a scenario (metadata and links, not underlying entity data).
 
@@ -158,9 +158,9 @@ Deletes a scenario (metadata and links, not underlying entity data).
 #### Python Usage
 
 ```python
-from healthsim.state import delete_scenario
+from healthsim.state import delete_cohort
 
-delete_scenario('old-scenario')
+delete_cohort('old-scenario')
 ```
 
 ---

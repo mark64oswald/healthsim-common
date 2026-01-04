@@ -181,7 +181,7 @@ When multiple tools can handle similar operations, include explicit guidance in 
 
 ```python
 @mcp.tool()
-def save_scenario(...):
+def save_cohort(...):
     """Save a scenario to the database.
     
     ⚠️  USE healthsim_add_entities INSTEAD when:
