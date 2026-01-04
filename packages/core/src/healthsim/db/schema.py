@@ -9,11 +9,11 @@ from typing import List
 import duckdb
 
 # Current schema version
-SCHEMA_VERSION = "1.4"
+SCHEMA_VERSION = "1.5"
 
 # Standard provenance columns included in all canonical tables
 PROVENANCE_COLUMNS = """
-    scenario_id         VARCHAR,   -- Links to scenarios table for auto-persist
+    cohort_id           VARCHAR,   -- Links to cohorts table for auto-persist
     created_at          TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     source_type         VARCHAR,   -- 'generated', 'loaded', 'derived'
     source_system       VARCHAR,   -- 'patientsim', 'membersim', etc.
@@ -38,16 +38,16 @@ CREATE TABLE IF NOT EXISTS schema_migrations (
 # ============================================================================
 
 # Sequences for auto-increment IDs
-SCENARIO_ENTITIES_SEQ_DDL = """
-CREATE SEQUENCE IF NOT EXISTS scenario_entities_seq START 1;
+COHORT_ENTITIES_SEQ_DDL = """
+CREATE SEQUENCE IF NOT EXISTS cohort_entities_seq START 1;
 """
 
-SCENARIO_TAGS_SEQ_DDL = """
-CREATE SEQUENCE IF NOT EXISTS scenario_tags_seq START 1;
+COHORT_TAGS_SEQ_DDL = """
+CREATE SEQUENCE IF NOT EXISTS cohort_tags_seq START 1;
 """
 
-SCENARIOS_DDL = """
-CREATE TABLE IF NOT EXISTS scenarios (
+COHORTS_DDL = """
+CREATE TABLE IF NOT EXISTS cohorts (
     id              VARCHAR PRIMARY KEY,
     name            VARCHAR NOT NULL UNIQUE,
     description     VARCHAR,
@@ -57,24 +57,24 @@ CREATE TABLE IF NOT EXISTS scenarios (
 );
 """
 
-SCENARIO_ENTITIES_DDL = """
-CREATE TABLE IF NOT EXISTS scenario_entities (
-    id              INTEGER PRIMARY KEY DEFAULT nextval('scenario_entities_seq'),
-    scenario_id     VARCHAR NOT NULL REFERENCES scenarios(id),
+COHORT_ENTITIES_DDL = """
+CREATE TABLE IF NOT EXISTS cohort_entities (
+    id              INTEGER PRIMARY KEY DEFAULT nextval('cohort_entities_seq'),
+    cohort_id       VARCHAR NOT NULL REFERENCES cohorts(id),
     entity_type     VARCHAR NOT NULL,  -- 'patient', 'encounter', 'claim', etc.
     entity_id       VARCHAR NOT NULL,
     entity_data     JSON,              -- Full entity JSON for export
     created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    UNIQUE(scenario_id, entity_type, entity_id)
+    UNIQUE(cohort_id, entity_type, entity_id)
 );
 """
 
-SCENARIO_TAGS_DDL = """
-CREATE TABLE IF NOT EXISTS scenario_tags (
-    id              INTEGER PRIMARY KEY DEFAULT nextval('scenario_tags_seq'),
-    scenario_id     VARCHAR NOT NULL REFERENCES scenarios(id),
+COHORT_TAGS_DDL = """
+CREATE TABLE IF NOT EXISTS cohort_tags (
+    id              INTEGER PRIMARY KEY DEFAULT nextval('cohort_tags_seq'),
+    cohort_id       VARCHAR NOT NULL REFERENCES cohorts(id),
     tag             VARCHAR NOT NULL,
-    UNIQUE(scenario_id, tag)
+    UNIQUE(cohort_id, tag)
 );
 """
 
@@ -457,71 +457,71 @@ INDEXES_DDL = """
 -- Patient lookups
 CREATE INDEX IF NOT EXISTS idx_patients_ssn ON patients(ssn);
 CREATE INDEX IF NOT EXISTS idx_patients_mrn ON patients(mrn);
-CREATE INDEX IF NOT EXISTS idx_patients_scenario ON patients(scenario_id);
+CREATE INDEX IF NOT EXISTS idx_patients_cohort ON patients(cohort_id);
 
 -- Encounter lookups
 CREATE INDEX IF NOT EXISTS idx_encounters_patient ON encounters(patient_mrn);
 CREATE INDEX IF NOT EXISTS idx_encounters_admission ON encounters(admission_time);
-CREATE INDEX IF NOT EXISTS idx_encounters_scenario ON encounters(scenario_id);
+CREATE INDEX IF NOT EXISTS idx_encounters_cohort ON encounters(cohort_id);
 
 -- Diagnosis lookups
 CREATE INDEX IF NOT EXISTS idx_diagnoses_patient ON diagnoses(patient_mrn);
 CREATE INDEX IF NOT EXISTS idx_diagnoses_code ON diagnoses(code);
-CREATE INDEX IF NOT EXISTS idx_diagnoses_scenario ON diagnoses(scenario_id);
+CREATE INDEX IF NOT EXISTS idx_diagnoses_cohort ON diagnoses(cohort_id);
 
 -- Medication lookups
 CREATE INDEX IF NOT EXISTS idx_medications_patient ON medications(patient_mrn);
-CREATE INDEX IF NOT EXISTS idx_medications_scenario ON medications(scenario_id);
+CREATE INDEX IF NOT EXISTS idx_medications_cohort ON medications(cohort_id);
 
 -- Lab results lookups
 CREATE INDEX IF NOT EXISTS idx_lab_results_patient ON lab_results(patient_mrn);
 CREATE INDEX IF NOT EXISTS idx_lab_results_loinc ON lab_results(loinc_code);
-CREATE INDEX IF NOT EXISTS idx_lab_results_scenario ON lab_results(scenario_id);
+CREATE INDEX IF NOT EXISTS idx_lab_results_cohort ON lab_results(cohort_id);
 
 -- Member lookups
 CREATE INDEX IF NOT EXISTS idx_members_ssn ON members(ssn);
 CREATE INDEX IF NOT EXISTS idx_members_subscriber ON members(subscriber_id);
-CREATE INDEX IF NOT EXISTS idx_members_scenario ON members(scenario_id);
+CREATE INDEX IF NOT EXISTS idx_members_cohort ON members(cohort_id);
 
 -- Claim lookups
 CREATE INDEX IF NOT EXISTS idx_claims_member ON claims(member_id);
 CREATE INDEX IF NOT EXISTS idx_claims_service_date ON claims(service_date);
-CREATE INDEX IF NOT EXISTS idx_claims_scenario ON claims(scenario_id);
+CREATE INDEX IF NOT EXISTS idx_claims_cohort ON claims(cohort_id);
 CREATE INDEX IF NOT EXISTS idx_claim_lines_claim ON claim_lines(claim_id);
-CREATE INDEX IF NOT EXISTS idx_claim_lines_scenario ON claim_lines(scenario_id);
+CREATE INDEX IF NOT EXISTS idx_claim_lines_cohort ON claim_lines(cohort_id);
 
 -- Pharmacy claim lookups
 CREATE INDEX IF NOT EXISTS idx_pharmacy_claims_member ON pharmacy_claims(member_id);
 CREATE INDEX IF NOT EXISTS idx_pharmacy_claims_ndc ON pharmacy_claims(ndc);
-CREATE INDEX IF NOT EXISTS idx_pharmacy_claims_scenario ON pharmacy_claims(scenario_id);
+CREATE INDEX IF NOT EXISTS idx_pharmacy_claims_cohort ON pharmacy_claims(cohort_id);
 
 -- Prescription lookups
 CREATE INDEX IF NOT EXISTS idx_prescriptions_patient ON prescriptions(patient_mrn);
 CREATE INDEX IF NOT EXISTS idx_prescriptions_member ON prescriptions(member_id);
-CREATE INDEX IF NOT EXISTS idx_prescriptions_scenario ON prescriptions(scenario_id);
+CREATE INDEX IF NOT EXISTS idx_prescriptions_cohort ON prescriptions(cohort_id);
 
 -- Subject lookups
 CREATE INDEX IF NOT EXISTS idx_subjects_study ON subjects(study_id);
 CREATE INDEX IF NOT EXISTS idx_subjects_site ON subjects(site_id);
 CREATE INDEX IF NOT EXISTS idx_subjects_ssn ON subjects(ssn);
-CREATE INDEX IF NOT EXISTS idx_subjects_scenario ON subjects(scenario_id);
+CREATE INDEX IF NOT EXISTS idx_subjects_cohort ON subjects(cohort_id);
 
 -- Trial visit lookups
 CREATE INDEX IF NOT EXISTS idx_trial_visits_subject ON trial_visits(usubjid);
-CREATE INDEX IF NOT EXISTS idx_trial_visits_scenario ON trial_visits(scenario_id);
+CREATE INDEX IF NOT EXISTS idx_trial_visits_cohort ON trial_visits(cohort_id);
 
 -- Adverse event lookups
 CREATE INDEX IF NOT EXISTS idx_adverse_events_subject ON adverse_events(usubjid);
-CREATE INDEX IF NOT EXISTS idx_adverse_events_scenario ON adverse_events(scenario_id);
+CREATE INDEX IF NOT EXISTS idx_adverse_events_cohort ON adverse_events(cohort_id);
 
 -- Exposure lookups
-CREATE INDEX IF NOT EXISTS idx_exposures_scenario ON exposures(scenario_id);
+CREATE INDEX IF NOT EXISTS idx_exposures_cohort ON exposures(cohort_id);
 
--- Scenario entity lookups
-CREATE INDEX IF NOT EXISTS idx_scenario_entities_scenario ON scenario_entities(scenario_id);
-CREATE INDEX IF NOT EXISTS idx_scenario_entities_type ON scenario_entities(entity_type);
-CREATE INDEX IF NOT EXISTS idx_scenario_tags_scenario ON scenario_tags(scenario_id);
-CREATE INDEX IF NOT EXISTS idx_scenario_tags_tag ON scenario_tags(tag);
+-- Cohort entity lookups
+CREATE INDEX IF NOT EXISTS idx_cohort_entities_cohort ON cohort_entities(cohort_id);
+CREATE INDEX IF NOT EXISTS idx_cohort_entities_type ON cohort_entities(entity_type);
+CREATE INDEX IF NOT EXISTS idx_cohort_tags_cohort ON cohort_tags(cohort_id);
+CREATE INDEX IF NOT EXISTS idx_cohort_tags_tag ON cohort_tags(tag);
 """
 
 # ============================================================================
@@ -534,13 +534,13 @@ ALL_DDL = [
     SCHEMA_MIGRATIONS_DDL,
     
     # Sequences (must be created before tables that reference them)
-    SCENARIO_ENTITIES_SEQ_DDL,
-    SCENARIO_TAGS_SEQ_DDL,
+    COHORT_ENTITIES_SEQ_DDL,
+    COHORT_TAGS_SEQ_DDL,
     
     # State management tables
-    SCENARIOS_DDL,
-    SCENARIO_ENTITIES_DDL,
-    SCENARIO_TAGS_DDL,
+    COHORTS_DDL,
+    COHORT_ENTITIES_DDL,
+    COHORT_TAGS_DDL,
     
     # PatientSim canonical tables
     PATIENTS_DDL,
@@ -602,7 +602,7 @@ def get_canonical_tables() -> List[str]:
 
 def get_state_tables() -> List[str]:
     """Get list of state management table names."""
-    return ['scenarios', 'scenario_entities', 'scenario_tags']
+    return ['cohorts', 'cohort_entities', 'cohort_tags']
 
 
 def get_system_tables() -> List[str]:

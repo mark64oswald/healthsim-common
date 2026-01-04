@@ -100,14 +100,14 @@ class TestSchemaApplication:
         for col in required_columns:
             assert col in column_names, f"Missing column: {col}"
     
-    def test_scenarios_table_structure(self, tmp_path):
-        """Test that scenarios state table has correct columns."""
+    def test_cohorts_table_structure(self, tmp_path):
+        """Test that cohorts state table has correct columns."""
         db_path = tmp_path / "test.duckdb"
         conn = get_connection(db_path)
         
         columns = conn.execute("""
             SELECT column_name FROM information_schema.columns
-            WHERE table_name = 'scenarios'
+            WHERE table_name = 'cohorts'
         """).fetchall()
         column_names = {row[0] for row in columns}
         
@@ -181,9 +181,9 @@ class TestTableHelpers:
         """Test that get_state_tables returns expected tables."""
         tables = get_state_tables()
         assert isinstance(tables, list)
-        assert 'scenarios' in tables
-        assert 'scenario_entities' in tables
-        assert 'scenario_tags' in tables
+        assert 'cohorts' in tables
+        assert 'cohort_entities' in tables
+        assert 'cohort_tags' in tables
     
     def test_get_system_tables_returns_list(self):
         """Test that get_system_tables returns expected tables."""
