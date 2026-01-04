@@ -1,53 +1,71 @@
 # Cohort Refactoring - COMPLETE ✅
 
-**Completed:** 2026-01-04 10:30 UTC
-**Final Test Result:** 295 passed, 0 failed
+**Completed:** 2026-01-04 11:15 UTC
+**Final Test Result:** 295 passed, 0 failed (core tests)
 
 ## Summary
 
-The Scenario→Cohort terminology refactoring is complete. User-facing elements now use "cohort" terminology while internal Python code retains "scenario" variable names for API stability.
+The Scenario→Cohort terminology refactoring is **COMPLETE**. All user-facing AND internal code now uses "cohort" terminology consistently.
 
-## Completed Phases
+## What Changed
 
-### Phase 1: Database Schema ✅
-- Tables renamed: scenarios→cohorts, scenario_entities→cohort_entities, scenario_tags→cohort_tags
-- Columns renamed: scenario_id→cohort_id throughout
+### Database Schema (Phase 1)
+- Tables: `scenarios`→`cohorts`, `scenario_entities`→`cohort_entities`, `scenario_tags`→`cohort_tags`
+- Columns: `scenario_id`→`cohort_id` throughout
 - Migration v1.5 added for existing databases
 
-### Phase 2: State Management ✅
+### State Management (Phase 2)
 - SQL queries updated to use new table/column names
-- Entity serialization uses cohort_id for database inserts
+- Entity serialization uses `cohort_id` for database inserts
 
-### Phase 3: MCP Server ✅
-- Tool names: healthsim_list_cohorts, healthsim_load_cohort, healthsim_save_cohort, etc.
+### MCP Server (Phase 3)
+- Tool names: `healthsim_list_cohorts`, `healthsim_load_cohort`, `healthsim_save_cohort`, etc.
 - SQL statements use cohorts/cohort_entities/cohort_tags tables
-- Docstrings and descriptions updated
 
-### Phase 4: Skills Documentation ✅
+### Skills & Documentation (Phases 4-5)
 - All skill files updated with cohort terminology
+- README files, tutorials, architecture docs updated
 
-### Phase 5: General Documentation ✅
-- README files updated
-- Tutorial files updated
-- Architecture docs updated
+### Directory Structure (Phase 6)
+- `scenarios/` directory renamed to `cohorts/`
 
-### Phase 6: Directory Structure ✅
-- scenarios/ directory renamed to cohorts/
+### Migration Module (Phase 7)
+- `json_scenarios.py` → `json_cohorts.py`
+- All migration function names updated
 
-### Phase 7: Test Files ✅
-- Migration tests updated for new function names
-- Test file renames completed
+### Complete Internal Rename (Phase 8) ← NEW
+- **Methods renamed**:
+  - `save_scenario` → `save_cohort`
+  - `load_scenario` → `load_cohort`
+  - `list_scenarios` → `list_cohorts`
+  - `delete_scenario` → `delete_cohort`
+  - `get_scenario_summary` → `get_cohort_summary`
+  - `query_scenario` → `query_cohort`
+  - etc.
 
-### Phase 8: Final Validation ✅
-- All 295 tests passing
-- Git commits pushed to remote
+- **Classes renamed**:
+  - `ScenarioSummary` → `CohortSummary`
+  - `ScenarioBrief` → `CohortBrief`
 
-## Design Decision: Internal Variable Names
+- **Parameters renamed**:
+  - `scenario_id` → `cohort_id`
+  - `scenario_name` → `cohort_name`
+  - `scenario_id_or_name` → `cohort_id_or_name`
 
-Internal Python variable names (scenario_id, scenario_name, save_scenario, etc.) were intentionally NOT renamed:
-- Database layer handles translation between Python `scenario_id` and DB `cohort_id`
-- Preserves API stability for existing code
-- User-facing terminology (MCP tools, docs) uses "cohort"
+- **Files updated**:
+  - `packages/core/src/healthsim/state/` (all files)
+  - `packages/patientsim/src/mcp/` (session, state_server, formatters)
+  - `packages/mcp-server/healthsim_mcp.py`
+  - Test files across packages
+
+## What Was NOT Changed (By Design)
+
+The `membersim/scenarios/` and `rxmembersim/scenarios/` directories were **intentionally NOT renamed**. These contain **event sequence templates** (like "diabetic_member", "new_therapy_start") - a different concept from saved data cohorts:
+
+- **Cohort**: A saved collection of entities (patients, members, etc.)
+- **Scenario**: A template describing a sequence of events over time
+
+This distinction is correct healthcare/simulation domain terminology.
 
 ## Git Commits
 
@@ -70,3 +88,18 @@ Internal Python variable names (scenario_id, scenario_name, save_scenario, etc.)
 | db3ea12 | 5 | Documentation additional updates |
 | 72c8db1 | 6 | Directory rename scenarios→cohorts |
 | 8ef68e6 | 7 | Migration module and test fixes |
+| 00286ae | 8 | Final validation marker |
+| ab0b168 | 8+ | Complete internal rename |
+
+## Verification
+
+```bash
+# Run core tests
+cd packages/core && source .venv/bin/activate
+python -m pytest tests/db/ tests/state/ --tb=no -q
+# Result: 295 passed
+
+# Search for remaining scenario references in core state module
+grep -r "scenario" packages/core/src/healthsim/state/ | grep -v __pycache__
+# Result: No matches (clean)
+```
