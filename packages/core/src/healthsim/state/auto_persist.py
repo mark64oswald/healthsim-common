@@ -357,7 +357,7 @@ class AutoPersistService:
         now = datetime.utcnow()
         
         self.conn.execute("""
-            INSERT INTO scenarios (id, name, description, created_at, updated_at)
+            INSERT INTO cohorts (id, name, description, created_at, updated_at)
             VALUES (?, ?, ?, ?, ?)
         """, [scenario_id, name, description, now, now])
         
@@ -365,8 +365,8 @@ class AutoPersistService:
         if tags:
             for tag in tags:
                 self.conn.execute("""
-                    INSERT INTO scenario_tags (id, scenario_id, tag)
-                    VALUES (nextval('scenario_tags_seq'), ?, ?)
+                    INSERT INTO cohort_tags (id, cohort_id, tag)
+                    VALUES (nextval('cohort_tags_seq'), ?, ?)
                 """, [scenario_id, tag.lower()])
         
         return scenario_id
@@ -374,14 +374,14 @@ class AutoPersistService:
     def _update_scenario_timestamp(self, scenario_id: str):
         """Update scenario's updated_at timestamp."""
         self.conn.execute("""
-            UPDATE scenarios SET updated_at = ? WHERE id = ?
+            UPDATE cohorts SET updated_at = ? WHERE id = ?
         """, [datetime.utcnow(), scenario_id])
     
     def _get_scenario_info(self, scenario_id: str) -> Optional[Dict[str, Any]]:
         """Get scenario metadata."""
         result = self.conn.execute("""
             SELECT id, name, description, created_at, updated_at
-            FROM scenarios WHERE id = ?
+            FROM cohorts WHERE id = ?
         """, [scenario_id]).fetchone()
         
         if not result:
@@ -481,7 +481,7 @@ class AutoPersistService:
         else:
             # Get existing scenario name
             result = self.conn.execute("""
-                SELECT name FROM scenarios WHERE id = ?
+                SELECT name FROM cohorts WHERE id = ?
             """, [scenario_id]).fetchone()
             
             if not result:
@@ -499,8 +499,8 @@ class AutoPersistService:
             else:
                 serialized = entity.copy()
             
-            # Add scenario_id
-            serialized['scenario_id'] = scenario_id
+            # Add cohort_id (database column)
+            serialized['cohort_id'] = scenario_id
             
             # Get or generate entity ID
             entity_id = serialized.get(id_column) or str(uuid4())
@@ -627,19 +627,19 @@ class AutoPersistService:
         query_lower = query.lower().strip()
         
         # Add scenario_id filter if not already present
-        if 'scenario_id' not in query_lower:
+        if 'cohort_id' not in query_lower:
             # Find WHERE clause or add one
             if ' where ' in query_lower:
                 # Add to existing WHERE
                 where_idx = query_lower.index(' where ') + 7
-                query = query[:where_idx] + f"scenario_id = '{scenario_id}' AND " + query[where_idx:]
+                query = query[:where_idx] + f"cohort_id = '{scenario_id}' AND " + query[where_idx:]
             else:
                 # Find FROM clause and add WHERE after table name
                 # This is simplified - proper SQL parsing would be more robust
                 from_match = re.search(r'\bFROM\s+(\w+)', query, re.IGNORECASE)
                 if from_match:
                     table_end = from_match.end()
-                    query = query[:table_end] + f" WHERE scenario_id = '{scenario_id}'" + query[table_end:]
+                    query = query[:table_end] + f" WHERE cohort_id = '{scenario_id}'" + query[table_end:]
         
         # Remove any existing LIMIT/OFFSET
         query = re.sub(r'\bLIMIT\s+\d+', '', query, flags=re.IGNORECASE)
@@ -713,7 +713,7 @@ class AutoPersistService:
                 s.description,
                 s.created_at,
                 s.updated_at
-            FROM scenarios s
+            FROM cohorts s
         """
         
         params = []
@@ -724,7 +724,7 @@ class AutoPersistService:
             params.append(f"%{filter_pattern}%")
         
         if tag:
-            query += " JOIN scenario_tags t ON s.id = t.scenario_id"
+            query += " JOIN cohort_tags t ON s.id = t.cohort_id"
             conditions.append("LOWER(t.tag) = LOWER(?)")
             params.append(tag)
         
@@ -751,7 +751,7 @@ class AutoPersistService:
             for table in ['patients', 'members', 'subjects', 'claims', 'prescriptions']:
                 try:
                     cnt_result = self.conn.execute(f"""
-                        SELECT COUNT(*) FROM {table} WHERE scenario_id = ?
+                        SELECT COUNT(*) FROM {table} WHERE cohort_id = ?
                     """, [scenario_id]).fetchone()
                     count += cnt_result[0] if cnt_result else 0
                 except Exception:
@@ -759,7 +759,7 @@ class AutoPersistService:
             
             # Get tags
             tags_result = self.conn.execute("""
-                SELECT tag FROM scenario_tags WHERE scenario_id = ?
+                SELECT tag FROM cohort_tags WHERE cohort_id = ?
             """, [scenario_id]).fetchall()
             tags = [t[0] for t in tags_result]
             
@@ -795,7 +795,7 @@ class AutoPersistService:
         """
         # Get current name
         result = self.conn.execute("""
-            SELECT name FROM scenarios WHERE id = ?
+            SELECT name FROM cohorts WHERE id = ?
         """, [scenario_id]).fetchone()
         
         if not result:
@@ -809,7 +809,7 @@ class AutoPersistService:
         
         # Update
         self.conn.execute("""
-            UPDATE scenarios SET name = ?, updated_at = ?
+            UPDATE cohorts SET name = ?, updated_at = ?
             WHERE id = ?
         """, [new_name, datetime.utcnow(), scenario_id])
         
@@ -838,7 +838,7 @@ class AutoPersistService:
         
         # Get scenario info
         result = self.conn.execute("""
-            SELECT name, description FROM scenarios WHERE id = ?
+            SELECT name, description FROM cohorts WHERE id = ?
         """, [scenario_id]).fetchone()
         
         if not result:
@@ -853,7 +853,7 @@ class AutoPersistService:
             if self._table_exists(table_name):
                 try:
                     cnt = self.conn.execute(f"""
-                        SELECT COUNT(*) FROM {table_name} WHERE scenario_id = ?
+                        SELECT COUNT(*) FROM {table_name} WHERE cohort_id = ?
                     """, [scenario_id]).fetchone()
                     entity_count += cnt[0] if cnt else 0
                 except Exception:
@@ -864,19 +864,19 @@ class AutoPersistService:
             if self._table_exists(table_name):
                 try:
                     self.conn.execute(f"""
-                        DELETE FROM {table_name} WHERE scenario_id = ?
+                        DELETE FROM {table_name} WHERE cohort_id = ?
                     """, [scenario_id])
                 except Exception:
                     pass
         
         # Delete tags
         self.conn.execute("""
-            DELETE FROM scenario_tags WHERE scenario_id = ?
+            DELETE FROM cohort_tags WHERE cohort_id = ?
         """, [scenario_id])
         
         # Delete scenario
         self.conn.execute("""
-            DELETE FROM scenarios WHERE id = ?
+            DELETE FROM cohorts WHERE id = ?
         """, [scenario_id])
         
         return {
@@ -932,7 +932,7 @@ class AutoPersistService:
         try:
             result = self.conn.execute(f"""
                 SELECT * FROM {table_name}
-                WHERE scenario_id = ?
+                WHERE cohort_id = ?
                 {order_clause}
             """, [scenario_id]).fetchall()
             
@@ -962,7 +962,7 @@ class AutoPersistService:
                 if isinstance(value, datetime):
                     value = value.isoformat()
                 # Skip internal columns
-                if col not in ('scenario_id', 'generation_seed'):
+                if col not in ('cohort_id', 'generation_seed'):
                     sample[col] = value
             samples.append(sample)
         
@@ -996,13 +996,13 @@ class AutoPersistService:
         
         # Check if tag already exists
         existing = self.conn.execute("""
-            SELECT COUNT(*) FROM scenario_tags
-            WHERE scenario_id = ? AND tag = ?
+            SELECT COUNT(*) FROM cohort_tags
+            WHERE cohort_id = ? AND tag = ?
         """, [scenario_id, tag]).fetchone()[0]
         
         if existing == 0:
             self.conn.execute("""
-                INSERT INTO scenario_tags (scenario_id, tag)
+                INSERT INTO cohort_tags (cohort_id, tag)
                 VALUES (?, ?)
             """, [scenario_id, tag])
             self._update_scenario_timestamp(scenario_id)
@@ -1030,8 +1030,8 @@ class AutoPersistService:
         tag = tag.lower().strip()
         
         self.conn.execute("""
-            DELETE FROM scenario_tags
-            WHERE scenario_id = ? AND tag = ?
+            DELETE FROM cohort_tags
+            WHERE cohort_id = ? AND tag = ?
         """, [scenario_id, tag])
         
         self._update_scenario_timestamp(scenario_id)
@@ -1049,8 +1049,8 @@ class AutoPersistService:
             List of tags (sorted alphabetically)
         """
         result = self.conn.execute("""
-            SELECT tag FROM scenario_tags
-            WHERE scenario_id = ?
+            SELECT tag FROM cohort_tags
+            WHERE cohort_id = ?
             ORDER BY tag
         """, [scenario_id]).fetchall()
         
@@ -1065,7 +1065,7 @@ class AutoPersistService:
         """
         result = self.conn.execute("""
             SELECT tag, COUNT(*) as count
-            FROM scenario_tags
+            FROM cohort_tags
             GROUP BY tag
             ORDER BY count DESC, tag ASC
         """).fetchall()
@@ -1164,7 +1164,7 @@ class AutoPersistService:
                 # Get source entities
                 source_entities = self.conn.execute(f"""
                     SELECT * FROM {table_name}
-                    WHERE scenario_id = ?
+                    WHERE cohort_id = ?
                 """, [source_scenario_id]).fetchall()
                 
                 if not source_entities:
@@ -1176,7 +1176,7 @@ class AutoPersistService:
                     row_dict = dict(zip(columns, row))
                     
                     # Generate new IDs
-                    row_dict['scenario_id'] = new_scenario_id
+                    row_dict['cohort_id'] = new_scenario_id
                     row_dict[id_column] = str(uuid4())
                     
                     # Reset timestamps
@@ -1301,7 +1301,7 @@ class AutoPersistService:
                     # Get source entities
                     source_entities = self.conn.execute(f"""
                         SELECT * FROM {table_name}
-                        WHERE scenario_id = ?
+                        WHERE cohort_id = ?
                     """, [source_id]).fetchall()
                     
                     if not source_entities:
@@ -1325,7 +1325,7 @@ class AutoPersistService:
                         seen_ids[table_name].add(original_id)
                         
                         # Generate new IDs
-                        row_dict['scenario_id'] = target_scenario_id
+                        row_dict['cohort_id'] = target_scenario_id
                         row_dict[id_column] = str(uuid4())
                         
                         # Reset timestamps
@@ -1416,7 +1416,7 @@ class AutoPersistService:
         # Columns to exclude if not including provenance
         provenance_columns = {
             'source_type', 'source_system', 'skill_used',
-            'generation_seed', 'scenario_id'
+            'generation_seed', 'cohort_id'
         }
         
         # Collect all entity data
@@ -1436,7 +1436,7 @@ class AutoPersistService:
             try:
                 result = self.conn.execute(f"""
                     SELECT * FROM {table_name}
-                    WHERE scenario_id = ?
+                    WHERE cohort_id = ?
                 """, [scenario_id])
                 
                 columns = [desc[0] for desc in result.description]
