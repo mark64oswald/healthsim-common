@@ -144,7 +144,7 @@ healthsim-common/
 | Category | Purpose | Loading Strategy |
 |----------|---------|------------------|
 | **Master Skill** | Entry point, routing to sub-skills | Always in context (metadata) |
-| **Scenario Skills** | Clinical/business scenario patterns | Load when scenario matches |
+| **Cohort Skills** | Clinical/business cohort patterns | Load when cohort matches |
 | **Reference Skills** | Code systems, data models, rules | Load on demand |
 | **Format Skills** | Output transformation patterns | Load when format requested |
 
@@ -173,7 +173,7 @@ Every skill MUST have YAML frontmatter with `name` and `description`:
 ---
 name: healthsim-diabetes-management
 description: >
-  Generate realistic Type 2 Diabetes patient scenarios including diagnosis,
+  Generate realistic Type 2 Diabetes patient cohorts including diagnosis,
   medication escalation, lab patterns, and complications. Use when user requests:
   (1) diabetic patients, (2) A1C/glucose testing, (3) diabetes medications like
   metformin or insulin, (4) diabetic complications, or (5) HEDIS diabetes measures.
@@ -231,7 +231,7 @@ Activate this skill when user mentions:
 
 ## Examples
 
-### Example 1: {Scenario Name}
+### Example 1: {Cohort Name}
 
 **User Request:** "{example request}"
 
@@ -263,7 +263,7 @@ description: >
   claims processing, pharmacy benefits, and analytics. Use for ANY request involving:
   (1) synthetic patients or clinical data, (2) healthcare claims or billing,
   (3) pharmacy prescriptions or formularies, (4) HL7/FHIR/X12/NCPDP formats,
-  (5) healthcare testing scenarios.
+  (5) healthcare testing cohorts.
 ---
 
 # HealthSim - Synthetic Healthcare Data Generation
@@ -300,21 +300,21 @@ HealthSim is a family of Skills for generating realistic synthetic healthcare da
 
 ## Skill Routing
 
-Based on user request, load the appropriate scenario skill:
+Based on user request, load the appropriate cohort skill:
 
-### PatientSim Scenarios
+### PatientSim Cohorts
 - [Diabetes Management](skills/patientsim/diabetes-management.md)
 - [Heart Failure](skills/patientsim/heart-failure.md)
 - [Chronic Kidney Disease](skills/patientsim/chronic-kidney-disease.md)
 - [Sepsis/Acute Care](skills/patientsim/sepsis-acute-care.md)
 
-### MemberSim Scenarios
+### MemberSim Cohorts
 - [Professional Claims](skills/membersim/professional-claims.md)
 - [Facility Claims](skills/membersim/facility-claims.md)
 - [Prior Authorization](skills/membersim/prior-authorization.md)
 - [Accumulator Tracking](skills/membersim/accumulator-tracking.md)
 
-### RxMemberSim Scenarios
+### RxMemberSim Cohorts
 - [Retail Pharmacy](skills/rxmembersim/retail-pharmacy.md)
 - [Specialty Pharmacy](skills/rxmembersim/specialty-pharmacy.md)
 - [DUR Alerts](skills/rxmembersim/dur-alerts.md)
@@ -354,7 +354,7 @@ For code lookups and validation:
 | `patientsim.formats.fhir` | `formats/fhir-r4.md` | Transformation patterns |
 | `patientsim.formats.hl7v2` | `formats/hl7v2-adt.md` | Message templates |
 | `membersim.core.member` | `references/data-models.md` (Member entity) | Schema |
-| `membersim.claims` | `skills/membersim/*.md` | Scenario patterns |
+| `membersim.claims` | `skills/membersim/*.md` | Cohort patterns |
 | `rxmembersim.dur` | `skills/rxmembersim/dur-alerts.md` | DUR rules |
 | `rxmembersim.formulary` | `skills/rxmembersim/formulary-management.md` | Formulary patterns |
 
@@ -363,7 +363,7 @@ For code lookups and validation:
 | Python Pattern | Skills Pattern |
 |----------------|----------------|
 | `class Patient(BaseModel)` | JSON schema in `data-models.md` |
-| `def generate_one()` | Generation instructions in scenario skill |
+| `def generate_one()` | Generation instructions in cohort skill |
 | `WeightedChoice(options=[...])` | Distribution table in skill |
 | `SeedManager(seed=42)` | "For reproducibility, use seed: 42" instruction |
 | `validator` decorators | Validation checklist in skill |
@@ -565,9 +565,9 @@ Claude: "Validation Results:
 | Session | Focus | Deliverables |
 |---------|-------|--------------|
 | **Session 3** | Core Skills | Master SKILL.md, data-models.md, validation-rules.md |
-| **Session 4** | PatientSim Scenarios | 4 clinical scenario skills with full examples |
-| **Session 5** | MemberSim Scenarios | 5 claims scenario skills with X12 patterns |
-| **Session 6** | RxMemberSim Scenarios | 6 pharmacy scenario skills with NCPDP patterns |
+| **Session 4** | PatientSim Cohorts | 4 clinical cohort skills with full examples |
+| **Session 5** | MemberSim Cohorts | 5 claims cohort skills with X12 patterns |
+| **Session 6** | RxMemberSim Cohorts | 6 pharmacy cohort skills with NCPDP patterns |
 | **Session 7** | Format Skills | FHIR, HL7v2, X12, NCPDP transformation skills |
 | **Session 8** | Integration & Testing | End-to-end testing, documentation, packaging |
 
@@ -640,21 +640,21 @@ Test Case: Generate diabetic patient
 
 ## 8. Appendix: Skill Templates
 
-### 8.1 Scenario Skill Template
+### 8.1 Cohort Skill Template
 
 ```markdown
 ---
-name: healthsim-{scenario-name}
+name: healthsim-{cohort-name}
 description: >
-  Generate {scenario description}. Use when user requests: (1) {trigger 1},
-  (2) {trigger 2}, (3) {trigger 3}. Part of HealthSim {product} scenarios.
+  Generate {cohort description}. Use when user requests: (1) {trigger 1},
+  (2) {trigger 2}, (3) {trigger 3}. Part of HealthSim {product} cohorts.
 ---
 
-# {Scenario Title}
+# {Cohort Title}
 
 ## Overview
 
-{What this scenario generates and clinical/business context}
+{What this cohort generates and clinical/business context}
 
 ## Trigger Phrases
 
@@ -763,7 +763,7 @@ description: >
 
 ## Examples
 
-### Example: {Scenario}
+### Example: {Cohort}
 
 **Input**:
 ```json

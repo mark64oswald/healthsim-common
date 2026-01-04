@@ -133,7 +133,7 @@ Use this skill when the user:
 
 ## Complete Examples
 
-### Example 1: [Scenario]
+### Example 1: [Cohort]
 
 **Prompt:** "..."
 
@@ -224,7 +224,7 @@ Person (common)
 
 ### Integration Patterns
 
-| TrialSim Scenario | PatientSim Source | Key Link |
+| TrialSim Cohort | PatientSim Source | Key Link |
 |-------------------|-------------------|----------|
 | Oncology trial subjects | `oncology/*.md` | Diagnosis, staging |
 | CV outcomes trial | `heart-failure.md` | Baseline LVEF, NYHA |

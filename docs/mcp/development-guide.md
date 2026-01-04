@@ -182,11 +182,11 @@ When multiple tools can handle similar operations, include explicit guidance in 
 ```python
 @mcp.tool()
 def save_cohort(...):
-    """Save a scenario to the database.
+    """Save a cohort to the database.
     
     ⚠️  USE healthsim_add_entities INSTEAD when:
     - Total entity count exceeds 50 (to avoid token limit truncation)
-    - Building scenarios incrementally across multiple calls
+    - Building cohorts incrementally across multiple calls
     
     This tool REPLACES ALL entities. Only use for small, complete datasets.
     """
@@ -197,8 +197,8 @@ def add_entities(...):
     
     ✅ USE THIS TOOL when:
     - Total entity count exceeds 50
-    - Building scenarios in batches
-    - Adding to existing scenarios
+    - Building cohorts in batches
+    - Adding to existing cohorts
     """
 ```
 

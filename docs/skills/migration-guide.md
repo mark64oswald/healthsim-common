@@ -28,7 +28,7 @@ The Skills format has been upgraded to v2.0 with Claude-first design principles.
 2. **When to Use This Skill** (Required for v2.0)
    - Structured intent recognition with:
      - Direct Keywords
-     - Clinical Scenarios
+     - Clinical Cohorts
      - Implicit Indicators
      - Co-occurring Mentions
    - Helps Claude identify when to apply this knowledge
@@ -108,7 +108,7 @@ Migrate skills incrementally as you update them:
 Create v2.0 skills that also include v1.0 sections for maximum compatibility:
 
 ```markdown
-# Sepsis Scenario
+# Sepsis Cohort
 
 ## For Claude
 Use this skill when the user requests septic patients...
@@ -117,7 +117,7 @@ Use this skill when the user requests septic patients...
 **Direct Keywords**: "sepsis", "septic shock"...
 
 ## Metadata
-- **Type**: scenario-template
+- **Type**: cohort-template
 - **Version**: 2.0
 
 ## Purpose
@@ -172,13 +172,13 @@ Comprehensive test coverage ensures both formats work correctly:
 - **8 v2.0 tests** - Validate new format features
 - **All 69 skill tests passing** - Full integration validation
 
-Key test scenarios:
+Key test cohorts:
 - v1.0 skills load and parse correctly
 - v2.0 skills detected and parsed with new sections
 - v1.0 skills not falsely detected as v2.0
 - Hybrid skills (v1.0 + v2.0 sections) work correctly
 - Section name variants handled properly
-- All existing scenario skills still work
+- All existing cohort skills still work
 
 ## Best Practices
 

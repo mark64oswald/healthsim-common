@@ -236,7 +236,7 @@ healthsim-workspace/
 
 | Principle | Implementation |
 |-----------|----------------|
-| **Skills are flat** | Scenario files directly in `skills/{product}/` |
+| **Skills are flat** | Cohort files directly in `skills/{product}/` |
 | **Formats are shared** | ALL output formats in root `formats/` |
 | **References are shared** | ALL reference data in root `references/` |
 | **Subcategories allowed** | Use sparingly (oncology/, pediatrics/, therapeutic-areas/) |
@@ -252,7 +252,7 @@ healthsim-workspace/
 |------|---------|----------|
 | **Master Skill** | Entry point, routing | `SKILL.md` (root) |
 | **Product Skill** | Product overview | `skills/{product}/SKILL.md` |
-| **Scenario Skill** | Specific use case | `skills/{product}/*.md` |
+| **Cohort Skill** | Specific use case | `skills/{product}/*.md` |
 | **Format Skill** | Output transformation | `formats/*.md` |
 | **Reference Skill** | Code lookups, rules | `references/*.md` |
 
@@ -349,7 +349,7 @@ HealthSim uses a single DuckDB database with three schemas:
 
 | Schema | Purpose | Tables |
 |--------|---------|--------|
-| **main** | Generated entities + state management | patients, encounters, claims, scenarios, etc. |
+| **main** | Generated entities + state management | patients, encounters, claims, cohorts, etc. |
 | **network** | Real NPPES provider data | providers (8.9M), facilities, quality metrics |
 | **population** | Real CDC/Census demographic data | places_county, svi_tract, adi_blockgroup, etc. |
 
@@ -357,7 +357,7 @@ HealthSim uses a single DuckDB database with three schemas:
 
 ### 8.2 State Management
 
-Scenarios are named snapshots containing generated entities with full provenance:
+Cohorts are named snapshots containing generated entities with full provenance:
 
 | Tool | Purpose | Token Cost |
 |------|---------|------------|
@@ -365,12 +365,12 @@ Scenarios are named snapshots containing generated entities with full provenance
 | `healthsim_load_cohort` | Load all entities (full data) | High |
 | `healthsim_get_cohort_summary` | Load metadata + samples only | ~500 tokens |
 | `healthsim_query` | SQL query against entities | Variable |
-| `healthsim_list_cohorts` | List saved scenarios | Low |
-| `healthsim_delete_cohort` | Remove scenario | - |
+| `healthsim_list_cohorts` | List saved cohorts | Low |
+| `healthsim_delete_cohort` | Remove cohort | - |
 
 **Pattern Selection**:
-- Small scenarios (<50 entities): Use `load_cohort` for full data
-- Large scenarios (50+ entities): Use `get_summary` + `query` for token efficiency
+- Small cohorts (<50 entities): Use `load_cohort` for full data
+- Large cohorts (50+ entities): Use `get_summary` + `query` for token efficiency
 
 See [Data Architecture Guide](data-architecture.md) for complete schema documentation.
 
@@ -414,7 +414,7 @@ When generating data that spans multiple products, follow these patterns:
 
 **Integration Pattern Examples:**
 
-| Scenario | PatientSim | → MemberSim | → RxMemberSim |
+| Cohort | PatientSim | → MemberSim | → RxMemberSim |
 |----------|------------|-------------|---------------|
 | HF Admission | Inpatient encounter, meds, labs | Facility claim (DRG 291-293) | Discharge Rx fills (0-3 days) |
 | Diabetes Visit | Office encounter, A1C | Professional claim (99214) | Rx fills same day |

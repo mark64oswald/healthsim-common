@@ -127,9 +127,9 @@ All six products have comprehensive skills documentation:
 
 | Product | SKILL.md Lines | Skills Count | Status |
 |---------|---------------|--------------|--------|
-| PatientSim | 473 | 9 scenarios | ✅ |
-| MemberSim | 566 | 8 scenarios | ✅ |
-| RxMemberSim | 554 | 8 scenarios | ✅ |
+| PatientSim | 473 | 9 cohorts | ✅ |
+| MemberSim | 566 | 8 cohorts | ✅ |
+| RxMemberSim | 554 | 8 cohorts | ✅ |
 | PopulationSim | 393 | 6 categories | ✅ |
 | NetworkSim | 511 | 6 categories | ✅ |
 | TrialSim | 538 | 15 entities | ✅ |
@@ -150,7 +150,7 @@ All six products have comprehensive skills documentation:
 ### 3.2 Schema Contents
 
 **Main Schema** (21 tables, 0 records - templates):
-- Entity tables ready for scenario data
+- Entity tables ready for cohort data
 
 **Population Schema** (5 tables, 416K+ records):
 - CDC PLACES, SVI, ADI reference data

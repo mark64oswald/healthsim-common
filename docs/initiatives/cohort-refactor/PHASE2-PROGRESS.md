@@ -6,7 +6,7 @@
 ## Context
 Phase 1 (Database) is COMMITTED. The db layer now uses:
 - Tables: `cohorts`, `cohort_entities`, `cohort_tags`
-- Columns: `cohort_id` instead of `scenario_id`
+- Columns: `cohort_id` instead of `cohort_id`
 - Functions: `get_cohort_summary`, `list_cohorts`, `cohort_exists`, etc.
 
 Phase 2 must update the state layer to call these new function names.

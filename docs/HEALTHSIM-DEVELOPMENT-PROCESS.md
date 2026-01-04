@@ -86,8 +86,8 @@ pytest
 | Skill Type | Location |
 |------------|----------|
 | Product overview | `skills/{product}/SKILL.md` |
-| Scenarios | `skills/{product}/{scenario}.md` |
-| Subcategories | `skills/{product}/{category}/{scenario}.md` |
+| Cohorts | `skills/{product}/{cohort}.md` |
+| Subcategories | `skills/{product}/{category}/{cohort}.md` |
 | Formats | `formats/{format}.md` (SHARED - not in product folder) |
 | References | `references/{topic}.md` (SHARED - not in product folder) |
 
@@ -189,7 +189,7 @@ git push
 
 - [ ] Directory created: `skills/{product}/`
 - [ ] Product `SKILL.md` created with routing table
-- [ ] At least one scenario skill created
+- [ ] At least one cohort skill created
 - [ ] Master `SKILL.md` updated with routing
 - [ ] **Cross-product review**: All existing products checked for integration opportunities
 - [ ] **Cross-references added**: Links to/from related skills in other products

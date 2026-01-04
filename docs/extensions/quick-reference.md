@@ -11,7 +11,7 @@ What capability do you want to add?
 │  Examples: Calculate score, compare patients, transform data
 │
 ├─ Claude needs to KNOW something new → Skill (skills.md)
-│  Examples: Clinical domain, scenario pattern, format details
+│  Examples: Clinical domain, cohort pattern, format details
 │
 ├─ Shortcut for common action → Slash Command (slash-commands.md)
 │  Examples: Quick generation, batch export, workflow automation
@@ -34,7 +34,7 @@ Design the conversation first, then implement the code to support it.
 | Extension | Start With |
 |-----------|------------|
 | **MCP Tool** | "Add [tool_name] to src/*/mcp/[server].py enabling: '[what users will say]'. The tool should [action]. Response format: conversational summary with [key elements]." |
-| **Skill** | "Create [domain/scenario] skill at skills/[type]/[name].md for: '[what users will say]'. Include: domain knowledge, generation guidelines, examples." |
+| **Skill** | "Create [domain/cohort] skill at skills/[type]/[name].md for: '[what users will say]'. Include: domain knowledge, generation guidelines, examples." |
 | **Slash Command** | "Add /[cmd] to .claude/commands/[cmd].md that expands: '[full prompt expansion]'. Arguments: [list]. Example: /[cmd] [example]." |
 | **Export Format** | "Add [FORMAT] export to src/*/formats/[format]/ enabling: 'Export to [FORMAT]'. Include: transformer, validator, MCP tool, skill, tests." |
 | **Core Model** | "Add [Model] to src/*/core/models.py for: '[what users will say]'. Include: model definition, generation, skills update, exports, validation." |
@@ -174,7 +174,7 @@ Claude: [calls tool, shows conversational response]
 ### Add Skill (Basic)
 
 ```
-Create [domain/scenario] skill:
+Create [domain/cohort] skill:
 
 **Purpose:** Enable "[what users will say]"
 

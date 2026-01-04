@@ -1,17 +1,17 @@
 # RxMemberSim
 
-Synthetic pharmacy/PBM member data generation for prescription scenarios.
+Synthetic pharmacy/PBM member data generation for prescription cohorts.
 
 ## Overview
 
-RxMemberSim is part of the HealthSim workspace, providing realistic synthetic prescription data generation for pharmacy benefit management simulation scenarios.
+RxMemberSim is part of the HealthSim workspace, providing realistic synthetic prescription data generation for pharmacy benefit management simulation cohorts.
 
 ## Features
 
 - Pharmacy claims generation
 - Drug utilization review (DUR) simulation
 - NCPDP D.0 output format
-- Formulary and prior authorization scenarios
+- Formulary and prior authorization cohorts
 
 ## Installation
 

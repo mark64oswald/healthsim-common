@@ -12,7 +12,7 @@ HealthSim's layered architecture enables clean separation of concerns and easy e
                       ↓
 ┌──────────────────────────────────────────────┐
 │        State Management Layer                 │
-│   (Session + Scenarios + Provenance)          │
+│   (Session + Cohorts + Provenance)          │
 └──────────────────────────────────────────────┘
                       ↓
 ┌──────────────────────────────────────────────┐
@@ -64,21 +64,21 @@ User Request → Claude (with skills context) → MCP Tool Call → Generator �
 **Components:**
 
 - **Session Manager** (`src/*/mcp/session.py`) - In-memory entity collection
-- **Scenario Storage** (`~/.healthsim/scenarios/`) - Persistent JSON scenario files
+- **Cohort Storage** (`~/.healthsim/cohorts/`) - Persistent JSON cohort files
 - **Provenance Tracking** - Records how each entity was created (generated/loaded/derived)
 
 **Key Concepts:**
 
-- **Scenario** - A named snapshot of the entire workspace (patients + clinical data)
+- **Cohort** - A named snapshot of the entire workspace (patients + clinical data)
 - **Provenance** - Metadata tracking source_type, source_system, skill_used, created_at
 - **Branching** - Save baseline, explore variations, compare outcomes
 
 **Tools (spec: [state-management/specification.md](../state-management/specification.md)):**
 
-- `healthsim.save_cohort` - Save workspace to named scenario
-- `healthsim.load_cohort` - Restore workspace from scenario
-- `healthsim.list_cohorts` - List saved scenarios with filtering
-- `healthsim.delete_cohort` - Remove a saved scenario
+- `healthsim.save_cohort` - Save workspace to named cohort
+- `healthsim.load_cohort` - Restore workspace from cohort
+- `healthsim.list_cohorts` - List saved cohorts with filtering
+- `healthsim.delete_cohort` - Remove a saved cohort
 
 **Example:**
 ```text
@@ -330,7 +330,7 @@ class HbA1cGlucoseValidator(ValidationStrategy):
 3. Add to validation pipeline
 4. Add tests
 
-### Adding New Clinical Scenario
+### Adding New Clinical Cohort
 
 1. Create skill file in healthsim-common/skills/
 2. Define clinical logic and parameters
@@ -390,4 +390,4 @@ transformer.create_bundle(patients=patients)  # Single bundle
 
 - [HealthSim Core Extraction Spec](healthsim-common-spec.md) - Shared library architecture
 - [Extension Framework](../extensions/philosophy.md) - Adding new capabilities
-- [State Management](../state-management/specification.md) - Save/load scenarios
+- [State Management](../state-management/specification.md) - Save/load cohorts

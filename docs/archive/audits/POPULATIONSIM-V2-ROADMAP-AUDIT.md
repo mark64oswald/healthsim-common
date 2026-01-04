@@ -54,9 +54,9 @@ Session 4 was completed on 2024-12-23 with commit `33c6baf`:
 
 Files to update:
 - `skills/patientsim/SKILL.md` - Add PopulationSim data integration patterns
-- `skills/patientsim/scenarios/patient-demographics.md` - Generate patients matching real tract demographics
-- `skills/patientsim/scenarios/condition-prevalence.md` - Use PLACES rates for condition assignment
-- `skills/patientsim/scenarios/sdoh-factors.md` - Incorporate real SVI/ADI
+- `skills/patientsim/cohorts/patient-demographics.md` - Generate patients matching real tract demographics
+- `skills/patientsim/cohorts/condition-prevalence.md` - Use PLACES rates for condition assignment
+- `skills/patientsim/cohorts/sdoh-factors.md` - Incorporate real SVI/ADI
 - `references/patientsim-canonical.md` - Add data provenance fields
 
 ### Session 6: MemberSim + RxMemberSim Integration

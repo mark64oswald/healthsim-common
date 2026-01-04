@@ -9,13 +9,13 @@
 
 ## Executive Summary
 
-TrialSim generates realistic synthetic clinical trial data for testing, training, regulatory submission preparation, and system development. This plan establishes a phased approach to build a comprehensive skill library covering trial designs, therapeutic areas, CDISC compliance, and regulatory scenarios.
+TrialSim generates realistic synthetic clinical trial data for testing, training, regulatory submission preparation, and system development. This plan establishes a phased approach to build a comprehensive skill library covering trial designs, therapeutic areas, CDISC compliance, and regulatory cohorts.
 
 ### Why TrialSim Matters
 
 1. **Regulatory Preparation**: FDA/EMA submissions require CDISC-compliant data (SDTM/ADaM mandatory since 2016)
 2. **System Testing**: EDC, CTMS, safety databases need realistic test data
-3. **Training**: Clinical operations teams need realistic scenarios
+3. **Training**: Clinical operations teams need realistic cohorts
 4. **Analytics Development**: Statistical programmers need analysis-ready datasets
 
 ---
@@ -85,7 +85,7 @@ trialsim/
 │   ├── protocol-deviations.md        # Deviation types/patterns
 │   └── discontinuation.md            # Dropout patterns
 │
-└── regulatory/                       # Regulatory scenarios
+└── regulatory/                       # Regulatory cohorts
     ├── README.md
     ├── ind-submission.md             # IND safety data
     ├── nda-bla-submission.md         # Full submission package
@@ -341,7 +341,7 @@ Create reference files:
 
 ## Phase 4: Advanced Designs & Operations (Weeks 9-11)
 
-**Goal**: Support modern trial designs and operational scenarios
+**Goal**: Support modern trial designs and operational cohorts
 
 ### Deliverables
 
@@ -436,7 +436,7 @@ Create reference files:
 | # | Deliverable | Description | Priority |
 |---|-------------|-------------|----------|
 | 6.1 | Hello-TrialSim examples | Starter examples | Critical |
-| 6.2 | Complete scenario examples | Full trial datasets | High |
+| 6.2 | Complete cohort examples | Full trial datasets | High |
 | 6.3 | Validation test suite | Automated testing | High |
 | 6.4 | Documentation updates | README, guides | High |
 
@@ -451,7 +451,7 @@ Create reference files:
 - hello-oncology-basic.md     # Oncology trial basics
 - hello-adaptive.md           # Simple adaptive design
 
-### Complete Scenarios
+### Complete Cohorts
 - diabetes-cvot.md            # Cardiovascular outcomes trial
 - nsclc-immunotherapy.md      # NSCLC checkpoint inhibitor
 - alzheimers-phase3.md        # AD disease modification trial
@@ -553,7 +553,7 @@ Create reference files:
 ### Phase 4 (Advanced)
 - [ ] Adaptive designs generate appropriate interim data
 - [ ] Master protocols produce correct sub-study structures
-- [ ] Operational scenarios (deviations, dropouts) realistic
+- [ ] Operational cohorts (deviations, dropouts) realistic
 
 ### Phase 5 (CDISC)
 - [ ] SDTM output passes Pinnacle21 validation
@@ -562,7 +562,7 @@ Create reference files:
 
 ### Phase 6 (Examples)
 - [ ] Hello-TrialSim examples all functional
-- [ ] Complete scenario examples demonstrate full capability
+- [ ] Complete cohort examples demonstrate full capability
 - [ ] Documentation complete and accurate
 
 ---

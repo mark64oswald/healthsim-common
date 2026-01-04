@@ -1,8 +1,8 @@
-# Scenario → Cohort Refactoring Plan
+# Cohort → Cohort Refactoring Plan
 
 **Status:** 🔵 IN PROGRESS  
 **Started:** 2026-01-04  
-**Target:** Rename "Scenario" to "Cohort" throughout the codebase
+**Target:** Rename "Cohort" to "Cohort" throughout the codebase
 
 ---
 
@@ -25,22 +25,22 @@
 
 | Old Term | New Term | Context |
 |----------|----------|---------|
-| `scenario` | `cohort` | General usage |
-| `scenarios` | `cohorts` | Table name, plural |
-| `scenario_id` | `cohort_id` | Column/field name |
-| `scenario_entities` | `cohort_entities` | Table name |
-| `scenario_tags` | `cohort_tags` | Table name |
+| `cohort` | `cohort` | General usage |
+| `cohorts` | `cohorts` | Table name, plural |
+| `cohort_id` | `cohort_id` | Column/field name |
+| `cohort_entities` | `cohort_entities` | Table name |
+| `cohort_tags` | `cohort_tags` | Table name |
 | `healthsim_list_cohorts` | `healthsim_list_cohorts` | MCP tool |
 | `healthsim_load_cohort` | `healthsim_load_cohort` | MCP tool |
 | `healthsim_save_cohort` | `healthsim_save_cohort` | MCP tool |
 | `healthsim_delete_cohort` | `healthsim_delete_cohort` | MCP tool |
 | `healthsim_get_cohort_summary` | `healthsim_get_cohort_summary` | MCP tool |
-| `ScenarioManager` | `CohortManager` | Class name |
+| `CohortManager` | `CohortManager` | Class name |
 | `save_cohort` | `save_cohort` | Method name |
 | `load_cohort` | `load_cohort` | Method name |
 | `delete_cohort` | `delete_cohort` | Method name |
 | `list_cohorts` | `list_cohorts` | Method name |
-| `scenarios/saved/` | `cohorts/saved/` | Directory path |
+| `cohorts/saved/` | `cohorts/saved/` | Directory path |
 
 ---
 
@@ -58,11 +58,11 @@
 | Rename `SCENARIOS_DDL` → `COHORTS_DDL` | ⬜ |
 | Rename `SCENARIO_ENTITIES_DDL` → `COHORT_ENTITIES_DDL` | ⬜ |
 | Rename `SCENARIO_TAGS_DDL` → `COHORT_TAGS_DDL` | ⬜ |
-| Change table name `scenarios` → `cohorts` | ⬜ |
-| Change table name `scenario_entities` → `cohort_entities` | ⬜ |
-| Change table name `scenario_tags` → `cohort_tags` | ⬜ |
-| Change column `scenario_id` → `cohort_id` in all tables | ⬜ |
-| Update all index names from `scenario` → `cohort` | ⬜ |
+| Change table name `cohorts` → `cohorts` | ⬜ |
+| Change table name `cohort_entities` → `cohort_entities` | ⬜ |
+| Change table name `cohort_tags` → `cohort_tags` | ⬜ |
+| Change column `cohort_id` → `cohort_id` in all tables | ⬜ |
+| Update all index names from `cohort` → `cohort` | ⬜ |
 | Update `get_state_tables()` return values | ⬜ |
 | Increment `SCHEMA_VERSION` to "1.5" | ⬜ |
 
@@ -71,9 +71,9 @@
 
 | Change | Status |
 |--------|--------|
-| Create migration v1.5 for scenario→cohort rename | ⬜ |
-| Rename tables: scenarios→cohorts, scenario_entities→cohort_entities, scenario_tags→cohort_tags | ⬜ |
-| Rename columns: scenario_id→cohort_id in all tables | ⬜ |
+| Create migration v1.5 for cohort→cohort rename | ⬜ |
+| Rename tables: cohorts→cohorts, cohort_entities→cohort_entities, cohort_tags→cohort_tags | ⬜ |
+| Rename columns: cohort_id→cohort_id in all tables | ⬜ |
 | Rename sequences | ⬜ |
 | Rename indexes | ⬜ |
 
@@ -85,7 +85,7 @@
 | Update all SQL queries to use `cohorts` table | ⬜ |
 | Update all SQL queries to use `cohort_entities` table | ⬜ |
 | Update all SQL queries to use `cohort_tags` table | ⬜ |
-| Update all references to `scenario_id` → `cohort_id` | ⬜ |
+| Update all references to `cohort_id` → `cohort_id` | ⬜ |
 
 ### 1.4 Tests
 **Files:** `packages/core/tests/db/test_schema.py`, `test_migration.py`
@@ -104,13 +104,13 @@
 
 | Change | Status |
 |--------|--------|
-| Rename class `ScenarioManager` → `CohortManager` | ⬜ |
+| Rename class `CohortManager` → `CohortManager` | ⬜ |
 | Rename method `save_cohort` → `save_cohort` | ⬜ |
 | Rename method `load_cohort` → `load_cohort` | ⬜ |
 | Rename method `delete_cohort` → `delete_cohort` | ⬜ |
 | Rename method `list_cohorts` → `list_cohorts` | ⬜ |
-| Rename method `get_scenario` → `get_cohort` | ⬜ |
-| Rename method `tag_scenario` → `tag_cohort` | ⬜ |
+| Rename method `get_cohort` → `get_cohort` | ⬜ |
+| Rename method `tag_cohort` → `tag_cohort` | ⬜ |
 | Update all SQL queries | ⬜ |
 | Update all variable names | ⬜ |
 | Update all docstrings | ⬜ |
@@ -120,7 +120,7 @@
 
 | Change | Status |
 |--------|--------|
-| Update `scenario_id` references → `cohort_id` | ⬜ |
+| Update `cohort_id` references → `cohort_id` | ⬜ |
 | Update docstrings | ⬜ |
 
 ### 2.3 Auto-Naming
@@ -136,28 +136,28 @@
 
 | Change | Status |
 |--------|--------|
-| Update all scenario references | ⬜ |
+| Update all cohort references | ⬜ |
 
 ### 2.5 Serializers
 **File:** `packages/core/src/healthsim/state/serializers.py`
 
 | Change | Status |
 |--------|--------|
-| Update scenario references | ⬜ |
+| Update cohort references | ⬜ |
 
 ### 2.6 Workspace
 **File:** `packages/core/src/healthsim/state/workspace.py`
 
 | Change | Status |
 |--------|--------|
-| Update scenario references | ⬜ |
+| Update cohort references | ⬜ |
 
 ### 2.7 Init File
 **File:** `packages/core/src/healthsim/state/__init__.py`
 
 | Change | Status |
 |--------|--------|
-| Update exports (`ScenarioManager` → `CohortManager`) | ⬜ |
+| Update exports (`CohortManager` → `CohortManager`) | ⬜ |
 | Add backwards-compat alias if needed | ⬜ |
 
 ### 2.8 Legacy File
@@ -165,10 +165,10 @@
 
 | Change | Status |
 |--------|--------|
-| Update scenario references | ⬜ |
+| Update cohort references | ⬜ |
 
 ### 2.9 JSON Migration
-**File:** `packages/core/src/healthsim/db/migrate/json_scenarios.py`
+**File:** `packages/core/src/healthsim/db/migrate/json_cohorts.py`
 
 | Change | Status |
 |--------|--------|
@@ -198,13 +198,13 @@
 
 | Change | Status |
 |--------|--------|
-| `test_add_entities.py` - Update scenario references | ⬜ |
-| `test_canonical_e2e.py` - Update scenario references | ⬜ |
-| `test_canonical_insert.py` - Update scenario references | ⬜ |
-| `test_close_before_write.py` - Update scenario references | ⬜ |
-| `test_connection_concurrency.py` - Update scenario references | ⬜ |
-| `test_dual_connection.py` - Update scenario references | ⬜ |
-| `test_entity_type_validation.py` - Update scenario references | ⬜ |
+| `test_add_entities.py` - Update cohort references | ⬜ |
+| `test_canonical_e2e.py` - Update cohort references | ⬜ |
+| `test_canonical_insert.py` - Update cohort references | ⬜ |
+| `test_close_before_write.py` - Update cohort references | ⬜ |
+| `test_connection_concurrency.py` - Update cohort references | ⬜ |
+| `test_dual_connection.py` - Update cohort references | ⬜ |
+| `test_entity_type_validation.py` - Update cohort references | ⬜ |
 
 ---
 
@@ -215,7 +215,7 @@
 
 | Change | Status |
 |--------|--------|
-| Rename entire skill focus from Scenario to Cohort | ⬜ |
+| Rename entire skill focus from Cohort to Cohort | ⬜ |
 | Update frontmatter description | ⬜ |
 | Update all trigger phrases | ⬜ |
 | Update all conversation examples | ⬜ |
@@ -226,21 +226,21 @@
 
 | Change | Status |
 |--------|--------|
-| Update scenario table references | ⬜ |
+| Update cohort table references | ⬜ |
 
 ### 4.3 Identity Correlation
 **File:** `skills/common/identity-correlation.md`
 
 | Change | Status |
 |--------|--------|
-| Update scenario references | ⬜ |
+| Update cohort references | ⬜ |
 
 ### 4.4 Generation Skills
 **Files:** All files in `skills/generation/`
 
 | Change | Status |
 |--------|--------|
-| SKILL.md - Update scenario references | ⬜ |
+| SKILL.md - Update cohort references | ⬜ |
 | executors/profile-executor.md | ⬜ |
 | executors/journey-executor.md | ⬜ |
 | builders/quick-generate.md | ⬜ |
@@ -335,15 +335,15 @@
 ### 6.1 Rename Directories
 | Change | Status |
 |--------|--------|
-| `scenarios/saved/` → `cohorts/saved/` | ⬜ |
+| `cohorts/saved/` → `cohorts/saved/` | ⬜ |
 | Update all path references in code | ⬜ |
 | Update all path references in docs | ⬜ |
 
 ### 6.2 Tools
 | File | Status |
 |------|--------|
-| `tools/scenario_loader.py` → `tools/cohort_loader.py` | ⬜ |
-| `tools/scenario_saver.py` → `tools/cohort_saver.py` | ⬜ |
+| `tools/cohort_loader.py` → `tools/cohort_loader.py` | ⬜ |
+| `tools/cohort_saver.py` → `tools/cohort_saver.py` | ⬜ |
 
 ---
 
@@ -365,9 +365,9 @@
 | File | Status |
 |------|--------|
 | `packages/patientsim/tests/core/test_state.py` | ⬜ |
-| `packages/patientsim/tests/skills/test_scenarios.py` → rename | ⬜ |
-| `packages/membersim/tests/test_scenarios.py` → rename | ⬜ |
-| `packages/rxmembersim/tests/test_scenarios.py` → rename | ⬜ |
+| `packages/patientsim/tests/skills/test_cohorts.py` → rename | ⬜ |
+| `packages/membersim/tests/test_cohorts.py` → rename | ⬜ |
+| `packages/rxmembersim/tests/test_cohorts.py` → rename | ⬜ |
 
 ---
 
@@ -380,7 +380,7 @@
 | Run all integration tests | ⬜ |
 | Verify database migration works on existing data | ⬜ |
 | Manual testing of MCP tools | ⬜ |
-| Search for any remaining "scenario" references | ⬜ |
+| Search for any remaining "cohort" references | ⬜ |
 | Update CHANGELOG.md with v2.1.0-cohort entry | ⬜ |
 | Git commit and tag v2.1.0-cohort | ⬜ |
 | Git push | ⬜ |
@@ -417,7 +417,7 @@ If issues are found during migration:
 
 1. **Database**: Keep old table names as aliases initially
    ```sql
-   CREATE VIEW scenarios AS SELECT * FROM cohorts;
+   CREATE VIEW cohorts AS SELECT * FROM cohorts;
    ```
 
 2. **MCP Tools**: Consider deprecation period with aliases

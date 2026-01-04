@@ -13,7 +13,7 @@
 - [ ] Verify PopulationSim canonical model v2.0: `skills/populationsim/models/population-profile-schema.md`
 - [ ] Review existing integration doc: `skills/populationsim/integration/patientsim-integration.md`
 - [ ] Review diabetes-management.md as pattern (already has partial v2.0 integration)
-- [ ] Note current PatientSim skill count: 17 skills (SKILL.md + 16 scenarios)
+- [ ] Note current PatientSim skill count: 17 skills (SKILL.md + 16 cohorts)
 
 ---
 
@@ -87,9 +87,9 @@ Content should include:
 
 ---
 
-## Phase 5B: Clinical Scenario Updates
+## Phase 5B: Clinical Cohort Updates
 
-Update each clinical scenario skill with "Data Sources (PopulationSim v2.0)" section following the pattern in diabetes-management.md.
+Update each clinical cohort skill with "Data Sources (PopulationSim v2.0)" section following the pattern in diabetes-management.md.
 
 ### Skills to Update
 
@@ -115,7 +115,7 @@ For each skill, add after Parameters table:
 ```markdown
 ## Data Sources (PopulationSim v2.0)
 
-When a geography is specified, [CONDITION] scenarios are grounded in real CDC PLACES data:
+When a geography is specified, [CONDITION] cohorts are grounded in real CDC PLACES data:
 
 ### Embedded Data Lookup
 
@@ -156,7 +156,7 @@ After completing 5A and 5B, verify:
 - [ ] PatientSim SKILL.md has "Data Integration (PopulationSim v2.0)" section
 - [ ] Integration document updated with v2.0 provenance
 - [ ] data-integration.md skill created
-- [ ] All 12 clinical scenario skills have "Data Sources" section
+- [ ] All 12 clinical cohort skills have "Data Sources" section
 - [ ] All file paths reference correct embedded data locations
 - [ ] All PLACES measure names match actual column names
 
@@ -192,7 +192,7 @@ Generate a depression patient in a high-vulnerability area (SVI > 0.8)
 ```
 Verify: Treatment barriers reflected based on SVI theme scores
 
-**Test 4: Cross-scenario consistency**
+**Test 4: Cross-cohort consistency**
 ```
 Generate a patient with diabetes AND heart failure in Maricopa County, AZ
 ```
@@ -221,7 +221,7 @@ Verify: metadata.data_provenance populated with source, data_year, file_referenc
   - Added "Data Integration (PopulationSim v2.0)" section to SKILL.md
   - Created `data-integration.md` foundation skill
   - Updated integration document with embedded data provenance
-  - Added "Data Sources" sections to 12 clinical scenario skills:
+  - Added "Data Sources" sections to 12 clinical cohort skills:
     - heart-failure.md, chronic-kidney-disease.md, behavioral-health.md
     - sepsis-acute-care.md, maternal-health.md, ed-chest-pain.md
     - elective-joint.md, oncology/*.md (3), pediatrics/*.md (2)
@@ -239,7 +239,7 @@ git commit -m "[PatientSim] Add PopulationSim v2.0 data integration
 - Added Data Integration section to SKILL.md
 - Created data-integration.md foundation skill
 - Updated integration document with v2.0 provenance
-- Added Data Sources sections to 12 clinical scenario skills
+- Added Data Sources sections to 12 clinical cohort skills
 - All skills support geography parameter for data-driven generation"
 git push origin main
 ```
@@ -251,7 +251,7 @@ git push origin main
 - [ ] PatientSim SKILL.md updated
 - [ ] data-integration.md created
 - [ ] Integration document updated
-- [ ] 12 clinical scenario skills updated
+- [ ] 12 clinical cohort skills updated
 - [ ] Smoke tests pass
 - [ ] Manual verification tests pass
 - [ ] CHANGELOG.md updated
@@ -263,7 +263,7 @@ git push origin main
 
 ## Success Criteria
 
-1. **Completeness**: All 12 clinical scenario skills have "Data Sources (PopulationSim v2.0)" section
+1. **Completeness**: All 12 clinical cohort skills have "Data Sources (PopulationSim v2.0)" section
 2. **Consistency**: All skills use same pattern and reference correct file paths
 3. **Testing**: Smoke tests pass, manual tests verify data-driven generation works
 4. **Documentation**: CHANGELOG updated, integration doc updated

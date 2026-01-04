@@ -1,17 +1,17 @@
 # PatientSim
 
-Synthetic patient data generation for clinical/EMR scenarios.
+Synthetic patient data generation for clinical/EMR cohorts.
 
 ## Overview
 
-PatientSim is part of the HealthSim workspace, providing realistic synthetic patient data generation for healthcare simulation scenarios.
+PatientSim is part of the HealthSim workspace, providing realistic synthetic patient data generation for healthcare simulation cohorts.
 
 ## Features
 
 - Clinical encounter generation
 - EMR/EHR data simulation
 - FHIR R4, HL7v2, and C-CDA output formats
-- Scenario-based patient journeys
+- Cohort-based patient journeys
 
 ## Installation
 

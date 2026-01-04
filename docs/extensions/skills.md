@@ -4,7 +4,7 @@ Guide to creating skills that teach Claude new domain knowledge.
 
 ## When to Add a Skill
 
-Add a skill when **Claude needs to KNOW something** about a clinical domain, scenario, or format.
+Add a skill when **Claude needs to KNOW something** about a clinical domain, cohort, or format.
 
 ### Good Reasons to Add Skill
 
@@ -14,10 +14,10 @@ User: "Generate a stroke patient eligible for tPA"
 → Need stroke skill with tPA criteria, NIHSS scoring, timing windows
 ```
 
-**New scenario pattern**
+**New cohort pattern**
 ```
 User: "Generate a postpartum patient with hemorrhage"
-→ Need obstetrics skill with delivery scenarios, complications
+→ Need obstetrics skill with delivery cohorts, complications
 ```
 
 **Clinical guidelines**
@@ -68,17 +68,17 @@ Use this matrix to decide between skill and MCP tool:
 
 ### Decision Examples
 
-**Scenario: Sepsis Management**
+**Cohort: Sepsis Management**
 - Question: Does it require code execution? **No**
 - Question: Is it primarily knowledge? **Yes**
 - Decision: **Skill**
 
-**Scenario: SOFA Score Calculation**
+**Cohort: SOFA Score Calculation**
 - Question: Does it require calculations? **Yes**
 - Question: Is it primarily knowledge? **No**
 - Decision: **MCP Tool**
 
-**Scenario: CDA Export**
+**Cohort: CDA Export**
 - Question: Does it require data transformation? **Yes**
 - Question: Does it need session state? **Yes**
 - Decision: **MCP Tool** + **Skill** (to explain format)
@@ -100,7 +100,7 @@ HealthSim uses three types of skills:
 
 **When to use:** Adding a new medical specialty or organ system
 
-### 2. Scenario Skills
+### 2. Cohort Skills
 
 **What:** Teach Claude how to generate specific patient types
 
@@ -109,7 +109,7 @@ HealthSim uses three types of skills:
 - Diabetes (HbA1c control levels, complications, regimens)
 - Joint replacement (pre-op, post-op, rehab)
 
-**File location:** `skills/[scenario].md`
+**File location:** `skills/[cohort].md`
 
 **When to use:** Adding a new patient generation pattern
 
@@ -134,7 +134,7 @@ Skills use a Claude-first structure optimized for conversational AI:
 # Skill Name
 
 **Version:** 2.0
-**Category:** scenarios | healthcare | formats
+**Category:** cohorts | healthcare | formats
 **Last Updated:** YYYY-MM-DD
 
 ## For Claude
@@ -143,7 +143,7 @@ Skills use a Claude-first structure optimized for conversational AI:
 
 This skill enables you to [what Claude can now do].
 
-When users request [scenarios], you should [approach].
+When users request [cohorts], you should [approach].
 
 ## When to Use This Skill
 
@@ -230,7 +230,7 @@ Don't use this skill for:
 - Set expectations clearly
 
 **"When to Use" section:**
-- List specific triggers (keywords, scenarios)
+- List specific triggers (keywords, cohorts)
 - Include anti-patterns (when NOT to use)
 - Help Claude make good decisions
 
@@ -280,15 +280,15 @@ Enable: "Generate [domain] patients with [characteristics]"
 - Complex: "Generate [domain] patient for [specific use case]"
 ```
 
-## Adding a Scenario Skill - Quick Prompt
+## Adding a Cohort Skill - Quick Prompt
 
-Use this prompt to add a scenario skill:
+Use this prompt to add a cohort skill:
 
 ```
-Create [SCENARIO] scenario skill for HealthSim:
+Create [SCENARIO] cohort skill for HealthSim:
 
 **Conversation Goal:**
-Enable: "Generate [scenario] patient with [characteristics]"
+Enable: "Generate [cohort] patient with [characteristics]"
 
 **Clinical Pattern:**
 [Describe the clinical presentation, typical timeline, key features]
@@ -305,14 +305,14 @@ Enable: "Generate [scenario] patient with [characteristics]"
 - Timing: [early vs late presentation]
 - Complications: [which complications present]
 
-**File Location:** skills/[scenario].md
+**File Location:** skills/[cohort].md
 
 **Follow:** skills/SKILL_TEMPLATE_V2.md structure
 
 **Examples to include:**
-- Basic: "Generate [scenario] patient"
-- Specific: "Generate [scenario] patient with [severity/timing]"
-- Complex: "Generate [scenario] patient with [multiple complications]"
+- Basic: "Generate [cohort] patient"
+- Specific: "Generate [cohort] patient with [severity/timing]"
+- Complex: "Generate [cohort] patient with [multiple complications]"
 
 **References:**
 [List clinical guidelines to consult]
@@ -324,7 +324,7 @@ Skills can reference other skills to avoid duplication:
 
 ### Referencing Patterns
 
-**In a scenario skill referencing domain knowledge:**
+**In a cohort skill referencing domain knowledge:**
 
 ```markdown
 ## Domain Knowledge
@@ -333,18 +333,18 @@ Skills can reference other skills to avoid duplication:
 
 For detailed clinical rules, see the [Clinical Rules](../../references/clinical-rules.md#required-medications-by-condition).
 
-**Quick reference for this scenario:**
+**Quick reference for this cohort:**
 - Aspirin 325mg loading, then 81mg daily
 - Clopidogrel 600mg loading, then 75mg daily
 - Atorvastatin 80mg daily (high-intensity statin)
 ```
 
-**In a domain skill referencing scenarios:**
+**In a domain skill referencing cohorts:**
 
 ```markdown
-## Common Scenarios
+## Common Cohorts
 
-This domain knowledge supports several scenario skills:
+This domain knowledge supports several cohort skills:
 
 - **[Heart Failure](../../skills/patientsim/heart-failure.md)** - HFrEF/HFpEF management
 - **[Diabetes Management](../../skills/patientsim/diabetes-management.md)** - Type 1/2 diabetes
@@ -374,7 +374,7 @@ Refer to those skills for specific generation patterns.
 ### Step 2: Test Basic Request
 
 ```
-User: "Generate [scenario] patient"
+User: "Generate [cohort] patient"
 
 Expected: Claude generates patient matching skill guidelines
 Verify:
@@ -388,7 +388,7 @@ Verify:
 ### Step 3: Test Variations
 
 ```
-User: "Generate [scenario] patient with [complication]"
+User: "Generate [cohort] patient with [complication]"
 
 Expected: Claude adds complication appropriately
 Verify:
@@ -400,9 +400,9 @@ Verify:
 ### Step 4: Test Edge Cases
 
 ```
-User: "Generate severe [scenario] patient"
-User: "Generate [scenario] patient presenting late"
-User: "Generate [scenario] patient with multiple complications"
+User: "Generate severe [cohort] patient"
+User: "Generate [cohort] patient presenting late"
+User: "Generate [cohort] patient with multiple complications"
 
 Expected: Claude handles severity/timing/complexity correctly
 ```
@@ -434,7 +434,7 @@ When adding a new skill, complete this checklist:
 ### Design Phase
 - [ ] Identified conversation goal (what users should be able to say)
 - [ ] Confirmed skill is appropriate (not MCP tool or just parameters)
-- [ ] Identified skill type (domain/scenario/format)
+- [ ] Identified skill type (domain/cohort/format)
 - [ ] Researched clinical guidelines and evidence
 - [ ] Identified what Claude needs to KNOW vs DO
 
@@ -472,7 +472,7 @@ When adding a new skill, complete this checklist:
 - [ ] Skill announced in CHANGELOG.md
 
 ### Integration Phase
-- [ ] Skill works with existing scenarios
+- [ ] Skill works with existing cohorts
 - [ ] Skill complements (not duplicates) other skills
 - [ ] Validation rules don't conflict with existing rules
 - [ ] Export formats handle new data (if applicable)
@@ -485,7 +485,7 @@ When adding a new skill, complete this checklist:
 
 ### Pattern 1: Severity Spectrum
 
-Many scenarios have mild/moderate/severe variants:
+Many cohorts have mild/moderate/severe variants:
 
 ```markdown
 ## Generation Guidelines

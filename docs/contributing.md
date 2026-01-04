@@ -362,7 +362,7 @@ How was this tested?
 
 ### High Priority
 
-- **New scenarios** (clinical, claims, pharmacy)
+- **New cohorts** (clinical, claims, pharmacy)
 - **Export formats** (FHIR, HL7v2, X12, NCPDP)
 - **Validation rules** (domain-specific validation)
 - **Documentation** (tutorials, examples)
@@ -387,7 +387,7 @@ How was this tested?
 
 When contributing to healthsim-common:
 
-- **Scenarios**: Add to `skills/[product]/`
+- **Cohorts**: Add to `skills/[product]/`
 - **Formats**: Add to `formats/`
 - **References**: Add to `references/`
 - **Shared docs**: Add to `docs/`
@@ -453,7 +453,7 @@ Thank you for making HealthSim better!
 3. **Read the guides:**
    - [Architecture](HEALTHSIM-ARCHITECTURE-GUIDE.md) - System design
    - [Extension Philosophy](extensions/philosophy.md) - Adding capabilities
-   - [Creating Skills](extensions/skills.md) - Add scenarios
+   - [Creating Skills](extensions/skills.md) - Add cohorts
    - [MCP Tools](extensions/mcp-tools.md) - Add MCP tools
 
 **Questions?** Open a Discussion or ask in your PR!

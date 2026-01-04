@@ -2,10 +2,10 @@
 
 ## Executive Summary
 
-The Generative Framework introduces a **specification-driven** approach to data generation that complements (not replaces) the existing **scenario-based** persistence model.
+The Generative Framework introduces a **specification-driven** approach to data generation that complements (not replaces) the existing **cohort-based** persistence model.
 
 **Key Distinction:**
-- **Scenarios** = WHERE entities are saved (persistence)
+- **Cohorts** = WHERE entities are saved (persistence)
 - **Profiles + Journeys** = WHAT and HOW entities are generated (specification)
 
 These are complementary layers that work together.
@@ -42,7 +42,7 @@ These are complementary layers that work together.
 │   "Store WHERE entities live"                                               │
 │                                                                             │
 │   ┌─────────────┐    ┌─────────────┐    ┌─────────────┐                    │
-│   │  Scenario   │    │   State     │    │   DuckDB    │                    │
+│   │  Cohort   │    │   State     │    │   DuckDB    │                    │
 │   │   Manager   │───▶│   Manager   │───▶│  Database   │                    │
 │   └─────────────┘    └─────────────┘    └─────────────┘                    │
 │                                                                             │
@@ -68,7 +68,7 @@ These are complementary layers that work together.
 
 | Component | What It Is | Analogy |
 |-----------|------------|---------|
-| **Scenario** | Named collection of entities | A filing cabinet drawer |
+| **Cohort** | Named collection of entities | A filing cabinet drawer |
 | **State Manager** | Save/load/query interface | The file clerk |
 | **DuckDB** | Persistent storage | The warehouse |
 
@@ -377,7 +377,7 @@ The two-phase architecture:
 
 ---
 
-## Journeys vs Scenarios: Complementary, Not Redundant
+## Journeys vs Cohorts: Complementary, Not Redundant
 
 This is a critical distinction:
 
@@ -415,7 +415,7 @@ This is a critical distinction:
                               HOW THEY CONNECT:
 
     ┌───────────────┐    ┌───────────────┐    ┌───────────────┐
-    │   Profile     │    │   Journey     │    │   Scenario    │
+    │   Profile     │    │   Journey     │    │   Cohort    │
     │   Spec        │───▶│   Spec        │───▶│   (saved)     │
     └───────────────┘    └───────────────┘    └───────────────┘
           │                    │                    │
@@ -438,7 +438,7 @@ This is a critical distinction:
                       ┌─────────────┐
                       │State Manager│
                       │   saves to  │
-                      │  scenario   │
+                      │  cohort   │
                       └─────────────┘
 ```
 
@@ -475,7 +475,7 @@ This is a critical distinction:
    - Corresponding claims for each encounter
 
 7. STATE MANAGER saves:
-   Scenario "medicare-dm-cohort" containing:
+   Cohort "medicare-dm-cohort" containing:
    - 200 patients
    - 200 members
    - 800 encounters
@@ -532,7 +532,7 @@ This is a critical distinction:
 | **Temporal events** | Manual: "add an encounter on day 30" | Automatic: Journey defines all events |
 | **Cross-product** | Manual: "now create a claim for that encounter" | Automatic: Cross-domain sync triggers |
 | **Reproducibility** | Random each time | Deterministic from specification |
-| **Persistence** | Scenario (same) | Scenario (same - unchanged) |
+| **Persistence** | Cohort (same) | Cohort (same - unchanged) |
 | **Small requests** | Direct generation | Quick Generate (same UX) |
 
 ---
@@ -545,7 +545,7 @@ This is a critical distinction:
 | Generate 50+ entities with specific characteristics | Profile Builder → Execute |
 | Add temporal events (follow-ups, labs over time) | Journey Builder |
 | Start from a common pattern | Templates |
-| Save generated data for later | State Manager (Scenarios) |
+| Save generated data for later | State Manager (Cohorts) |
 | Query saved data | State Manager Query |
 | Customize statistical patterns | Distribution Types |
 | Generate across multiple products | Cross-Domain Sync |
@@ -563,10 +563,10 @@ The Generative Framework adds a **specification layer** on top of the existing *
 5. **Templates** are reusable pre-built specs
 6. **Builders** create specs conversationally
 7. **Executors** turn specs into entities deterministically
-8. **Scenarios** (existing) store the generated entities
+8. **Cohorts** (existing) store the generated entities
 
-**Journeys and Scenarios are complementary:**
+**Journeys and Cohorts are complementary:**
 - Journey = the recipe (how to generate)
-- Scenario = the meal (what was generated)
+- Cohort = the meal (what was generated)
 
 The framework integrates with all existing products (PatientSim, MemberSim, RxMemberSim, TrialSim) and reference data sources (PopulationSim, NetworkSim) while using the existing State Manager for persistence.

@@ -77,11 +77,11 @@ pytest tests/ -v --tb=short
 - All new state management tests pass
 - All new migration tests pass
 
-### Step 2: Integration Test Scenarios
+### Step 2: Integration Test Cohorts
 
 Test complete workflows end-to-end:
 
-#### Scenario A: Fresh Installation
+#### Cohort A: Fresh Installation
 
 ```bash
 # Remove existing database
@@ -104,7 +104,7 @@ for t in tables[:10]:
 "
 ```
 
-#### Scenario B: Save/Load Cycle
+#### Cohort B: Save/Load Cycle
 
 ```python
 # test_integration_save_load.py
@@ -128,18 +128,18 @@ test_entities = {
 }
 
 # Save
-scenario_id = save_cohort(
+cohort_id = save_cohort(
     'integration-test',
     test_entities,
-    description='Integration test scenario',
+    description='Integration test cohort',
     tags=['test', 'integration']
 )
-print(f"Saved scenario: {scenario_id}")
+print(f"Saved cohort: {cohort_id}")
 
 # List
-scenarios = list_cohorts()
-print(f"Found {len(scenarios)} scenarios")
-assert any(s['name'] == 'integration-test' for s in scenarios)
+cohorts = list_cohorts()
+print(f"Found {len(cohorts)} cohorts")
+assert any(s['name'] == 'integration-test' for s in cohorts)
 
 # Load
 loaded = load_cohort('integration-test')
@@ -149,7 +149,7 @@ assert loaded['entities']['patient'][0]['given_name'] == 'Integration'
 print("✓ Save/Load cycle passed")
 ```
 
-#### Scenario C: JSON Export/Import
+#### Cohort C: JSON Export/Import
 
 ```python
 # test_integration_json.py
@@ -158,7 +158,7 @@ from healthsim.state.manager import StateManager
 
 manager = StateManager()
 
-# Create scenario
+# Create cohort
 manager.save_cohort('export-test', {
     'patient': [{'given_name': 'Export', 'family_name': 'Test'}]
 })
@@ -185,7 +185,7 @@ export_path.unlink()
 manager.delete_cohort('reimported-test')
 ```
 
-#### Scenario D: PopulationSim Reference Data
+#### Cohort D: PopulationSim Reference Data
 
 ```python
 # test_integration_populationsim.py
@@ -223,10 +223,10 @@ print(f"San Diego County avg diabetes prevalence: {sd_diabetes[0]:.1f}%")
 print("✓ PopulationSim reference data passed")
 ```
 
-#### Scenario E: Migration Tool
+#### Cohort E: Migration Tool
 
 ```bash
-# Test migration dry run (if you have legacy JSON scenarios)
+# Test migration dry run (if you have legacy JSON cohorts)
 python scripts/migrate_json_to_duckdb.py --dry-run
 ```
 
@@ -253,13 +253,13 @@ manager.save_cohort('perf-test', {'patient': patients}, overwrite=True)
 save_time = time.time() - start
 print(f"  Save time: {save_time:.2f}s ({100/save_time:.0f} patients/sec)")
 
-# Test: Load scenario
+# Test: Load cohort
 start = time.time()
 loaded = manager.load_cohort('perf-test')
 load_time = time.time() - start
 print(f"  Load time: {load_time:.2f}s")
 
-# Test: List scenarios
+# Test: List cohorts
 start = time.time()
 for _ in range(100):
     manager.list_cohorts()
@@ -291,7 +291,7 @@ For each issue found:
 1. **Document the issue**
    ```markdown
    ## Issue: [Description]
-   - Found in: [Test/Scenario]
+   - Found in: [Test/Cohort]
    - Symptom: [What went wrong]
    - Root cause: [Why]
    - Fix: [What to change]
@@ -310,8 +310,8 @@ For each issue found:
 ls -lh ~/.healthsim/healthsim.duckdb
 
 # Should be approximately:
-# - Empty (no scenarios): ~25-30 MB (reference data only)
-# - With scenarios: grows based on entity count
+# - Empty (no cohorts): ~25-30 MB (reference data only)
+# - With cohorts: grows based on entity count
 ```
 
 Compare to previous CSV size:
@@ -372,7 +372,7 @@ Phase 1 successfully migrated HealthSim to DuckDB-based storage:
 - **State Management**: DuckDB backend with same MCP interface
 - **Reference Data**: 148 MB CSV → ~25 MB DuckDB
 - **JSON Support**: Export/import preserved for sharing
-- **Migration Tool**: Converts legacy JSON scenarios
+- **Migration Tool**: Converts legacy JSON cohorts
 - **Documentation**: Fully updated
 
 ### Metrics
@@ -399,7 +399,7 @@ Phase 1 successfully migrated HealthSim to DuckDB-based storage:
 ## Post-Flight Checklist
 
 - [ ] All tests pass (including new tests)
-- [ ] Integration scenarios all pass
+- [ ] Integration cohorts all pass
 - [ ] Performance meets targets
 - [ ] No known issues remaining
 - [ ] Database size as expected
@@ -420,8 +420,8 @@ git commit -m "[Phase1] Complete DuckDB Unified Data Architecture - Phase 1
 Phase 1 Summary:
 - DuckDB-based state management (replacing JSON files)
 - PopulationSim reference data in DuckDB (~5x compression)
-- JSON export/import for scenario sharing
-- Migration tool for existing scenarios
+- JSON export/import for cohort sharing
+- Migration tool for existing cohorts
 - Full documentation update
 
 All tests passing. Ready for Phase 2 (Analytics Layer).
@@ -447,7 +447,7 @@ Mark SESSION-07 and entire Phase 1 as complete.
 
 ✅ Phase 1 complete when:
 1. All tests pass (476+ existing + new tests)
-2. All integration scenarios pass
+2. All integration cohorts pass
 3. Performance targets met
 4. Database size ~5-7x smaller than CSV
 5. Documentation complete and accurate
@@ -471,7 +471,7 @@ See MASTER-PLAN.md for Phase 2 session outlines.
 ## Celebration 🎉
 
 Phase 1 represents a significant architectural improvement:
-- **Scalable**: Ready for 10,000+ entity scenarios
+- **Scalable**: Ready for 10,000+ entity cohorts
 - **Queryable**: SQL access to all data
 - **Efficient**: 5-7x storage reduction
 - **Cloud-Ready**: MotherDuck path established

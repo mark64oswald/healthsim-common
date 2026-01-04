@@ -59,7 +59,7 @@
 
 | What Was Planned | What Actually Happened |
 |------------------|------------------------|
-| New PatientSim skills for data-driven generation | Found `data-integration.md` already existed (from prior session). Added v2.0 boilerplate to SKILL.md. **No new scenario skills created.** |
+| New PatientSim skills for data-driven generation | Found `data-integration.md` already existed (from prior session). Added v2.0 boilerplate to SKILL.md. **No new cohort skills created.** |
 | MemberSim actuarial integration | Replaced ~15 lines in SKILL.md with ~100 lines of v2.0 cross-references. **No new skills created.** |
 | RxMemberSim adherence modeling | Same - SKILL.md update only. **No new skills created.** |
 | TrialSim site selection skills | Same - SKILL.md update only. **No new skills created.** |
@@ -81,7 +81,7 @@
 - No `patient-demographics.md` that actually reads from embedded data
 - No `condition-prevalence.md` that uses PLACES rates
 - No `sdoh-factors.md` for incorporating SVI/ADI
-- Scenario skills (diabetes-management.md, heart-failure.md, etc.) NOT updated to use data
+- Cohort skills (diabetes-management.md, heart-failure.md, etc.) NOT updated to use data
 
 ### MemberSim
 
@@ -159,15 +159,15 @@ skills/populationsim/
 skills/patientsim/
 ├── data-integration.md           # EXISTS but needs validation
 ├── SKILL.md                      # Has v2.0 section
-└── (scenario skills)             # NOT updated to use data
+└── (cohort skills)             # NOT updated to use data
 
 skills/membersim/
 ├── SKILL.md                      # Has v2.0 section
-└── (scenario skills)             # NOT updated
+└── (cohort skills)             # NOT updated
 
 skills/rxmembersim/
 ├── SKILL.md                      # Has v2.0 section
-└── (scenario skills)             # NOT updated
+└── (cohort skills)             # NOT updated
 
 skills/trialsim/
 ├── SKILL.md                      # Has v2.0 section
@@ -183,7 +183,7 @@ The SKILL.md cross-references provide enough documentation that Claude COULD fig
 
 ### Option B: Complete the Integration Properly
 1. Create actual `patient-demographics.md` that reads from CSV files
-2. Update scenario skills (diabetes, heart-failure, etc.) with data lookup patterns
+2. Update cohort skills (diabetes, heart-failure, etc.) with data lookup patterns
 3. Build working examples that demonstrate end-to-end flow
 4. Test with real prompts and verify outputs match expected rates
 

@@ -4,14 +4,14 @@
 
 ## Overview
 
-A **scenario** is a snapshot of your workspace - all the patients, encounters, claims, and other entities you've generated, with complete information about how each piece was created. Think of it like saving a document: you can close HealthSim, come back tomorrow, and pick up exactly where you left off.
+A **cohort** is a snapshot of your workspace - all the patients, encounters, claims, and other entities you've generated, with complete information about how each piece was created. Think of it like saving a document: you can close HealthSim, come back tomorrow, and pick up exactly where you left off.
 
 Why save your work?
 
 - **Session continuity** - Work on complex patient cases across multiple sessions
-- **Build libraries** - Create reusable cohorts for different testing scenarios
+- **Build libraries** - Create reusable cohorts for different testing cohorts
 - **Experiment safely** - Save before making major changes; restore if needed
-- **Share work** - Export scenarios as JSON files to share with colleagues
+- **Share work** - Export cohorts as JSON files to share with colleagues
 
 ## Quick Start
 
@@ -48,7 +48,7 @@ That's it! Read on for more options and details.
 
 ---
 
-## Saving Scenarios
+## Saving Cohorts
 
 ### Basic Save
 
@@ -62,7 +62,7 @@ Claude will save everything in your current workspace and confirm what was captu
 
 ### Save with Description and Tags
 
-Add context to help you find and organize scenarios later:
+Add context to help you find and organize cohorts later:
 
 ```text
 Save this as workshop-demo for the Q1 training session, tag it training and diabetes
@@ -73,11 +73,11 @@ Save this as workshop-demo for the Q1 training session, tag it training and diab
 > - Description: "for the Q1 training session"
 > - Tags: training, diabetes
 >
-> This scenario is ready for your workshop!
+> This cohort is ready for your workshop!
 
-### Overwriting Scenarios
+### Overwriting Cohorts
 
-To update an existing scenario with the same name:
+To update an existing cohort with the same name:
 
 ```text
 Save this as diabetes-cohort and overwrite if it exists
@@ -87,15 +87,15 @@ Save this as diabetes-cohort and overwrite if it exists
 > - Previous version replaced
 > - 30 patients (was 25)
 
-**Tip:** Claude will suggest saving after significant work. If you've built up a good cohort, you might see: "You've generated 30 patients with detailed clinical data. Would you like to save this as a scenario before we continue?"
+**Tip:** Claude will suggest saving after significant work. If you've built up a good cohort, you might see: "You've generated 30 patients with detailed clinical data. Would you like to save this as a cohort before we continue?"
 
 ---
 
-## Loading Scenarios
+## Loading Cohorts
 
 ### Load by Name
 
-Just ask for the scenario you want:
+Just ask for the cohort you want:
 
 ```text
 Load my diabetes-cohort
@@ -108,7 +108,7 @@ Claude uses fuzzy matching, so you don't need the exact name. "Load diabetes" wo
 Can't remember the name? Just ask for your last work:
 
 ```text
-Load my last scenario
+Load my last cohort
 ```
 
 > **Claude:** I found "workshop-demo" saved 2 hours ago. Loading now...
@@ -122,10 +122,10 @@ Load my last scenario
 Not sure what you have? Ask to see your options:
 
 ```text
-What scenarios do I have?
+What cohorts do I have?
 ```
 
-> **Claude:** **Your saved scenarios:**
+> **Claude:** **Your saved cohorts:**
 >
 > **Recent:**
 > - **workshop-demo** (2 hours ago) - 25 patients, tags: training, diabetes
@@ -145,26 +145,26 @@ Load the ED one
 
 ---
 
-## Managing Your Scenarios
+## Managing Your Cohorts
 
 ### Search and Filter
 
-Find scenarios by tags or keywords:
+Find cohorts by tags or keywords:
 
 ```text
-Show me scenarios tagged with training
+Show me cohorts tagged with training
 ```
 
 ```text
-Find scenarios with diabetes patients
+Find cohorts with diabetes patients
 ```
 
-### Delete Scenarios
+### Delete Cohorts
 
-Clean up scenarios you no longer need:
+Clean up cohorts you no longer need:
 
 ```text
-Delete the test-patients scenario
+Delete the test-patients cohort
 ```
 
 > **Claude:** Are you sure you want to delete "test-patients"?
@@ -175,17 +175,17 @@ Yes, delete it
 ```
 
 > **Claude:** **Deleted "test-patients"**
-> You have 3 remaining scenarios.
+> You have 3 remaining cohorts.
 
-**Note:** Claude will always ask for confirmation before deleting. Deleted scenarios cannot be recovered.
+**Note:** Claude will always ask for confirmation before deleting. Deleted cohorts cannot be recovered.
 
 ---
 
-## Sharing Scenarios
+## Sharing Cohorts
 
 ### Export to JSON
 
-To share a scenario with a colleague, export it as a JSON file:
+To share a cohort with a colleague, export it as a JSON file:
 
 ```text
 Export my diabetes-cohort
@@ -199,15 +199,15 @@ Export my diabetes-cohort
 
 ### Import from JSON
 
-When you receive a scenario file:
+When you receive a cohort file:
 
 ```text
-Import the scenario from ~/Downloads/shared-scenario.json
+Import the cohort from ~/Downloads/shared-cohort.json
 ```
 
-> **Claude:** **Imported "shared-scenario"**
-> - 50 patients added to your scenarios
-> - Ready to load with "load shared-scenario"
+> **Claude:** **Imported "shared-cohort"**
+> - 50 patients added to your cohorts
+> - Ready to load with "load shared-cohort"
 
 You can also override the name:
 
@@ -221,7 +221,7 @@ Import ~/Downloads/data.json as my-imported-cohort
 
 ### What's Included
 
-When you save a scenario, you get a complete snapshot:
+When you save a cohort, you get a complete snapshot:
 
 **Everything in Your Workspace:**
 - **Patients** - Demographics, identifiers, contact info
@@ -238,7 +238,7 @@ When you save a scenario, you get a complete snapshot:
 
 ### Provenance: Knowing Where Data Came From
 
-Every piece of data in a scenario includes **provenance** - information about how it was created. This is preserved exactly when you save and load.
+Every piece of data in a cohort includes **provenance** - information about how it was created. This is preserved exactly when you save and load.
 
 Provenance tells you:
 
@@ -248,11 +248,11 @@ Provenance tells you:
 | `source_system` | What system created it | `patientsim`, `membersim` |
 | `skill_used` | Which clinical skill guided generation | `diabetes-management` |
 
-**Why this matters:** When you load a scenario, you know exactly what's synthetic vs what came from other sources. A patient generated with the "sepsis-acute-care" skill keeps that information.
+**Why this matters:** When you load a cohort, you know exactly what's synthetic vs what came from other sources. A patient generated with the "sepsis-acute-care" skill keeps that information.
 
 ### What's NOT Saved
 
-- **Conversation history** - Your chat with Claude is separate from scenarios
+- **Conversation history** - Your chat with Claude is separate from cohorts
 - **Export files** - FHIR/HL7 exports are separate operations
 - **Validation results** - These are regenerated when needed
 
@@ -311,7 +311,7 @@ Save this - same name and overwrite
 You have a good base cohort and want to create variations for different test cases:
 
 ```text
-Load my ed-simulation scenario
+Load my ed-simulation cohort
 ```
 
 > **Claude:** **Loaded "ed-simulation"** - 50 ED patients.
@@ -328,7 +328,7 @@ Save this as ed-simulation-critical
 
 > **Claude:** **Saved "ed-simulation-critical"** - 50 patients (20 critical).
 
-Now you have two scenarios: the original and the critical variation. Both are available anytime.
+Now you have two cohorts: the original and the critical variation. Both are available anytime.
 
 ### Example 3: Sharing Work with a Colleague
 
@@ -356,7 +356,7 @@ Import ~/Downloads/integration-test-cohort.json
 
 ### Naming Conventions
 
-Good scenario names are:
+Good cohort names are:
 - **Descriptive** - `diabetes-progression-cohort` not `test1`
 - **Dated if relevant** - `ed-training-2025-q1`
 - **Consistent** - Use kebab-case, avoid spaces
@@ -371,7 +371,7 @@ Good scenario names are:
 
 ### Using Tags Effectively
 
-Tags help you organize and find scenarios. Good tagging strategies:
+Tags help you organize and find cohorts. Good tagging strategies:
 
 | Tag type | Examples |
 |----------|----------|
@@ -382,23 +382,23 @@ Tags help you organize and find scenarios. Good tagging strategies:
 
 ### Storage and Portability
 
-Scenarios are stored in a DuckDB database at `~/.healthsim/healthsim.duckdb`. This means:
+Cohorts are stored in a DuckDB database at `~/.healthsim/healthsim.duckdb`. This means:
 
-- **They persist** - Scenarios survive between HealthSim sessions
+- **They persist** - Cohorts survive between HealthSim sessions
 - **Fast access** - DuckDB provides fast queries even with large datasets
-- **Queryable** - Advanced users can query scenarios directly with SQL
+- **Queryable** - Advanced users can query cohorts directly with SQL
 
-**Sharing scenarios:** Use the export/import feature to share scenarios as JSON files. This is the recommended way to share work with colleagues.
+**Sharing cohorts:** Use the export/import feature to share cohorts as JSON files. This is the recommended way to share work with colleagues.
 
 ### Migrating from JSON Files
 
-If you have existing scenarios stored as JSON files in `~/.healthsim/scenarios/` from an earlier version of HealthSim, you can migrate them:
+If you have existing cohorts stored as JSON files in `~/.healthsim/cohorts/` from an earlier version of HealthSim, you can migrate them:
 
 ```bash
 python scripts/migrate_json_to_duckdb.py
 ```
 
-This creates a backup and imports all scenarios to the new DuckDB format.
+This creates a backup and imports all cohorts to the new DuckDB format.
 
 ---
 

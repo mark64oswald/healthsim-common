@@ -1,6 +1,6 @@
 ---
 name: healthsim
-description: "HealthSim generates realistic synthetic healthcare data for testing EMR systems, claims processing, pharmacy benefits, and analytics. Use for ANY request involving: (1) synthetic patients, clinical data, or medical records, (2) healthcare claims, billing, or adjudication, (3) pharmacy prescriptions, formularies, or drug utilization, (4) HL7v2, FHIR, X12, or NCPDP formatted output, (5) healthcare testing scenarios or sample data generation."
+description: "HealthSim generates realistic synthetic healthcare data for testing EMR systems, claims processing, pharmacy benefits, and analytics. Use for ANY request involving: (1) synthetic patients, clinical data, or medical records, (2) healthcare claims, billing, or adjudication, (3) pharmacy prescriptions, formularies, or drug utilization, (4) HL7v2, FHIR, X12, or NCPDP formatted output, (5) healthcare testing cohorts or sample data generation."
 ---
 
 # HealthSim - Synthetic Healthcare Data Generation
@@ -50,13 +50,13 @@ Claude will produce:
 - DUR alert (DD code, clinical significance, recommendation)
 - Claim response (approved with warning or rejected)
 
-## Scenario Skills
+## Cohort Skills
 
-### PatientSim Scenarios
+### PatientSim Cohorts
 
 Load these for clinical data generation:
 
-| Scenario | Use When | Key Elements |
+| Cohort | Use When | Key Elements |
 |----------|----------|--------------|
 | **Diabetes Management** | diabetic, A1C, glucose, metformin, insulin | Disease progression, medication escalation, complications |
 | **Heart Failure** | CHF, HFrEF, BNP, ejection fraction | NYHA classification, GDMT therapy, decompensation |
@@ -65,11 +65,11 @@ Load these for clinical data generation:
 
 See: [skills/patientsim/](skills/patientsim/) for detailed skills
 
-### MemberSim Scenarios
+### MemberSim Cohorts
 
 Load these for claims and payer data:
 
-| Scenario | Use When | Key Elements |
+| Cohort | Use When | Key Elements |
 |----------|----------|--------------|
 | **Professional Claims** | office visit, 837P, physician claim | E&M coding, place of service, adjudication |
 | **Facility Claims** | hospital, inpatient, 837I, DRG | Revenue codes, DRG assignment, LOS |
@@ -79,11 +79,11 @@ Load these for claims and payer data:
 
 See: [skills/membersim/](skills/membersim/) for detailed skills
 
-### RxMemberSim Scenarios
+### RxMemberSim Cohorts
 
 Load these for pharmacy and PBM data:
 
-| Scenario | Use When | Key Elements |
+| Cohort | Use When | Key Elements |
 |----------|----------|--------------|
 | **Retail Pharmacy** | prescription fill, retail, copay | New/refill, pricing, patient pay |
 | **Specialty Pharmacy** | specialty drug, biologics, hub | Limited distribution, PA, patient support |
@@ -213,7 +213,7 @@ For code lookups and documentation:
 }
 ```
 
-### Example 2: Clinical Scenario
+### Example 2: Clinical Cohort
 
 **Request:** "Generate a 58-year-old female with poorly controlled Type 2 diabetes"
 
@@ -315,4 +315,4 @@ For code lookups and documentation:
 2. **Request format early**: "Generate as FHIR..." rather than converting after
 3. **Use seeds**: For reproducible test data across sessions
 4. **Batch large requests**: "Generate 100 in batches of 20"
-5. **Validate sensitive data**: Request validation for production-like scenarios
+5. **Validate sensitive data**: Request validation for production-like cohorts

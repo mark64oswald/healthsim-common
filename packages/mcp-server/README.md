@@ -45,16 +45,16 @@ Add to `~/Library/Application Support/Claude/claude_desktop_config.json`:
 
 ## Available Tools
 
-### Scenario Management
+### Cohort Management
 
 | Tool | Description |
 |------|-------------|
-| `healthsim_list_cohorts` | List all saved scenarios |
-| `healthsim_load_cohort` | Load a scenario by name/ID |
-| `healthsim_save_cohort` | Save entities as a scenario (full replacement) |
+| `healthsim_list_cohorts` | List all saved cohorts |
+| `healthsim_load_cohort` | Load a cohort by name/ID |
+| `healthsim_save_cohort` | Save entities as a cohort (full replacement) |
 | `healthsim_add_entities` | Add entities incrementally (recommended for large datasets) |
-| `healthsim_delete_cohort` | Delete a scenario (requires confirm=True) |
-| `healthsim_get_cohort_summary` | Get token-efficient scenario summary |
+| `healthsim_delete_cohort` | Delete a cohort (requires confirm=True) |
+| `healthsim_get_cohort_summary` | Get token-efficient cohort summary |
 
 ### Database Queries
 
@@ -78,11 +78,11 @@ HealthSim uses a "real data first" approach. **Always query real reference data 
 ### When to Use Real vs Synthetic
 
 ```
-User: "Add PCPs to the Rewire Health scenario"
+User: "Add PCPs to the Rewire Health cohort"
 
 ✅ CORRECT: Query real NPPES data first
    healthsim_search_providers(state="CA", city="San Diego", specialty="Family Medicine")
-   Then add real providers to scenario
+   Then add real providers to cohort
 
 ❌ WRONG: Generate synthetic providers immediately
    healthsim_add_entities(entities={"providers": [generated_fake_npis...]})
@@ -95,11 +95,11 @@ User: "Add PCPs to the Rewire Health scenario"
 
 ## Entity Type Taxonomy
 
-HealthSim enforces a clear separation between **scenario data**, **relationship data**, and **reference data**:
+HealthSim enforces a clear separation between **cohort data**, **relationship data**, and **reference data**:
 
-### Scenario Data (Stored per-scenario)
+### Cohort Data (Stored per-cohort)
 
-These are synthetic PHI entities that are generated for each scenario:
+These are synthetic PHI entities that are generated for each cohort:
 
 | Entity Type | Description | Example Fields |
 |-------------|-------------|----------------|
@@ -111,9 +111,9 @@ These are synthetic PHI entities that are generated for each scenario:
 | `prescriptions` | Synthetic medication records | rx_id, ndc, quantity |
 | `subjects` | Clinical trial subjects | subject_id, enrollment_date |
 
-### Relationship Data (Stored per-scenario)
+### Relationship Data (Stored per-cohort)
 
-These link scenario data to reference data via IDs/NPIs:
+These link cohort data to reference data via IDs/NPIs:
 
 | Entity Type | Description | Key Fields |
 |-------------|-------------|------------|
@@ -125,7 +125,7 @@ These link scenario data to reference data via IDs/NPIs:
 
 ### Reference Data (Query directly, never copy)
 
-These exist in shared tables and should **NEVER** be added to scenarios:
+These exist in shared tables and should **NEVER** be added to cohorts:
 
 | Entity Type | Query Tool | Table |
 |-------------|-----------|-------|
@@ -171,27 +171,27 @@ healthsim_add_entities(entities={
 
 # For analytics, JOIN to reference table:
 # SELECT m.*, p.name as pcp_name 
-# FROM scenario_members m
+# FROM cohort_members m
 # JOIN network.providers p ON m.provider_npi = p.npi
 ```
 
-## save_scenario vs add_entities
+## save_cohort vs add_entities
 
 The two write tools have different behaviors. **Claude automatically selects the right tool** based on entity count:
 
-| Feature | `save_scenario` | `add_entities` |
+| Feature | `save_cohort` | `add_entities` |
 |---------|-----------------|----------------|
 | **When to use** | ≤50 entities total | >50 entities OR incremental |
 | Behavior | Replace all entities | Upsert (add/update only) |
 | Safe for batching | ❌ No (overwrites) | ✅ Yes |
-| Creates scenario | Yes | Yes (if not exists) |
+| Creates cohort | Yes | Yes (if not exists) |
 | Token efficient | ❌ Echoes all data | ✅ Returns summary only |
 
 ### Automatic Tool Selection
 
 The tool descriptions guide Claude to automatically choose:
 
-- **≤50 entities**: `save_scenario` (simple, atomic)
+- **≤50 entities**: `save_cohort` (simple, atomic)
 - **>50 entities**: `add_entities` in batches of ~50 (avoids truncation)
 - **Adding to existing**: Always `add_entities` (upsert, non-destructive)
 
@@ -200,26 +200,26 @@ You don't need to specify which tool to use - just describe what you want and Cl
 ### When to use `add_entities`
 
 Use `healthsim_add_entities` when:
-- Creating scenarios with 100+ entities
+- Creating cohorts with 100+ entities
 - Streaming data in batches to avoid token limits
-- Adding new entity types to existing scenarios
+- Adding new entity types to existing cohorts
 - Updating specific entities without affecting others
 
-**Example: Building a scenario in batches**
+**Example: Building a cohort in batches**
 
 ```python
-# Batch 1: Create scenario with first 50 patients
+# Batch 1: Create cohort with first 50 patients
 healthsim_add_entities(
-    scenario_name="My Large Scenario",
+    cohort_name="My Large Cohort",
     entities={"patients": first_50_patients},
     batch_number=1,
     total_batches=4
 )
-# Returns: {"scenario_id": "abc-123", ...}
+# Returns: {"cohort_id": "abc-123", ...}
 
-# Batch 2-4: Add remaining patients using scenario_id
+# Batch 2-4: Add remaining patients using cohort_id
 healthsim_add_entities(
-    scenario_id="abc-123",
+    cohort_id="abc-123",
     entities={"patients": next_50_patients},
     batch_number=2,
     total_batches=4
@@ -227,7 +227,7 @@ healthsim_add_entities(
 
 # Add different entity types
 healthsim_add_entities(
-    scenario_id="abc-123",
+    cohort_id="abc-123",
     entities={"members": member_list}
 )
 ```
@@ -244,7 +244,7 @@ healthsim_add_entities(
 
 ## Usage Examples
 
-### List scenarios
+### List cohorts
 ```
 Use healthsim_list_cohorts to see what's saved
 ```
@@ -254,25 +254,25 @@ Use healthsim_list_cohorts to see what's saved
 Use healthsim_query_reference with table="places_county" and state="CA"
 ```
 
-### Save a scenario (small dataset)
+### Save a cohort (small dataset)
 ```
 Use healthsim_save_cohort with:
-- name: "my-scenario"
+- name: "my-cohort"
 - entities: {"patients": [...], "encounters": [...]}
-- description: "Test scenario"
+- description: "Test cohort"
 - tags: ["test", "demo"]
 ```
 
 ### Add entities incrementally (large dataset)
 ```
 Use healthsim_add_entities with:
-- scenario_name: "my-large-scenario"  # Creates if not exists
+- cohort_name: "my-large-cohort"  # Creates if not exists
 - entities: {"patients": [...]}
 - batch_number: 1
 - total_batches: 4
 
 Then for subsequent batches:
-- scenario_id: "uuid-from-first-call"
+- cohort_id: "uuid-from-first-call"
 - entities: {"patients": [...]}
 - batch_number: 2
 - total_batches: 4
@@ -323,7 +323,7 @@ python -c "from healthsim.state import StateManager; print('OK')"
 ```
 
 ### Batch truncation issues
-If large entity lists are being truncated when using `save_scenario`:
+If large entity lists are being truncated when using `save_cohort`:
 - Switch to `healthsim_add_entities` for batched operations
 - Keep batches to ≤50 entities per call
 - Use batch_number/total_batches for progress tracking

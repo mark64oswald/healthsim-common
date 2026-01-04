@@ -251,7 +251,7 @@ Claude: "Harris County, TX has adult diabetes prevalence of 12.1%
 | **Realistic demographics** | Generate patients matching actual tract-level age/sex/race distributions |
 | **Accurate prevalence** | Assign conditions at rates matching CDC PLACES for the specified geography |
 | **SDOH-aware patients** | Include SVI/ADI-derived social factors that correlate with health outcomes |
-| **Health equity scenarios** | Create patient panels reflecting real disparities between neighborhoods |
+| **Health equity cohorts** | Create patient panels reflecting real disparities between neighborhoods |
 
 **Example Enhancement**:
 ```
@@ -355,9 +355,9 @@ When NetworkSim is developed, the embedded data package creates powerful integra
 | **CMS Physician Compare** | Physician specialties, quality | Specialist availability |
 | **HRSA Health Center Data** | FQHCs, rural health clinics | Safety net coverage |
 
-### Integration Scenarios
+### Integration Cohorts
 
-**Scenario 1: Healthcare Desert Identification**
+**Cohort 1: Healthcare Desert Identification**
 ```
 Combine:
 - High SVI tracts (vulnerability)
@@ -366,7 +366,7 @@ Combine:
 = Identify underserved areas needing intervention
 ```
 
-**Scenario 2: Network Adequacy Assessment**
+**Cohort 2: Network Adequacy Assessment**
 ```
 Combine:
 - Member home locations by tract (MemberSim)
@@ -375,7 +375,7 @@ Combine:
 = Calculate true access considering SDOH barriers
 ```
 
-**Scenario 3: Value-Based Care Targeting**
+**Cohort 3: Value-Based Care Targeting**
 ```
 Combine:
 - High-ADI block groups (population deprivation)
@@ -384,7 +384,7 @@ Combine:
 = Design care management programs for highest-need populations
 ```
 
-**Scenario 4: Clinical Trial Site Optimization**
+**Cohort 4: Clinical Trial Site Optimization**
 ```
 Combine:
 - Disease prevalence by tract (PLACES)
@@ -553,7 +553,7 @@ Every data point should be traceable:
 
 When exact data isn't available:
 
-| Scenario | Response Strategy |
+| Cohort | Response Strategy |
 |----------|-------------------|
 | Data exists | Return exact value with citation |
 | Data exists at different level | Aggregate/disaggregate with explanation |

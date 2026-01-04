@@ -18,7 +18,7 @@
 - Actual database file (Git LFS tracked rename)
 - `packages/core/src/healthsim/db/connection.py` - DEFAULT_DB_PATH
 - `test_mcp_connection.py` - Docstring
-- `scenarios/networksim/scripts/merge_databases.py` - OUTPUT_DB variable
+- `cohorts/networksim/scripts/merge_databases.py` - OUTPUT_DB variable
 - `DATABASE-CONSOLIDATION-COMPLETE.md` - All references
 - `CURRENT-WORK.md` - Quick reference section
 - `README.md` - Setup documentation
@@ -120,7 +120,7 @@ Installation guide includes detailed schema documentation:
 
 **Main Schema (21 tables):**
 - Entity templates: patients, members, encounters, claims, etc.
-- System tables: scenarios, schema_migrations
+- System tables: cohorts, schema_migrations
 
 **Population Schema (5 tables, 416K records):**
 - adi_blockgroup: Area Deprivation Index
@@ -264,7 +264,7 @@ Prevents 80% of support requests.
 - `README.md` - Updated setup section with Git LFS requirements
 - `packages/core/src/healthsim/db/connection.py` - Updated DEFAULT_DB_PATH
 - `test_mcp_connection.py` - Updated docstring
-- `scenarios/networksim/scripts/merge_databases.py` - Updated variable names
+- `cohorts/networksim/scripts/merge_databases.py` - Updated variable names
 - `DATABASE-CONSOLIDATION-COMPLETE.md` - Updated all references
 - `CURRENT-WORK.md` - Updated quick reference
 

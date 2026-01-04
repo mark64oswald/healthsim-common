@@ -6,7 +6,7 @@
 
 ## Overview
 
-The HealthSim DuckDB database provides persistent storage for canonical entities across all six products. It serves as the operational data store for scenarios, enabling cross-product queries and analytics.
+The HealthSim DuckDB database provides persistent storage for canonical entities across all six products. It serves as the operational data store for cohorts, enabling cross-product queries and analytics.
 
 ## Architecture
 
@@ -21,9 +21,9 @@ The HealthSim DuckDB database provides persistent storage for canonical entities
 │                              ↓                                       │
 │  Persistence Layer                                                   │
 │  ┌─────────────────────────────────────────────────────────────────┐│
-│  │  scenarios/saved/*.json  ←→  DuckDB (healthsim.duckdb)          ││
+│  │  cohorts/saved/*.json  ←→  DuckDB (healthsim.duckdb)          ││
 │  │       ↑                           ↑                              ││
-│  │  scenario_loader.py         scenario_saver.py                    ││
+│  │  cohort_loader.py         cohort_saver.py                    ││
 │  └─────────────────────────────────────────────────────────────────┘│
 │                              ↓                                       │
 │  Query Layer                                                         │
@@ -50,7 +50,7 @@ The HealthSim DuckDB database provides persistent storage for canonical entities
 | **TrialSim** | 8 | Clinical trials entities |
 | **PopulationSim** | 5 | Demographics/SDOH entities |
 | **NetworkSim** | 4 | Provider network entities |
-| **State Management** | 3 | Scenario tracking |
+| **State Management** | 3 | Cohort tracking |
 | **Total** | **41** | |
 
 ---
@@ -396,32 +396,32 @@ Specialty taxonomy lookup.
 
 ## State Management
 
-### scenarios
-Named scenario containers.
+### cohorts
+Named cohort containers.
 
 | Column | Type | Description |
 |--------|------|-------------|
-| scenario_id | VARCHAR | Primary key |
+| cohort_id | VARCHAR | Primary key |
 | name | VARCHAR | Unique name |
 | entity_count | INTEGER | |
 | products | VARCHAR | JSON array of products |
 | is_active | BOOLEAN | |
 
-### scenario_entities
-Junction table linking entities to scenarios.
+### cohort_entities
+Junction table linking entities to cohorts.
 
 | Column | Type | Description |
 |--------|------|-------------|
-| scenario_id | VARCHAR | FK → scenarios |
+| cohort_id | VARCHAR | FK → cohorts |
 | entity_type | VARCHAR | person, patient, claim, etc. |
 | entity_id | VARCHAR | Entity primary key |
 
-### scenario_tags
+### cohort_tags
 Tag-based filtering.
 
 | Column | Type | Description |
 |--------|------|-------------|
-| scenario_id | VARCHAR | FK → scenarios |
+| cohort_id | VARCHAR | FK → cohorts |
 | tag | VARCHAR | e.g., "diabetes", "emergency" |
 
 ---

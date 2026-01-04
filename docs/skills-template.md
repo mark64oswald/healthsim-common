@@ -12,7 +12,7 @@
 ```yaml
 ---
 name: healthsim-[product]
-description: "[Brief description]. Use when user requests: (1) [use case 1], (2) [use case 2], (3) [specific scenarios], (4) [output formats]."
+description: "[Brief description]. Use when user requests: (1) [use case 1], (2) [use case 2], (3) [specific cohorts], (4) [output formats]."
 ---
 ```
 
@@ -39,7 +39,7 @@ Use this skill when [primary trigger]. This is the primary skill for [core funct
 
 - User mentions [keyword 1]
 - User requests [keyword 2]
-- User specifies [scenarios]
+- User specifies [cohorts]
 - User asks for [output formats]
 
 **Key capabilities:**
@@ -48,7 +48,7 @@ Use this skill when [primary trigger]. This is the primary skill for [core funct
 - [Capability 2]
 - [Capability 3]
 
-For specific [scenarios], load the appropriate skill from the table below.
+For specific [cohorts], load the appropriate skill from the table below.
 ```
 
 ---
@@ -81,7 +81,7 @@ For specific [scenarios], load the appropriate skill from the table below.
 }
 ```
 
-### [Scenario]
+### [Cohort]
 
 **Request:** "[More complex request]"
 
@@ -92,19 +92,19 @@ Claude loads [[skill-file.md]](skill-file.md) and produces [result].
 
 ---
 
-### 6. Scenario/Skill Table
+### 6. Cohort/Skill Table
 
 ```markdown
-## Scenario Skills
+## Cohort Skills
 
-Load the appropriate scenario based on user request:
+Load the appropriate cohort based on user request:
 
-| Scenario | Trigger Phrases | File |
+| Cohort | Trigger Phrases | File |
 |----------|-----------------|------|
-| **[Scenario 1]** | keyword1, keyword2, keyword3 | [skill-file.md](skill-file.md) |
-| **[Scenario 2]** | keyword1, keyword2 | [skill-file.md](skill-file.md) |
+| **[Cohort 1]** | keyword1, keyword2, keyword3 | [skill-file.md](skill-file.md) |
+| **[Cohort 2]** | keyword1, keyword2 | [skill-file.md](skill-file.md) |
 | **Subdirectory** | | |
-| ↳ [Sub-scenario] | keywords | [subdir/skill.md](subdir/skill.md) |
+| ↳ [Sub-cohort] | keywords | [subdir/skill.md](subdir/skill.md) |
 ```
 
 **Note**: Use `↳` prefix for subdirectory skills. Group related skills together.
@@ -250,7 +250,7 @@ Before considering a SKILL.md complete:
 - [ ] "For Claude" section with when to apply and key capabilities
 - [ ] Overview section
 - [ ] Quick Start with 2-3 examples
-- [ ] Scenario/Skill table with all skills listed
+- [ ] Cohort/Skill table with all skills listed
 - [ ] Generation Parameters table
 - [ ] Output Entities (or equivalent)
 - [ ] Output Formats table

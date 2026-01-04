@@ -372,7 +372,7 @@ Generate a subject's complete trial record ensuring:
 - All dates are chronologically consistent
 ```
 
-### Regulatory Scenarios
+### Regulatory Cohorts
 
 ```
 Generate data for FDA submission including:

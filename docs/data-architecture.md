@@ -6,7 +6,7 @@ HealthSim uses **DuckDB** as its unified data store, organized into three schema
 
 | Schema | Purpose | Tables |
 |--------|---------|--------|
-| **main** | Generated entities + state management | patients, encounters, claims, scenarios, etc. |
+| **main** | Generated entities + state management | patients, encounters, claims, cohorts, etc. |
 | **network** | Real provider reference data (NPPES) | providers (8.9M), facilities, quality metrics |
 | **population** | Real demographic reference data (CDC/Census) | places_county, svi_tract, adi_blockgroup, etc. |
 
@@ -63,7 +63,7 @@ HealthSim uses an inheritance-based entity model where Person is the base entity
 
 ### Main Schema (Entity + State Management)
 
-Source of truth for all generated entities and scenario management.
+Source of truth for all generated entities and cohort management.
 
 **Entity Tables** (generated data):
 
@@ -91,9 +91,9 @@ Source of truth for all generated entities and scenario management.
 
 | Table | Description |
 |-------|-------------|
-| scenarios | Scenario metadata (name, description, timestamps, tags) |
-| scenario_entities | Links entities to scenarios (stores entity JSON) |
-| scenario_tags | Tag-based organization for filtering |
+| cohorts | Cohort metadata (name, description, timestamps, tags) |
+| cohort_entities | Links entities to cohorts (stores entity JSON) |
+| cohort_tags | Tag-based organization for filtering |
 | schema_migrations | Schema version tracking |
 
 ### Network Schema (Provider Reference Data)
@@ -130,33 +130,33 @@ State management enables saving, loading, and querying generated data across ses
 
 ### Two Retrieval Patterns
 
-When working with saved scenarios, you have two options for retrieving data:
+When working with saved cohorts, you have two options for retrieving data:
 
 | Pattern | Use Case | Token Cost | Tool |
 |---------|----------|------------|------|
-| **Full Load** | Small scenarios (<50 entities), need all data immediately | High (1K-50K tokens) | `healthsim_load_cohort` |
-| **Summary + Query** | Large scenarios (50+ entities), token efficiency | Low (~500 tokens) | `healthsim_get_cohort_summary` + `healthsim_query` |
+| **Full Load** | Small cohorts (<50 entities), need all data immediately | High (1K-50K tokens) | `healthsim_load_cohort` |
+| **Summary + Query** | Large cohorts (50+ entities), token efficiency | Low (~500 tokens) | `healthsim_get_cohort_summary` + `healthsim_query` |
 
 **Why two patterns?**
 
-- **Full Load** returns all entities in the response, making them immediately available in the conversation context. Great for small scenarios where you want to work with all the data at once.
+- **Full Load** returns all entities in the response, making them immediately available in the conversation context. Great for small cohorts where you want to work with all the data at once.
 
-- **Summary + Query** returns only metadata and statistics (~500 tokens), keeping the context window lean. You then query for specific data as needed. Essential for large scenarios that would overwhelm the context.
+- **Summary + Query** returns only metadata and statistics (~500 tokens), keeping the context window lean. You then query for specific data as needed. Essential for large cohorts that would overwhelm the context.
 
 ### State Management Operations
 
 | Operation | Tool | Description |
 |-----------|------|-------------|
-| Save scenario | `healthsim_save_cohort` | Persist entities with name, description, tags |
+| Save cohort | `healthsim_save_cohort` | Persist entities with name, description, tags |
 | Load full data | `healthsim_load_cohort` | Retrieve all entities (high token cost) |
 | Load summary | `healthsim_get_cohort_summary` | Retrieve metadata + samples (~500 tokens) |
 | Query data | `healthsim_query` | SQL query against saved entities |
-| List scenarios | `healthsim_list_cohorts` | Browse saved scenarios with filtering |
-| Delete scenario | `healthsim_delete_cohort` | Remove scenario (requires confirmation) |
+| List cohorts | `healthsim_list_cohorts` | Browse saved cohorts with filtering |
+| Delete cohort | `healthsim_delete_cohort` | Remove cohort (requires confirmation) |
 
 ### Workflow Examples
 
-**Small Scenario (Full Load)**:
+**Small Cohort (Full Load)**:
 ```
 User: "Save these 10 patients as 'test-cohort'"
 → healthsim_save_cohort(name='test-cohort', entities={...})
@@ -166,12 +166,12 @@ User: "Load my test cohort"
 → Returns all 10 patients with full details
 ```
 
-**Large Scenario (Summary + Query)**:
+**Large Cohort (Summary + Query)**:
 ```
 User: "Generate 200 diabetic patients and save them"
 → healthsim_save_cohort(name='diabetes-200', entities={...})
 
-User: "What's in my diabetes scenario?"
+User: "What's in my diabetes cohort?"
 → healthsim_get_cohort_summary('diabetes-200')
 → Returns: 200 patients, age range 35-78, 52% female, 3 samples
 
@@ -249,8 +249,8 @@ healthsim_query_reference(table="places_county", state="CA")
 # Custom SQL query
 healthsim_query(sql="SELECT * FROM network.providers WHERE state = 'TX' LIMIT 10")
 
-# Get scenario summary
-healthsim_get_cohort_summary(scenario_id_or_name="my-cohort")
+# Get cohort summary
+healthsim_get_cohort_summary(cohort_id_or_name="my-cohort")
 ```
 
 ### SQL Query Examples
@@ -283,11 +283,11 @@ JOIN population.svi_tract svi ON p.census_tract = svi.fips
 WHERE svi.rpl_themes > 0.75;
 ```
 
-**Query saved scenario data**:
+**Query saved cohort data**:
 ```sql
 SELECT se.entity_type, COUNT(*) as count
-FROM main.scenario_entities se
-JOIN main.scenarios s ON se.scenario_id = s.scenario_id
+FROM main.cohort_entities se
+JOIN main.cohorts s ON se.cohort_id = s.cohort_id
 WHERE s.name = 'diabetes-cohort'
 GROUP BY se.entity_type;
 ```
@@ -298,22 +298,22 @@ GROUP BY se.entity_type;
 
 | Operation | Typical Performance |
 |-----------|---------------------|
-| Save scenario (100 entities) | < 100ms |
-| Load scenario (100 entities) | < 50ms |
-| Get scenario summary | < 50ms |
-| List scenarios | < 10ms |
+| Save cohort (100 entities) | < 100ms |
+| Load cohort (100 entities) | < 50ms |
+| Get cohort summary | < 50ms |
+| List cohorts | < 10ms |
 | Provider search (indexed) | < 50ms |
 | Full table scan (250K rows) | < 500ms |
 
 DuckDB's columnar storage provides excellent compression:
 - Reference data: 5-7x compression vs CSV
-- Scenario data: 3-5x compression vs JSON
+- Cohort data: 3-5x compression vs JSON
 
 ---
 
 ## Related Documentation
 
-- [State Management Skill](../skills/common/state-management.md) - Conversational interface for scenarios
+- [State Management Skill](../skills/common/state-management.md) - Conversational interface for cohorts
 - [NetworkSim README](../skills/networksim/README.md) - Provider reference data usage
 - [PopulationSim README](../skills/populationsim/README.md) - Demographic reference data usage
 - [Architecture Guide](./HEALTHSIM-ARCHITECTURE-GUIDE.md) - Overall system architecture

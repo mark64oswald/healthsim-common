@@ -166,13 +166,13 @@ Generate an inpatient sepsis patient with full encounter data in HL7v2 format
 
 ### 4. list_cohorts
 
-List available scenario templates/skills.
+List available cohort templates/skills.
 
 **Parameters:** None
 
 **Example:**
 ```text
-List available patient scenarios
+List available patient cohorts
 ```
 
 ## Usage Examples

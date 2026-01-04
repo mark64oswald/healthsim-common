@@ -8,7 +8,7 @@
 ### Phase 1: Database Schema ✅ COMPLETE
 | Commit | File | Changes |
 |--------|------|---------|
-| f480fb6 | schema.py | Tables: scenarios→cohorts, scenario_entities→cohort_entities, scenario_tags→cohort_tags; Columns: scenario_id→cohort_id |
+| f480fb6 | schema.py | Tables: cohorts→cohorts, cohort_entities→cohort_entities, cohort_tags→cohort_tags; Columns: cohort_id→cohort_id |
 | 1c66f99 | migrations.py | Added v1.5 migration |
 | 21f998d | queries.py | Query functions renamed |
 | 84716e8 | db/__init__.py | Exports updated |
@@ -49,7 +49,7 @@
 
 ### Phase 4: Skills
 - [ ] skills/common/state-management.md
-- [ ] Other skill files with scenario references
+- [ ] Other skill files with cohort references
 
 ### Phase 5: Documentation (~80 files)
 - [ ] README files
@@ -58,12 +58,12 @@
 - [ ] Examples
 
 ### Phase 6: Directory Structure
-- [ ] scenarios/saved/ → cohorts/saved/
+- [ ] cohorts/saved/ → cohorts/saved/
 
 ### Phase 7: Test File Renames
-- [ ] Rename test files with "scenario" in name
+- [ ] Rename test files with "cohort" in name
 
 ### Phase 8: Final Validation
 - [ ] Full test suite
 - [ ] Manual MCP tool testing
-- [ ] Search for remaining "scenario" references
+- [ ] Search for remaining "cohort" references

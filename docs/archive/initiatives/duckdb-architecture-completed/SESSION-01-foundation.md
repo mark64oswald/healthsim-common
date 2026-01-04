@@ -83,9 +83,9 @@ packages/core/healthsim/db/
 - `trial_visits` - Trial visit data
 
 **State Management Tables**:
-- `scenarios` - Scenario metadata
-- `scenario_entities` - Entity-scenario junction
-- `scenario_tags` - Tag organization
+- `cohorts` - Cohort metadata
+- `cohort_entities` - Entity-cohort junction
+- `cohort_tags` - Tag organization
 
 **System Tables**:
 - `schema_migrations` - Applied migrations tracking
@@ -239,7 +239,7 @@ Create comprehensive DDL for all canonical and state management tables. Include:
 
 2. **All canonical entity tables** matching the JSON schemas in data-models.md
 
-3. **State management tables**: scenarios, scenario_entities, scenario_tags
+3. **State management tables**: cohorts, cohort_entities, cohort_tags
 
 4. **Schema migrations table** for version tracking
 
@@ -301,9 +301,9 @@ def run_migrations(conn: duckdb.DuckDBPyConnection) -> List[str]:
 
 Common query helpers for typical operations:
 - `get_patient_by_id()`
-- `get_patients_in_scenario()`
+- `get_patients_in_cohort()`
 - `count_entities_by_type()`
-- `get_scenario_summary()`
+- `get_cohort_summary()`
 
 ### Step 6: Write Tests
 
@@ -392,7 +392,7 @@ git commit -m "[Database] Add DuckDB database module with schema and migrations
 - Create packages/core/healthsim/db/ module
 - Add connection management with auto-creation
 - Define canonical table schemas (patients, encounters, etc.)
-- Define state management schemas (scenarios, scenario_entities)
+- Define state management schemas (cohorts, cohort_entities)
 - Add migration framework for schema versioning
 - Add comprehensive tests for db module
 

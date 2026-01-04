@@ -443,7 +443,7 @@ One clinical event can generate multiple format outputs:
 
 ```json
 {
-  "cob_scenario": {
+  "cob_cohort": {
     "primary_payer": {
       "payer_id": "PAYER01",
       "claim_response": {
@@ -581,5 +581,5 @@ See [dimensional-analytics.md](../formats/dimensional-analytics.md) for star sch
 - [validation-rules.md](../references/validation-rules.md) - Validation rules
 - [testing-patterns.md](testing-patterns.md) - Testing patterns
 - [hl7v2-segments.md](../references/hl7v2-segments.md) - HL7v2 segment reference
-- [orders-results.md](../skills/patientsim/orders-results.md) - Orders and results scenario
+- [orders-results.md](../skills/patientsim/orders-results.md) - Orders and results cohort
 - [dimensional-analytics.md](../formats/dimensional-analytics.md) - Star schema format

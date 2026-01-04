@@ -13,7 +13,7 @@
 |-------|--------|----------|
 | Phase 0: Preparation | ✅ Complete | 4/4 |
 | Phase 1: Core Service Modules | ✅ Complete | 12/12 |
-| Phase 2: Scenario Management | ⚪ Not Started | 0/6 |
+| Phase 2: Cohort Management | ⚪ Not Started | 0/6 |
 | Phase 3: Skill Updates | ✅ Complete | 12/12 |
 | Phase 4: Documentation | 🟡 In Progress | 4/10 |
 | Phase 5: Testing & Validation | 🟡 In Progress | 1/6 |
@@ -67,8 +67,8 @@
 ### 1.1 Service Modules ✅ COMPLETE
 
 **Files Created**:
-- `packages/core/src/healthsim/state/auto_naming.py` - Intelligent scenario naming
-- `packages/core/src/healthsim/state/summary.py` - Token-efficient scenario summaries  
+- `packages/core/src/healthsim/state/auto_naming.py` - Intelligent cohort naming
+- `packages/core/src/healthsim/state/summary.py` - Token-efficient cohort summaries  
 - `packages/core/src/healthsim/state/auto_persist.py` - Main AutoPersistService class
 
 **Unit Tests Created** (63 tests, all passing):
@@ -77,10 +77,10 @@
 - `packages/core/tests/state/test_auto_persist.py` - 25 tests
 
 **Schema Updates**:
-- Added `scenario_id` column to all 17 canonical tables
+- Added `cohort_id` column to all 17 canonical tables
 - Added migration 1.2 for existing databases
 - Updated schema version to 1.2
-- Added indexes for scenario filtering
+- Added indexes for cohort filtering
 
 ### 1.2 Integration with StateManager ✅ COMPLETE
 
@@ -89,9 +89,9 @@
 - [x] Added `get_summary()` method for loading summaries (~500 tokens)
 - [x] Added `query()` method for SQL queries with pagination
 - [x] Added `get_samples()` method for entity sampling
-- [x] Added `rename_scenario()` method using AutoPersistService
+- [x] Added `rename_cohort()` method using AutoPersistService
 - [x] Updated `delete_cohort()` with confirm=True safety requirement
-- [x] Added convenience functions: `persist()`, `get_summary()`, `query_scenario()`
+- [x] Added convenience functions: `persist()`, `get_summary()`, `query_cohort()`
 - [x] All 668 tests passing
 
 ### 1.3 API Summary
@@ -101,15 +101,15 @@
 from healthsim.state import save_cohort, load_cohort, list_cohorts, delete_cohort
 
 # Save with full entity data
-scenario_id = save_cohort('my-scenario', {'patients': [...]})
+cohort_id = save_cohort('my-cohort', {'patients': [...]})
 
-# Load entire scenario (potentially large context)
-scenario = load_cohort('my-scenario')  # Returns all entities
+# Load entire cohort (potentially large context)
+cohort = load_cohort('my-cohort')  # Returns all entities
 ```
 
 **Auto-Persist Methods (Token-Efficient)**:
 ```python
-from healthsim.state import persist, get_summary, query_scenario
+from healthsim.state import persist, get_summary, query_cohort
 
 # Persist entities - returns summary, not full data
 result = persist({'patients': [...], 'encounters': [...]}, context='diabetes cohort')
@@ -119,22 +119,22 @@ result = persist({'patients': [...], 'encounters': [...]}, context='diabetes coh
 summary = get_summary('diabetes-cohort-20241227')
 
 # Query specific data with pagination
-results = query_scenario(scenario_id, "SELECT * FROM patients WHERE gender = 'F'")
+results = query_cohort(cohort_id, "SELECT * FROM patients WHERE gender = 'F'")
 ```
 
 ---
 
-## Phase 2: Scenario Management (Enhancement) ⚪ NOT STARTED
+## Phase 2: Cohort Management (Enhancement) ⚪ NOT STARTED
 
 The core functionality is complete. Phase 2 adds optional enhancements:
 
 ### 2.1 Additional Service Methods
 - [ ] Add tag management methods (add_tag, remove_tag)
-- [ ] Add scenario cloning capability
-- [ ] Add scenario merging capability
+- [ ] Add cohort cloning capability
+- [ ] Add cohort merging capability
 
 ### 2.2 Export Utilities
-- [ ] Add `export_scenario()` method to AutoPersistService
+- [ ] Add `export_cohort()` method to AutoPersistService
 - [ ] Support JSON, CSV, and Parquet export formats
 - [ ] Implement selective entity type export
 
@@ -155,7 +155,7 @@ The core functionality is complete. Phase 2 adds optional enhancements:
 **File**: `skills/common/duckdb-skill.md`
 
 - [x] Already documented auto-persist API (v1.2)
-- [x] Includes scenario-scoped queries
+- [x] Includes cohort-scoped queries
 - [x] Includes example SQL queries
 
 ### 3.3 Hello-HealthSim Examples ✅
@@ -195,11 +195,11 @@ The core functionality is complete. Phase 2 adds optional enhancements:
 ### 5.2 Integration Tests
 - [ ] Test full generation → persist → query workflow
 - [ ] Test batch generation with 100+ entities
-- [ ] Test cross-product scenarios
+- [ ] Test cross-product cohorts
 
 ### 5.3 Manual Testing
 - [ ] "Generate a diabetic patient" → verify persist
-- [ ] "Load scenario X" → verify summary only loaded
+- [ ] "Load cohort X" → verify summary only loaded
 - [ ] "Show claims over $10,000" → verify query
 
 ---
@@ -237,7 +237,7 @@ The core functionality is complete. Phase 2 adds optional enhancements:
 | File | Lines | Purpose |
 |------|-------|---------|
 | `state/auto_naming.py` | ~200 | Keyword extraction, name generation |
-| `state/summary.py` | ~350 | ScenarioSummary, statistics |
+| `state/summary.py` | ~350 | CohortSummary, statistics |
 | `state/auto_persist.py` | ~400 | AutoPersistService class |
 | `tests/state/test_auto_naming.py` | ~250 | 25 unit tests |
 | `tests/state/test_summary.py` | ~200 | 13 unit tests |
@@ -248,7 +248,7 @@ The core functionality is complete. Phase 2 adds optional enhancements:
 |------|---------|
 | `state/__init__.py` | Added exports for new modules + convenience functions |
 | `state/manager.py` | Extended with persist, get_summary, query methods |
-| `db/schema.py` | Added scenario_id to canonical tables, version 1.2 |
+| `db/schema.py` | Added cohort_id to canonical tables, version 1.2 |
 | `db/migrations.py` | Added migration 1.2 |
 
 ### Created (Phase 3)
@@ -285,7 +285,7 @@ The core functionality is complete. Phase 2 adds optional enhancements:
 
 ### When Needed (Phase 2 Enhancements)
 - Tag management methods
-- Scenario cloning/merging
+- Cohort cloning/merging
 - Export utilities
 
 ### Manual Testing (Phase 5)

@@ -16,7 +16,7 @@
 | `references/` (root) | Shared reference data | ⚠️ Review - any new references? |
 | `packages/{product}/` | Python code/MCP | ❓ TBD - likely no Python initially |
 | `hello-healthsim/` | Tutorials/examples | ✅ Yes - add examples |
-| `scenarios/{product}/` | Saved scenarios | ❓ Optional |
+| `cohorts/{product}/` | Saved cohorts | ❓ Optional |
 
 ### 1.2 Observed Product Skill Structures
 
@@ -24,7 +24,7 @@
 ```
 skills/patientsim/
 ├── SKILL.md                    # Master router
-├── {scenario-name}.md          # Flat file per scenario
+├── {cohort-name}.md          # Flat file per cohort
 ├── oncology/                   # Subcategory (allowed)
 └── pediatrics/                 # Subcategory (allowed)
 ```
@@ -33,7 +33,7 @@ skills/patientsim/
 ```
 skills/membersim/
 ├── SKILL.md                    # Master router
-└── {scenario-name}.md          # Flat files only
+└── {cohort-name}.md          # Flat files only
 ```
 
 **PopulationSim** (richest pattern - data-heavy):
@@ -126,7 +126,7 @@ skills/networksim/
 | `data/` | No embedded data in public version (deferred to networksim-local) |
 | `models/` | Schemas will be inline in skills (simpler for knowledge-focused product) |
 | `packages/networksim/` | No Python code initially |
-| `scenarios/networksim/` | Optional - add if needed later |
+| `cohorts/networksim/` | Optional - add if needed later |
 
 ### 2.3 Pattern Justification
 

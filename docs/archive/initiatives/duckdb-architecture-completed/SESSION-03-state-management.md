@@ -9,13 +9,13 @@
 
 ## Objective
 
-Update the state management MCP tools to use DuckDB as the backend instead of JSON files. This is the core migration that changes how scenarios are saved, loaded, and queried.
+Update the state management MCP tools to use DuckDB as the backend instead of JSON files. This is the core migration that changes how cohorts are saved, loaded, and queried.
 
 ---
 
 ## Context
 
-Current state management uses JSON files in `~/.healthsim/scenarios/`. This session migrates to DuckDB while maintaining the same MCP tool interface so existing skills and workflows continue to work.
+Current state management uses JSON files in `~/.healthsim/cohorts/`. This session migrates to DuckDB while maintaining the same MCP tool interface so existing skills and workflows continue to work.
 
 ### Current MCP Tools (from specification.md)
 
@@ -23,7 +23,7 @@ Current state management uses JSON files in `~/.healthsim/scenarios/`. This sess
 |------|------------------|--------------|
 | `save_cohort` | Write JSON file | INSERT to DuckDB |
 | `load_cohort` | Read JSON file | SELECT from DuckDB |
-| `list_cohorts` | List directory | Query scenarios table |
+| `list_cohorts` | List directory | Query cohorts table |
 | `delete_cohort` | Delete JSON file | DELETE from tables |
 
 ### Reference Documents
@@ -44,7 +44,7 @@ packages/core/healthsim/db/                         # From SESSION-01
 - [ ] Verify database exists: `ls -la ~/.healthsim/healthsim.duckdb`
 - [ ] Current state manager working: test with `save_cohort`/`load_cohort`
 - [ ] Read current manager.py implementation
-- [ ] Note any existing JSON scenarios to migrate later
+- [ ] Note any existing JSON cohorts to migrate later
 
 ---
 
@@ -196,7 +196,7 @@ def _get_nested(obj: Dict, *keys) -> Any:
 """
 HealthSim State Manager - DuckDB Backend.
 
-Provides save/load/list/delete operations for scenarios.
+Provides save/load/list/delete operations for cohorts.
 """
 
 from typing import Any, Dict, List, Optional
@@ -213,7 +213,7 @@ from .entities import (
 
 
 class StateManager:
-    """Manages scenario persistence in DuckDB."""
+    """Manages cohort persistence in DuckDB."""
     
     ENTITY_TYPES = [
         'patient', 'encounter', 'diagnosis', 'procedure',
@@ -234,98 +234,98 @@ class StateManager:
         overwrite: bool = False
     ) -> str:
         """
-        Save a scenario to the database.
+        Save a cohort to the database.
         
         Args:
-            name: Unique scenario name
+            name: Unique cohort name
             entities: Dict mapping entity type to list of entities
             description: Optional description
             tags: Optional list of tags
-            overwrite: If True, replace existing scenario with same name
+            overwrite: If True, replace existing cohort with same name
             
         Returns:
-            Scenario ID (UUID string)
+            Cohort ID (UUID string)
         """
-        # Check for existing scenario
-        existing = self._get_scenario_by_name(name)
+        # Check for existing cohort
+        existing = self._get_cohort_by_name(name)
         if existing and not overwrite:
-            raise ValueError(f"Scenario '{name}' already exists. Use overwrite=True to replace.")
+            raise ValueError(f"Cohort '{name}' already exists. Use overwrite=True to replace.")
         
-        scenario_id = existing['scenario_id'] if existing else str(uuid4())
+        cohort_id = existing['cohort_id'] if existing else str(uuid4())
         
         if existing and overwrite:
-            self._delete_cohort_entities(scenario_id)
+            self._delete_cohort_entities(cohort_id)
         
-        # Create or update scenario record
+        # Create or update cohort record
         self.conn.execute("""
-            INSERT INTO scenarios (scenario_id, name, description, created_at, updated_at, is_active)
+            INSERT INTO cohorts (cohort_id, name, description, created_at, updated_at, is_active)
             VALUES (?, ?, ?, ?, ?, ?)
-            ON CONFLICT (scenario_id) DO UPDATE SET
+            ON CONFLICT (cohort_id) DO UPDATE SET
                 name = excluded.name,
                 description = excluded.description,
                 updated_at = excluded.updated_at
-        """, [scenario_id, name, description, datetime.utcnow(), datetime.utcnow(), False])
+        """, [cohort_id, name, description, datetime.utcnow(), datetime.utcnow(), False])
         
-        # Insert entities and link to scenario
+        # Insert entities and link to cohort
         entity_count = 0
         for entity_type, entity_list in entities.items():
             for entity in entity_list:
                 entity_id = self._save_entity(entity_type, entity)
-                self._link_entity_to_scenario(scenario_id, entity_type, entity_id)
+                self._link_entity_to_cohort(cohort_id, entity_type, entity_id)
                 entity_count += 1
         
         # Update entity count
         self.conn.execute("""
-            UPDATE scenarios SET entity_count = ? WHERE scenario_id = ?
-        """, [entity_count, scenario_id])
+            UPDATE cohorts SET entity_count = ? WHERE cohort_id = ?
+        """, [entity_count, cohort_id])
         
         # Save tags
         if tags:
             for tag in tags:
                 self.conn.execute("""
-                    INSERT INTO scenario_tags (scenario_id, tag)
+                    INSERT INTO cohort_tags (cohort_id, tag)
                     VALUES (?, ?)
                     ON CONFLICT DO NOTHING
-                """, [scenario_id, tag])
+                """, [cohort_id, tag])
         
-        return scenario_id
+        return cohort_id
     
     def load_cohort(self, name_or_id: str) -> Dict[str, Any]:
         """
-        Load a scenario from the database.
+        Load a cohort from the database.
         
         Args:
-            name_or_id: Scenario name or UUID
+            name_or_id: Cohort name or UUID
             
         Returns:
-            Dict with scenario metadata and entities
+            Dict with cohort metadata and entities
         """
         # Try as UUID first, then as name
-        scenario = self._get_scenario_by_id(name_or_id)
-        if not scenario:
-            scenario = self._get_scenario_by_name(name_or_id)
-        if not scenario:
-            raise ValueError(f"Scenario '{name_or_id}' not found")
+        cohort = self._get_cohort_by_id(name_or_id)
+        if not cohort:
+            cohort = self._get_cohort_by_name(name_or_id)
+        if not cohort:
+            raise ValueError(f"Cohort '{name_or_id}' not found")
         
-        scenario_id = scenario['scenario_id']
+        cohort_id = cohort['cohort_id']
         
-        # Load all entities for this scenario
+        # Load all entities for this cohort
         entities = {}
         for entity_type in self.ENTITY_TYPES:
-            entities[entity_type] = self._load_entities_for_scenario(scenario_id, entity_type)
+            entities[entity_type] = self._load_entities_for_cohort(cohort_id, entity_type)
         
         # Load tags
         tags = self.conn.execute("""
-            SELECT tag FROM scenario_tags WHERE scenario_id = ?
-        """, [scenario_id]).fetchall()
+            SELECT tag FROM cohort_tags WHERE cohort_id = ?
+        """, [cohort_id]).fetchall()
         
         return {
-            'scenario_id': scenario_id,
-            'name': scenario['name'],
-            'description': scenario['description'],
-            'created_at': scenario['created_at'],
-            'updated_at': scenario['updated_at'],
-            'entity_count': scenario['entity_count'],
+            'cohort_id': cohort_id,
+            'name': cohort['name'],
+            'description': cohort['description'],
+            'created_at': cohort['created_at'],
+            'updated_at': cohort['updated_at'],
+            'entity_count': cohort['entity_count'],
             'tags': [t[0] for t in tags],
             'entities': entities
         }
@@ -337,7 +337,7 @@ class StateManager:
         limit: int = 100
     ) -> List[Dict[str, Any]]:
         """
-        List available scenarios.
+        List available cohorts.
         
         Args:
             tag: Filter by tag
@@ -345,17 +345,17 @@ class StateManager:
             limit: Max results
             
         Returns:
-            List of scenario summaries
+            List of cohort summaries
         """
         query = """
-            SELECT s.scenario_id, s.name, s.description, s.created_at, 
+            SELECT s.cohort_id, s.name, s.description, s.created_at, 
                    s.updated_at, s.entity_count, s.is_active
-            FROM scenarios s
+            FROM cohorts s
         """
         params = []
         
         if tag:
-            query += " JOIN scenario_tags t ON s.scenario_id = t.scenario_id WHERE t.tag = ?"
+            query += " JOIN cohort_tags t ON s.cohort_id = t.cohort_id WHERE t.tag = ?"
             params.append(tag)
         elif search:
             query += " WHERE s.name LIKE ? OR s.description LIKE ?"
@@ -365,60 +365,60 @@ class StateManager:
         params.append(limit)
         
         results = self.conn.execute(query, params).fetchall()
-        columns = ['scenario_id', 'name', 'description', 'created_at', 
+        columns = ['cohort_id', 'name', 'description', 'created_at', 
                    'updated_at', 'entity_count', 'is_active']
         
         return [dict(zip(columns, row)) for row in results]
     
     def delete_cohort(self, name_or_id: str) -> bool:
         """
-        Delete a scenario.
+        Delete a cohort.
         
-        Note: This only removes the scenario metadata and entity links.
+        Note: This only removes the cohort metadata and entity links.
         The actual entity data remains in canonical tables.
         
         Args:
-            name_or_id: Scenario name or UUID
+            name_or_id: Cohort name or UUID
             
         Returns:
             True if deleted, False if not found
         """
-        scenario = self._get_scenario_by_id(name_or_id) or self._get_scenario_by_name(name_or_id)
-        if not scenario:
+        cohort = self._get_cohort_by_id(name_or_id) or self._get_cohort_by_name(name_or_id)
+        if not cohort:
             return False
         
-        scenario_id = scenario['scenario_id']
+        cohort_id = cohort['cohort_id']
         
-        # Delete in order: tags, entity links, scenario
-        self.conn.execute("DELETE FROM scenario_tags WHERE scenario_id = ?", [scenario_id])
-        self.conn.execute("DELETE FROM scenario_entities WHERE scenario_id = ?", [scenario_id])
-        self.conn.execute("DELETE FROM scenarios WHERE scenario_id = ?", [scenario_id])
+        # Delete in order: tags, entity links, cohort
+        self.conn.execute("DELETE FROM cohort_tags WHERE cohort_id = ?", [cohort_id])
+        self.conn.execute("DELETE FROM cohort_entities WHERE cohort_id = ?", [cohort_id])
+        self.conn.execute("DELETE FROM cohorts WHERE cohort_id = ?", [cohort_id])
         
         return True
     
     # --- Private helper methods ---
     
-    def _get_scenario_by_name(self, name: str) -> Optional[Dict]:
-        """Get scenario by name."""
+    def _get_cohort_by_name(self, name: str) -> Optional[Dict]:
+        """Get cohort by name."""
         result = self.conn.execute(
-            "SELECT * FROM scenarios WHERE name = ?", [name]
+            "SELECT * FROM cohorts WHERE name = ?", [name]
         ).fetchone()
         if result:
-            columns = ['scenario_id', 'name', 'description', 'created_at', 
+            columns = ['cohort_id', 'name', 'description', 'created_at', 
                        'updated_at', 'last_accessed_at', 'entity_count', 
                        'patient_count', 'is_active', 'is_analytics_ready',
                        'healthsim_version', 'schema_version']
             return dict(zip(columns, result))
         return None
     
-    def _get_scenario_by_id(self, scenario_id: str) -> Optional[Dict]:
-        """Get scenario by ID."""
+    def _get_cohort_by_id(self, cohort_id: str) -> Optional[Dict]:
+        """Get cohort by ID."""
         try:
             result = self.conn.execute(
-                "SELECT * FROM scenarios WHERE scenario_id = ?", [scenario_id]
+                "SELECT * FROM cohorts WHERE cohort_id = ?", [cohort_id]
             ).fetchone()
             if result:
-                columns = ['scenario_id', 'name', 'description', 'created_at', 
+                columns = ['cohort_id', 'name', 'description', 'created_at', 
                            'updated_at', 'last_accessed_at', 'entity_count', 
                            'patient_count', 'is_active', 'is_analytics_ready',
                            'healthsim_version', 'schema_version']
@@ -455,23 +455,23 @@ class StateManager:
         
         return entity_id
     
-    def _link_entity_to_scenario(self, scenario_id: str, entity_type: str, entity_id: str):
-        """Create link between scenario and entity."""
+    def _link_entity_to_cohort(self, cohort_id: str, entity_type: str, entity_id: str):
+        """Create link between cohort and entity."""
         self.conn.execute("""
-            INSERT INTO scenario_entities (scenario_id, entity_type, entity_id)
+            INSERT INTO cohort_entities (cohort_id, entity_type, entity_id)
             VALUES (?, ?, ?)
             ON CONFLICT DO NOTHING
-        """, [scenario_id, entity_type, entity_id])
+        """, [cohort_id, entity_type, entity_id])
     
-    def _load_entities_for_scenario(self, scenario_id: str, entity_type: str) -> List[Dict]:
-        """Load all entities of a type for a scenario."""
+    def _load_entities_for_cohort(self, cohort_id: str, entity_type: str) -> List[Dict]:
+        """Load all entities of a type for a cohort."""
         table_name = f"{entity_type}s"
         
-        # Get entity IDs linked to this scenario
+        # Get entity IDs linked to this cohort
         entity_ids = self.conn.execute("""
-            SELECT entity_id FROM scenario_entities 
-            WHERE scenario_id = ? AND entity_type = ?
-        """, [scenario_id, entity_type]).fetchall()
+            SELECT entity_id FROM cohort_entities 
+            WHERE cohort_id = ? AND entity_type = ?
+        """, [cohort_id, entity_type]).fetchall()
         
         if not entity_ids:
             return []
@@ -496,11 +496,11 @@ class StateManager:
         
         return []
     
-    def _delete_cohort_entities(self, scenario_id: str):
-        """Remove all entity links for a scenario (for overwrite)."""
+    def _delete_cohort_entities(self, cohort_id: str):
+        """Remove all entity links for a cohort (for overwrite)."""
         self.conn.execute(
-            "DELETE FROM scenario_entities WHERE scenario_id = ?", 
-            [scenario_id]
+            "DELETE FROM cohort_entities WHERE cohort_id = ?", 
+            [cohort_id]
         )
 
 
@@ -539,9 +539,9 @@ def delete_cohort(name_or_id: str) -> bool:
 Legacy JSON file support for backward compatibility.
 
 Used for:
-- Exporting scenarios to JSON for sharing
-- Importing JSON scenarios from external sources
-- Reading old JSON scenarios during migration
+- Exporting cohorts to JSON for sharing
+- Importing JSON cohorts from external sources
+- Reading old JSON cohorts during migration
 """
 
 import json
@@ -550,39 +550,39 @@ from typing import Any, Dict, List, Optional
 from datetime import datetime
 
 
-LEGACY_SCENARIOS_PATH = Path.home() / ".healthsim" / "scenarios"
+LEGACY_SCENARIOS_PATH = Path.home() / ".healthsim" / "cohorts"
 
 
-def export_to_json(scenario: Dict[str, Any], output_path: Path) -> Path:
+def export_to_json(cohort: Dict[str, Any], output_path: Path) -> Path:
     """
-    Export a scenario to JSON file.
+    Export a cohort to JSON file.
     
     Args:
-        scenario: Scenario dict from load_cohort()
+        cohort: Cohort dict from load_cohort()
         output_path: Where to write the file
         
     Returns:
         Path to written file
     """
     # Convert datetime objects to ISO strings
-    scenario_copy = _serialize_for_json(scenario)
+    cohort_copy = _serialize_for_json(cohort)
     
     output_path.parent.mkdir(parents=True, exist_ok=True)
     with open(output_path, 'w') as f:
-        json.dump(scenario_copy, f, indent=2, default=str)
+        json.dump(cohort_copy, f, indent=2, default=str)
     
     return output_path
 
 
 def import_from_json(json_path: Path) -> Dict[str, Any]:
     """
-    Read a scenario from JSON file.
+    Read a cohort from JSON file.
     
     Args:
         json_path: Path to JSON file
         
     Returns:
-        Scenario dict ready for save_cohort()
+        Cohort dict ready for save_cohort()
     """
     with open(json_path, 'r') as f:
         data = json.load(f)
@@ -590,9 +590,9 @@ def import_from_json(json_path: Path) -> Dict[str, Any]:
     return data
 
 
-def list_legacy_scenarios() -> List[Dict[str, Any]]:
+def list_legacy_cohorts() -> List[Dict[str, Any]]:
     """
-    List JSON scenarios in legacy location.
+    List JSON cohorts in legacy location.
     
     Returns:
         List of {name, path, modified_at}
@@ -600,15 +600,15 @@ def list_legacy_scenarios() -> List[Dict[str, Any]]:
     if not LEGACY_SCENARIOS_PATH.exists():
         return []
     
-    scenarios = []
+    cohorts = []
     for json_file in LEGACY_SCENARIOS_PATH.glob("*.json"):
-        scenarios.append({
+        cohorts.append({
             'name': json_file.stem,
             'path': json_file,
             'modified_at': datetime.fromtimestamp(json_file.stat().st_mtime)
         })
     
-    return sorted(scenarios, key=lambda x: x['modified_at'], reverse=True)
+    return sorted(cohorts, key=lambda x: x['modified_at'], reverse=True)
 
 
 def _serialize_for_json(obj: Any) -> Any:
@@ -662,47 +662,47 @@ def test_save_and_load_cohort(state_manager):
         'encounter': []
     }
     
-    scenario_id = state_manager.save_cohort(
-        name='test-scenario',
+    cohort_id = state_manager.save_cohort(
+        name='test-cohort',
         entities=entities,
-        description='Test scenario'
+        description='Test cohort'
     )
     
-    assert scenario_id is not None
+    assert cohort_id is not None
     
-    loaded = state_manager.load_cohort('test-scenario')
-    assert loaded['name'] == 'test-scenario'
+    loaded = state_manager.load_cohort('test-cohort')
+    assert loaded['name'] == 'test-cohort'
     assert len(loaded['entities']['patient']) == 1
     assert loaded['entities']['patient'][0]['given_name'] == 'John'
 
 
 def test_list_cohorts(state_manager):
-    """Test listing scenarios."""
-    state_manager.save_cohort('scenario-1', {'patient': []})
-    state_manager.save_cohort('scenario-2', {'patient': []})
+    """Test listing cohorts."""
+    state_manager.save_cohort('cohort-1', {'patient': []})
+    state_manager.save_cohort('cohort-2', {'patient': []})
     
-    scenarios = state_manager.list_cohorts()
-    assert len(scenarios) >= 2
+    cohorts = state_manager.list_cohorts()
+    assert len(cohorts) >= 2
     
-    names = [s['name'] for s in scenarios]
-    assert 'scenario-1' in names
-    assert 'scenario-2' in names
+    names = [s['name'] for s in cohorts]
+    assert 'cohort-1' in names
+    assert 'cohort-2' in names
 
 
 def test_delete_cohort(state_manager):
-    """Test scenario deletion."""
+    """Test cohort deletion."""
     state_manager.save_cohort('to-delete', {'patient': []})
     
     result = state_manager.delete_cohort('to-delete')
     assert result is True
     
-    scenarios = state_manager.list_cohorts()
-    names = [s['name'] for s in scenarios]
+    cohorts = state_manager.list_cohorts()
+    names = [s['name'] for s in cohorts]
     assert 'to-delete' not in names
 
 
-def test_overwrite_scenario(state_manager):
-    """Test overwriting existing scenario."""
+def test_overwrite_cohort(state_manager):
+    """Test overwriting existing cohort."""
     state_manager.save_cohort('overwrite-test', {'patient': [{'given_name': 'First'}]})
     state_manager.save_cohort('overwrite-test', {'patient': [{'given_name': 'Second'}]}, overwrite=True)
     
@@ -710,15 +710,15 @@ def test_overwrite_scenario(state_manager):
     assert loaded['entities']['patient'][0]['given_name'] == 'Second'
 
 
-def test_scenario_tags(state_manager):
+def test_cohort_tags(state_manager):
     """Test tag filtering."""
     state_manager.save_cohort('tagged', {'patient': []}, tags=['diabetes', 'test'])
     
-    scenarios = state_manager.list_cohorts(tag='diabetes')
-    assert any(s['name'] == 'tagged' for s in scenarios)
+    cohorts = state_manager.list_cohorts(tag='diabetes')
+    assert any(s['name'] == 'tagged' for s in cohorts)
     
-    scenarios = state_manager.list_cohorts(tag='nonexistent')
-    assert not any(s['name'] == 'tagged' for s in scenarios)
+    cohorts = state_manager.list_cohorts(tag='nonexistent')
+    assert not any(s['name'] == 'tagged' for s in cohorts)
 ```
 
 ### Step 5: Run Full Test Suite
@@ -743,7 +743,7 @@ pytest tests/ -v
 - [ ] save_cohort writes to DuckDB
 - [ ] load_cohort reads from DuckDB
 - [ ] list_cohorts queries work (with filters)
-- [ ] delete_cohort removes scenario properly
+- [ ] delete_cohort removes cohort properly
 - [ ] Overwrite functionality works
 - [ ] Tags filtering works
 - [ ] All new tests pass
@@ -781,7 +781,7 @@ Mark SESSION-03 as complete with commit hash.
 ✅ Session complete when:
 1. save_cohort writes entities to DuckDB tables
 2. load_cohort retrieves entities correctly
-3. list_cohorts shows database scenarios
+3. list_cohorts shows database cohorts
 4. delete_cohort removes from database
 5. Entity data round-trips correctly (save → load = same data)
 6. All tests pass

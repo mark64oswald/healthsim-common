@@ -183,7 +183,7 @@ class ConnectionManager:
 3. **Brief Read Unavailability**: During write, read connection is closed (milliseconds)
 
 These trade-offs are acceptable because:
-- Writes are infrequent (save/delete scenarios are rare operations)
+- Writes are infrequent (save/delete cohorts are rare operations)
 - Read reopening is fast (~10-20ms)
 - The alternative (connection conflicts) is unacceptable
 
@@ -230,15 +230,15 @@ def test_read_then_write_then_read():
     
     # Step 1: Read operation (establishes read connection)
     read_conn = manager.get_read_connection()
-    result = read_conn.execute("SELECT COUNT(*) FROM scenarios").fetchone()
+    result = read_conn.execute("SELECT COUNT(*) FROM cohorts").fetchone()
     
     # Step 2: Write operation (closes read, opens write, closes write)
     with manager.write_connection() as write_conn:
-        write_conn.execute("INSERT INTO scenarios ...")
+        write_conn.execute("INSERT INTO cohorts ...")
     
     # Step 3: Read again (read connection reopens automatically)
     read_conn = manager.get_read_connection()
-    result = read_conn.execute("SELECT COUNT(*) FROM scenarios").fetchone()
+    result = read_conn.execute("SELECT COUNT(*) FROM cohorts").fetchone()
     
     manager.close()
 

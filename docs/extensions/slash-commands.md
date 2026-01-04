@@ -28,8 +28,8 @@ Users often say: "Generate cardiac patients for cath lab testing"
 
 **Quick access to help or info**
 ```
-Users ask: "What scenarios are available?"
-→ Add /scenarios command to list available scenarios
+Users ask: "What cohorts are available?"
+→ Add /cohorts command to list available cohorts
 ```
 
 ### Bad Reasons to Add Slash Command
@@ -81,17 +81,17 @@ Slash commands in Claude Code map to expanded prompts or tool sequences.
 ```markdown
 # /generate
 
-**Description:** Quickly generate patients by scenario type
+**Description:** Quickly generate patients by cohort type
 
-**Usage:** /generate <scenario> [--count N] [--severity level]
+**Usage:** /generate <cohort> [--count N] [--severity level]
 
 **Arguments:**
-- `scenario` - Scenario type (diabetes, cardiac, sepsis, joint-replacement)
+- `cohort` - Cohort type (diabetes, cardiac, sepsis, joint-replacement)
 - `--count N` - Number of patients to generate (default: 1)
 - `--severity level` - Severity level (mild, moderate, severe)
 
 **Expansion:**
-Generate {count} {scenario} patients with {severity} severity.
+Generate {count} {cohort} patients with {severity} severity.
 For each patient provide:
 - Full demographics (name, MRN, age, gender)
 - Complete condition list with ICD-10 codes
@@ -270,10 +270,10 @@ See [command-name.md](command-name.md) for details.
 
 **Description:** Generate single patient with minimal details
 
-**Usage:** /quick <scenario>
+**Usage:** /quick <cohort>
 
 **Expansion:**
-Generate a single {scenario} patient. Provide name, MRN, age, gender, primary conditions, and key medications. Keep response brief.
+Generate a single {cohort} patient. Provide name, MRN, age, gender, primary conditions, and key medications. Keep response brief.
 
 **Example:**
 /quick diabetes
@@ -286,10 +286,10 @@ Generate a single {scenario} patient. Provide name, MRN, age, gender, primary co
 
 **Description:** Generate, validate, and export test cohort
 
-**Usage:** /test-cohort <scenario> <format>
+**Usage:** /test-cohort <cohort> <format>
 
 **Expansion:**
-1. Generate 10 {scenario} patients with varying severity
+1. Generate 10 {cohort} patients with varying severity
 2. Run validation checks on all patients
 3. If validation passes, export to {format}
 4. Report summary of cohort characteristics
@@ -301,22 +301,22 @@ Generate a single {scenario} patient. Provide name, MRN, age, gender, primary co
 ### Pattern 3: Information Retrieval
 
 ```markdown
-# /scenarios
+# /cohorts
 
-**Description:** List available scenario skills
+**Description:** List available cohort skills
 
-**Usage:** /scenarios [category]
+**Usage:** /cohorts [category]
 
 **Expansion:**
-List all available scenarios in the {category} category (or all categories if not specified). For each scenario, provide:
-- Scenario name
+List all available cohorts in the {category} category (or all categories if not specified). For each cohort, provide:
+- Cohort name
 - Brief description
 - Example usage
 - Key parameters users can control
 
 **Example:**
-/scenarios
-/scenarios cardiac
+/cohorts
+/cohorts cardiac
 ```
 
 ### Pattern 4: Session Management
@@ -355,15 +355,15 @@ Commands can parse complex arguments:
 
 **Description:** Batch generation with distributions
 
-**Usage:** /batch <scenario> --total N [--distribution key:value]
+**Usage:** /batch <cohort> --total N [--distribution key:value]
 
 **Arguments:**
-- `scenario` - Scenario type
+- `cohort` - Cohort type
 - `--total N` - Total patients to generate
 - `--distribution key:value` - Distribution percentages
 
 **Expansion:**
-Generate {total} {scenario} patients with the following distribution:
+Generate {total} {cohort} patients with the following distribution:
 {parse distribution arguments}
 
 For example, if arguments are:
@@ -453,15 +453,15 @@ When adding a new slash command, complete this checklist:
 ```markdown
 # /generate
 
-Generate patients by scenario type with options for count and severity.
+Generate patients by cohort type with options for count and severity.
 
 ## Usage
 
-/generate <scenario> [--count N] [--severity level]
+/generate <cohort> [--count N] [--severity level]
 
 ## Arguments
 
-- `scenario` - Scenario type (diabetes, cardiac, sepsis, joint-replacement)
+- `cohort` - Cohort type (diabetes, cardiac, sepsis, joint-replacement)
 - `--count N` - Number of patients (default: 1)
 - `--severity level` - Severity (mild, moderate, severe)
 

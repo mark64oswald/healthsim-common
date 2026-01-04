@@ -41,7 +41,7 @@ Use this skill when the user requests septic patients or mentions systemic infec
 
 You should apply this knowledge when:
 - Generating patients with infection-related diagnoses
-- Creating ICU or emergency department scenarios
+- Creating ICU or emergency department cohorts
 - The user mentions "sepsis," "systemic infection," or "septic shock"
 - Building patients who need antibiotics and hemodynamic support
 
@@ -50,12 +50,12 @@ This skill provides the clinical context to make sepsis presentations realistic,
 
 **Guidelines**:
 - Start with "Use this skill when..."
-- Be specific about keywords and scenarios
+- Be specific about keywords and cohorts
 - Explain what the skill teaches (not just what it documents)
 - Mention related use cases
 
 ### 3. Purpose Section
-**Purpose**: Explain what clinical scenarios this enables.
+**Purpose**: Explain what clinical cohorts this enables.
 **Audience**: Both Claude and human developers.
 
 ```markdown
@@ -70,12 +70,12 @@ It models the clinical progression of sepsis, including:
 - Time-critical treatment bundles
 - ICU management and complications
 
-Designed for emergency medicine, critical care, and infectious disease training scenarios.
+Designed for emergency medicine, critical care, and infectious disease training cohorts.
 ```
 
 ### 4. When to Use This Skill (NEW in v2.0)
 **Purpose**: Help Claude recognize user intent.
-**Format**: Bullet list of triggers - keywords, phrases, scenarios.
+**Format**: Bullet list of triggers - keywords, phrases, cohorts.
 
 ```markdown
 ## When to Use This Skill
@@ -88,7 +88,7 @@ Apply this skill when the user mentions:
 - "SIRS" (Systemic Inflammatory Response Syndrome)
 - "sepsis bundles," "sepsis protocol"
 
-**Clinical Scenarios**:
+**Clinical Cohorts**:
 - ICU admission with infection
 - Emergency department with fever and hypotension
 - Post-operative infection complications
@@ -96,9 +96,9 @@ Apply this skill when the user mentions:
 
 **Implicit Indicators**:
 - Requests for critically ill patients
-- Multi-organ dysfunction scenarios
+- Multi-organ dysfunction cohorts
 - Antibiotic stewardship examples
-- Time-critical treatment scenarios
+- Time-critical treatment cohorts
 
 **Co-occurring Mentions**:
 - Often paired with: pneumonia, UTI, wound infection
@@ -358,7 +358,7 @@ Direct mentions:
 - "sepsis", "septic shock", "septic", "SIRS"
 - "systemic infection", "overwhelming infection"
 
-Scenario descriptions:
+Cohort descriptions:
 - "ICU patient with infection"
 - "patient crashing from pneumonia"
 - "needs pressors and broad antibiotics"

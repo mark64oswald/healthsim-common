@@ -107,7 +107,7 @@ Found 342 cardiologists in San Francisco County:
 
 - Running demos or tutorials
 - Generating test data for development
-- Creating reproducible synthetic scenarios
+- Creating reproducible synthetic cohorts
 - Building public-facing content
 - Quick prototyping without setup
 

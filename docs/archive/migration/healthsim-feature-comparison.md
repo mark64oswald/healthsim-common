@@ -18,11 +18,11 @@ This document compares features from the current Python-library HealthSim archit
 
 | Feature | Current (Python) | Skills-First | Notes on Skills-First Implementation |
 |---------|------------------|--------------|--------------------------------------|
-| **Single entity generation** | ✅ `generator.generate_one()` | ✅ Claude generates directly | Claude uses SKILL.md + scenario knowledge to produce JSON |
+| **Single entity generation** | ✅ `generator.generate_one()` | ✅ Claude generates directly | Claude uses SKILL.md + cohort knowledge to produce JSON |
 | **Batch generation (10-100)** | ✅ `generator.generate_batch()` | ✅ Claude + iteration | Claude can generate iteratively; may be slower |
 | **Large cohort generation (1000+)** | ✅ `CohortGenerator` class | ⚠️ MCP tool required | `batch_generate` MCP tool handles scale; Claude designs, tool executes |
 | **Reproducibility (seed-based)** | ✅ `SeedManager` class | ⚠️ Script-based | Scripts can accept seed parameter; Claude generation is non-deterministic |
-| **Weighted distributions** | ✅ `WeightedChoice` class | ⚠️ Described in scenario | Claude follows distribution guidance in scenario files; less precise |
+| **Weighted distributions** | ✅ `WeightedChoice` class | ⚠️ Described in cohort | Claude follows distribution guidance in cohort files; less precise |
 | **Constraint satisfaction** | ✅ `CohortConstraints` class | ⚠️ Conversational | User specifies constraints in conversation; Claude attempts to satisfy |
 | **Progress tracking** | ✅ `CohortProgress` callbacks | ⚠️ MCP tool only | Batch MCP tool can report progress; single generation is immediate |
 
@@ -38,7 +38,7 @@ This document compares features from the current Python-library HealthSim archit
 | **Field validation** | ✅ Pydantic validators | 🔄 Script validation | `validate_*.py` scripts check structure and values |
 | **Nested relationships** | ✅ Model references | ✅ JSON references | Claude generates with proper ID references |
 | **Required fields** | ✅ Pydantic required | ⚠️ Schema + script | Schema documents required fields; script validates |
-| **Default values** | ✅ Pydantic defaults | ⚠️ Scenario defaults | Scenarios specify typical values; Claude applies |
+| **Default values** | ✅ Pydantic defaults | ⚠️ Cohort defaults | Cohorts specify typical values; Claude applies |
 | **Custom types** | ✅ Custom Pydantic types | ❌ Not available | Standard JSON types only |
 | **Model inheritance** | ✅ Python inheritance | ❌ Not applicable | Flat JSON structures; no inheritance concept |
 | **IDE autocomplete** | ✅ Type hints | ❌ Not applicable | No code to autocomplete |
@@ -55,9 +55,9 @@ This document compares features from the current Python-library HealthSim archit
 | **Clinical plausibility** | ✅ `ClinicalValidator` | ⚠️ Claude + script | Claude applies domain knowledge; script catches obvious errors |
 | **Temporal consistency** | ✅ `TemporalValidator` | ✅ Script-based | Script validates event ordering, date logic |
 | **Code validation (ICD, CPT)** | ✅ Reference data lookup | ⚠️ CSV + script | Scripts validate against `references/*.csv` files |
-| **Age-appropriate conditions** | ✅ Clinical rules | ⚠️ Scenario knowledge | Claude applies rules from scenario files |
-| **Medication-diagnosis coherence** | ✅ Clinical rules | ⚠️ Scenario knowledge | Claude uses clinical patterns in scenarios |
-| **Lab value ranges** | ✅ Range validators | ⚠️ Scenario + script | Scenarios specify ranges; scripts can validate |
+| **Age-appropriate conditions** | ✅ Clinical rules | ⚠️ Cohort knowledge | Claude applies rules from cohort files |
+| **Medication-diagnosis coherence** | ✅ Clinical rules | ⚠️ Cohort knowledge | Claude uses clinical patterns in cohorts |
+| **Lab value ranges** | ✅ Range validators | ⚠️ Cohort + script | Cohorts specify ranges; scripts can validate |
 | **Cross-field validation** | ✅ Composite validators | ⚠️ Script logic | Scripts implement cross-field checks |
 | **Validation error messages** | ✅ `ValidationResult` | ✅ Script output | Scripts return structured error messages |
 | **Composable validators** | ✅ Chain validators | ⚠️ Script sequence | Run multiple scripts; less elegant |
@@ -86,21 +86,21 @@ This document compares features from the current Python-library HealthSim archit
 
 ---
 
-## 5. Scenario & Domain Features
+## 5. Cohort & Domain Features
 
 | Feature | Current (Python) | Skills-First | Notes on Skills-First Implementation |
 |---------|------------------|--------------|--------------------------------------|
-| **Pre-built clinical scenarios** | ✅ Skills + Generator | ✅ `skills/*.md` | Richer scenario descriptions possible |
-| **Custom scenarios** | ✅ Create Skill + code | ✅ Create `skills/*.md` | Easier to create (markdown vs. Python) |
-| **Scenario variations** | ✅ Skill variations | ✅ Documented in scenario | Claude selects appropriate variation |
-| **Multi-event patient journeys** | ✅ Timeline class | ✅ Scenario event patterns | Scenarios describe event sequences |
-| **Temporal progression** | ✅ Generator logic | ⚠️ Claude reasoning | Claude follows scenario timeline patterns |
-| **Disease progression models** | ✅ Clinical logic | ⚠️ Scenario knowledge | Scenarios describe progression; less deterministic |
-| **Quality measure alignment** | ✅ Skill guidance | ✅ Scenario guidance | Scenarios include measure-relevant data points |
+| **Pre-built clinical cohorts** | ✅ Skills + Generator | ✅ `skills/*.md` | Richer cohort descriptions possible |
+| **Custom cohorts** | ✅ Create Skill + code | ✅ Create `skills/*.md` | Easier to create (markdown vs. Python) |
+| **Cohort variations** | ✅ Skill variations | ✅ Documented in cohort | Claude selects appropriate variation |
+| **Multi-event patient journeys** | ✅ Timeline class | ✅ Cohort event patterns | Cohorts describe event sequences |
+| **Temporal progression** | ✅ Generator logic | ⚠️ Claude reasoning | Claude follows cohort timeline patterns |
+| **Disease progression models** | ✅ Clinical logic | ⚠️ Cohort knowledge | Cohorts describe progression; less deterministic |
+| **Quality measure alignment** | ✅ Skill guidance | ✅ Cohort guidance | Cohorts include measure-relevant data points |
 | **Reference data (codes)** | ✅ Python modules | ✅ `references/*.csv` | CSV files with code lookups |
 | **Clinical guidelines** | ✅ Encoded in Skills | ✅ `references/*.md` | Guidelines as readable markdown |
 
-**Assessment**: Scenario and domain knowledge is potentially *better* in Skills-first because markdown is more expressive than code comments. Subject matter experts can contribute scenarios without Python knowledge. The tradeoff is less deterministic execution of complex disease progression models.
+**Assessment**: Cohort and domain knowledge is potentially *better* in Skills-first because markdown is more expressive than code comments. Subject matter experts can contribute cohorts without Python knowledge. The tradeoff is less deterministic execution of complex disease progression models.
 
 ---
 
@@ -116,7 +116,7 @@ This document compares features from the current Python-library HealthSim archit
 | **Delta Lake support** | ✅ Native | ✅ MCP tool | Part of Databricks integration |
 | **Unity Catalog** | ✅ Native | ✅ MCP tool | Part of Databricks integration |
 
-**Assessment**: Persistence capabilities preserved through MCP tools. Streaming/pipeline patterns not available - this is a genuine limitation for enterprise ETL scenarios.
+**Assessment**: Persistence capabilities preserved through MCP tools. Streaming/pipeline patterns not available - this is a genuine limitation for enterprise ETL cohorts.
 
 ---
 
@@ -142,16 +142,16 @@ This document compares features from the current Python-library HealthSim archit
 
 | Feature | Current (Python) | Skills-First | Notes on Skills-First Implementation |
 |---------|------------------|--------------|--------------------------------------|
-| **Add new scenario** | ⚠️ Skill + Generator code | ✅ Add `skills/*.md` | Much easier - just write markdown |
+| **Add new cohort** | ⚠️ Skill + Generator code | ✅ Add `skills/*.md` | Much easier - just write markdown |
 | **Add new entity type** | ✅ New Pydantic model | 🔄 Update canonical model | Add to `canonical-model.md` schema |
 | **Add new output format** | ✅ New Transformer class | ✅ Add `export_*.py` script | Create new export script |
 | **Add reference data** | ✅ Update Python module | ✅ Add CSV file | Add to `references/*.csv` |
 | **Add validation rule** | ✅ New Validator | ⚠️ Update script | Add logic to validation script |
 | **Add MCP tool** | ✅ Add to server | ✅ Add to server | Same approach |
-| **Customize generation** | ✅ Extend Generator | ⚠️ Modify scenario | Less precise control |
+| **Customize generation** | ✅ Extend Generator | ⚠️ Modify cohort | Less precise control |
 | **Plugin architecture** | ✅ Python imports | ❌ Not available | No plugin concept |
 
-**Assessment**: Adding scenarios and reference data is *easier* in Skills-first. Adding validation rules or customizing generation logic is *harder* without Python extension points.
+**Assessment**: Adding cohorts and reference data is *easier* in Skills-first. Adding validation rules or customizing generation logic is *harder* without Python extension points.
 
 ---
 
@@ -180,7 +180,7 @@ This document compares features from the current Python-library HealthSim archit
 | **Conversation-native** | Aligns with "Configuration as Conversation" vision |
 | **Simpler architecture** | Fewer moving parts, easier to understand |
 | **Better documentation** | Skills are self-documenting |
-| **Faster scenario creation** | Markdown >> Python for domain experts |
+| **Faster cohort creation** | Markdown >> Python for domain experts |
 | **Lower barrier to entry** | No pip install, no Python environment |
 | **Anthropic alignment** | Follows Claude skill best practices |
 
@@ -189,7 +189,7 @@ This document compares features from the current Python-library HealthSim archit
 | Loss | Impact | Mitigation |
 |------|--------|------------|
 | **Reproducibility** | Non-deterministic generation | Use scripts with seeds for batch; accept variation for single |
-| **Precise distributions** | Less control over statistical properties | Document distributions in scenarios; MCP tools can enforce |
+| **Precise distributions** | Less control over statistical properties | Document distributions in cohorts; MCP tools can enforce |
 | **Type safety** | No compile-time checks | Validation scripts catch errors at runtime |
 | **IDE tooling** | No autocomplete, type hints | Tradeoff for accessibility |
 | **Complex validation** | Hard to encode intricate rules | Keep essential rules in scripts |
@@ -206,7 +206,7 @@ The Skills-first architecture is **appropriate** for HealthSim given:
 1. **Primary use case is development/testing**, not production ETL
 2. **Target users include clinical SMEs**, not just developers
 3. **"Configuration as Conversation" is a core value proposition**
-4. **Scenario creation is a frequent activity** that should be easy
+4. **Cohort creation is a frequent activity** that should be easy
 
 The losses around reproducibility, precise distributions, and streaming are acceptable tradeoffs for the accessibility and simplicity gains.
 

@@ -38,11 +38,11 @@ User: "Compare these two patients"
 
 ### [Skills](skills.md) - Add New Knowledge
 
-**Use when:** Claude needs to KNOW about a clinical domain or scenario
+**Use when:** Claude needs to KNOW about a clinical domain or cohort
 
 **Examples:**
 - New clinical specialties (nephrology, neurology)
-- New scenarios (sepsis, stroke, pregnancy)
+- New cohorts (sepsis, stroke, pregnancy)
 - Clinical guidelines and protocols
 - Healthcare format knowledge
 
@@ -233,7 +233,7 @@ Claude: "I'll generate an acute ischemic stroke patient meeting tPA eligibility:
 **Actions (MCP Tool):**
 - Calculate stroke severity scores?
 - Check eligibility criteria?
-- Generate time-based scenarios?
+- Generate time-based cohorts?
 
 ### 3. Implement Backend Support
 
@@ -275,7 +275,7 @@ Understanding what changes when you add each extension type:
 |----------------|---------------|-------------|----------------|-------------|
 | **MCP Tool** | How to use it | New function | Register tool | Tool reference, example |
 | **Skill** | Domain knowledge | None | Add to Project | Skill markdown, usage |
-| **Scenario** | Pattern to apply | Uses existing | Skill file | Conversation example |
+| **Cohort** | Pattern to apply | Uses existing | Skill file | Conversation example |
 | **Slash Command** | Command mapping | None | Command def | User guide section |
 | **Export Format** | Format details | Export function | Format list | Format reference |
 | **Core Model** | Data structure | Response format | None | Model docs, API ref |

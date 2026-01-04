@@ -23,10 +23,10 @@ healthsim-workspace/
 │
 ├── skills/
 │   ├── common/                    # Shared skills (state management)
-│   ├── patientsim/                # Clinical/EMR scenarios
-│   ├── membersim/                 # Payer/claims scenarios
-│   ├── rxmembersim/               # Pharmacy/PBM scenarios
-│   └── trialsim/                  # Clinical trials scenarios
+│   ├── patientsim/                # Clinical/EMR cohorts
+│   ├── membersim/                 # Payer/claims cohorts
+│   ├── rxmembersim/               # Pharmacy/PBM cohorts
+│   └── trialsim/                  # Clinical trials cohorts
 │       ├── SKILL.md               # Master routing skill
 │       ├── README.md              # Directory index
 │       ├── therapeutic-areas/     # Disease-specific patterns
@@ -35,7 +35,7 @@ healthsim-workspace/
 └── packages/core/                 # Python validation (tests only)
 ```
 
-**Rule:** Scenarios go in `skills/{product}/`, NOT in subdirectories unless there's a clear grouping (like `therapeutic-areas/`).
+**Rule:** Cohorts go in `skills/{product}/`, NOT in subdirectories unless there's a clear grouping (like `therapeutic-areas/`).
 
 ---
 
@@ -56,7 +56,7 @@ description: "Brief description. Triggers: phrase1, phrase2, phrase3"
 
 ### 2. Validation Rules Section
 
-Every scenario skill MUST have a Validation Rules section with this EXACT format:
+Every cohort skill MUST have a Validation Rules section with this EXACT format:
 
 ```markdown
 ## Validation Rules
@@ -128,7 +128,7 @@ Description and JSON structure.
 
 ## Examples
 
-### Example 1: Basic Scenario
+### Example 1: Basic Cohort
 
 **Request:** "Generate a [thing]"
 
@@ -139,7 +139,7 @@ Description and JSON structure.
 }
 ```
 
-### Example 2: Complex Scenario
+### Example 2: Complex Cohort
 
 **Request:** "Generate [complex thing]"
 

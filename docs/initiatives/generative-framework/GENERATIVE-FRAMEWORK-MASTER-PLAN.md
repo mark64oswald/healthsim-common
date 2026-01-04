@@ -334,7 +334,7 @@ Implement the Profile Builder - the conversational specification tool for defini
 
 **File:** `skills/generation/distributions/cost-distributions.md`
 - Utilization and cost distribution patterns
-- By product and scenario type
+- By product and cohort type
 
 #### 1.3 Profile Templates (Session 3)
 

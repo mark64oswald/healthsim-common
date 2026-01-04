@@ -63,7 +63,7 @@ With the migration to DuckDB complete, documentation throughout the project need
 
 ### 3. Updated Examples
 
-- hello-healthsim scenarios
+- hello-healthsim cohorts
 
 ### 4. Updated Project Files
 
@@ -84,7 +84,7 @@ With the migration to DuckDB complete, documentation throughout the project need
 ## Overview
 
 HealthSim uses DuckDB as its unified data store for:
-- **State Management**: Scenario persistence and retrieval
+- **State Management**: Cohort persistence and retrieval
 - **Reference Data**: PopulationSim demographic datasets
 - **Analytics** (Phase 2): Star schema for OHDSI-style analysis
 
@@ -119,13 +119,13 @@ Source of truth for all generated entities. Tables mirror the JSON canonical mod
 
 ### Layer 2: State Management
 
-Organizes entities into named scenarios.
+Organizes entities into named cohorts.
 
 | Table | Description |
 |-------|-------------|
-| scenarios | Scenario metadata |
-| scenario_entities | Entity-scenario links |
-| scenario_tags | Tag organization |
+| cohorts | Cohort metadata |
+| cohort_entities | Entity-cohort links |
+| cohort_tags | Tag organization |
 
 ### Layer 3: Reference Data
 
@@ -158,8 +158,8 @@ Direct SQL queries are supported:
 ```sql
 -- Find all diabetic patients
 SELECT * FROM patients p
-JOIN scenario_entities se ON p.patient_id = se.entity_id
-JOIN scenarios s ON se.scenario_id = s.scenario_id
+JOIN cohort_entities se ON p.patient_id = se.entity_id
+JOIN cohorts s ON se.cohort_id = s.cohort_id
 WHERE s.name = 'diabetes-cohort';
 
 -- Query reference data
@@ -170,7 +170,7 @@ WHERE state_abbr = 'CA';
 
 ## Migration from JSON
 
-If you have existing JSON scenarios, run:
+If you have existing JSON cohorts, run:
 
 ```bash
 python scripts/migrate_json_to_duckdb.py
@@ -189,7 +189,7 @@ Update `docs/state-management/specification.md`:
 ## Overview
 
 HealthSim state management persists generated entities in a DuckDB database,
-enabling scenarios to be saved, loaded, shared, and queried.
+enabling cohorts to be saved, loaded, shared, and queried.
 
 ## Storage
 
@@ -201,40 +201,40 @@ enabling scenarios to be saved, loaded, shared, and queried.
 
 ### save_cohort
 
-Saves entities to the database as a named scenario.
+Saves entities to the database as a named cohort.
 
 **Parameters:**
 | Name | Type | Required | Description |
 |------|------|----------|-------------|
-| name | string | Yes | Unique scenario name |
+| name | string | Yes | Unique cohort name |
 | entities | object | Yes | Dict of entity type → entity list |
-| description | string | No | Scenario description |
+| description | string | No | Cohort description |
 | tags | array | No | List of tags for organization |
 | overwrite | boolean | No | Replace existing (default: false) |
 
 **Returns:**
 ```json
 {
-  "scenario_id": "uuid-string",
-  "name": "scenario-name",
+  "cohort_id": "uuid-string",
+  "name": "cohort-name",
   "entity_count": 42
 }
 ```
 
 ### load_cohort
 
-Loads a scenario from the database.
+Loads a cohort from the database.
 
 **Parameters:**
 | Name | Type | Required | Description |
 |------|------|----------|-------------|
-| name | string | Yes | Scenario name or UUID |
+| name | string | Yes | Cohort name or UUID |
 
 **Returns:**
 ```json
 {
-  "scenario_id": "uuid-string",
-  "name": "scenario-name",
+  "cohort_id": "uuid-string",
+  "name": "cohort-name",
   "description": "...",
   "entities": {
     "patient": [...],
@@ -246,7 +246,7 @@ Loads a scenario from the database.
 
 ### list_cohorts
 
-Lists available scenarios.
+Lists available cohorts.
 
 **Parameters:**
 | Name | Type | Required | Description |
@@ -257,27 +257,27 @@ Lists available scenarios.
 
 ### delete_cohort
 
-Deletes a scenario (metadata and links, not entity data).
+Deletes a cohort (metadata and links, not entity data).
 
-### export_scenario_json
+### export_cohort_json
 
-Exports a scenario to JSON file for sharing.
+Exports a cohort to JSON file for sharing.
 
 **Parameters:**
 | Name | Type | Required | Description |
 |------|------|----------|-------------|
-| name | string | Yes | Scenario name or UUID |
+| name | string | Yes | Cohort name or UUID |
 | output_path | string | No | Where to save (default: ~/Downloads) |
 
-### import_scenario_json
+### import_cohort_json
 
-Imports a JSON scenario file.
+Imports a JSON cohort file.
 
 **Parameters:**
 | Name | Type | Required | Description |
 |------|------|----------|-------------|
 | file_path | string | Yes | Path to JSON file |
-| name | string | No | Override scenario name |
+| name | string | No | Override cohort name |
 | overwrite | boolean | No | Replace existing (default: false) |
 ```
 
@@ -289,9 +289,9 @@ Update `skills/common/state-management.md`:
 ---
 name: state-management
 description: |
-  Save, load, and manage HealthSim scenarios. Scenarios persist generated
+  Save, load, and manage HealthSim cohorts. Cohorts persist generated
   entities (patients, encounters, claims, etc.) for later use. Use phrases
-  like "save this scenario", "load my diabetic patients", "list scenarios",
+  like "save this cohort", "load my diabetic patients", "list cohorts",
   "export for sharing", "import from file".
 ---
 
@@ -299,35 +299,35 @@ description: |
 
 ## Overview
 
-State management allows you to persist generated healthcare data scenarios
-for future use, sharing, and analysis. Scenarios are stored in a local
+State management allows you to persist generated healthcare data cohorts
+for future use, sharing, and analysis. Cohorts are stored in a local
 DuckDB database.
 
 ## Trigger Phrases
 
-- "Save this scenario as..."
+- "Save this cohort as..."
 - "Save these patients as..."
-- "Load scenario..."
-- "Open the [name] scenario"
-- "List my scenarios"
-- "Show available scenarios"
-- "Delete scenario..."
-- "Export [scenario] as JSON"
-- "Import scenario from [path]"
-- "Tag this scenario with..."
-- "Find scenarios tagged..."
+- "Load cohort..."
+- "Open the [name] cohort"
+- "List my cohorts"
+- "Show available cohorts"
+- "Delete cohort..."
+- "Export [cohort] as JSON"
+- "Import cohort from [path]"
+- "Tag this cohort with..."
+- "Find cohorts tagged..."
 
 ## Capabilities
 
-### Saving Scenarios
+### Saving Cohorts
 
 ```
 User: "Save this as my-diabetes-cohort"
 Claude: [Saves all generated entities to database]
-        "Saved scenario 'my-diabetes-cohort' with 15 patients, 47 encounters."
+        "Saved cohort 'my-diabetes-cohort' with 15 patients, 47 encounters."
 ```
 
-### Loading Scenarios
+### Loading Cohorts
 
 ```
 User: "Load my-diabetes-cohort"
@@ -335,36 +335,36 @@ Claude: [Retrieves entities from database]
         "Loaded 'my-diabetes-cohort': 15 patients, 47 encounters, 23 diagnoses."
 ```
 
-### Listing Scenarios
+### Listing Cohorts
 
 ```
-User: "What scenarios do I have?"
-Claude: [Lists available scenarios]
-        "You have 5 saved scenarios:
+User: "What cohorts do I have?"
+Claude: [Lists available cohorts]
+        "You have 5 saved cohorts:
          - diabetes-cohort (15 patients)
          - ed-simulation (50 patients)
          - claims-test (100 members)
          ..."
 ```
 
-### Sharing Scenarios
+### Sharing Cohorts
 
 ```
 User: "Export diabetes-cohort as JSON"
 Claude: [Exports to ~/Downloads/diabetes-cohort.json]
         "Exported to ~/Downloads/diabetes-cohort.json (150 entities)"
 
-User: "Import scenario from ~/Downloads/shared-scenario.json"
+User: "Import cohort from ~/Downloads/shared-cohort.json"
 Claude: [Imports to database]
-        "Imported 'shared-scenario' with 25 patients."
+        "Imported 'shared-cohort' with 25 patients."
 ```
 
 ### Querying (Advanced)
 
 ```
-User: "How many encounters across all scenarios?"
+User: "How many encounters across all cohorts?"
 Claude: [Queries database directly]
-        "Found 1,247 encounters across 12 scenarios."
+        "Found 1,247 encounters across 12 cohorts."
 ```
 
 ## Examples
@@ -381,7 +381,7 @@ Claude: "Saved 'diabetes-test-cohort' (5 patients, 15 encounters, 5 A1C labs)
 
 [Later session]
 
-User: "Load my diabetes testing scenario"
+User: "Load my diabetes testing cohort"
 Claude: [Loads diabetes-test-cohort]
         "Loaded 'diabetes-test-cohort': 5 patients ready for use."
 ```
@@ -396,13 +396,13 @@ Claude: [Exports to JSON]
 
 [Teammate's session]
 
-User: "Import the trial scenario from ~/Downloads/trial-simulation.json"
+User: "Import the trial cohort from ~/Downloads/trial-simulation.json"
 Claude: "Imported 'trial-simulation': 200 subjects, 1,500 visits."
 ```
 
 ## Validation Rules
 
-- Scenario names must be unique
+- Cohort names must be unique
 - Entity references must be valid UUIDs
 - Dates must be in ISO format
 - Tags are case-insensitive
@@ -415,7 +415,7 @@ Claude: "Imported 'trial-simulation': 200 subjects, 1,500 visits."
 
 ## Storage Details
 
-Scenarios are stored in `~/.healthsim/healthsim.duckdb`. For technical
+Cohorts are stored in `~/.healthsim/healthsim.duckdb`. For technical
 details, see the [Data Architecture Guide](../../docs/data-architecture.md).
 ```
 
@@ -435,10 +435,10 @@ Add data architecture section to the main README.
 ### Added
 - DuckDB-based state management replacing JSON files
 - PopulationSim reference data now in DuckDB (5-7x compression)
-- JSON export/import for scenario sharing
-- SQL query capability for scenarios and reference data
-- Migration tool for existing JSON scenarios
-- New `export_scenario_json` and `import_scenario_json` MCP tools
+- JSON export/import for cohort sharing
+- SQL query capability for cohorts and reference data
+- Migration tool for existing JSON cohorts
+- New `export_cohort_json` and `import_cohort_json` MCP tools
 
 ### Changed
 - State management backend from JSON files to DuckDB
@@ -449,7 +449,7 @@ Add data architecture section to the main README.
 - JSON file storage (migrated, backup preserved)
 
 ### Migration
-- Run `python scripts/migrate_json_to_duckdb.py` to migrate existing scenarios
+- Run `python scripts/migrate_json_to_duckdb.py` to migrate existing cohorts
 ```
 
 ### Step 7: Verify All Links

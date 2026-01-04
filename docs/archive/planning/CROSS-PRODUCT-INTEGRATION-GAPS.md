@@ -41,14 +41,14 @@ Each product independently generates:
 
 This leads to:
 - Inconsistent geographic distribution
-- Non-realistic provider specialties for given scenarios
-- No shared provider pool across scenarios
+- Non-realistic provider specialties for given cohorts
+- No shared provider pool across cohorts
 
 ### Recommendation
-**Priority**: Implement PopulationSim and NetworkSim as foundation layers BEFORE adding new scenario skills.
+**Priority**: Implement PopulationSim and NetworkSim as foundation layers BEFORE adding new cohort skills.
 
 **Interim Workaround**: Create shared reference files:
-- `references/demographics-patterns.md` - Realistic age/gender distributions by scenario
+- `references/demographics-patterns.md` - Realistic age/gender distributions by cohort
 - `references/provider-patterns.md` - Common provider types by specialty area
 - `references/facility-types.md` - Facility codes and characteristics
 
@@ -147,7 +147,7 @@ When an event in one product should generate related events in others:
 
 ### Missing Cross-References
 
-**PatientSim → MemberSim** (scenarios that should link):
+**PatientSim → MemberSim** (cohorts that should link):
 - `heart-failure.md` → facility-claims.md, prior-authorization.md
 - `diabetes-management.md` → professional-claims.md
 - `chronic-kidney-disease.md` → facility-claims.md
@@ -209,12 +209,12 @@ Create shared domain references for active therapeutic areas:
 No shared provider reference exists. Each product generates:
 - Provider NPI (random 10-digit)
 - Provider name (random)
-- Specialty (scenario-appropriate but not validated)
+- Specialty (cohort-appropriate but not validated)
 - Facility (ad-hoc)
 
 ### Problem Examples
 - PatientSim oncology generates "Dr. Smith, Oncologist" with NPI 1234567890
-- MemberSim claim for same scenario uses completely different provider
+- MemberSim claim for same cohort uses completely different provider
 - No realistic specialty taxonomy codes used
 
 ### Recommendation
@@ -224,9 +224,9 @@ Create `references/provider-reference.md`:
 ## Provider Taxonomy Codes
 
 ### Common Specialties
-| Taxonomy Code | Specialty | Typical Scenarios |
+| Taxonomy Code | Specialty | Typical Cohorts |
 |--------------|-----------|-------------------|
-| 207RH0003X | Hematology/Oncology | Oncology scenarios |
+| 207RH0003X | Hematology/Oncology | Oncology cohorts |
 | 207RC0000X | Cardiovascular Disease | Heart failure, chest pain |
 | 2084P0800X | Psychiatry | Behavioral health |
 | 207RE0101X | Endocrinology | Diabetes |
@@ -237,7 +237,7 @@ For consistency, generate provider with:
 - Valid NPI format (Luhn check digit)
 - Appropriate taxonomy code
 - Realistic name patterns
-- Geographic alignment with scenario
+- Geographic alignment with cohort
 ```
 
 NetworkSim will eventually own this, but interim reference needed.

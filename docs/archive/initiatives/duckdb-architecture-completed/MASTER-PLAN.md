@@ -20,7 +20,7 @@ This initiative consolidates HealthSim's storage architecture into a unified Duc
 |----------|--------|-----------|
 | Database Engine | DuckDB | Analytics focus, MotherDuck path, already used |
 | Schema Versioning | Migrations at load time | Handled in data loading process |
-| Partial Analytics | Materialize all scenario entities | More data > less data for analytics users |
+| Partial Analytics | Materialize all cohort entities | More data > less data for analytics users |
 | MotherDuck | Deferred | Architect for it, implement later |
 | Conflict Resolution | Latest wins (by UUID) | Simple approach, not building distributed DB |
 
@@ -36,7 +36,7 @@ This initiative consolidates HealthSim's storage architecture into a unified Duc
 | [SESSION-02](SESSION-02-populationsim-migration.md) | Migrate PopulationSim CSVs to DuckDB | ✅ Complete | e41bfe0 |
 | [SESSION-03](SESSION-03-state-management.md) | Update state management MCP tools | ✅ Complete | 7d984f3 |
 | [SESSION-04](SESSION-04-json-compatibility.md) | JSON export/import for sharing | ✅ Complete | 4cf28ce |
-| [SESSION-05](SESSION-05-migration-tool.md) | Migrate existing JSON scenarios | ✅ Complete | 8a184e0 |
+| [SESSION-05](SESSION-05-migration-tool.md) | Migrate existing JSON cohorts | ✅ Complete | 8a184e0 |
 | [SESSION-06](SESSION-06-documentation.md) | Update all docs, skills, tutorials | ✅ Complete | aeb3314 |
 | SESSION-06.5 | Doc cleanup: prerequisites, reference data, enterprise exports | ✅ Complete | 693d204 |
 | [SESSION-07](SESSION-07-testing-polish.md) | Integration testing, cleanup | ✅ Complete | (this commit) |
@@ -47,7 +47,7 @@ This initiative consolidates HealthSim's storage architecture into a unified Duc
 - [x] All existing MCP state tools work with DuckDB backend
 - [x] PopulationSim queries work against DuckDB tables
 - [x] JSON export produces identical output to current format
-- [x] Existing JSON scenarios migrated successfully
+- [x] Existing JSON cohorts migrated successfully
 - [x] All 605 tests still passing
 - [x] Documentation updated, no broken links
 - [x] Skills updated with new capabilities
@@ -91,7 +91,7 @@ This initiative consolidates HealthSim's storage architecture into a unified Duc
 ~/.healthsim/
   healthsim.duckdb                 # Unified database
     ├── Canonical Tables           # patients, encounters, claims, etc.
-    ├── State Management Tables    # scenarios, scenario_entities, scenario_tags
+    ├── State Management Tables    # cohorts, cohort_entities, cohort_tags
     ├── Analytics Tables           # dim_*, fact_* (Phase 2)
     └── Reference Tables           # cdc_places, svi, adi, nppes (optional)
 ```
@@ -101,7 +101,7 @@ This initiative consolidates HealthSim's storage architecture into a unified Duc
 | Layer | Purpose | When Populated |
 |-------|---------|----------------|
 | Canonical | Source of truth, mirrors JSON models | On generation/save |
-| State Management | Scenario organization | On save/load |
+| State Management | Cohort organization | On save/load |
 | Analytics | Star schema for OHDSI analysis | On explicit request (Phase 2) |
 | Reference | External data (CDC, NPPES) | On init/import |
 
@@ -131,7 +131,7 @@ This initiative consolidates HealthSim's storage architecture into a unified Duc
 - `README.md`
 
 ### Deprecated/Removed
-- `~/.healthsim/scenarios/*.json` - Migrated to DuckDB, kept as backup
+- `~/.healthsim/cohorts/*.json` - Migrated to DuckDB, kept as backup
 
 ---
 

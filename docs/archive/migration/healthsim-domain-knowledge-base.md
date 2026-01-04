@@ -14,7 +14,7 @@
 3. [Validation Rules](#3-validation-rules)
 4. [Format Specifications](#4-format-specifications)
 5. [Reference Data Catalog](#5-reference-data-catalog)
-6. [Scenario Patterns](#6-scenario-patterns)
+6. [Cohort Patterns](#6-cohort-patterns)
 7. [Generation Logic](#7-generation-logic)
 8. [Code System Mappings](#8-code-system-mappings)
 
@@ -1851,14 +1851,14 @@ carc_codes:
 
 ---
 
-## 6. Scenario Patterns
+## 6. Cohort Patterns
 
-### 6.1 Clinical Scenarios (PatientSim)
+### 6.1 Clinical Cohorts (PatientSim)
 
-#### 6.1.1 Diabetes Management Scenario
+#### 6.1.1 Diabetes Management Cohort
 
 ```yaml
-scenario: diabetes_management
+cohort: diabetes_management
 trigger_phrases:
   - "diabetic patient"
   - "diabetes"
@@ -1936,10 +1936,10 @@ encounter_patterns:
     follow_up: ["2 weeks phone", "4-6 weeks office", "3 months"]
 ```
 
-#### 6.1.2 Heart Failure Scenario
+#### 6.1.2 Heart Failure Cohort
 
 ```yaml
-scenario: heart_failure
+cohort: heart_failure
 trigger_phrases:
   - "heart failure"
   - "CHF"
@@ -1978,10 +1978,10 @@ lab_patterns:
     severe: [2000, 10000]
 ```
 
-#### 6.1.3 Sepsis Scenario
+#### 6.1.3 Sepsis Cohort
 
 ```yaml
-scenario: sepsis
+cohort: sepsis
 trigger_phrases:
   - "sepsis"
   - "septic"
@@ -2014,12 +2014,12 @@ medications:
     - timing: "within 1 hour of recognition"
 ```
 
-### 6.2 Claims Scenarios (MemberSim)
+### 6.2 Claims Cohorts (MemberSim)
 
-#### 6.2.1 Professional Claims Scenario
+#### 6.2.1 Professional Claims Cohort
 
 ```yaml
-scenario: professional_claims
+cohort: professional_claims
 claim_type: PROFESSIONAL
 
 encounter_types:
@@ -2032,10 +2032,10 @@ encounter_types:
       99214: [125, 200]
 ```
 
-#### 6.2.2 Facility Claims Scenario
+#### 6.2.2 Facility Claims Cohort
 
 ```yaml
-scenario: facility_claims
+cohort: facility_claims
 claim_type: INSTITUTIONAL
 
 drg_examples:
@@ -2050,12 +2050,12 @@ drg_examples:
     los_range: [5, 8]
 ```
 
-### 6.3 Pharmacy Scenarios (RxMemberSim)
+### 6.3 Pharmacy Cohorts (RxMemberSim)
 
-#### 6.3.1 DUR Alerts Scenario
+#### 6.3.1 DUR Alerts Cohort
 
 ```yaml
-scenario: dur_review
+cohort: dur_review
 dur_alert_types:
   drug_drug:
     code: "DD"
@@ -2218,14 +2218,14 @@ dur_codes:
 2. Validation Rules (30+ rules)
 3. Format Specifications (FHIR R4, HL7v2, X12, NCPDP)
 4. Reference Data (ICD-10, CPT, LOINC, medications, labs)
-5. Scenario Patterns (6 scenarios)
+5. Cohort Patterns (6 cohorts)
 6. Generation Logic (identifiers, distributions, timelines)
 7. Code System Mappings (15+ code systems)
 
 **Next Steps (Session 2)**:
 - Design Skills-first architecture using this knowledge base
 - Create Skills file structure and templates
-- Map existing scenarios to Skills format
+- Map existing cohorts to Skills format
 - Plan MCP integration points
 
 ---

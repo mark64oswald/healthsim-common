@@ -70,12 +70,12 @@ healthsim-workspace/
 ├── docs/                       # Architecture, process docs
 ├── references/                 # Code systems, validation rules (shared)
 ├── formats/                    # Output formats: FHIR, X12, CDISC, etc. (shared)
-├── skills/                     # Domain-specific scenario skills
+├── skills/                     # Domain-specific cohort skills
 │   ├── common/                 # Shared skills
-│   ├── patientsim/             # Clinical/EMR scenarios
-│   ├── membersim/              # Payer/claims scenarios
-│   ├── rxmembersim/            # Pharmacy/PBM scenarios
-│   ├── trialsim/               # Clinical trials scenarios
+│   ├── patientsim/             # Clinical/EMR cohorts
+│   ├── membersim/              # Payer/claims cohorts
+│   ├── rxmembersim/            # Pharmacy/PBM cohorts
+│   ├── trialsim/               # Clinical trials cohorts
 │   ├── populationsim/          # Demographics/SDOH
 │   └── networksim/             # Provider networks (planned)
 ├── hello-healthsim/            # Tutorials and examples
@@ -96,14 +96,14 @@ healthsim-workspace/
 
 | Location | Content |
 |----------|---------|
-| `skills/{product}/` | Scenario and domain skills (flat structure) |
+| `skills/{product}/` | Cohort and domain skills (flat structure) |
 | `skills/{product}/{subcategory}/` | Allowed for logical groupings (oncology/, pediatrics/) |
 | `formats/` | ALL output formats (shared, not product-specific) |
 | `references/` | ALL reference data (shared, not product-specific) |
 
 ### DO NOT Create These Subdirectories
 
-- `skills/{product}/scenarios/` - Put scenarios directly in product folder
+- `skills/{product}/cohorts/` - Put cohorts directly in product folder
 - `skills/{product}/domain/` - Put domain files directly in product folder
 - `skills/{product}/formats/` - Use root `formats/` instead
 - `skills/{product}/models/` - Schemas defined inline in skills
@@ -238,7 +238,7 @@ From within `skills/{product}/`:
 - **Single repo**: Clone `healthsim-workspace` to get everything
 - **Follow existing patterns**: Review similar files before creating new ones
 - **Cross-product integration**: Check for related skills in other products, add bidirectional references
-- **Skills are flat**: Scenarios go directly in product folder, not nested
+- **Skills are flat**: Cohorts go directly in product folder, not nested
 - **Formats are shared**: All formats in root `formats/`, never in product folders
 - **Packages for Python**: Python infrastructure in `packages/`, not in `skills/`
 - **Progressive disclosure**: Master skill routes to detailed skills

@@ -11,7 +11,7 @@ HealthSim provides MCP servers that expose capabilities as tools for Claude:
 1. **HealthSim MCP Server** (`healthsim-mcp`) - **REQUIRED** for DuckDB access
    - Single connection holder for the HealthSim DuckDB database
    - Solves file locking issues that prevent concurrent access
-   - Provides scenario management and SQL query tools
+   - Provides cohort management and SQL query tools
 
 ### Product Servers (Optional)
 
@@ -74,11 +74,11 @@ which python3
 
 | Tool | Description | Read-Only |
 |------|-------------|:---------:|
-| `healthsim_list_cohorts` | List all saved scenarios | ✅ |
-| `healthsim_load_cohort` | Load a scenario by name/ID | ✅ |
-| `healthsim_save_cohort` | Save entities as a scenario | ❌ |
-| `healthsim_delete_cohort` | Delete a scenario (requires confirm=True) | ❌ |
-| `healthsim_get_cohort_summary` | Get token-efficient scenario summary | ✅ |
+| `healthsim_list_cohorts` | List all saved cohorts | ✅ |
+| `healthsim_load_cohort` | Load a cohort by name/ID | ✅ |
+| `healthsim_save_cohort` | Save entities as a cohort | ❌ |
+| `healthsim_delete_cohort` | Delete a cohort (requires confirm=True) | ❌ |
+| `healthsim_get_cohort_summary` | Get token-efficient cohort summary | ✅ |
 | `healthsim_query` | Execute read-only SQL queries | ✅ |
 | `healthsim_query_reference` | Query PopulationSim reference data | ✅ |
 | `healthsim_tables` | List all database tables | ✅ |
@@ -96,7 +96,7 @@ which python3
 ### Usage Examples
 
 ```
-# List scenarios
+# List cohorts
 Use healthsim_list_cohorts
 
 # Query reference data
@@ -105,11 +105,11 @@ Use healthsim_query_reference with table="places_county" and state="CA"
 # Run custom SQL
 Use healthsim_query with sql="SELECT countyname, obesity_crudeprev FROM ref_places_county WHERE stateabbr = 'TX' ORDER BY obesity_crudeprev DESC LIMIT 10"
 
-# Save a scenario
+# Save a cohort
 Use healthsim_save_cohort with:
-- name: "my-scenario"
+- name: "my-cohort"
 - entities: {"patients": [...], "encounters": [...]}
-- description: "Test scenario"
+- description: "Test cohort"
 - tags: ["test", "demo"]
 ```
 
@@ -125,7 +125,7 @@ If you previously used `healthsim-duckdb` (mcp-server-motherduck), **remove it**
 }
 ```
 
-The new `healthsim-mcp` server provides the same query capability plus scenario management.
+The new `healthsim-mcp` server provides the same query capability plus cohort management.
 
 ---
 
@@ -280,16 +280,16 @@ If using a specific Python interpreter:
 **Patient/Member Generation:**
 - **`generate_patient`** / **`generate_member`** - Generate a single entity
 - **`generate_cohort`** - Generate multiple entities
-- **`list_cohorts`** - Show available clinical scenarios
-- **`describe_scenario`** - Get scenario details
+- **`list_cohorts`** - Show available clinical cohorts
+- **`describe_cohort`** - Get cohort details
 - **`modify_patient`** - Modify existing entity
 - **`get_patient_details`** - View entity information
 
-**State Management (Save/Load Scenarios):**
-- **`save_cohort`** - Save current workspace to a named scenario
-- **`load_cohort`** - Load a saved scenario
-- **`list_saved_scenarios`** - List all saved scenarios
-- **`delete_cohort`** - Delete a saved scenario
+**State Management (Save/Load Cohorts):**
+- **`save_cohort`** - Save current workspace to a named cohort
+- **`load_cohort`** - Load a saved cohort
+- **`list_saved_cohorts`** - List all saved cohorts
+- **`delete_cohort`** - Delete a saved cohort
 - **`workspace_summary`** - View current workspace state
 
 ### Export Server Tools
@@ -497,7 +497,7 @@ MCP servers share session state:
 
 MCP servers can:
 - ✅ Write exports to designated output directory
-- ✅ Read scenario skills from `skills/` directory
+- ✅ Read cohort skills from `skills/` directory
 - ❌ **Cannot** read arbitrary files outside product directory
 - ❌ **Cannot** modify source code
 

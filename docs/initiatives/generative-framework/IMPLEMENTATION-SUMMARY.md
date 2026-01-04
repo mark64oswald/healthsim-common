@@ -100,7 +100,7 @@ The Generative Framework has been successfully implemented, providing a specific
 **Rationale:** Machine-parseable, versionable, integrates with existing schema tools
 
 ### 4. Template Library
-**Decision:** Provide pre-built templates for common scenarios  
+**Decision:** Provide pre-built templates for common cohorts  
 **Rationale:** Accelerates generation while allowing customization
 
 ### 5. Cross-Domain Sync

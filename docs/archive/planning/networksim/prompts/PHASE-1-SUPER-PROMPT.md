@@ -453,7 +453,7 @@ name: networksim-prompt-guide
 description: |
   Example prompts for using NetworkSim skills effectively. Templates for
   network reference, provider generation, facility generation, pharmacy
-  generation, and cross-product integration scenarios.
+  generation, and cross-product integration cohorts.
 ---
 
 # NetworkSim Prompt Guide
@@ -750,7 +750,7 @@ Create these three reference skills:
 
 **Content Focus**:
 - Prior Authorization (what, when, process)
-- Step Therapy (concept, common scenarios)
+- Step Therapy (concept, common cohorts)
 - Quantity Limits (safety, cost, days supply)
 - Exception Processes (how to override)
 - Clinical Criteria (P&T, evidence-based)

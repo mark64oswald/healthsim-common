@@ -4,7 +4,7 @@ This document defines the API interfaces and data formats for the State Manageme
 
 ## Overview
 
-State Management enables users to save and load workspace scenarios - complete snapshots of all generated entities (patients, encounters, claims, etc.) with full provenance tracking.
+State Management enables users to save and load workspace cohorts - complete snapshots of all generated entities (patients, encounters, claims, etc.) with full provenance tracking.
 
 **Storage Backend**: DuckDB embedded database  
 **Storage Location**: `~/.healthsim/healthsim.duckdb`  
@@ -16,15 +16,15 @@ State Management enables users to save and load workspace scenarios - complete s
 
 ### save_cohort
 
-Saves entities as a named scenario.
+Saves entities as a named cohort.
 
 #### Parameters
 
 | Name | Type | Required | Description |
 |------|------|----------|-------------|
-| name | string | Yes | Unique scenario name (kebab-case recommended) |
+| name | string | Yes | Unique cohort name (kebab-case recommended) |
 | entities | object | Yes | Dict of entity_type → entity list |
-| description | string | No | Scenario description |
+| description | string | No | Cohort description |
 | tags | array[string] | No | Tags for organization |
 | overwrite | boolean | No | Replace existing (default: false) |
 
@@ -32,8 +32,8 @@ Saves entities as a named scenario.
 
 ```json
 {
-  "scenario_id": "uuid-string",
-  "name": "scenario-name",
+  "cohort_id": "uuid-string",
+  "name": "cohort-name",
   "entity_count": 42,
   "entities_by_type": {
     "patient": 5,
@@ -48,7 +48,7 @@ Saves entities as a named scenario.
 ```python
 from healthsim.state import save_cohort
 
-scenario_id = save_cohort(
+cohort_id = save_cohort(
     name='diabetes-cohort',
     entities={
         'patients': [patient1, patient2],
@@ -63,20 +63,20 @@ scenario_id = save_cohort(
 
 ### load_cohort
 
-Loads a scenario from the database.
+Loads a cohort from the database.
 
 #### Parameters
 
 | Name | Type | Required | Description |
 |------|------|----------|-------------|
-| name | string | Yes | Scenario name or UUID |
+| name | string | Yes | Cohort name or UUID |
 
 #### Returns
 
 ```json
 {
-  "scenario_id": "uuid-string",
-  "name": "scenario-name",
+  "cohort_id": "uuid-string",
+  "name": "cohort-name",
   "description": "...",
   "entities": {
     "patients": [...],
@@ -92,15 +92,15 @@ Loads a scenario from the database.
 ```python
 from healthsim.state import load_cohort
 
-scenario = load_cohort('diabetes-cohort')
-patients = scenario['entities']['patients']
+cohort = load_cohort('diabetes-cohort')
+patients = cohort['entities']['patients']
 ```
 
 ---
 
 ### list_cohorts
 
-Lists available scenarios with optional filtering.
+Lists available cohorts with optional filtering.
 
 #### Parameters
 
@@ -114,10 +114,10 @@ Lists available scenarios with optional filtering.
 
 ```json
 {
-  "scenarios": [
+  "cohorts": [
     {
-      "scenario_id": "uuid-string",
-      "name": "scenario-name",
+      "cohort_id": "uuid-string",
+      "name": "cohort-name",
       "description": "...",
       "entity_count": 42,
       "tags": ["tag1"],
@@ -134,10 +134,10 @@ Lists available scenarios with optional filtering.
 from healthsim.state import list_cohorts
 
 # List all
-scenarios = list_cohorts()
+cohorts = list_cohorts()
 
 # Filter by tag
-diabetes_scenarios = list_cohorts(tag='diabetes')
+diabetes_cohorts = list_cohorts(tag='diabetes')
 
 # Search
 matches = list_cohorts(search='cohort')
@@ -147,33 +147,33 @@ matches = list_cohorts(search='cohort')
 
 ### delete_cohort
 
-Deletes a scenario (metadata and links, not underlying entity data).
+Deletes a cohort (metadata and links, not underlying entity data).
 
 #### Parameters
 
 | Name | Type | Required | Description |
 |------|------|----------|-------------|
-| name | string | Yes | Scenario name or UUID |
+| name | string | Yes | Cohort name or UUID |
 
 #### Python Usage
 
 ```python
 from healthsim.state import delete_cohort
 
-delete_cohort('old-scenario')
+delete_cohort('old-cohort')
 ```
 
 ---
 
-### export_scenario_to_json
+### export_cohort_to_json
 
-Exports a scenario to JSON file for sharing.
+Exports a cohort to JSON file for sharing.
 
 #### Parameters
 
 | Name | Type | Required | Description |
 |------|------|----------|-------------|
-| name | string | Yes | Scenario name or UUID |
+| name | string | Yes | Cohort name or UUID |
 | output_path | string/Path | No | Where to save (default: ~/Downloads/{name}.json) |
 
 #### Returns
@@ -183,39 +183,39 @@ Path to the exported file.
 #### Python Usage
 
 ```python
-from healthsim.state import export_scenario_to_json
+from healthsim.state import export_cohort_to_json
 
-path = export_scenario_to_json('diabetes-cohort')
+path = export_cohort_to_json('diabetes-cohort')
 # Returns: ~/Downloads/diabetes-cohort.json
 
 # Custom location
-path = export_scenario_to_json('diabetes-cohort', output_path='/tmp/export.json')
+path = export_cohort_to_json('diabetes-cohort', output_path='/tmp/export.json')
 ```
 
 ---
 
-### import_scenario_from_json
+### import_cohort_from_json
 
-Imports a JSON scenario file.
+Imports a JSON cohort file.
 
 #### Parameters
 
 | Name | Type | Required | Description |
 |------|------|----------|-------------|
 | file_path | string/Path | Yes | Path to JSON file |
-| name | string | No | Override scenario name |
+| name | string | No | Override cohort name |
 | overwrite | boolean | No | Replace existing (default: false) |
 
 #### Python Usage
 
 ```python
-from healthsim.state import import_scenario_from_json
+from healthsim.state import import_cohort_from_json
 from pathlib import Path
 
-scenario_id = import_scenario_from_json(Path('shared-scenario.json'))
+cohort_id = import_cohort_from_json(Path('shared-cohort.json'))
 
 # With name override
-scenario_id = import_scenario_from_json(
+cohort_id = import_cohort_from_json(
     Path('data.json'),
     name='imported-cohort',
     overwrite=True
@@ -226,13 +226,13 @@ scenario_id = import_scenario_from_json(
 
 ## Database Schema
 
-### scenarios
+### cohorts
 
-Stores scenario metadata.
+Stores cohort metadata.
 
 ```sql
-CREATE TABLE scenarios (
-    scenario_id   UUID PRIMARY KEY,
+CREATE TABLE cohorts (
+    cohort_id   UUID PRIMARY KEY,
     name          VARCHAR UNIQUE NOT NULL,
     description   VARCHAR,
     created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -241,14 +241,14 @@ CREATE TABLE scenarios (
 );
 ```
 
-### scenario_entities
+### cohort_entities
 
-Links entities to scenarios with full entity data.
+Links entities to cohorts with full entity data.
 
 ```sql
-CREATE TABLE scenario_entities (
+CREATE TABLE cohort_entities (
     id            INTEGER PRIMARY KEY,
-    scenario_id   UUID NOT NULL REFERENCES scenarios(scenario_id),
+    cohort_id   UUID NOT NULL REFERENCES cohorts(cohort_id),
     entity_type   VARCHAR NOT NULL,
     entity_id     UUID NOT NULL,
     entity_data   JSON NOT NULL,
@@ -256,16 +256,16 @@ CREATE TABLE scenario_entities (
 );
 ```
 
-### scenario_tags
+### cohort_tags
 
 Tag-based organization.
 
 ```sql
-CREATE TABLE scenario_tags (
+CREATE TABLE cohort_tags (
     id            INTEGER PRIMARY KEY,
-    scenario_id   UUID NOT NULL REFERENCES scenarios(scenario_id),
+    cohort_id   UUID NOT NULL REFERENCES cohorts(cohort_id),
     tag           VARCHAR NOT NULL,
-    UNIQUE(scenario_id, tag)
+    UNIQUE(cohort_id, tag)
 );
 ```
 
@@ -278,8 +278,8 @@ Exported JSON files follow this structure for interoperability:
 ```json
 {
   "schema_version": "1.0",
-  "scenario_id": "uuid-string",
-  "name": "scenario-name",
+  "cohort_id": "uuid-string",
+  "name": "cohort-name",
   "description": "Optional description",
   "created_at": "2024-12-26T10:30:00Z",
   "tags": ["tag1", "tag2"],
@@ -328,7 +328,7 @@ Exported JSON files follow this structure for interoperability:
 
 ## Migration from Legacy JSON
 
-If you have existing scenarios in `~/.healthsim/scenarios/`:
+If you have existing cohorts in `~/.healthsim/cohorts/`:
 
 ```bash
 # Check status
@@ -342,9 +342,9 @@ python scripts/migrate_json_to_duckdb.py
 ```
 
 The migration tool automatically:
-1. Discovers JSON files in `~/.healthsim/scenarios/`
-2. Creates backup at `~/.healthsim/scenarios_backup/`
-3. Imports each scenario to DuckDB
+1. Discovers JSON files in `~/.healthsim/cohorts/`
+2. Creates backup at `~/.healthsim/cohorts_backup/`
+3. Imports each cohort to DuckDB
 4. Verifies migration success
 
 ---

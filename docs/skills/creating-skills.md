@@ -1,11 +1,11 @@
 # Creating Skills
 
-Guide to authoring clinical scenario skills for Claude.
+Guide to authoring clinical cohort skills for Claude.
 
 ## Skill Overview
 
 Skills are markdown files that give Claude domain expertise. They define:
-- Clinical scenarios (diabetes, cardiac, surgical)
+- Clinical cohorts (diabetes, cardiac, surgical)
 - Generation guidelines and parameters
 - Example patient profiles
 - Clinical reasoning and evidence base
@@ -20,7 +20,7 @@ HealthSim products use Skills Format v2.0 with dedicated sections.
 # Skill Name
 
 **Version:** 2.0
-**Category:** scenarios | healthcare | formats
+**Category:** cohorts | healthcare | formats
 **Last Updated:** 2025-01-26
 
 ## For Claude
@@ -72,15 +72,15 @@ HealthSim products use Skills Format v2.0 with dedicated sections.
 **Example Output:** [Sample generated patient]
 ```
 
-## Example: Sepsis Scenario
+## Example: Sepsis Cohort
 
 Create `skills/sepsis.md`:
 
 ```markdown
-# Sepsis Management Scenario
+# Sepsis Management Cohort
 
 **Version:** 2.0
-**Category:** scenarios
+**Category:** cohorts
 **Last Updated:** 2025-01-26
 
 ## For Claude
@@ -94,7 +94,7 @@ Use this skill when requests involve:
 - ED presentations with infection and SIRS
 - ICU patients requiring vasopressor support
 - Testing sepsis early warning systems (SEWS, qSOFA)
-- Antimicrobial stewardship scenarios
+- Antimicrobial stewardship cohorts
 
 ## Domain Knowledge
 
@@ -283,7 +283,7 @@ Dorothy Williams, 68F, MRN-648291
    - ADA, AHA/ACC, NICE, UpToDate
 
 2. **Define scope**
-   - What scenarios does this cover?
+   - What cohorts does this cover?
    - What does it NOT cover?
 
 3. **Write skill sections**

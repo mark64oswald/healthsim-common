@@ -129,7 +129,7 @@ Links to hello-healthsim/examples/[product]-examples.md
 1. **Frontmatter**: name, description, trigger phrases
 2. **For Claude**: When to use this skill
 3. **Quick Start**: 2-3 example prompts
-4. **Scenario/Skill Table**: Links to individual skills
+4. **Cohort/Skill Table**: Links to individual skills
 5. **Parameters**: Generation parameters table
 6. **Output Formats**: Supported formats
 7. **Cross-Product Integration**: Each product section

@@ -67,9 +67,9 @@ Create `packages/core/src/healthsim/state/auto_naming.py`:
 
 ```python
 """
-Auto-naming service for HealthSim scenarios.
+Auto-naming service for HealthSim cohorts.
 
-Generates descriptive scenario names from generation context,
+Generates descriptive cohort names from generation context,
 following the pattern: {keywords}-{YYYYMMDD}
 """
 
@@ -80,13 +80,13 @@ import re
 from ..db import get_connection
 
 
-def generate_scenario_name(
+def generate_cohort_name(
     keywords: Optional[List[str]] = None,
     context: Optional[str] = None,
     prefix: Optional[str] = None,
 ) -> str:
     """
-    Generate a unique scenario name.
+    Generate a unique cohort name.
     
     Args:
         keywords: Explicit keywords to include
@@ -94,13 +94,13 @@ def generate_scenario_name(
         prefix: Optional prefix (e.g., product name)
     
     Returns:
-        Unique scenario name like "diabetes-patients-20241226"
+        Unique cohort name like "diabetes-patients-20241226"
     """
     # Implementation details...
 ```
 
 Key functions to implement:
-- `generate_scenario_name()` - Main naming function
+- `generate_cohort_name()` - Main naming function
 - `extract_keywords()` - Extract keywords from context
 - `ensure_unique_name()` - Check DB and add counter if needed
 - `sanitize_name()` - Clean special characters
@@ -111,7 +111,7 @@ Create `packages/core/src/healthsim/state/summary.py`:
 
 ```python
 """
-Scenario summary generation for context-efficient loading.
+Cohort summary generation for context-efficient loading.
 
 Generates statistical summaries that fit within token budget (~500 tokens)
 while providing enough information for generation consistency.
@@ -124,10 +124,10 @@ import json
 from ..db import get_connection
 
 
-class ScenarioSummary:
-    """Token-efficient scenario summary."""
+class CohortSummary:
+    """Token-efficient cohort summary."""
     
-    scenario_id: str
+    cohort_id: str
     name: str
     description: Optional[str]
     created_at: datetime
@@ -155,12 +155,12 @@ class ScenarioSummary:
 
 
 def generate_summary(
-    scenario_id: str,
+    cohort_id: str,
     include_samples: bool = True,
     samples_per_type: int = 3,
-) -> ScenarioSummary:
+) -> CohortSummary:
     """
-    Generate a token-efficient summary of a scenario.
+    Generate a token-efficient summary of a cohort.
     
     Target: ~500 tokens for summary, ~3000 for samples
     """
@@ -168,7 +168,7 @@ def generate_summary(
 ```
 
 Key functions to implement:
-- `ScenarioSummary` dataclass with all fields
+- `CohortSummary` dataclass with all fields
 - `generate_summary()` - Main summary generation
 - `_calculate_statistics()` - Aggregate stats (date ranges, totals, distributions)
 - `_get_diverse_samples()` - Select representative samples
@@ -196,20 +196,20 @@ from uuid import uuid4
 
 from ..db import get_connection
 from .serializers import get_serializer, get_table_info, ENTITY_TABLE_MAP
-from .auto_naming import generate_scenario_name, ensure_unique_name
-from .summary import generate_summary, ScenarioSummary
+from .auto_naming import generate_cohort_name, ensure_unique_name
+from .summary import generate_summary, CohortSummary
 
 
 @dataclass
 class PersistResult:
     """Result of a persist operation."""
-    scenario_id: str
-    scenario_name: str
+    cohort_id: str
+    cohort_name: str
     entity_type: str
     entities_persisted: int
     entity_ids: List[str]
-    summary: ScenarioSummary
-    is_new_scenario: bool
+    summary: CohortSummary
+    is_new_cohort: bool
 
 
 @dataclass  
@@ -246,55 +246,55 @@ class AutoPersistService:
         self,
         entities: List[Dict],
         entity_type: str,
-        scenario_id: Optional[str] = None,
-        scenario_name: Optional[str] = None,
+        cohort_id: Optional[str] = None,
+        cohort_name: Optional[str] = None,
         context_keywords: Optional[List[str]] = None,
     ) -> PersistResult:
         """
         Persist entities to DuckDB and return summary.
         
-        If no scenario_id provided:
-        - Creates new scenario with auto-generated name
+        If no cohort_id provided:
+        - Creates new cohort with auto-generated name
         - Uses context_keywords for naming if available
         
         Returns PersistResult with summary (NOT full entity data).
         """
         pass
     
-    def get_scenario_summary(
+    def get_cohort_summary(
         self,
-        scenario_id: Optional[str] = None,
-        scenario_name: Optional[str] = None,
+        cohort_id: Optional[str] = None,
+        cohort_name: Optional[str] = None,
         include_samples: bool = True,
         samples_per_type: int = 3,
-    ) -> ScenarioSummary:
+    ) -> CohortSummary:
         """
-        Get scenario summary for loading into context.
+        Get cohort summary for loading into context.
         
         IMPORTANT: Never loads full entity data!
         Returns summary (~500 tokens) + samples (~3000 tokens)
         """
         pass
     
-    def query_scenario(
+    def query_cohort(
         self,
-        scenario_id: str,
+        cohort_id: str,
         query: str,
         limit: int = 20,
         offset: int = 0,
     ) -> QueryResult:
         """
-        Execute paginated query against scenario data.
+        Execute paginated query against cohort data.
         
         - Validates query is SELECT only
         - Enforces pagination
-        - Scopes to scenario_id
+        - Scopes to cohort_id
         """
         pass
     
     def get_entity_samples(
         self,
-        scenario_id: str,
+        cohort_id: str,
         entity_type: str,
         count: int = 3,
         strategy: str = "diverse",
@@ -315,16 +315,16 @@ class AutoPersistService:
         limit: int = 20,
         sort_by: str = "updated_at",
     ) -> List[Dict]:
-        """List available scenarios with brief stats."""
+        """List available cohorts with brief stats."""
         pass
     
-    def rename_scenario(
+    def rename_cohort(
         self,
-        scenario_id: str,
+        cohort_id: str,
         new_name: str,
     ) -> Tuple[str, str]:
         """
-        Rename a scenario.
+        Rename a cohort.
         
         Returns: (old_name, new_name)
         """
@@ -332,11 +332,11 @@ class AutoPersistService:
     
     def delete_cohort(
         self,
-        scenario_id: str,
+        cohort_id: str,
         confirm: bool = False,
     ) -> Dict:
         """
-        Delete scenario and all linked entities.
+        Delete cohort and all linked entities.
         
         Requires confirm=True for safety.
         """
@@ -372,12 +372,12 @@ Create comprehensive tests for each service:
 - Test token estimation
 
 **test_auto_persist.py:**
-- Test persist_entities creates scenario if needed
+- Test persist_entities creates cohort if needed
 - Test persist_entities returns summary not data
-- Test query_scenario enforces SELECT only
-- Test query_scenario respects pagination
+- Test query_cohort enforces SELECT only
+- Test query_cohort respects pagination
 - Test list_cohorts filtering
-- Test rename_scenario
+- Test rename_cohort
 - Test delete_cohort requires confirmation
 
 ### Step 5: Update __init__.py
@@ -392,12 +392,12 @@ from .auto_persist import (
     get_auto_persist_service,
 )
 from .auto_naming import (
-    generate_scenario_name,
+    generate_cohort_name,
     extract_keywords,
     ensure_unique_name,
 )
 from .summary import (
-    ScenarioSummary,
+    CohortSummary,
     generate_summary,
 )
 ```
@@ -457,10 +457,10 @@ I'm implementing MCP tools that expose the AutoPersistService. These tools will 
 **MCP Tool Specifications (from architecture doc):**
 
 1. `persist_entities` - Save entities, return summary
-2. `get_scenario_summary` - Load summary only  
-3. `query_scenario` - Paginated SQL queries
-4. `list_cohorts` - List available scenarios
-5. `rename_scenario` - Rename a scenario
+2. `get_cohort_summary` - Load summary only  
+3. `query_cohort` - Paginated SQL queries
+4. `list_cohorts` - List available cohorts
+5. `rename_cohort` - Rename a cohort
 6. `delete_cohort` - Delete with confirmation
 7. `get_entity_samples` - Get samples for consistency
 
@@ -498,10 +498,10 @@ MCP Server for HealthSim Auto-Persist capabilities.
 
 Exposes 7 tools for the Structured RAG pattern:
 - persist_entities: Save entities, return summary
-- get_scenario_summary: Load summary (NOT full data)
-- query_scenario: Paginated SQL queries
-- list_cohorts: Browse available scenarios
-- rename_scenario: Rename a scenario
+- get_cohort_summary: Load summary (NOT full data)
+- query_cohort: Paginated SQL queries
+- list_cohorts: Browse available cohorts
+- rename_cohort: Rename a cohort
 - delete_cohort: Delete with confirmation
 - get_entity_samples: Get samples for consistency
 """
@@ -514,7 +514,7 @@ from mcp.server.stdio import stdio_server
 from mcp.types import TextContent, Tool
 
 from ..state.auto_persist import get_auto_persist_service, PersistResult, QueryResult
-from ..state.summary import ScenarioSummary
+from ..state.summary import CohortSummary
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -529,9 +529,9 @@ def format_persist_result(result: PersistResult) -> str:
     lines = [
         f"**Persisted {result.entities_persisted} {result.entity_type}**",
         "",
-        f"- Scenario: {result.scenario_name}",
-        f"- Scenario ID: `{result.scenario_id}`",
-        f"- New scenario: {'Yes' if result.is_new_scenario else 'No'}",
+        f"- Cohort: {result.cohort_name}",
+        f"- Cohort ID: `{result.cohort_id}`",
+        f"- New cohort: {'Yes' if result.is_new_cohort else 'No'}",
         "",
         "**Current Totals:**",
     ]
@@ -542,10 +542,10 @@ def format_persist_result(result: PersistResult) -> str:
     return "\n".join(lines)
 
 
-def format_summary(summary: ScenarioSummary) -> str:
-    """Format scenario summary for human-readable output."""
+def format_summary(summary: CohortSummary) -> str:
+    """Format cohort summary for human-readable output."""
     lines = [
-        f"**Scenario: {summary.name}**",
+        f"**Cohort: {summary.name}**",
         "",
     ]
     
@@ -620,13 +620,13 @@ async def list_tools() -> List[Tool]:
                         "type": "string",
                         "description": "Type of entities (patient, encounter, claim, etc.)",
                     },
-                    "scenario_id": {
+                    "cohort_id": {
                         "type": "string",
-                        "description": "Existing scenario ID to add to (optional - creates new if not provided)",
+                        "description": "Existing cohort ID to add to (optional - creates new if not provided)",
                     },
-                    "scenario_name": {
+                    "cohort_name": {
                         "type": "string",
-                        "description": "Name for new scenario (optional - auto-generated if not provided)",
+                        "description": "Name for new cohort (optional - auto-generated if not provided)",
                     },
                     "context_keywords": {
                         "type": "array",
@@ -638,18 +638,18 @@ async def list_tools() -> List[Tool]:
             },
         ),
         Tool(
-            name="get_scenario_summary",
-            description="Load a scenario summary into context. Returns counts, statistics, and sample entities - NOT full data. Use this when user says 'load scenario' or 'continue from'.",
+            name="get_cohort_summary",
+            description="Load a cohort summary into context. Returns counts, statistics, and sample entities - NOT full data. Use this when user says 'load cohort' or 'continue from'.",
             inputSchema={
                 "type": "object",
                 "properties": {
-                    "scenario_id": {
+                    "cohort_id": {
                         "type": "string",
-                        "description": "Scenario UUID",
+                        "description": "Cohort UUID",
                     },
-                    "scenario_name": {
+                    "cohort_name": {
                         "type": "string",
-                        "description": "Scenario name (fuzzy match)",
+                        "description": "Cohort name (fuzzy match)",
                     },
                     "include_samples": {
                         "type": "boolean",
@@ -665,14 +665,14 @@ async def list_tools() -> List[Tool]:
             },
         ),
         Tool(
-            name="query_scenario",
-            description="Run a paginated SQL query against scenario data. Use when user asks to 'show', 'find', 'list', or 'filter' specific data.",
+            name="query_cohort",
+            description="Run a paginated SQL query against cohort data. Use when user asks to 'show', 'find', 'list', or 'filter' specific data.",
             inputSchema={
                 "type": "object",
                 "properties": {
-                    "scenario_id": {
+                    "cohort_id": {
                         "type": "string",
-                        "description": "Scenario to query",
+                        "description": "Cohort to query",
                     },
                     "query": {
                         "type": "string",
@@ -689,12 +689,12 @@ async def list_tools() -> List[Tool]:
                         "default": 0,
                     },
                 },
-                "required": ["scenario_id", "query"],
+                "required": ["cohort_id", "query"],
             },
         ),
         Tool(
             name="list_cohorts",
-            description="List available scenarios. Use when user asks 'what scenarios do I have' or 'show my scenarios'.",
+            description="List available cohorts. Use when user asks 'what cohorts do I have' or 'show my cohorts'.",
             inputSchema={
                 "type": "object",
                 "properties": {
@@ -716,39 +716,39 @@ async def list_tools() -> List[Tool]:
             },
         ),
         Tool(
-            name="rename_scenario",
-            description="Rename a scenario. Use when user says 'rename this scenario' or 'call this scenario X'.",
+            name="rename_cohort",
+            description="Rename a cohort. Use when user says 'rename this cohort' or 'call this cohort X'.",
             inputSchema={
                 "type": "object",
                 "properties": {
-                    "scenario_id": {
+                    "cohort_id": {
                         "type": "string",
-                        "description": "Scenario to rename",
+                        "description": "Cohort to rename",
                     },
                     "new_name": {
                         "type": "string",
-                        "description": "New name for the scenario",
+                        "description": "New name for the cohort",
                     },
                 },
-                "required": ["scenario_id", "new_name"],
+                "required": ["cohort_id", "new_name"],
             },
         ),
         Tool(
             name="delete_cohort",
-            description="Delete a scenario and all its entities. Requires confirmation.",
+            description="Delete a cohort and all its entities. Requires confirmation.",
             inputSchema={
                 "type": "object",
                 "properties": {
-                    "scenario_id": {
+                    "cohort_id": {
                         "type": "string",
-                        "description": "Scenario to delete",
+                        "description": "Cohort to delete",
                     },
                     "confirm": {
                         "type": "boolean",
                         "description": "Must be true to confirm deletion",
                     },
                 },
-                "required": ["scenario_id", "confirm"],
+                "required": ["cohort_id", "confirm"],
             },
         ),
         Tool(
@@ -757,9 +757,9 @@ async def list_tools() -> List[Tool]:
             inputSchema={
                 "type": "object",
                 "properties": {
-                    "scenario_id": {
+                    "cohort_id": {
                         "type": "string",
-                        "description": "Scenario to get samples from",
+                        "description": "Cohort to get samples from",
                     },
                     "entity_type": {
                         "type": "string",
@@ -776,7 +776,7 @@ async def list_tools() -> List[Tool]:
                         "default": "diverse",
                     },
                 },
-                "required": ["scenario_id", "entity_type"],
+                "required": ["cohort_id", "entity_type"],
             },
         ),
     ]
@@ -792,24 +792,24 @@ async def call_tool(name: str, arguments: dict) -> List[TextContent]:
             result = service.persist_entities(
                 entities=arguments["entities"],
                 entity_type=arguments["entity_type"],
-                scenario_id=arguments.get("scenario_id"),
-                scenario_name=arguments.get("scenario_name"),
+                cohort_id=arguments.get("cohort_id"),
+                cohort_name=arguments.get("cohort_name"),
                 context_keywords=arguments.get("context_keywords"),
             )
             return [TextContent(type="text", text=format_persist_result(result))]
         
-        elif name == "get_scenario_summary":
-            summary = service.get_scenario_summary(
-                scenario_id=arguments.get("scenario_id"),
-                scenario_name=arguments.get("scenario_name"),
+        elif name == "get_cohort_summary":
+            summary = service.get_cohort_summary(
+                cohort_id=arguments.get("cohort_id"),
+                cohort_name=arguments.get("cohort_name"),
                 include_samples=arguments.get("include_samples", True),
                 samples_per_type=arguments.get("samples_per_type", 3),
             )
             return [TextContent(type="text", text=format_summary(summary))]
         
-        elif name == "query_scenario":
-            result = service.query_scenario(
-                scenario_id=arguments["scenario_id"],
+        elif name == "query_cohort":
+            result = service.query_cohort(
+                cohort_id=arguments["cohort_id"],
                 query=arguments["query"],
                 limit=min(arguments.get("limit", 20), 100),
                 offset=arguments.get("offset", 0),
@@ -817,29 +817,29 @@ async def call_tool(name: str, arguments: dict) -> List[TextContent]:
             return [TextContent(type="text", text=format_query_result(result))]
         
         elif name == "list_cohorts":
-            scenarios = service.list_cohorts(
+            cohorts = service.list_cohorts(
                 filter_pattern=arguments.get("filter_pattern"),
                 limit=arguments.get("limit", 20),
                 sort_by=arguments.get("sort_by", "updated_at"),
             )
             # Format as list
-            if not scenarios:
-                return [TextContent(type="text", text="No scenarios found.")]
+            if not cohorts:
+                return [TextContent(type="text", text="No cohorts found.")]
             
-            lines = ["**Your Scenarios:**", ""]
-            for s in scenarios:
+            lines = ["**Your Cohorts:**", ""]
+            for s in cohorts:
                 lines.append(f"- **{s['name']}** ({s['updated_at'][:10]})")
                 lines.append(f"  {s['entity_count']} entities")
             return [TextContent(type="text", text="\n".join(lines))]
         
-        elif name == "rename_scenario":
-            old_name, new_name = service.rename_scenario(
-                scenario_id=arguments["scenario_id"],
+        elif name == "rename_cohort":
+            old_name, new_name = service.rename_cohort(
+                cohort_id=arguments["cohort_id"],
                 new_name=arguments["new_name"],
             )
             return [TextContent(
                 type="text",
-                text=f"Renamed scenario from **{old_name}** to **{new_name}**"
+                text=f"Renamed cohort from **{old_name}** to **{new_name}**"
             )]
         
         elif name == "delete_cohort":
@@ -849,17 +849,17 @@ async def call_tool(name: str, arguments: dict) -> List[TextContent]:
                     text="Deletion requires `confirm: true`. This cannot be undone."
                 )]
             result = service.delete_cohort(
-                scenario_id=arguments["scenario_id"],
+                cohort_id=arguments["cohort_id"],
                 confirm=True,
             )
             return [TextContent(
                 type="text",
-                text=f"Deleted scenario **{result['name']}** ({result['entity_count']} entities)"
+                text=f"Deleted cohort **{result['name']}** ({result['entity_count']} entities)"
             )]
         
         elif name == "get_entity_samples":
             samples = service.get_entity_samples(
-                scenario_id=arguments["scenario_id"],
+                cohort_id=arguments["cohort_id"],
                 entity_type=arguments["entity_type"],
                 count=arguments.get("count", 3),
                 strategy=arguments.get("strategy", "diverse"),
@@ -958,7 +958,7 @@ I'm updating the state-management skill to document the new auto-persist behavio
 - Loading returns summary, not full data
 - New MCP tools for querying
 - Batch generation pattern
-- Rename capability for auto-named scenarios
+- Rename capability for auto-named cohorts
 
 ## Pre-flight Checklist
 
@@ -987,7 +987,7 @@ State Management in HealthSim now follows the **Auto-Persist Pattern**:
 
 This pattern enables:
 - Large-scale generation (1000+ entities) without context overflow
-- Fast scenario switching (only summary loaded)
+- Fast cohort switching (only summary loaded)
 - Efficient data exploration (paginated queries)
 ```
 
@@ -999,13 +999,13 @@ Add new triggers:
 ## Trigger Phrases
 
 **Generation (Auto-Persists)**:
-- "Generate 100 patients..." (auto-persists to new scenario)
-- "Add more encounters..." (auto-persists to active scenario)
+- "Generate 100 patients..." (auto-persists to new cohort)
+- "Add more encounters..." (auto-persists to active cohort)
 
 **Loading**:
-- "Load scenario X" (loads summary only)
-- "Continue from yesterday" (loads recent scenario summary)
-- "Switch to diabetes cohort" (loads different scenario)
+- "Load cohort X" (loads summary only)
+- "Continue from yesterday" (loads recent cohort summary)
+- "Switch to diabetes cohort" (loads different cohort)
 
 **Querying**:
 - "Show patients over 65"
@@ -1014,9 +1014,9 @@ Add new triggers:
 - "Show more" / "Next page"
 
 **Management**:
-- "Rename this scenario to X"
-- "What scenarios do I have?"
-- "Delete the test scenario"
+- "Rename this cohort to X"
+- "What cohorts do I have?"
+- "Delete the test cohort"
 ```
 
 ### Step 3: Add New Patterns
@@ -1028,7 +1028,7 @@ Add new triggers:
 
 When generating many entities (>50), Claude will:
 
-1. Create scenario with auto-generated name
+1. Create cohort with auto-generated name
 2. Generate in batches of 50
 3. Persist each batch immediately
 4. Use samples from previous batches for consistency
@@ -1038,7 +1038,7 @@ When generating many entities (>50), Claude will:
 
 User: Generate 200 Medicare members with various conditions
 
-Claude: [Creates scenario "medicare-members-20241226"]
+Claude: [Creates cohort "medicare-members-20241226"]
 Batch 1: Generated 50 members... persisted.
 Batch 2: Generated 50 members... persisted.
 Batch 3: Generated 50 members... persisted.
@@ -1050,7 +1050,7 @@ Summary:
 - Age range: 65-89
 - Conditions: Diabetes (45), Hypertension (78), COPD (32)...
 
-Would you like to rename this scenario?
+Would you like to rename this cohort?
 ```
 
 **Query Pattern**:
@@ -1147,8 +1147,8 @@ Save generated entities to DuckDB. Returns summary (not full data).
 |-------|------|----------|-------------|
 | entities | array | Yes | Array of entity objects |
 | entity_type | string | Yes | Entity type (patient, claim, etc.) |
-| scenario_id | string | No | Existing scenario to add to |
-| scenario_name | string | No | Name for new scenario |
+| cohort_id | string | No | Existing cohort to add to |
+| cohort_name | string | No | Name for new cohort |
 | context_keywords | array | No | Keywords for auto-naming |
 
 **Example:**
@@ -1160,9 +1160,9 @@ Save generated entities to DuckDB. Returns summary (not full data).
 }
 ```
 
-### get_scenario_summary
+### get_cohort_summary
 
-Load scenario summary into context. Never loads full data!
+Load cohort summary into context. Never loads full data!
 
 ...
 ```
@@ -1199,13 +1199,13 @@ Add triggers for new tools:
 ## Trigger Phrases
 
 - "persist these entities"
-- "load scenario summary"
-- "query the scenario for..."
+- "load cohort summary"
+- "query the cohort for..."
 - "show patients where..."
 - "find claims with..."
-- "list my scenarios"
-- "rename scenario"
-- "delete scenario"
+- "list my cohorts"
+- "rename cohort"
+- "delete cohort"
 - "get sample patients"
 ```
 
@@ -1254,9 +1254,9 @@ Generated entities are automatically persisted to DuckDB:
 2. **Small Batch (<50)**: Persisted as one batch, summary returned
 3. **Large Batch (>50)**: Persisted in batches of 50 with progress updates
 
-**Scenario Management:**
-- If no active scenario: Creates new with auto-generated name
-- If active scenario: Adds to existing scenario
+**Cohort Management:**
+- If no active cohort: Creates new with auto-generated name
+- If active cohort: Adds to existing cohort
 - Auto-naming: Uses generation keywords (e.g., "diabetes-patients-20241226")
 
 **What's Returned:**
@@ -1347,7 +1347,7 @@ I'm creating new examples that demonstrate auto-persist capabilities.
 **Files to create:**
 1. `hello-healthsim/auto-persist-basics.md`
 2. `hello-healthsim/batch-generation.md`
-3. `hello-healthsim/scenario-management.md`
+3. `hello-healthsim/cohort-management.md`
 4. `hello-healthsim/query-and-analyze.md`
 
 ## Step-by-Step Instructions
@@ -1362,7 +1362,7 @@ Learn how HealthSim automatically saves your generated data.
 ## What You'll Learn
 
 1. How auto-persist works
-2. Understanding scenario summaries
+2. Understanding cohort summaries
 3. Basic querying
 
 ## Try It
@@ -1371,21 +1371,21 @@ Learn how HealthSim automatically saves your generated data.
 
 > "Generate a patient with Type 2 Diabetes"
 
-Notice: A scenario was automatically created!
+Notice: A cohort was automatically created!
 
 **Response shows:**
-- Scenario name (auto-generated)
+- Cohort name (auto-generated)
 - Patient summary
 - Sample data (3 patients)
 - NOT full patient JSON
 
 ### Check What's Saved
 
-> "Show my scenarios"
+> "Show my cohorts"
 
-### Load a Scenario
+### Load a Cohort
 
-> "Load the diabetes scenario"
+> "Load the diabetes cohort"
 
 This loads a SUMMARY, not all data. You'll see:
 - Entity counts
@@ -1410,7 +1410,7 @@ Generate large datasets efficiently.
 
 Large requests (>50 entities) are processed in batches:
 
-1. Scenario created
+1. Cohort created
 2. Generate 50 → persist → progress update
 3. Repeat until complete
 4. Final summary
@@ -1426,31 +1426,31 @@ Watch the progress updates:
 
 ## Rename After Generation
 
-> "Rename this scenario to medicare-demo-cohort"
+> "Rename this cohort to medicare-demo-cohort"
 ```
 
-### Example 3: scenario-management.md
+### Example 3: cohort-management.md
 
 ```markdown
-# Scenario Management
+# Cohort Management
 
-Organize and navigate your scenarios.
+Organize and navigate your cohorts.
 
-## List Scenarios
+## List Cohorts
 
-> "What scenarios do I have?"
+> "What cohorts do I have?"
 
-## Switch Scenarios
+## Switch Cohorts
 
-> "Load the diabetes-cohort scenario"
+> "Load the diabetes-cohort cohort"
 
-## Rename Scenarios
+## Rename Cohorts
 
 > "Rename this to training-data-v2"
 
-## Delete Scenarios
+## Delete Cohorts
 
-> "Delete the test scenario"
+> "Delete the test cohort"
 
 Note: Requires confirmation!
 ```
@@ -1550,11 +1550,11 @@ python -m healthsim.mcp.auto_persist_server
 
 Tools:
 - `persist_entities` - Save entities, return summary
-- `get_scenario_summary` - Load scenario summary
-- `query_scenario` - Paginated SQL queries
-- `list_cohorts` - Browse scenarios
-- `rename_scenario` - Rename scenario
-- `delete_cohort` - Delete scenario
+- `get_cohort_summary` - Load cohort summary
+- `query_cohort` - Paginated SQL queries
+- `list_cohorts` - Browse cohorts
+- `rename_cohort` - Rename cohort
+- `delete_cohort` - Delete cohort
 - `get_entity_samples` - Get sample entities
 ```
 
@@ -1593,13 +1593,13 @@ I'm running comprehensive integration tests for auto-persist.
 - [ ] All unit tests pass
 - [ ] Database is clean/reset
 
-## Test Scenarios
+## Test Cohorts
 
 ### Test 1: Single Entity Generation
 
-1. Clear any existing test scenario
+1. Clear any existing test cohort
 2. Generate 1 patient with diabetes
-3. Verify: Scenario created with auto-name
+3. Verify: Cohort created with auto-name
 4. Verify: Summary returned (not full JSON)
 5. Query: "Show the patient"
 6. Verify: Full patient data returned
@@ -1612,13 +1612,13 @@ I'm running comprehensive integration tests for auto-persist.
 4. Query: "Show patients over 65"
 5. Verify: Paginated results
 
-### Test 3: Scenario Management
+### Test 3: Cohort Management
 
-1. List scenarios
-2. Rename the batch scenario
+1. List cohorts
+2. Rename the batch cohort
 3. Verify: Name changed
-4. Delete a test scenario
-5. Verify: Scenario removed
+4. Delete a test cohort
+5. Verify: Cohort removed
 
 ### Test 4: Cross-Product Flow
 
@@ -1637,7 +1637,7 @@ I'm running comprehensive integration tests for auto-persist.
 
 ## Post-flight Checklist
 
-- [ ] All 5 test scenarios pass
+- [ ] All 5 test cohorts pass
 - [ ] No regressions in existing tests
 - [ ] Performance acceptable
 
@@ -1699,11 +1699,11 @@ Check all cross-references in:
 ### Added
 - **Auto-Persist Feature**: Generated entities are automatically saved to DuckDB
 - **Structured RAG Pattern**: Summary-in-context, data-in-database approach
-- New MCP tools: persist_entities, get_scenario_summary, query_scenario, 
-  list_cohorts, rename_scenario, delete_cohort, get_entity_samples
+- New MCP tools: persist_entities, get_cohort_summary, query_cohort, 
+  list_cohorts, rename_cohort, delete_cohort, get_entity_samples
 - Batch generation support for large-scale entity creation (>50 entities)
-- Auto-naming service for scenarios based on generation context
-- Token-efficient scenario summaries (~500 tokens)
+- Auto-naming service for cohorts based on generation context
+- Token-efficient cohort summaries (~500 tokens)
 - Paginated query results (20 per page default)
 - Hello-HealthSim examples for auto-persist patterns
 
@@ -1764,7 +1764,7 @@ git push origin main --tags
 ## Success Criteria
 
 1. "Generate 1000 patients" works without context overflow
-2. "Load scenario X" returns summary in <1 second
+2. "Load cohort X" returns summary in <1 second
 3. "Show patients where..." returns paginated results
 4. All existing functionality still works
 5. Documentation is complete and accurate
@@ -1790,7 +1790,7 @@ git push origin main --tags
 | `packages/core/tests/mcp/test_auto_persist_server.py` | 1.2 | MCP tests |
 | `hello-healthsim/auto-persist-basics.md` | 3.2 | Example |
 | `hello-healthsim/batch-generation.md` | 3.2 | Example |
-| `hello-healthsim/scenario-management.md` | 3.2 | Example |
+| `hello-healthsim/cohort-management.md` | 3.2 | Example |
 | `hello-healthsim/query-and-analyze.md` | 3.2 | Example |
 | `tests/integration/test_auto_persist.py` | 4.1 | Integration tests |
 

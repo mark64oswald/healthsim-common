@@ -5,10 +5,10 @@
 
 ## Overview
 
-Skills files are the core abstraction in HealthSim that enable natural language configuration and reusable scenario templates. They are Markdown documents with structured sections that serve three purposes:
+Skills files are the core abstraction in HealthSim that enable natural language configuration and reusable cohort templates. They are Markdown documents with structured sections that serve three purposes:
 
 1. **Context for Claude** - Provide domain knowledge for conversation
-2. **Configuration Templates** - Define reusable scenario patterns
+2. **Configuration Templates** - Define reusable cohort patterns
 3. **Generation Rules** - Specify constraints and distributions
 
 ## Design Philosophy
@@ -24,18 +24,18 @@ Skills files bridge human readability and machine parseability:
 ### Complete Example
 
 ```markdown
-# Septic Patient Scenario
+# Septic Patient Cohort
 Generate patients presenting with sepsis and systemic infection.
 
 ## Metadata
-- **Type**: scenario-template
+- **Type**: cohort-template
 - **Version**: 1.0
 - **Author**: Clinical Team
 - **Tags**: infectious-disease, critical-care, emergency
 
 ## Purpose
 This skill generates realistic septic patient presentations for emergency department
-and ICU training scenarios. Includes appropriate vital signs, labs, and medications.
+and ICU training cohorts. Includes appropriate vital signs, labs, and medications.
 
 ## Parameters
 | Parameter | Type | Default | Description |
@@ -143,7 +143,7 @@ Expected:
 - qSOFA Score (Quick Sequential Organ Failure Assessment)
 
 ## Dependencies
-None - this is a standalone scenario template.
+None - this is a standalone cohort template.
 ```
 
 ## Required Sections
@@ -152,7 +152,7 @@ None - this is a standalone scenario template.
 The skill name. Should be descriptive and unique.
 
 ```markdown
-# Septic Patient Scenario
+# Septic Patient Cohort
 ```
 
 ### 2. Description (First paragraph)
@@ -166,7 +166,7 @@ Generate patients presenting with sepsis and systemic infection.
 Structured metadata using bullet list format.
 
 **Required Fields**:
-- **Type**: One of `domain-knowledge`, `scenario-template`, `format-spec`, `validation-rules`
+- **Type**: One of `domain-knowledge`, `cohort-template`, `format-spec`, `validation-rules`
 - **Version**: Semantic version (e.g., "1.0", "2.1.3")
 
 **Optional Fields**:
@@ -177,7 +177,7 @@ Structured metadata using bullet list format.
 
 ```markdown
 ## Metadata
-- **Type**: scenario-template
+- **Type**: cohort-template
 - **Version**: 1.0
 - **Author**: Clinical Team
 - **Tags**: infectious-disease, critical-care
@@ -189,12 +189,12 @@ Detailed explanation of when and why to use this skill. Required for all skill t
 ```markdown
 ## Purpose
 This skill generates realistic septic patient presentations for emergency department
-and ICU training scenarios.
+and ICU training cohorts.
 ```
 
 ## Optional Sections (Type-Specific)
 
-### For `scenario-template` Skills
+### For `cohort-template` Skills
 
 #### Parameters Section
 Defines configurable parameters using a table format.
@@ -415,7 +415,7 @@ skills/
 ├── domain/              # Domain knowledge skills
 │   ├── clinical-basics.md
 │   └── infectious-disease.md
-├── skills/           # Scenario templates
+├── skills/           # Cohort templates
 │   ├── sepsis.md
 │   ├── diabetes-management.md
 │   └── cardiac-arrest.md
@@ -427,7 +427,7 @@ skills/
 ```
 
 **Naming Convention**:
-- Use kebab-case: `sepsis-scenario.md`
+- Use kebab-case: `sepsis-cohort.md`
 - Be descriptive: `type2-diabetes-outpatient.md`
 - Avoid version in filename: Use Metadata.Version instead
 

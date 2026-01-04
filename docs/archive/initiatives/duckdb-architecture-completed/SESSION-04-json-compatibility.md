@@ -9,15 +9,15 @@
 
 ## Objective
 
-Add JSON export and import capabilities to maintain compatibility with sharing workflows. Users should be able to export scenarios to JSON for sharing and import JSON scenarios from external sources.
+Add JSON export and import capabilities to maintain compatibility with sharing workflows. Users should be able to export cohorts to JSON for sharing and import JSON cohorts from external sources.
 
 ---
 
 ## Context
 
 With state management now in DuckDB, we need to preserve the ability to:
-1. Export scenarios to JSON for sharing via email, Slack, etc.
-2. Import JSON scenarios received from others
+1. Export cohorts to JSON for sharing via email, Slack, etc.
+2. Import JSON cohorts received from others
 3. Maintain backward compatibility with existing JSON-based tutorials/examples
 
 ### Reference Documents
@@ -33,7 +33,7 @@ docs/state-management/specification.md
 ## Pre-Flight Checklist
 
 - [ ] SESSION-03 complete (state management working with DuckDB)
-- [ ] Verify save/load works: test with a simple scenario
+- [ ] Verify save/load works: test with a simple cohort
 - [ ] Git status clean
 
 ---
@@ -44,8 +44,8 @@ docs/state-management/specification.md
 
 | Tool | Description |
 |------|-------------|
-| `export_scenario_json` | Export scenario to JSON file |
-| `import_scenario_json` | Import JSON file to database |
+| `export_cohort_json` | Export cohort to JSON file |
+| `import_cohort_json` | Import JSON file to database |
 
 ### 2. Updated State Manager
 
@@ -72,10 +72,10 @@ def export_to_json(
     output_path: Optional[Path] = None
 ) -> Path:
     """
-    Export a scenario to JSON file.
+    Export a cohort to JSON file.
     
     Args:
-        name_or_id: Scenario name or UUID
+        name_or_id: Cohort name or UUID
         output_path: Where to save (default: ~/Downloads/{name}.json)
         
     Returns:
@@ -83,14 +83,14 @@ def export_to_json(
     """
     from .legacy import export_to_json as _export
     
-    scenario = self.load_cohort(name_or_id)
+    cohort = self.load_cohort(name_or_id)
     
     if output_path is None:
         downloads = Path.home() / "Downloads"
         downloads.mkdir(exist_ok=True)
-        output_path = downloads / f"{scenario['name']}.json"
+        output_path = downloads / f"{cohort['name']}.json"
     
-    return _export(scenario, output_path)
+    return _export(cohort, output_path)
 
 
 def import_from_json(
@@ -100,22 +100,22 @@ def import_from_json(
     overwrite: bool = False
 ) -> str:
     """
-    Import a scenario from JSON file.
+    Import a cohort from JSON file.
     
     Args:
         json_path: Path to JSON file
-        name: Override scenario name (default: use filename or embedded name)
-        overwrite: Replace existing scenario with same name
+        name: Override cohort name (default: use filename or embedded name)
+        overwrite: Replace existing cohort with same name
         
     Returns:
-        Scenario ID
+        Cohort ID
     """
     from .legacy import import_from_json as _import
     
     data = _import(json_path)
     
     # Determine name
-    scenario_name = name or data.get('name') or json_path.stem
+    cohort_name = name or data.get('name') or json_path.stem
     
     # Extract entities
     entities = data.get('entities', {})
@@ -126,7 +126,7 @@ def import_from_json(
                     if k in self.ENTITY_TYPES or k + 's' in [t + 's' for t in self.ENTITY_TYPES]}
     
     return self.save_cohort(
-        name=scenario_name,
+        name=cohort_name,
         entities=entities,
         description=data.get('description'),
         tags=data.get('tags'),
@@ -141,16 +141,16 @@ Update the MCP server to expose these new tools:
 ```python
 # In the MCP tool definitions
 
-@tool("export_scenario_json")
-def export_scenario_json(
+@tool("export_cohort_json")
+def export_cohort_json(
     name: str,
     output_path: Optional[str] = None
 ) -> Dict[str, Any]:
     """
-    Export a scenario to JSON file for sharing.
+    Export a cohort to JSON file for sharing.
     
     Args:
-        name: Scenario name or ID to export
+        name: Cohort name or ID to export
         output_path: Where to save (optional, defaults to Downloads)
         
     Returns:
@@ -164,51 +164,51 @@ def export_scenario_json(
     )
     
     # Get entity count
-    scenario = manager.load_cohort(name)
-    entity_count = sum(len(v) for v in scenario['entities'].values())
+    cohort = manager.load_cohort(name)
+    entity_count = sum(len(v) for v in cohort['entities'].values())
     
     return {
         "file_path": str(path),
         "entity_count": entity_count,
-        "message": f"Exported scenario '{name}' to {path}"
+        "message": f"Exported cohort '{name}' to {path}"
     }
 
 
-@tool("import_scenario_json")
-def import_scenario_json(
+@tool("import_cohort_json")
+def import_cohort_json(
     file_path: str,
     name: Optional[str] = None,
     overwrite: bool = False
 ) -> Dict[str, Any]:
     """
-    Import a scenario from JSON file.
+    Import a cohort from JSON file.
     
     Args:
         file_path: Path to JSON file
-        name: Override scenario name (optional)
+        name: Override cohort name (optional)
         overwrite: Replace existing if name conflicts
         
     Returns:
-        scenario_id: ID of imported scenario
-        name: Name of imported scenario
+        cohort_id: ID of imported cohort
+        name: Name of imported cohort
         entity_count: Number of entities imported
     """
     manager = get_manager()
-    scenario_id = manager.import_from_json(
+    cohort_id = manager.import_from_json(
         Path(file_path),
         name=name,
         overwrite=overwrite
     )
     
     # Get details
-    scenario = manager.load_cohort(scenario_id)
-    entity_count = sum(len(v) for v in scenario['entities'].values())
+    cohort = manager.load_cohort(cohort_id)
+    entity_count = sum(len(v) for v in cohort['entities'].values())
     
     return {
-        "scenario_id": scenario_id,
-        "name": scenario['name'],
+        "cohort_id": cohort_id,
+        "name": cohort['name'],
         "entity_count": entity_count,
-        "message": f"Imported scenario '{scenario['name']}' with {entity_count} entities"
+        "message": f"Imported cohort '{cohort['name']}' with {entity_count} entities"
     }
 ```
 
@@ -217,28 +217,28 @@ def import_scenario_json(
 Add to `skills/common/state-management.md`:
 
 ```markdown
-## Sharing Scenarios
+## Sharing Cohorts
 
 ### Export for Sharing
 
 ```
-User: "Export my diabetes-cohort scenario as JSON"
-Claude: [Uses export_scenario_json tool]
+User: "Export my diabetes-cohort cohort as JSON"
+Claude: [Uses export_cohort_json tool]
         "Exported to ~/Downloads/diabetes-cohort.json (150 entities)"
 ```
 
 ### Import from JSON
 
 ```
-User: "Import the scenario from /path/to/scenario.json"
-Claude: [Uses import_scenario_json tool]
-        "Imported scenario 'imported-scenario' with 75 entities"
+User: "Import the cohort from /path/to/cohort.json"
+Claude: [Uses import_cohort_json tool]
+        "Imported cohort 'imported-cohort' with 75 entities"
 ```
 
 ### Format Compatibility
 
 Exported JSON maintains the same format as previous HealthSim versions,
-ensuring scenarios can be shared between different installations.
+ensuring cohorts can be shared between different installations.
 ```
 
 ### Step 4: Write Tests
@@ -263,8 +263,8 @@ def state_manager(tmp_path):
 
 
 @pytest.fixture
-def sample_scenario():
-    """Sample scenario data."""
+def sample_cohort():
+    """Sample cohort data."""
     return {
         'patient': [{
             'patient_id': '123e4567-e89b-12d3-a456-426614174000',
@@ -282,9 +282,9 @@ def sample_scenario():
     }
 
 
-def test_export_to_json(state_manager, sample_scenario, tmp_path):
-    """Test exporting scenario to JSON."""
-    state_manager.save_cohort('export-test', sample_scenario)
+def test_export_to_json(state_manager, sample_cohort, tmp_path):
+    """Test exporting cohort to JSON."""
+    state_manager.save_cohort('export-test', sample_cohort)
     
     output_path = tmp_path / "exported.json"
     result_path = state_manager.export_to_json('export-test', output_path)
@@ -300,10 +300,10 @@ def test_export_to_json(state_manager, sample_scenario, tmp_path):
 
 
 def test_import_from_json(state_manager, tmp_path):
-    """Test importing scenario from JSON."""
+    """Test importing cohort from JSON."""
     # Create a JSON file
     json_data = {
-        'name': 'imported-scenario',
+        'name': 'imported-cohort',
         'description': 'Test import',
         'entities': {
             'patient': [{
@@ -318,17 +318,17 @@ def test_import_from_json(state_manager, tmp_path):
     with open(json_path, 'w') as f:
         json.dump(json_data, f)
     
-    scenario_id = state_manager.import_from_json(json_path)
+    cohort_id = state_manager.import_from_json(json_path)
     
-    loaded = state_manager.load_cohort(scenario_id)
-    assert loaded['name'] == 'imported-scenario'
+    loaded = state_manager.load_cohort(cohort_id)
+    assert loaded['name'] == 'imported-cohort'
     assert len(loaded['entities']['patient']) == 1
 
 
-def test_round_trip(state_manager, sample_scenario, tmp_path):
+def test_round_trip(state_manager, sample_cohort, tmp_path):
     """Test export then import preserves data."""
     # Save original
-    state_manager.save_cohort('round-trip-test', sample_scenario)
+    state_manager.save_cohort('round-trip-test', sample_cohort)
     
     # Export
     json_path = tmp_path / "round-trip.json"
@@ -349,7 +349,7 @@ def test_round_trip(state_manager, sample_scenario, tmp_path):
 def test_import_legacy_format(state_manager, tmp_path):
     """Test importing old-style JSON (entities at top level)."""
     legacy_json = {
-        'name': 'legacy-scenario',
+        'name': 'legacy-cohort',
         'patient': [{'given_name': 'Legacy', 'family_name': 'Patient'}],
         'encounter': []
     }
@@ -358,8 +358,8 @@ def test_import_legacy_format(state_manager, tmp_path):
     with open(json_path, 'w') as f:
         json.dump(legacy_json, f)
     
-    scenario_id = state_manager.import_from_json(json_path)
-    loaded = state_manager.load_cohort(scenario_id)
+    cohort_id = state_manager.import_from_json(json_path)
+    loaded = state_manager.load_cohort(cohort_id)
     
     assert loaded['entities']['patient'][0]['given_name'] == 'Legacy'
 ```
@@ -391,12 +391,12 @@ pytest tests/ -v  # All tests
 
 ```bash
 git add -A
-git commit -m "[State] Add JSON export/import for scenario sharing
+git commit -m "[State] Add JSON export/import for cohort sharing
 
 - Add export_to_json method to StateManager
 - Add import_from_json method to StateManager
 - Support legacy JSON format (entities at top level)
-- Add MCP tools: export_scenario_json, import_scenario_json
+- Add MCP tools: export_cohort_json, import_cohort_json
 - Update state-management skill documentation
 - Add JSON compatibility tests
 
@@ -416,7 +416,7 @@ Mark SESSION-04 as complete with commit hash.
 ## Success Criteria
 
 ✅ Session complete when:
-1. Can export any scenario to JSON file
+1. Can export any cohort to JSON file
 2. Can import JSON file to database
 3. Round-trip preserves all entity data
 4. Legacy JSON format supported

@@ -13,7 +13,7 @@
 | Area | Prior Assessment | Actual Status | Notes |
 |------|------------------|---------------|-------|
 | Sessions 1-4 (Foundation) | ✅ Complete | ✅ **CONFIRMED COMPLETE** | Data package + core skills solid |
-| Session 5 (PatientSim) | ⚠️ Surface-level | ✅ **SUBSTANTIAL** | 13+ scenario skills have v2.0 sections |
+| Session 5 (PatientSim) | ⚠️ Surface-level | ✅ **SUBSTANTIAL** | 13+ cohort skills have v2.0 sections |
 | Session 6 (MemberSim/RxMemberSim) | ⚠️ Surface-level | ✅ **SUBSTANTIAL** | Both SKILL.md files have detailed patterns |
 | Session 7 (TrialSim) | ⚠️ Surface-level | ✅ **SUBSTANTIAL** | Site feasibility + diversity planning |
 | Session 8 (Documentation) | ⚠️ Minimal | ✅ **DONE** | Examples updated with v2.0 content |
@@ -57,7 +57,7 @@ skills/populationsim/data/
 
 ### 3. PatientSim v2.0 Integration ✅ SUBSTANTIAL
 
-**NOT surface-level.** Each scenario skill has:
+**NOT surface-level.** Each cohort skill has:
 - `geography` parameter added
 - "Data Sources (PopulationSim v2.0)" section
 - File paths to embedded data
@@ -122,9 +122,9 @@ The original plan called for specific skills that were NOT created:
 
 | Planned Skill | Location | Status |
 |---------------|----------|--------|
-| patient-demographics.md | patientsim/scenarios/ | ❌ Not created |
-| condition-prevalence.md | patientsim/scenarios/ | ❌ Not created |
-| sdoh-factors.md | patientsim/scenarios/ | ❌ Not created |
+| patient-demographics.md | patientsim/cohorts/ | ❌ Not created |
+| condition-prevalence.md | patientsim/cohorts/ | ❌ Not created |
+| sdoh-factors.md | patientsim/cohorts/ | ❌ Not created |
 | member-demographics.md | membersim/ | ❌ Not created |
 | risk-stratification.md | membersim/ | ❌ Not created |
 | adherence-patterns.md | rxmembersim/ | ❌ Not created |
@@ -164,7 +164,7 @@ Need to verify all cross-references resolve correctly:
 
 ### Priority 3: Create Dedicated Skills (Optional - 2-3 hours)
 If desired, create the planned but not implemented skills:
-- patientsim/scenarios/data-driven-patient.md
+- patientsim/cohorts/data-driven-patient.md
 - membersim/data-driven-member.md
 - rxmembersim/data-driven-adherence.md
 

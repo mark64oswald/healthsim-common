@@ -85,7 +85,7 @@ Existing Repositories:
 2. Validation Rules
 3. Format Specifications
 4. Reference Data Catalog
-5. Scenario Patterns
+5. Cohort Patterns
 6. Generation Logic
 7. Code System Mappings
 
@@ -191,9 +191,9 @@ Existing Repositories:
 
 ---
 
-## 5. Scenario Patterns
+## 5. Cohort Patterns
 
-### 5.1 Clinical Scenarios (PatientSim)
+### 5.1 Clinical Cohorts (PatientSim)
 
 #### Diabetes Management
 - **Variations**: New diagnosis, well-controlled, uncontrolled, with complications
@@ -204,10 +204,10 @@ Existing Repositories:
 #### Heart Failure
 [...]
 
-### 5.2 Claims Scenarios (MemberSim)
+### 5.2 Claims Cohorts (MemberSim)
 [...]
 
-### 5.3 Pharmacy Scenarios (RxMemberSim)
+### 5.3 Pharmacy Cohorts (RxMemberSim)
 [...]
 
 ---
@@ -263,7 +263,7 @@ Existing Repositories:
 **Before proceeding to Session 2, you should review:**
 1. Completeness - Is any domain knowledge missing?
 2. Accuracy - Are the rules/mappings correct?
-3. Priority - Which scenarios are most important to implement first?
+3. Priority - Which cohorts are most important to implement first?
 
 ---
 
@@ -285,7 +285,7 @@ healthsim/
 │   ├── ISSUE_TEMPLATE/
 │   │   ├── bug_report.md
 │   │   ├── feature_request.md
-│   │   └── new_scenario.md
+│   │   └── new_cohort.md
 │   └── PULL_REQUEST_TEMPLATE.md
 │
 ├── skills/
@@ -318,7 +318,7 @@ healthsim/
 │   │   ├── membersim.md
 │   │   └── rxmembersim.md
 │   ├── developer-guide/
-│   │   ├── adding-scenarios.md
+│   │   ├── adding-cohorts.md
 │   │   ├── adding-formats.md
 │   │   └── architecture.md
 │   └── api/
@@ -375,15 +375,15 @@ Claude: [Brief response description]
 
 When generating [entities], follow this workflow:
 
-1. **Understand the request** - Identify scenario, count, variations
-2. **Load scenario** - Read appropriate `skills/*.md` file
+1. **Understand the request** - Identify cohort, count, variations
+2. **Load cohort** - Read appropriate `skills/*.md` file
 3. **Generate data** - Create canonical JSON per `references/canonical-model.md`
 4. **Validate** - Run `scripts/validate_[entity].py`
 5. **Export** - Transform to requested format via `scripts/export_*.py`
 
-## Available Scenarios
+## Available Cohorts
 
-| Scenario | File | Description | Triggers |
+| Cohort | File | Description | Triggers |
 |----------|------|-------------|----------|
 | [Name] | `skills/[name].md` | [Description] | "[trigger phrases]" |
 
@@ -422,23 +422,23 @@ All generated data is validated for:
 
 ## Extension
 
-To add new scenarios, see `skills/_template.md`.
+To add new cohorts, see `skills/_template.md`.
 ```
 
-#### 2.3 Scenario Template (skills/_template.md)
+#### 2.3 Cohort Template (skills/_template.md)
 
 ```markdown
-# [Scenario Name]
+# [Cohort Name]
 
 ## Overview
 
-**Purpose:** [What this scenario represents]
+**Purpose:** [What this cohort represents]
 **Complexity:** [Simple | Moderate | Complex]
 **Typical Use:** [When users would request this]
 
 ## Trigger Phrases
 
-Users might request this scenario with phrases like:
+Users might request this cohort with phrases like:
 - "[phrase 1]"
 - "[phrase 2]"
 - "[phrase 3]"
@@ -451,7 +451,7 @@ Users might request this scenario with phrases like:
 - **Other criteria:** [if applicable]
 
 ### Clinical/Claims Characteristics
-[Key attributes that define this scenario]
+[Key attributes that define this cohort]
 
 ## Variations
 
@@ -501,19 +501,19 @@ timeline:
 
 ```json
 {
-  // Minimal example showing key fields for this scenario
+  // Minimal example showing key fields for this cohort
 }
 ```
 
 ## Quality Measures (if applicable)
 
-This scenario supports testing:
+This cohort supports testing:
 - [Measure 1]
 - [Measure 2]
 
-## Related Scenarios
+## Related Cohorts
 
-- `[related-scenario.md]` - [relationship]
+- `[related-cohort.md]` - [relationship]
 ```
 
 #### 2.4 Validation Script Template
@@ -766,7 +766,7 @@ skills/patientsim/
 │   ├── vital-signs.csv              # Vital sign definitions
 │   └── fhir-mappings.md             # Field mapping documentation
 └── skills/
-    ├── _template.md                 # Template for new scenarios
+    ├── _template.md                 # Template for new cohorts
     ├── diabetes.md                  # Diabetes management (enhanced)
     ├── heart-failure.md             # Heart failure (enhanced)
     ├── ckd.md                       # Chronic kidney disease (enhanced)
@@ -798,7 +798,7 @@ skills/patientsim/
    - CSV: Flattened patient records
    - Parquet: Using pyarrow
 
-5. **Scenarios** (skills/*.md)
+5. **Cohorts** (skills/*.md)
    - Merge existing skills with new format
    - Add event sequences
    - Include variation triggers
@@ -812,7 +812,7 @@ skills/patientsim/
 
 Test the complete skill with sample conversations:
 - Simple patient generation
-- Scenario-specific generation (diabetes)
+- Cohort-specific generation (diabetes)
 - Batch generation request
 - Export to each format
 
@@ -938,7 +938,7 @@ mcp-server/
 │       ├── batch_generate.py        # Generate cohorts
 │       ├── write_parquet.py         # Write to Parquet
 │       ├── write_csv.py             # Write to CSV
-│       ├── run_scenario.py          # Execute multi-event scenario
+│       ├── run_cohort.py          # Execute multi-event cohort
 │       └── validate_batch.py        # Validate multiple entities
 ├── tests/
 │   ├── test_batch_generate.py
@@ -958,12 +958,12 @@ Claude generates SQL and executes via `databricks sql -e` CLI, trusting existing
 @app.tool()
 async def batch_generate(
     product: str,           # "patientsim" | "membersim" | "rxmembersim"
-    scenario: str,          # scenario name from scenarios/
+    cohort: str,          # cohort name from cohorts/
     count: int,             # number to generate
     seed: int | None,       # optional seed for reproducibility
-    parameters: dict        # scenario-specific parameters
+    parameters: dict        # cohort-specific parameters
 ) -> list[dict]:
-    """Generate multiple entities based on scenario."""
+    """Generate multiple entities based on cohort."""
 
 @app.tool()
 async def write_parquet(
@@ -974,14 +974,14 @@ async def write_parquet(
     """Write entities to Parquet file(s)."""
 
 @app.tool()
-async def run_scenario(
+async def run_cohort(
     product: str,
-    scenario: str,
+    cohort: str,
     entity_context: dict,   # existing entity to build upon
     duration: str,          # "30_days", "6_months", etc.
     output_format: str      # "json" | "fhir" | "hl7v2" | etc.
 ) -> dict:
-    """Execute multi-event scenario over time period."""
+    """Execute multi-event cohort over time period."""
 ```
 
 ### Review Checkpoint
@@ -1047,7 +1047,7 @@ Claude: [Runs export script, provides FHIR R4 Bundle]
 - [PatientSim User Guide](docs/user-guide/patientsim.md)
 - [MemberSim User Guide](docs/user-guide/membersim.md)
 - [RxMemberSim User Guide](docs/user-guide/rxmembersim.md)
-- [Adding New Scenarios](docs/developer-guide/adding-scenarios.md)
+- [Adding New Cohorts](docs/developer-guide/adding-cohorts.md)
 
 ## Examples
 
@@ -1129,7 +1129,7 @@ This guide will have you generating synthetic healthcare data in minutes.
 
 ## Next Steps
 
-- Explore [clinical scenarios](../skills/patientsim/)
+- Explore [clinical cohorts](../skills/patientsim/)
 - Try [batch generation](user-guide/batch-generation.md)
 - Load data to [analytics databases](user-guide/analytics-integration.md) (DuckDB, Databricks)
 ```
@@ -1219,7 +1219,7 @@ cd healthsim
 
 ```bash
 # Create directory structure
-mkdir -p skills/{patientsim,membersim,rxmembersim}/{scripts,references,scenarios}
+mkdir -p skills/{patientsim,membersim,rxmembersim}/{scripts,references,cohorts}
 mkdir -p skills/shared/{references,scripts}
 mkdir -p mcp-server/src/healthsim_mcp/tools
 mkdir -p mcp-server/tests
@@ -1322,7 +1322,7 @@ Create the Knowledge Base Document covering:
 - Validation rules
 - Format specifications
 - Reference data catalog
-- Scenario patterns
+- Cohort patterns
 - Generation logic
 - Code system mappings
 
@@ -1345,7 +1345,7 @@ Build the complete PatientSim skill:
 3. Reference data CSVs
 4. Validation script
 5. Export scripts (FHIR, HL7v2, CSV, JSON, Parquet)
-6. Enhanced scenarios (diabetes, heart-failure, ckd, healthy-adult)
+6. Enhanced cohorts (diabetes, heart-failure, ckd, healthy-adult)
 
 Follow the templates exactly. Test each component.
 ```

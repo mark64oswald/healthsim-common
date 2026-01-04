@@ -316,7 +316,7 @@ class CSVExporter:
 class SkillType(str, Enum):
     """Type of skill."""
     DOMAIN_KNOWLEDGE = "domain-knowledge"
-    SCENARIO_TEMPLATE = "scenario-template"
+    SCENARIO_TEMPLATE = "cohort-template"
     FORMAT_SPEC = "format-spec"
     VALIDATION_RULES = "validation-rules"
 

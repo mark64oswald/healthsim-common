@@ -8,7 +8,7 @@ This package provides:
 - **Person & Entity Models**: Base classes for patients, members, subjects
 - **Benefits Processing**: Accumulator tracking, deductibles, OOP calculations
 - **Dimensional Modeling**: Star schema transformers for analytics
-- **State Management**: Session, workspace, and scenario persistence
+- **State Management**: Session, workspace, and cohort persistence
 - **Generation Utilities**: Faker-based realistic data generation
 - **Format Transformations**: FHIR, X12, NCPDP converters
 
@@ -33,41 +33,41 @@ print(person.model_dump_json(indent=2))
 
 ## State Management API
 
-HealthSim provides two patterns for scenario persistence: Traditional (full data) and Auto-Persist (token-efficient).
+HealthSim provides two patterns for cohort persistence: Traditional (full data) and Auto-Persist (token-efficient).
 
 ### Traditional Pattern
 
-Best for scenarios under 50 entities where you want full data in context:
+Best for cohorts under 50 entities where you want full data in context:
 
 ```python
 from healthsim.state import (
-    save_scenario,
-    load_scenario, 
-    list_scenarios,
-    delete_scenario,
-    scenario_exists,
+    save_cohort,
+    load_cohort, 
+    list_cohorts,
+    delete_cohort,
+    cohort_exists,
 )
 
-# Save a scenario
-scenario_id = save_scenario(
-    name='my-scenario',
+# Save a cohort
+cohort_id = save_cohort(
+    name='my-cohort',
     entities={'patients': [...], 'encounters': [...]},
     tags=['diabetes', 'training'],
     description='Diabetes cohort for ML training'
 )
 
-# Load a scenario
-scenario = load_scenario('my-scenario')
+# Load a cohort
+cohort = load_cohort('my-cohort')
 # Returns: {'patients': [...], 'encounters': [...], 'metadata': {...}}
 
-# List scenarios
-scenarios = list_scenarios(tag='diabetes', search='cohort')
-for s in scenarios:
+# List cohorts
+cohorts = list_cohorts(tag='diabetes', search='cohort')
+for s in cohorts:
     print(f"{s['name']}: {s['entity_count']} entities")
 
 # Check existence
-if scenario_exists('my-scenario'):
-    delete_scenario('my-scenario', confirm=True)
+if cohort_exists('my-cohort'):
+    delete_cohort('my-cohort', confirm=True)
 ```
 
 ### Auto-Persist Pattern (Token-Efficient)
@@ -78,7 +78,7 @@ Best for large batches (50+ entities) where context efficiency matters:
 from healthsim.state import (
     persist,
     get_summary,
-    query_scenario,
+    query_cohort,
     get_auto_persist_service,
 )
 
@@ -88,8 +88,8 @@ result = persist(
     context='diabetic patients in Texas over 65',
     tags=['diabetes', 'texas']
 )
-print(result.summary)  # ScenarioSummary with counts and 3 samples
-print(result.scenario_name)  # 'diabetes-texas-20241227'
+print(result.summary)  # CohortSummary with counts and 3 samples
+print(result.cohort_name)  # 'diabetes-texas-20241227'
 
 # Load summary only (~500-3500 tokens)
 summary = get_summary('diabetes-texas-20241227')
@@ -97,8 +97,8 @@ print(f"Patients: {summary.entity_counts.get('patients', 0)}")
 print(f"Samples: {summary.samples}")
 
 # Query specific data with pagination
-results = query_scenario(
-    scenario_id=result.scenario_id,
+results = query_cohort(
+    cohort_id=result.cohort_id,
     query="SELECT * FROM patients WHERE gender = 'F' AND birth_date < '1960-01-01'"
 )
 print(f"Found {results.total_count} matching patients")
@@ -116,44 +116,44 @@ service = get_auto_persist_service()
 
 # Core operations
 result = service.persist_entities(entities, entity_type='patient')
-summary = service.get_scenario_summary(scenario_id=..., include_samples=True)
-query_result = service.query_scenario(scenario_id, "SELECT * FROM patients")
-scenarios = service.list_scenarios(filter_pattern='diabetes', tag='training')
-old, new = service.rename_scenario(scenario_id, 'new-name')
-deleted = service.delete_scenario(scenario_id, confirm=True)
-samples = service.get_entity_samples(scenario_id, 'patients', count=5)
+summary = service.get_cohort_summary(cohort_id=..., include_samples=True)
+query_result = service.query_cohort(cohort_id, "SELECT * FROM patients")
+cohorts = service.list_cohorts(filter_pattern='diabetes', tag='training')
+old, new = service.rename_cohort(cohort_id, 'new-name')
+deleted = service.delete_cohort(cohort_id, confirm=True)
+samples = service.get_entity_samples(cohort_id, 'patients', count=5)
 
 # Tag management
-tags = service.add_tag(scenario_id, 'validated')
-tags = service.remove_tag(scenario_id, 'draft')
-tags = service.get_tags(scenario_id)
+tags = service.add_tag(cohort_id, 'validated')
+tags = service.remove_tag(cohort_id, 'draft')
+tags = service.get_tags(cohort_id)
 all_tags = service.list_all_tags()  # [{tag, count}, ...]
-scenarios = service.scenarios_by_tag('training')
+cohorts = service.cohorts_by_tag('training')
 
 # Cloning
-clone = service.clone_scenario(
-    source_scenario_id=...,
+clone = service.clone_cohort(
+    source_cohort_id=...,
     new_name='my-clone',
     tags=['variation-a']
 )
 
 # Merging
-merged = service.merge_scenarios(
-    source_scenario_ids=[id1, id2, id3],
+merged = service.merge_cohorts(
+    source_cohort_ids=[id1, id2, id3],
     target_name='combined-cohort',
     conflict_strategy='skip'  # or 'overwrite', 'rename'
 )
 
 # Export
-export = service.export_scenario(
-    scenario_id=...,
+export = service.export_cohort(
+    cohort_id=...,
     format='json',  # or 'csv', 'parquet'
     output_path='/path/to/output.json'
 )
 # Convenience methods
-service.export_to_json(scenario_id)
-service.export_to_csv(scenario_id)
-service.export_to_parquet(scenario_id)
+service.export_to_json(cohort_id)
+service.export_to_csv(cohort_id)
+service.export_to_parquet(cohort_id)
 ```
 
 ### Data Classes
@@ -162,19 +162,19 @@ service.export_to_parquet(scenario_id)
 from healthsim.state.auto_persist import (
     PersistResult,
     QueryResult,
-    ScenarioBrief,
+    CohortBrief,
     CloneResult,
     MergeResult,
     ExportResult,
 )
 
 # PersistResult
-result.scenario_id        # UUID
-result.scenario_name      # Auto-generated name
+result.cohort_id        # UUID
+result.cohort_name      # Auto-generated name
 result.entities_persisted # Count
 result.entity_ids         # List of IDs
-result.summary           # ScenarioSummary
-result.is_new_scenario   # True if created
+result.summary           # CohortSummary
+result.is_new_cohort   # True if created
 
 # QueryResult
 query.results      # List[Dict]
@@ -183,8 +183,8 @@ query.page         # Current page (0-indexed)
 query.page_size    # Results per page
 query.has_more     # More pages available
 
-# ScenarioSummary
-summary.scenario_id
+# CohortSummary
+summary.cohort_id
 summary.name
 summary.description
 summary.tags
@@ -200,15 +200,15 @@ summary.to_json()
 ## JSON Import/Export
 
 ```python
-from healthsim.state import export_scenario_to_json, import_scenario_from_json
+from healthsim.state import export_cohort_to_json, import_cohort_from_json
 
 # Export
-path = export_scenario_to_json('my-scenario', '/path/to/export.json')
+path = export_cohort_to_json('my-cohort', '/path/to/export.json')
 
 # Import
-scenario_id = import_scenario_from_json(
+cohort_id = import_cohort_from_json(
     '/path/to/import.json',
-    name_override='imported-scenario',
+    name_override='imported-cohort',
     overwrite=False
 )
 ```
@@ -221,8 +221,8 @@ HealthSim stores all data in DuckDB (auto-created at `~/.healthsim/healthsim.duc
 
 | Table | Description | ID Column |
 |-------|-------------|-----------|
-| `scenarios` | Scenario metadata | `scenario_id` |
-| `scenario_tags` | Scenario tags | - |
+| `cohorts` | Cohort metadata | `cohort_id` |
+| `cohort_tags` | Cohort tags | - |
 | `patients` | PatientSim patients | `id` |
 | `encounters` | Patient encounters | `encounter_id` |
 | `diagnoses` | Diagnosis records | `id` |
@@ -233,7 +233,7 @@ HealthSim stores all data in DuckDB (auto-created at `~/.healthsim/healthsim.duc
 | ... | (41 total tables) | ... |
 
 All entity tables include:
-- `scenario_id` - Links to parent scenario
+- `cohort_id` - Links to parent cohort
 - `created_at` - Creation timestamp
 - `source_type` - 'generated', 'loaded', 'derived'
 - `source_system` - 'patientsim', 'membersim', etc.

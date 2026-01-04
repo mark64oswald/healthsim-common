@@ -101,7 +101,7 @@ healthsim-workspace/
 │   │   ├── SKILL.md                  # Product router
 │   │   ├── oncology/                 # Existing
 │   │   ├── pediatrics/               # Existing
-│   │   └── ...                       # Other scenarios
+│   │   └── ...                       # Other cohorts
 │   │
 │   ├── membersim/                    # (add README.md if missing)
 │   ├── rxmembersim/                  # (add README.md if missing)
@@ -134,7 +134,7 @@ healthsim-workspace/
 │   ├── README.md                     # Update with tutorial path
 │   ├── tutorials/                    # ← NEW: Progressive tutorials
 │   │   ├── 01-first-patient.md
-│   │   ├── 02-clinical-scenario.md
+│   │   ├── 02-clinical-cohort.md
 │   │   ├── 03-claims-journey.md
 │   │   ├── 04-population-cohort.md
 │   │   └── 05-full-integration.md
@@ -601,7 +601,7 @@ healthsim-workspace/
 1. **Create `hello-healthsim/tutorials/` folder**
 2. **Create progressive tutorials**:
    - `01-first-patient.md` - Generate a simple patient
-   - `02-clinical-scenario.md` - Add conditions, meds, labs
+   - `02-clinical-cohort.md` - Add conditions, meds, labs
    - `03-claims-journey.md` - Generate claims from encounters
    - `04-population-cohort.md` - Use profile builder for cohort
    - `05-full-integration.md` - Complete cross-product journey
@@ -643,7 +643,7 @@ healthsim-workspace/
    - Document provenance tracking
    - Add geography-based generation examples
 
-3. **Create integration test scenarios**:
+3. **Create integration test cohorts**:
    - "100 members matching San Diego demographics"
    - "Rural Appalachian diabetic cohort"
    - Document expected behavior
@@ -651,7 +651,7 @@ healthsim-workspace/
 **Post-flight Checklist**:
 - [ ] PopulationSim integration documented
 - [ ] Profile builder uses real data
-- [ ] Integration scenarios tested
+- [ ] Integration cohorts tested
 - [ ] Git commit: `[Integration] PopulationSim + Generation`
 - [ ] Git push
 
@@ -676,14 +676,14 @@ healthsim-workspace/
    - Add facility assignment in profile-executor
    - Document NPI correlation
 
-3. **Create integration test scenarios**:
+3. **Create integration test cohorts**:
    - "Generate encounters with real Texas cardiologists"
    - "Assign PCPs from San Diego network"
 
 **Post-flight Checklist**:
 - [ ] NetworkSim integration documented
 - [ ] Executors use real providers
-- [ ] Integration scenarios tested
+- [ ] Integration cohorts tested
 - [ ] Git commit: `[Integration] NetworkSim + Generation`
 - [ ] Git push
 
@@ -714,9 +714,9 @@ healthsim-workspace/
    - Update README.md
 
 4. **Add MCP server tests**:
-   - Test generation scenarios
+   - Test generation cohorts
    - Test large batch handling
-   - Test cross-product scenarios
+   - Test cross-product cohorts
 
 **Post-flight Checklist**:
 - [ ] MCP server evaluation complete
@@ -769,17 +769,17 @@ healthsim-workspace/
 **Pre-flight Checklist**:
 - [ ] Run full test suite
 - [ ] Review all new skills
-- [ ] Prepare test scenarios
+- [ ] Prepare test cohorts
 
 **Deliverables**:
 
-1. **Create comprehensive test scenarios**:
+1. **Create comprehensive test cohorts**:
    - Simple generation (1 patient)
    - Cohort generation (100 members)
    - Journey generation (diabetic year 1)
    - Full integration (profile + journey + all products)
 
-2. **Execute all test scenarios manually**:
+2. **Execute all test cohorts manually**:
    - Document results
    - Fix any issues
    - Create hello-healthsim examples from tests
@@ -792,7 +792,7 @@ healthsim-workspace/
 4. **Final link audit and validation**
 
 **Post-flight Checklist**:
-- [ ] All test scenarios pass
+- [ ] All test cohorts pass
 - [ ] Smoke tests updated
 - [ ] Full test suite passes
 - [ ] Git commit: `[Testing] Final integration tests`

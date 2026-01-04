@@ -79,7 +79,7 @@ Entity tables for generated data:
 - Plus 12 more canonical entity tables
 
 System tables:
-- `scenarios`, `scenario_entities`, `scenario_tags`
+- `cohorts`, `cohort_entities`, `cohort_tags`
 - `schema_migrations`
 
 ### POPULATION Schema (5 tables, 416K+ records)
@@ -127,10 +127,10 @@ TX                574,601             115,131
 
 ### Created:
 - `healthsim.duckdb` - Unified database (1.16 GB)
-- `scenarios/networksim/scripts/merge_databases.py` - Merge script (219 lines)
+- `cohorts/networksim/scripts/merge_databases.py` - Merge script (219 lines)
 - `test_mcp_connection.py` - Connection validation test (121 lines)
 - `.gitattributes` - Git LFS configuration
-- `scenarios/networksim/archive/` - Archive directory
+- `cohorts/networksim/archive/` - Archive directory
 
 ### Modified:
 - `packages/core/src/healthsim/db/connection.py` - Updated DEFAULT_DB_PATH
@@ -138,7 +138,7 @@ TX                574,601             115,131
 
 ### Archived:
 - `~/.healthsim/healthsim.duckdb` - Original MCP database (kept as backup)
-- `scenarios/networksim/archive/healthsim_networksim_standalone.duckdb` - Standalone NetworkSim
+- `cohorts/networksim/archive/healthsim_networksim_standalone.duckdb` - Standalone NetworkSim
 
 ## Git Commits
 
@@ -177,7 +177,7 @@ TX                574,601             115,131
 ### MCP Server Compatibility:
 - All existing MCP tools (healthsim_query, healthsim_query_reference) work unchanged
 - Schema-qualified table names work transparently
-- No breaking changes to existing scenarios or test suites
+- No breaking changes to existing cohorts or test suites
 
 ## Lessons Learned
 
@@ -190,6 +190,6 @@ TX                574,601             115,131
 ---
 
 **Consolidated by:** Mark Oswald  
-**Merge Script:** `scenarios/networksim/scripts/merge_databases.py`  
+**Merge Script:** `cohorts/networksim/scripts/merge_databases.py`  
 **Validation:** `test_mcp_connection.py`  
 **Status:** Production Ready ✅

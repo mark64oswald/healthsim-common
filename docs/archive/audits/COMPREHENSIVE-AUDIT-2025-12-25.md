@@ -25,11 +25,11 @@ The HealthSim workspace is well-organized with comprehensive documentation for a
 
 ### All Products Have Complete Structure ✅
 
-| Product | README | SKILL.md | Scenario Skills | Integration |
+| Product | README | SKILL.md | Cohort Skills | Integration |
 |---------|--------|----------|-----------------|-------------|
-| PatientSim | ✅ | ✅ (473 lines) | ✅ 10 scenarios | ✅ |
-| MemberSim | ✅ | ✅ (566 lines) | ✅ 8 scenarios | ✅ |
-| RxMemberSim | ✅ | ✅ (554 lines) | ✅ 8 scenarios | ✅ |
+| PatientSim | ✅ | ✅ (473 lines) | ✅ 10 cohorts | ✅ |
+| MemberSim | ✅ | ✅ (566 lines) | ✅ 8 cohorts | ✅ |
+| RxMemberSim | ✅ | ✅ (554 lines) | ✅ 8 cohorts | ✅ |
 | TrialSim | ✅ | ✅ (538 lines) | ✅ 5+ skills | ✅ |
 | PopulationSim | ✅ | ✅ (379 lines) | ✅ 25+ skills | ✅ |
 | NetworkSim | ✅ | ✅ (293 lines) | ✅ 18+ skills | ✅ |
@@ -110,7 +110,7 @@ healthsim-workspace/
 ├── references/            ⚠️ Missing README
 ├── hello-healthsim/       ✅
 ├── packages/              ⚠️ Dependency issues
-├── scenarios/             ✅
+├── cohorts/             ✅
 ├── scripts/               ✅
 └── skills/                ✅ All 6 products organized
 ```
@@ -120,7 +120,7 @@ healthsim-workspace/
 | Issue | Location | Notes |
 |-------|----------|-------|
 | Inconsistent tutorial structure | `hello-healthsim/populationsim/` | PopulationSim has dedicated tutorial folder, others don't |
-| scenarios/saved | `scenarios/saved/` | Consider if these should be in hello-healthsim/examples |
+| cohorts/saved | `cohorts/saved/` | Consider if these should be in hello-healthsim/examples |
 
 ---
 

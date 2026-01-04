@@ -8,7 +8,7 @@ HealthSim generates realistic, clinically coherent healthcare data for testing, 
 
 ## Products Overview
 
-| Product | What It Generates | Key Scenarios | Standards |
+| Product | What It Generates | Key Cohorts | Standards |
 |---------|-------------------|---------------|-----------|
 | **[PatientSim](skills/patientsim/README.md)** | Clinical/EMR data | Diabetes, heart failure, oncology, maternal, behavioral health | FHIR R4, HL7v2, C-CDA |
 | **[MemberSim](skills/membersim/README.md)** | Claims/payer data | Professional claims, facility claims, prior auth, accumulators | X12 837/835/834 |
@@ -27,7 +27,7 @@ New to HealthSim? Start here:
 |----------|-------------|
 | **[Hello HealthSim](hello-healthsim/README.md)** | Quick start guide with setup instructions and first steps |
 | **[Examples by Product](hello-healthsim/examples/)** | Detailed examples with expected outputs for each product |
-| **[Extending HealthSim](hello-healthsim/EXTENDING.md)** | How to add new clinical scenarios, skills, and output formats |
+| **[Extending HealthSim](hello-healthsim/EXTENDING.md)** | How to add new clinical cohorts, skills, and output formats |
 
 The examples folder contains ready-to-use prompts organized by product:
 - [PatientSim Examples](hello-healthsim/examples/patientsim-examples.md) - Clinical data generation
@@ -47,7 +47,7 @@ For large-scale data generation, HealthSim provides a **specification-driven fra
 |-----------|---------|---------|
 | **Profile Builder** | Define population characteristics | "200 Medicare diabetics age 65-85 in Texas" |
 | **Journey Builder** | Define event sequences over time | "First year diabetes journey with quarterly visits" |
-| **Templates** | Pre-built common scenarios | Medicare Diabetic, Surgical Episode, New Member Onboarding |
+| **Templates** | Pre-built common cohorts | Medicare Diabetic, Surgical Episode, New Member Onboarding |
 | **Executors** | Generate data from specifications | Deterministic, reproducible output |
 
 ### Quick Examples
@@ -134,22 +134,22 @@ See [formats/](formats/) for transformation specifications.
 
 ## State Management
 
-HealthSim persists your generated data to DuckDB, allowing you to build scenarios over multiple sessions and query them without regenerating.
+HealthSim persists your generated data to DuckDB, allowing you to build cohorts over multiple sessions and query them without regenerating.
 
 ### Two Approaches: Full Data vs. Auto-Persist
 
-**Full Data** is best when you have a small scenario (under 50 entities) and want everything loaded at once. Claude sees all the data in context and can reference it directly.
+**Full Data** is best when you have a small cohort (under 50 entities) and want everything loaded at once. Claude sees all the data in context and can reference it directly.
 
 **Auto-Persist** is best when you're generating larger datasets (50+ entities). Instead of flooding the conversation with hundreds of JSON objects, HealthSim saves them quietly and gives you a compact summary. When you need specific data, you query for just what you need.
 
 | Approach | Best For | What Happens |
 |----------|----------|---------------|
-| **Full Data** | Small scenarios, interactive exploration | All entities loaded into conversation |
+| **Full Data** | Small cohorts, interactive exploration | All entities loaded into conversation |
 | **Auto-Persist** | Large batches, production datasets | Summary in conversation, data in database |
 
 ### Conversation Examples
 
-**Full Data Approach** (small scenarios):
+**Full Data Approach** (small cohorts):
 
 ```
 You: Generate 5 diabetes patients for my demo
@@ -170,7 +170,7 @@ You: Load my demo cohort
 Claude: [Full patient data appears in conversation]
 ```
 
-**Auto-Persist Approach** (large scenarios):
+**Auto-Persist Approach** (large cohorts):
 
 ```
 You: Generate 200 Medicare members over 65
@@ -203,21 +203,21 @@ Claude: [Queries database]
 ### Benefits
 
 - **Session continuity** - Save work at end of day, resume tomorrow
-- **Scenario library** - Build reusable cohorts for demos and testing
+- **Cohort library** - Build reusable cohorts for demos and testing
 - **Context efficiency** - Generate thousands of entities without context overflow
 - **Targeted queries** - Find exactly what you need without loading everything
 
 ### Under the Hood
 
-State management uses the `healthsim-mcp` server which provides tools for saving, loading, querying, and managing scenarios in DuckDB. You don't need to know the tool names—just ask Claude naturally to save, load, or query your data.
+State management uses the `healthsim-mcp` server which provides tools for saving, loading, querying, and managing cohorts in DuckDB. You don't need to know the tool names—just ask Claude naturally to save, load, or query your data.
 
 See [State Management Skill](skills/common/state-management.md) | [Auto-Persist Examples](hello-healthsim/examples/auto-persist-examples.md) | [Data Architecture](docs/data-architecture.md)
 
 ---
 
-## Clinical Scenarios
+## Clinical Cohorts
 
-### PatientSim Scenarios
+### PatientSim Cohorts
 
 | Domain | Skill | Key Use Cases |
 |--------|-------|---------------|
@@ -230,7 +230,7 @@ See [State Management Skill](skills/common/state-management.md) | [Auto-Persist 
 | Acute Care | [sepsis-acute-care.md](skills/patientsim/sepsis-acute-care.md) | Sepsis, ICU |
 | Pediatrics | [pediatrics/](skills/patientsim/pediatrics/) | Asthma, otitis media |
 
-### TrialSim Scenarios
+### TrialSim Cohorts
 
 | Domain | Skill | Key Use Cases |
 |--------|-------|---------------|
@@ -255,9 +255,9 @@ healthsim-workspace/
 │   └── examples/              # Detailed examples by product
 │
 ├── skills/                     # Product skills (domain knowledge)
-│   ├── patientsim/            # Clinical/EMR (12 scenarios)
-│   ├── membersim/             # Claims/payer (8 scenarios)
-│   ├── rxmembersim/           # Pharmacy/PBM (8 scenarios)
+│   ├── patientsim/            # Clinical/EMR (12 cohorts)
+│   ├── membersim/             # Claims/payer (8 cohorts)
+│   ├── rxmembersim/           # Pharmacy/PBM (8 cohorts)
 │   ├── trialsim/              # Clinical trials (20+ skills)
 │   ├── populationsim/         # Demographics/SDOH + embedded data
 │   └── networksim/            # Provider networks (8.9M real providers)
@@ -354,7 +354,7 @@ See [hello-healthsim/](hello-healthsim/) for detailed setup instructions.
 |----------|-------------|
 | **API Testing** | Generate FHIR resources, X12 transactions, NCPDP claims |
 | **Training Data** | Create diverse patient populations for ML models |
-| **Product Demos** | Generate realistic scenarios for demonstrations |
+| **Product Demos** | Generate realistic cohorts for demonstrations |
 | **Load Testing** | Bulk data generation for performance testing |
 | **Workflow Validation** | Test claims processing, pharmacy adjudication |
 | **Education** | Learn healthcare data structures and relationships |
