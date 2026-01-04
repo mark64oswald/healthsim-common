@@ -307,7 +307,7 @@ class TestDeleteScenario:
         
         # Verify tags are gone by checking the tags table directly
         result = state_manager.conn.execute(
-            "SELECT COUNT(*) FROM scenario_tags WHERE scenario_id IN (SELECT scenario_id FROM scenarios WHERE name = 'tagged-delete')"
+            "SELECT COUNT(*) FROM cohort_tags WHERE cohort_id IN (SELECT id FROM cohorts WHERE name = 'tagged-delete')"
         ).fetchone()
         assert result[0] == 0
 

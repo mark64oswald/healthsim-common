@@ -294,7 +294,7 @@ class StateManager:
         # If overwriting, clear existing entity links
         if existing and overwrite:
             self._delete_scenario_entities(scenario_id)
-            self.conn.execute("DELETE FROM scenario_tags WHERE scenario_id = ?", [scenario_id])
+            self.conn.execute("DELETE FROM cohort_tags WHERE cohort_id = ?", [scenario_id])
         
         # Build metadata JSON
         metadata = {
@@ -306,7 +306,7 @@ class StateManager:
         # Create or update scenario record
         if existing:
             self.conn.execute("""
-                UPDATE scenarios SET
+                UPDATE cohorts SET
                     description = ?,
                     updated_at = ?,
                     metadata = ?
@@ -314,7 +314,7 @@ class StateManager:
             """, [description, now, json.dumps(metadata), scenario_id])
         else:
             self.conn.execute("""
-                INSERT INTO scenarios (id, name, description, created_at, updated_at, metadata)
+                INSERT INTO cohorts (id, name, description, created_at, updated_at, metadata)
                 VALUES (?, ?, ?, ?, ?, ?)
             """, [scenario_id, name, description, now, now, json.dumps(metadata)])
         
@@ -330,13 +330,13 @@ class StateManager:
             for tag in tags:
                 # Check if tag already exists
                 existing = self.conn.execute("""
-                    SELECT id FROM scenario_tags WHERE scenario_id = ? AND tag = ?
+                    SELECT id FROM cohort_tags WHERE cohort_id = ? AND tag = ?
                 """, [scenario_id, tag]).fetchone()
                 
                 if not existing:
                     self.conn.execute("""
-                        INSERT INTO scenario_tags (id, scenario_id, tag)
-                        VALUES (nextval('scenario_tags_seq'), ?, ?)
+                        INSERT INTO cohort_tags (id, cohort_id, tag)
+                        VALUES (nextval('cohort_tags_seq'), ?, ?)
                     """, [scenario_id, tag])
         
         return scenario_id
@@ -370,7 +370,7 @@ class StateManager:
         
         # Load tags
         tags_result = self.conn.execute("""
-            SELECT tag FROM scenario_tags WHERE scenario_id = ?
+            SELECT tag FROM cohort_tags WHERE cohort_id = ?
         """, [scenario_id]).fetchall()
         tags = [t[0] for t in tags_result]
         
@@ -416,13 +416,13 @@ class StateManager:
         query = """
             SELECT DISTINCT s.id, s.name, s.description, 
                    s.created_at, s.updated_at, s.metadata
-            FROM scenarios s
+            FROM cohorts s
         """
         params = []
         conditions = []
         
         if tag:
-            query += " JOIN scenario_tags t ON s.id = t.scenario_id"
+            query += " JOIN cohort_tags t ON s.id = t.cohort_id"
             conditions.append("t.tag = ?")
             params.append(tag)
         
@@ -453,12 +453,12 @@ class StateManager:
             
             # Get entity count
             count_result = self.conn.execute("""
-                SELECT COUNT(*) FROM scenario_entities WHERE scenario_id = ?
+                SELECT COUNT(*) FROM cohort_entities WHERE cohort_id = ?
             """, [row[0]]).fetchone()
             
             # Get tags
             tags_result = self.conn.execute("""
-                SELECT tag FROM scenario_tags WHERE scenario_id = ?
+                SELECT tag FROM cohort_tags WHERE cohort_id = ?
             """, [row[0]]).fetchall()
             
             scenarios.append({
@@ -507,14 +507,14 @@ class StateManager:
         ]
         for table in canonical_tables:
             try:
-                self.conn.execute(f"DELETE FROM {table} WHERE scenario_id = ?", [scenario_id])
+                self.conn.execute(f"DELETE FROM {table} WHERE cohort_id = ?", [scenario_id])
             except Exception:
                 pass  # Table may not have scenario_id column yet
         
         # Delete in order: tags, entity links, scenario
-        self.conn.execute("DELETE FROM scenario_tags WHERE scenario_id = ?", [scenario_id])
-        self.conn.execute("DELETE FROM scenario_entities WHERE scenario_id = ?", [scenario_id])
-        self.conn.execute("DELETE FROM scenarios WHERE id = ?", [scenario_id])
+        self.conn.execute("DELETE FROM cohort_tags WHERE cohort_id = ?", [scenario_id])
+        self.conn.execute("DELETE FROM cohort_entities WHERE cohort_id = ?", [scenario_id])
+        self.conn.execute("DELETE FROM cohorts WHERE id = ?", [scenario_id])
         
         return True
     
@@ -548,7 +548,7 @@ class StateManager:
             return []
         
         result = self.conn.execute("""
-            SELECT tag FROM scenario_tags WHERE scenario_id = ?
+            SELECT tag FROM cohort_tags WHERE cohort_id = ?
         """, [scenario['scenario_id']]).fetchall()
         return [t[0] for t in result]
     
@@ -561,13 +561,13 @@ class StateManager:
         for tag in tags:
             # Check if tag already exists
             existing = self.conn.execute("""
-                SELECT id FROM scenario_tags WHERE scenario_id = ? AND tag = ?
+                SELECT id FROM cohort_tags WHERE cohort_id = ? AND tag = ?
             """, [scenario['scenario_id'], tag]).fetchone()
             
             if not existing:
                 self.conn.execute("""
-                    INSERT INTO scenario_tags (id, scenario_id, tag)
-                    VALUES (nextval('scenario_tags_seq'), ?, ?)
+                    INSERT INTO cohort_tags (id, cohort_id, tag)
+                    VALUES (nextval('cohort_tags_seq'), ?, ?)
                 """, [scenario['scenario_id'], tag])
         return True
     
@@ -578,7 +578,7 @@ class StateManager:
     def _get_scenario_by_name(self, name: str) -> Optional[Dict]:
         """Get scenario by name."""
         result = self.conn.execute(
-            "SELECT id, name, description, created_at, updated_at, metadata FROM scenarios WHERE name = ?",
+            "SELECT id, name, description, created_at, updated_at, metadata FROM cohorts WHERE name = ?",
             [name]
         ).fetchone()
         if result:
@@ -596,7 +596,7 @@ class StateManager:
         """Get scenario by ID."""
         try:
             result = self.conn.execute(
-                "SELECT id, name, description, created_at, updated_at, metadata FROM scenarios WHERE id = ?",
+                "SELECT id, name, description, created_at, updated_at, metadata FROM cohorts WHERE id = ?",
                 [scenario_id]
             ).fetchone()
             if result:
@@ -627,22 +627,22 @@ class StateManager:
         
         # Check if entity already exists for this scenario
         existing = self.conn.execute("""
-            SELECT id FROM scenario_entities 
-            WHERE scenario_id = ? AND entity_type = ? AND entity_id = ?
+            SELECT id FROM cohort_entities 
+            WHERE cohort_id = ? AND entity_type = ? AND entity_id = ?
         """, [scenario_id, entity_type, entity_id]).fetchone()
         
         if existing:
             # Update existing
             self.conn.execute("""
-                UPDATE scenario_entities 
+                UPDATE cohort_entities 
                 SET entity_data = ?
-                WHERE scenario_id = ? AND entity_type = ? AND entity_id = ?
+                WHERE cohort_id = ? AND entity_type = ? AND entity_id = ?
             """, [entity_json, scenario_id, entity_type, entity_id])
         else:
             # Insert new (explicitly use sequence for id)
             self.conn.execute("""
-                INSERT INTO scenario_entities (id, scenario_id, entity_type, entity_id, entity_data, created_at)
-                VALUES (nextval('scenario_entities_seq'), ?, ?, ?, ?, ?)
+                INSERT INTO cohort_entities (id, cohort_id, entity_type, entity_id, entity_data, created_at)
+                VALUES (nextval('cohort_entities_seq'), ?, ?, ?, ?, ?)
             """, [scenario_id, entity_type, entity_id, entity_json, datetime.utcnow()])
         
         # Also try to insert into canonical table if serializer exists
@@ -695,8 +695,8 @@ class StateManager:
         """Load all entities for a scenario from scenario_entities table."""
         results = self.conn.execute("""
             SELECT entity_type, entity_id, entity_data
-            FROM scenario_entities
-            WHERE scenario_id = ?
+            FROM cohort_entities
+            WHERE cohort_id = ?
             ORDER BY entity_type, created_at
         """, [scenario_id]).fetchall()
         
@@ -723,7 +723,7 @@ class StateManager:
     def _delete_scenario_entities(self, scenario_id: str) -> None:
         """Remove all entity links for a scenario."""
         self.conn.execute(
-            "DELETE FROM scenario_entities WHERE scenario_id = ?",
+            "DELETE FROM cohort_entities WHERE cohort_id = ?",
             [scenario_id]
         )
     
