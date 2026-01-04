@@ -336,7 +336,7 @@ Overwrite it, or save as "diabetes-cohort-2"?
 
 ## Parameters Reference
 
-### save_scenario
+### save_cohort
 | Parameter | Description | Required |
 |-----------|-------------|----------|
 | name | Scenario identifier | Yes |

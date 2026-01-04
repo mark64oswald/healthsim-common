@@ -70,7 +70,7 @@ Save as scenario? (suggested name: 'medicare-diabetic-texas-001')"
   "execution": {
     "profile_id": "medicare-diabetic-texas-001",
     "options": {
-      "save_scenario": true,
+      "save_cohort": true,
       "scenario_name": "ma-diabetic-cohort-jan2025",
       "formats": ["fhir_r4", "x12_837"],
       "validation": "strict",
