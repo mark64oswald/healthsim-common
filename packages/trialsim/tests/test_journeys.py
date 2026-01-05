@@ -83,7 +83,6 @@ class TestJourneyEngineCreation:
         assert "screening" in trial_handlers
         assert "randomization" in trial_handlers
         assert "scheduled_visit" in trial_handlers
-        assert "adverse_event" in trial_handlers
 
 
 class TestJourneyTemplates:
@@ -104,7 +103,7 @@ class TestJourneyTemplates:
     
     def test_get_nonexistent_template(self):
         """Test retrieving non-existent template returns None."""
-        template = get_trial_journey_template("nonexistent-trial")
+        template = get_trial_journey_template("nonexistent-protocol")
         
         assert template is None
     
@@ -122,12 +121,14 @@ class TestJourneyTemplates:
         """Test phase3-oncology-standard template structure."""
         template = get_trial_journey_template("phase3-oncology-standard")
         
+        assert template["duration_days"] == 252
         assert template["products"] == ["trialsim"]
         
         # Should have key events
         event_ids = [e["event_id"] for e in template["events"]]
         assert "screening" in event_ids
         assert "randomization" in event_ids
+        assert "baseline" in event_ids
     
     def test_phase2_diabetes_template(self):
         """Test phase2-diabetes-dose-finding template structure."""
@@ -136,40 +137,27 @@ class TestJourneyTemplates:
         assert template is not None
         event_ids = [e["event_id"] for e in template["events"]]
         assert "screening" in event_ids
+        assert "randomization" in event_ids
+        assert "run_in" in event_ids
     
     def test_phase1_healthy_volunteer_template(self):
         """Test phase1-healthy-volunteer template structure."""
         template = get_trial_journey_template("phase1-healthy-volunteer")
         
         assert template is not None
+        assert template["duration_days"] == 28
         event_ids = [e["event_id"] for e in template["events"]]
-        assert "screening" in event_ids
-        assert "dosing_day1" in event_ids
+        assert "dosing" in event_ids
     
-    def test_vaccine_trial_template(self):
-        """Test vaccine-trial template structure."""
-        template = get_trial_journey_template("vaccine-trial")
+    def test_rwe_observational_template(self):
+        """Test rwe-observational template structure."""
+        template = get_trial_journey_template("rwe-observational")
         
         assert template is not None
+        assert template["duration_days"] == 365
         event_ids = [e["event_id"] for e in template["events"]]
-        assert "screening" in event_ids
-    
-    def test_screen_failure_template(self):
-        """Test screen-failure-journey template structure."""
-        template = get_trial_journey_template("screen-failure-journey")
-        
-        assert template is not None
-        event_ids = [e["event_id"] for e in template["events"]]
-        assert "screening" in event_ids
-    
-    def test_early_discontinuation_template(self):
-        """Test early-discontinuation template structure."""
-        template = get_trial_journey_template("early-discontinuation")
-        
-        assert template is not None
-        event_ids = [e["event_id"] for e in template["events"]]
-        assert "ae_onset" in event_ids
-        assert "withdrawal" in event_ids
+        assert "enrollment" in event_ids
+        assert "month12" in event_ids
 
 
 class TestTimelineCreation:
@@ -197,7 +185,7 @@ class TestTimelineCreation:
     def test_timeline_events_are_scheduled(self):
         """Test that timeline events have scheduled dates."""
         engine = create_trial_journey_engine(seed=42)
-        template = get_trial_journey_template("vaccine-trial")
+        template = get_trial_journey_template("phase2-diabetes-dose-finding")
         journey_spec = dict_to_journey_spec(template)
         
         subject = {"subject_id": "SUBJ-002"}
@@ -221,7 +209,7 @@ class TestTimelineExecution:
     def test_execute_simple_timeline(self):
         """Test executing a simple timeline."""
         engine = create_trial_journey_engine(seed=42)
-        template = get_trial_journey_template("screen-failure-journey")
+        template = get_trial_journey_template("phase1-healthy-volunteer")
         journey_spec = dict_to_journey_spec(template)
         
         subject = {"subject_id": "SUBJ-003", "name": "Execution Test"}
@@ -244,8 +232,8 @@ class TestTimelineExecution:
         
         # Use a simple journey with known events
         simple_journey = JourneySpecification(
-            journey_id="test-trial",
-            name="Test Trial",
+            journey_id="test-trial-journey",
+            name="Test Trial Journey",
             products=["trialsim"],
             events=[
                 EventDefinition(
@@ -254,7 +242,6 @@ class TestTimelineExecution:
                     event_type=TrialEventType.SCREENING.value,
                     product="trialsim",
                     delay=DelaySpec(days=0),
-                    parameters={"pass_rate": 1.0},
                 ),
             ],
         )
@@ -318,9 +305,10 @@ class TestEventTypes:
         """Test TrialEventType enum is available."""
         assert TrialEventType.SCREENING.value == "screening"
         assert TrialEventType.RANDOMIZATION.value == "randomization"
+        assert TrialEventType.WITHDRAWAL.value == "withdrawal"
         assert TrialEventType.SCHEDULED_VISIT.value == "scheduled_visit"
         assert TrialEventType.UNSCHEDULED_VISIT.value == "unscheduled_visit"
         assert TrialEventType.ADVERSE_EVENT.value == "adverse_event"
         assert TrialEventType.SERIOUS_ADVERSE_EVENT.value == "serious_adverse_event"
         assert TrialEventType.PROTOCOL_DEVIATION.value == "protocol_deviation"
-        assert TrialEventType.WITHDRAWAL.value == "withdrawal"
+        assert TrialEventType.DOSE_MODIFICATION.value == "dose_modification"

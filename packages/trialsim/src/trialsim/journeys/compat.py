@@ -1,6 +1,6 @@
 """Backward compatibility aliases for TrialSim journeys.
 
-This module provides deprecated aliases for migration from older terminology.
+This module provides deprecated aliases for migration from protocol-based terminology.
 New code should use the journey-based naming directly.
 
 Deprecation Notice:

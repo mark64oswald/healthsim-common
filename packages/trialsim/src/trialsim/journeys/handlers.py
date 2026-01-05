@@ -2,10 +2,10 @@
 
 This module provides handlers for TrialSim clinical trial events that can be registered
 with the core JourneyEngine. Handlers generate the appropriate outputs
-(screening records, randomization, visits, adverse events, etc.) when events are executed.
+(screenings, visits, adverse events, etc.) when events are executed.
 
 The handlers wrap the core healthsim.generation.handlers.TrialSimHandlers class
-and provide a consistent interface matching MemberSim, RxMemberSim, and PatientSim patterns.
+and provide a consistent interface matching MemberSim and RxMemberSim patterns.
 """
 
 from typing import Any
@@ -30,7 +30,7 @@ def screening_handler(
 ) -> dict[str, Any]:
     """Handle screening visit events.
     
-    Generates screening records with inclusion/exclusion criteria assessment.
+    Generates screening records with inclusion/exclusion criteria results.
     """
     handlers = CoreTrialSimHandlers(context.get("seed"))
     return handlers.handle_screening(subject, event, context)
@@ -43,7 +43,7 @@ def randomization_handler(
 ) -> dict[str, Any]:
     """Handle randomization events.
     
-    Generates randomization records with treatment arm assignment.
+    Assigns subjects to treatment arms and generates randomization records.
     """
     handlers = CoreTrialSimHandlers(context.get("seed"))
     return handlers.handle_randomization(subject, event, context)
@@ -56,7 +56,7 @@ def withdrawal_handler(
 ) -> dict[str, Any]:
     """Handle subject withdrawal events.
     
-    Generates withdrawal records with reason tracking.
+    Generates withdrawal/discontinuation records.
     """
     handlers = CoreTrialSimHandlers(context.get("seed"))
     return handlers.handle_withdrawal(subject, event, context)
@@ -69,7 +69,7 @@ def scheduled_visit_handler(
 ) -> dict[str, Any]:
     """Handle scheduled study visit events.
     
-    Generates visit records per protocol schedule.
+    Generates visit records with procedures and assessments.
     """
     handlers = CoreTrialSimHandlers(context.get("seed"))
     return handlers.handle_scheduled_visit(subject, event, context)
@@ -80,7 +80,7 @@ def unscheduled_visit_handler(
     event: TimelineEvent,
     context: dict[str, Any],
 ) -> dict[str, Any]:
-    """Handle unscheduled visit events.
+    """Handle unscheduled study visit events.
     
     Generates unscheduled visit records (e.g., AE follow-up).
     """
@@ -93,9 +93,9 @@ def adverse_event_handler(
     event: TimelineEvent,
     context: dict[str, Any],
 ) -> dict[str, Any]:
-    """Handle adverse event occurrences.
+    """Handle adverse event reporting.
     
-    Generates AE records with MedDRA coding and causality assessment.
+    Generates AE records with severity, causality assessment.
     """
     handlers = CoreTrialSimHandlers(context.get("seed"))
     return handlers.handle_adverse_event(subject, event, context)
@@ -106,7 +106,7 @@ def serious_adverse_event_handler(
     event: TimelineEvent,
     context: dict[str, Any],
 ) -> dict[str, Any]:
-    """Handle serious adverse event occurrences.
+    """Handle serious adverse event reporting.
     
     Generates SAE records with expedited reporting requirements.
     """
@@ -121,7 +121,7 @@ def protocol_deviation_handler(
 ) -> dict[str, Any]:
     """Handle protocol deviation events.
     
-    Generates deviation records with categorization and corrective actions.
+    Generates protocol deviation records.
     """
     handlers = CoreTrialSimHandlers(context.get("seed"))
     return handlers.handle_protocol_deviation(subject, event, context)
@@ -134,7 +134,7 @@ def dose_modification_handler(
 ) -> dict[str, Any]:
     """Handle dose modification events.
     
-    Generates dose modification records with reason tracking.
+    Generates dose adjustment records.
     """
     handlers = CoreTrialSimHandlers(context.get("seed"))
     return handlers.handle_dose_modification(subject, event, context)
