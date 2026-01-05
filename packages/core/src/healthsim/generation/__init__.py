@@ -86,6 +86,17 @@ from healthsim.generation.triggers import (
     TriggerRegistry,
     create_coordinator,
 )
+from healthsim.generation.handlers import (
+    PatientSimHandlers,
+    MemberSimHandlers,
+    RxMemberSimHandlers,
+    TrialSimHandlers,
+    create_patientsim_handlers,
+    create_membersim_handlers,
+    create_rxmembersim_handlers,
+    create_trialsim_handlers,
+    register_all_handlers,
+)
 
 __all__ = [
     # Generators
@@ -161,4 +172,14 @@ __all__ = [
     "CrossProductCoordinator",
     "LinkedEntity",
     "create_coordinator",
+    # Product Handlers
+    "PatientSimHandlers",
+    "MemberSimHandlers",
+    "RxMemberSimHandlers",
+    "TrialSimHandlers",
+    "create_patientsim_handlers",
+    "create_membersim_handlers",
+    "create_rxmembersim_handlers",
+    "create_trialsim_handlers",
+    "register_all_handlers",
 ]
