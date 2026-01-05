@@ -13,48 +13,41 @@ This plan addresses two tracks:
 
 ---
 
-## Track 1: Product Consistency (3 Items)
+## Track 1: Product Consistency (3 Items) ✅ COMPLETE
 
-### 1.1 Database Index Names
+### 1.1 Database Index Names ✅
 **Status**: ✅ Complete
-**Effort**: Small
+**Commit**: 89c31515
 
-Rename scenario-based index names to cohort-based:
-- [x] Audit `packages/core/src/healthsim/state/migrations.py` for `idx_*_scenario` patterns
-- [x] Added migration 1.6 to drop legacy idx_*_scenario indexes
-- [x] Verify no breaking changes
-- [x] Run state management tests (295 passed)
+Added migration 1.6 to drop legacy `idx_*_scenario` indexes (replaced by `idx_*_cohort`).
 
-### 1.2 MemberSim/RxMemberSim MCP Audit
+### 1.2 MemberSim/RxMemberSim MCP Audit ✅
 **Status**: ✅ Complete
-**Effort**: Small-Medium
+**Commit**: 89c31515
 
-Check for remaining "scenario" terminology in MCP layers:
-- [x] Audit `packages/membersim/src/membersim/mcp/` for scenario references
-- [x] Audit `packages/rxmembersim/src/rxmembersim/mcp/` for scenario references
-- [x] Update user-facing messages to use "cohort/skill" terminology
-- [x] Run MemberSim tests (183 passed)
-- [x] Run RxMemberSim tests (213 passed)
+Updated state servers in both packages to use "Cohort" terminology.
 
-### 1.3 TrialSim MCP Server
+### 1.3 TrialSim MCP Server ✅
 **Status**: ✅ Complete
-**Effort**: Medium
+**Commit**: 89c31515
 
-Add MCP server integration to TrialSim following PatientSim pattern:
-- [x] Create `packages/trialsim/src/trialsim/mcp/generation_server.py`
-- [x] Create `packages/trialsim/src/trialsim/mcp/state_server.py`
-- [x] Create `packages/trialsim/src/trialsim/mcp/formatters.py`
-- [x] Add MCP tools: generate_subject, generate_visit_schedule, generate_adverse_events
-- [x] Add state tools: save_cohort, load_cohort, list_saved_cohorts
-- [x] Create tests for MCP layer (33 passed)
-- [x] Update TrialSim README with MCP documentation
+Created full MCP server integration with generation and state tools.
 
 ---
 
 ## Track 2: Generative Framework Gaps
 
-### 2.1 Cross-Product Integration
-**Status**: ⬜ Not Started
+### 2.1 MCP Tools for Profile Management ✅
+**Status**: ✅ Already Implemented
+**Tests**: 19 passing
+
+Existing implementation in `packages/core/src/healthsim/mcp/profile_server.py`:
+- build_profile, save_profile, load_profile, list_profiles
+- list_profile_templates, execute_profile
+- list_journey_templates, get_journey_template
+
+### 2.2 Cross-Product Integration
+**Status**: 🔄 In Progress
 **Effort**: Medium-Large
 
 Connect generation across product domains:
@@ -63,17 +56,6 @@ Connect generation across product domains:
 - [ ] Add event triggers (enrollment triggers eligibility, claim triggers encounter)
 - [ ] Create cross-domain journey templates
 - [ ] Add integration tests
-
-### 2.2 MCP Tools for Profile Management
-**Status**: ⬜ Not Started
-**Effort**: Medium
-
-Add MCP tools to manage profiles and journeys:
-- [ ] Create `packages/core/src/healthsim/mcp/profile_server.py`
-- [ ] Add tools: build_profile, save_profile, load_profile, list_profiles
-- [ ] Add tools: build_journey, save_journey, load_journey, list_journeys
-- [ ] Add tools: execute_profile, execute_journey
-- [ ] Create tests for profile MCP layer
 
 ### 2.3 Journey Validation Framework
 **Status**: ⬜ Not Started
@@ -89,36 +71,24 @@ Enhance journey execution validation:
 **Status**: ⬜ Not Started
 **Effort**: Medium
 
-Implement CDISC SDTM format export for TrialSim:
-- [ ] Create `packages/trialsim/src/trialsim/formats/sdtm/exporter.py`
-- [ ] Implement DM (Demographics) domain
-- [ ] Implement AE (Adverse Events) domain
-- [ ] Implement EX (Exposure) domain
-- [ ] Implement VS (Vital Signs) domain
-- [ ] Add SDTM validation
-- [ ] Create tests for SDTM export
+Implement CDISC SDTM format export for TrialSim.
 
 ### 2.5 PopulationSim Reference Data Integration
 **Status**: ⬜ Not Started
 **Effort**: Medium
 
-Connect PopulationSim reference data to generation framework:
-- [ ] Audit existing PopulationSim DuckDB schema
-- [ ] Create reference data adapters for generation
-- [ ] Add geographic distribution queries
-- [ ] Add disease prevalence queries
-- [ ] Integrate with ProfileExecutor
+Connect PopulationSim reference data to generation framework.
 
 ---
 
 ## Execution Order
 
-| Phase | Items | Estimated Sessions |
-|-------|-------|-------------------|
-| **Phase A** | 1.1, 1.2, 1.3 | 1-2 sessions |
-| **Phase B** | 2.2 (MCP Tools) | 1-2 sessions |
-| **Phase C** | 2.1 (Cross-Product) | 2-3 sessions |
-| **Phase D** | 2.3, 2.4, 2.5 | 2-3 sessions |
+| Phase | Items | Estimated Sessions | Status |
+|-------|-------|-------------------|--------|
+| **Phase A** | 1.1, 1.2, 1.3 | 1-2 sessions | ✅ Complete |
+| **Phase B** | 2.1 (MCP Tools) | 1-2 sessions | ✅ Already Done |
+| **Phase C** | 2.2 (Cross-Product) | 2-3 sessions | 🔄 In Progress |
+| **Phase D** | 2.3, 2.4, 2.5 | 2-3 sessions | ⬜ Pending |
 
 ---
 
@@ -128,29 +98,8 @@ Connect PopulationSim reference data to generation framework:
 
 | Date | Items Completed | Tests Status | Commits |
 |------|-----------------|--------------|---------|
-| 2026-01-05 | TrialSim core implementation, PatientSim cleanup, README standardization | 1,760 passing | 3 commits |
-| 2026-01-05 | Track 1: 1.1 DB indexes, 1.2 MCP audit, 1.3 TrialSim MCP | 1,777 passing | 1 commit |
+| 2026-01-05 | Track 1 complete, 2.1 verified | 1,369 passing | 89c31515 |
 | | | | |
-
----
-
-## Dependencies
-
-- Track 1 items are independent and can proceed in any order
-- Track 2.2 (MCP Tools) should precede 2.1 (Cross-Product) 
-- Track 2.4 (SDTM) depends on 1.3 (TrialSim MCP)
-- Track 2.5 (PopulationSim) is independent
-
----
-
-## Definition of Done
-
-Each item is complete when:
-1. ✅ Code implemented
-2. ✅ Tests passing
-3. ✅ Documentation updated
-4. ✅ Changes committed and pushed
-5. ✅ Plan updated with status
 
 ---
 

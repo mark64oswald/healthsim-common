@@ -97,6 +97,20 @@ from healthsim.generation.handlers import (
     create_trialsim_handlers,
     register_all_handlers,
 )
+from healthsim.generation.cross_domain_sync import (
+    CrossDomainSync,
+    SyncConfig,
+    SyncReport,
+    ProductType,
+    TriggerType,
+    TriggerSpec,
+    TriggerResult,
+    PersonIdentity,
+    IdentityRegistry,
+    CorrelatorType,
+    create_cross_domain_sync,
+    hash_ssn,
+)
 
 __all__ = [
     # Generators
@@ -182,4 +196,17 @@ __all__ = [
     "create_rxmembersim_handlers",
     "create_trialsim_handlers",
     "register_all_handlers",
+    # Cross-Domain Sync
+    "CrossDomainSync",
+    "SyncConfig",
+    "SyncReport",
+    "ProductType",
+    "TriggerType",
+    "TriggerSpec",
+    "TriggerResult",
+    "PersonIdentity",
+    "IdentityRegistry",
+    "CorrelatorType",
+    "create_cross_domain_sync",
+    "hash_ssn",
 ]
