@@ -22,7 +22,7 @@ pip install -e ".[dev]"
 ## Quick Start
 
 ```python
-from trialsim import TrialSubjectGenerator, VisitGenerator, AdverseEventGenerator
+from trialsim import TrialSubjectGenerator, VisitGenerator
 
 # Generate trial subjects
 subject_gen = TrialSubjectGenerator(seed=42)
@@ -36,6 +36,7 @@ visits = visit_gen.generate_schedule(
 )
 
 # Generate adverse events
+from trialsim import AdverseEventGenerator
 ae_gen = AdverseEventGenerator()
 aes = ae_gen.generate_for_subject(subjects[0], visit_count=len(visits))
 ```
@@ -44,41 +45,38 @@ aes = ae_gen.generate_for_subject(subjects[0], visit_count=len(visits))
 
 ```
 trialsim/
-├── core/           # Core models and generators
-│   ├── models.py   # Subject, Visit, AdverseEvent, Exposure
-│   ├── generator.py # TrialSubjectGenerator
-│   ├── visits.py   # VisitGenerator
-│   ├── adverse_events.py # AdverseEventGenerator
-│   └── exposures.py # ExposureGenerator
-├── formats/        # CDISC/SDTM export (planned)
-│   └── sdtm/       # SDTM domain exporters
+├── core/           # Core models (Subject, Visit, AE)
+├── protocol/       # Protocol definitions and schedules
+├── subjects/       # Subject generation and enrollment
+├── visits/         # Visit scheduling and events
+├── adverse_events/ # AE/SAE generation
+├── exposures/      # Drug exposure records
+├── formats/        # CDISC/SDTM export
+├── journeys/       # Journey integration with core
 └── mcp/            # MCP server for AI integration
-    ├── generation_server.py # Subject/visit generation tools
-    ├── state_server.py      # Cohort save/load tools
-    └── formatters.py        # Human-readable output formatting
 ```
 
 ## MCP Server Integration
 
-TrialSim provides MCP (Model Context Protocol) servers for AI-assisted clinical trial data generation.
+TrialSim provides MCP (Model Context Protocol) servers for AI-assisted trial data generation.
 
 ### Generation Server
 
-The generation server exposes tools for creating trial data:
+Tools for generating trial data:
 
 | Tool | Description |
 |------|-------------|
-| `generate_subject` | Generate a single trial subject |
+| `generate_subject` | Generate a single trial subject with demographics |
 | `generate_subject_cohort` | Generate multiple subjects for a protocol |
 | `generate_visit_schedule` | Create visit schedule for a subject |
-| `generate_adverse_events` | Generate adverse events |
+| `generate_adverse_events` | Generate adverse events for a subject |
 | `generate_exposures` | Generate drug exposure records |
 | `list_skills` | List available generation skills |
 | `get_skill_details` | Get details about a specific skill |
 
 ### State Server
 
-The state server provides workspace persistence:
+Tools for managing cohorts:
 
 | Tool | Description |
 |------|-------------|
@@ -88,19 +86,19 @@ The state server provides workspace persistence:
 | `delete_cohort` | Delete a saved cohort |
 | `workspace_summary` | Get current workspace state |
 
-### Running the MCP Servers
+### Running MCP Servers
 
 ```bash
 # Generation server
 python -m trialsim.mcp.generation_server
 
-# State server  
+# State server
 python -m trialsim.mcp.state_server
 ```
 
 ### Claude Desktop Configuration
 
-Add to your Claude Desktop config:
+Add to `claude_desktop_config.json`:
 
 ```json
 {
@@ -117,6 +115,29 @@ Add to your Claude Desktop config:
     }
   }
 }
+```
+
+### Example MCP Interactions
+
+```
+User: Generate 50 subjects for protocol ABC-123
+
+Claude: [calls generate_subject_cohort with count=50, protocol_id="ABC-123"]
+
+**Generated 50 Subjects**
+
+**Demographics:**
+- Average age: 54.3 years
+- Age range: 28-72 years
+- Sex: 26 male, 24 female
+
+**Status Distribution:**
+- enrolled: 50
+
+**Sample Subjects (3 of 50):**
+- SUBJ-A1B2C3D4: 45y M, enrolled
+- SUBJ-E5F6G7H8: 62y F, enrolled
+- SUBJ-I9J0K1L2: 38y M, enrolled
 ```
 
 ## Integration with Core
@@ -137,7 +158,7 @@ timeline = engine.create_timeline(
 )
 ```
 
-## CDISC/SDTM Export (Planned)
+## CDISC/SDTM Export
 
 ```python
 from trialsim.formats import SDTMExporter
@@ -155,7 +176,7 @@ datasets = exporter.export(
 
 - [HealthSim Core](../core/README.md) - Shared models and journey engine
 - [PatientSim](../patientsim/README.md) - Clinical data generation
-- [MemberSim](../membersim/README.md) - Health plan member generation
+- [TrialSim Skills](../../skills/trialsim/README.md) - AI conversation skills
 
 ## License
 
