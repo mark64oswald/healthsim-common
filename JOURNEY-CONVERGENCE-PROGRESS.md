@@ -176,7 +176,13 @@ for event in timeline.events:
 
 ## Next Steps
 
-1. Update SKILL.md documentation for generation/journeys
-2. Fix 211 broken markdown links across documentation
-3. Update hello-healthsim examples with journey patterns
-4. Consider creating dedicated `packages/trialsim` package for parity
+### Completed ✅
+1. ~~Update SKILL.md documentation for generation/journeys~~
+2. ~~Fix broken markdown links across documentation~~ (reduced from 211 to 30, with 17 real broken links remaining)
+3. Added new journey templates and distribution skills
+
+### Remaining
+1. Create remaining profile templates (14 files) or remove broken links
+2. Update hello-healthsim examples with journey patterns
+3. Consider creating dedicated `packages/trialsim` package for parity
+4. Clean up archive directory broken links (low priority)
