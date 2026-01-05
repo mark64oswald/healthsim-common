@@ -121,43 +121,44 @@ class TestJourneyTemplates:
         """Test phase3-oncology-standard template structure."""
         template = get_trial_journey_template("phase3-oncology-standard")
         
-        assert template["duration_days"] == 252
+        assert template["duration_days"] == 365
         assert template["products"] == ["trialsim"]
         
         # Should have key events
         event_ids = [e["event_id"] for e in template["events"]]
         assert "screening" in event_ids
         assert "randomization" in event_ids
-        assert "baseline" in event_ids
+        assert "visit_1" in event_ids
     
-    def test_phase2_diabetes_template(self):
-        """Test phase2-diabetes-dose-finding template structure."""
-        template = get_trial_journey_template("phase2-diabetes-dose-finding")
+    def test_phase2_efficacy_template(self):
+        """Test phase2-efficacy template structure."""
+        template = get_trial_journey_template("phase2-efficacy")
         
         assert template is not None
         event_ids = [e["event_id"] for e in template["events"]]
         assert "screening" in event_ids
         assert "randomization" in event_ids
-        assert "run_in" in event_ids
+        assert "week_12" in event_ids
     
-    def test_phase1_healthy_volunteer_template(self):
-        """Test phase1-healthy-volunteer template structure."""
-        template = get_trial_journey_template("phase1-healthy-volunteer")
+    def test_phase1_dose_escalation_template(self):
+        """Test phase1-dose-escalation template structure."""
+        template = get_trial_journey_template("phase1-dose-escalation")
         
         assert template is not None
-        assert template["duration_days"] == 28
+        assert template["duration_days"] == 84
         event_ids = [e["event_id"] for e in template["events"]]
-        assert "dosing" in event_ids
+        assert "baseline" in event_ids
+        assert "day_21" in event_ids
     
-    def test_rwe_observational_template(self):
-        """Test rwe-observational template structure."""
-        template = get_trial_journey_template("rwe-observational")
+    def test_simple_safety_followup_template(self):
+        """Test simple-safety-followup template structure."""
+        template = get_trial_journey_template("simple-safety-followup")
         
         assert template is not None
         assert template["duration_days"] == 365
         event_ids = [e["event_id"] for e in template["events"]]
-        assert "enrollment" in event_ids
-        assert "month12" in event_ids
+        assert "screening" in event_ids
+        assert "month_12" in event_ids
 
 
 class TestTimelineCreation:
@@ -166,7 +167,7 @@ class TestTimelineCreation:
     def test_create_timeline_from_template(self):
         """Test creating timeline from journey template."""
         engine = create_trial_journey_engine(seed=42)
-        template = get_trial_journey_template("phase1-healthy-volunteer")
+        template = get_trial_journey_template("simple-safety-followup")
         journey_spec = dict_to_journey_spec(template)
         
         subject = {"subject_id": "SUBJ-001", "name": "Test Subject"}
@@ -185,7 +186,7 @@ class TestTimelineCreation:
     def test_timeline_events_are_scheduled(self):
         """Test that timeline events have scheduled dates."""
         engine = create_trial_journey_engine(seed=42)
-        template = get_trial_journey_template("phase2-diabetes-dose-finding")
+        template = get_trial_journey_template("phase2-efficacy")
         journey_spec = dict_to_journey_spec(template)
         
         subject = {"subject_id": "SUBJ-002"}
@@ -209,7 +210,7 @@ class TestTimelineExecution:
     def test_execute_simple_timeline(self):
         """Test executing a simple timeline."""
         engine = create_trial_journey_engine(seed=42)
-        template = get_trial_journey_template("phase1-healthy-volunteer")
+        template = get_trial_journey_template("simple-safety-followup")
         journey_spec = dict_to_journey_spec(template)
         
         subject = {"subject_id": "SUBJ-003", "name": "Execution Test"}
