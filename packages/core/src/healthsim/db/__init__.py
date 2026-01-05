@@ -46,6 +46,13 @@ from .reference import (
     is_reference_data_loaded,
     REFERENCE_TABLES,
 )
+from .lfs_check import (
+    is_lfs_pointer,
+    check_duckdb_file,
+    require_duckdb,
+    get_db_connection,
+    LFSError,
+)
 
 __all__ = [
     # Connection management
@@ -82,4 +89,11 @@ __all__ = [
     'get_reference_status',
     'is_reference_data_loaded',
     'REFERENCE_TABLES',
+    
+    # LFS Check
+    'is_lfs_pointer',
+    'check_duckdb_file',
+    'require_duckdb',
+    'get_db_connection',
+    'LFSError',
 ]

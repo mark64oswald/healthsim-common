@@ -39,6 +39,53 @@ The HealthSim DuckDB skill provides persistent storage and query capabilities fo
 - "Export cohort to JSON"
 - "Import cohort from JSON"
 
+## Git LFS Requirement
+
+**IMPORTANT**: The `healthsim.duckdb` file is stored using Git LFS due to its size. 
+
+### Detecting LFS Issues
+
+If you encounter database errors, the file may be an LFS pointer instead of actual data:
+
+```python
+from healthsim.db import check_duckdb_file
+
+status = check_duckdb_file()
+if status["status"] == "lfs_pointer":
+    print("ERROR: Database is LFS pointer, not actual file")
+    print("Run: git lfs pull")
+```
+
+### Safe Database Access
+
+Always use `require_duckdb()` or `get_db_connection()` which validate the file:
+
+```python
+from healthsim.db import require_duckdb, get_db_connection, LFSError
+
+try:
+    conn = get_db_connection()
+except LFSError as e:
+    print(f"Git LFS issue: {e}")
+except FileNotFoundError:
+    print("Database file not found")
+```
+
+### For Tests
+
+Tests should skip database operations when LFS file is unavailable:
+
+```python
+import pytest
+from healthsim.db import check_duckdb_file
+
+db_available = check_duckdb_file()["status"] == "ok"
+
+@pytest.mark.skipif(not db_available, reason="DuckDB file not available (Git LFS)")
+def test_database_query():
+    ...
+```
+
 ## Database Schema
 
 ### Schema Version 1.2 Updates
