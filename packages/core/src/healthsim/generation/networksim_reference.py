@@ -1,16 +1,16 @@
 """NetworkSim reference data resolver.
 
-Resolves provider and facility references from the NetworkSim database
-containing NPPES provider data, facility information, and quality metrics.
+Resolves provider and facility references from the NetworkSim data
+in the canonical healthsim.duckdb database (network schema).
 
-Database: cohorts/networksim/archive/healthsim_networksim_standalone.duckdb
+Database: healthsim.duckdb (network schema)
 
 Tables:
-- providers: 8.9M NPPES provider records
-- facilities: 77K hospital/facility records  
-- hospital_quality: 5.4K hospital quality metrics
-- physician_quality: 1.5M physician quality metrics
-- ahrf_county: 3.2K Area Health Resource File county data
+- network.providers: 8.9M NPPES provider records
+- network.facilities: 77K hospital/facility records  
+- network.hospital_quality: 5.4K hospital quality metrics
+- network.physician_quality: 1.5M physician quality metrics
+- network.ahrf_county: 3.2K Area Health Resource File county data
 
 Usage:
     from healthsim.generation.networksim_reference import (
@@ -181,24 +181,56 @@ TAXONOMY_MAP = {
 }
 
 
+# CMS Provider of Service (POS) facility type codes
+FACILITY_TYPE_MAP = {
+    "hospital": "01",               # Short-term Acute Care Hospital
+    "long_term_hospital": "02",     # Long-term Care Hospital  
+    "psychiatric": "03",            # Psychiatric Hospital
+    "rehabilitation": "04",         # Rehabilitation Hospital
+    "childrens": "05",              # Children's Hospital
+    "religious_nonmedical": "06",   # Religious Nonmedical Health Care
+    "snf": "07",                    # Skilled Nursing Facility
+    "home_health": "08",            # Home Health Agency
+    "hospice": "09",                # Hospice
+    "corf": "11",                   # Comprehensive Outpatient Rehab
+    "esrd": "12",                   # End-Stage Renal Disease
+    "asc": "14",                    # Ambulatory Surgical Center
+    "rural_health": "17",           # Rural Health Clinic
+    "fqhc": "19",                   # Federally Qualified Health Center
+    "cmhc": "21",                   # Community Mental Health Center
+}
+
+
 def get_healthsim_db_path() -> Path:
-    """Get the path to HealthSim DuckDB database.
+    """Get the path to canonical HealthSim DuckDB database.
     
-    The main database is healthsim_current_backup.duckdb which contains:
-    - population schema: CDC PLACES, SVI, ADI data
-    - network schema: NPPES providers, facilities, quality metrics
-    - main schema: generated data tables
+    The canonical database is healthsim.duckdb which contains:
+    - main schema: Entity tables (patients, encounters, etc.)
+    - population schema: CDC PLACES and SVI reference data
+    - network schema: NPPES provider and facility data
     
-    Note: healthsim.duckdb is tracked in Git LFS and may be a pointer file.
-    Use healthsim_current_backup.duckdb for actual data access.
+    Note: healthsim.duckdb is tracked in Git LFS (~1.7GB).
     """
     module_path = Path(__file__).resolve()
     workspace_root = module_path.parent.parent.parent.parent.parent.parent
-    return workspace_root / "healthsim_current_backup.duckdb"
+    return workspace_root / "healthsim.duckdb"
 
 
-# Alias for backwards compatibility
-get_networksim_db_path = get_healthsim_db_path
+def get_networksim_db_path() -> Path:
+    """Get the path to HealthSim DuckDB database for NetworkSim data.
+    
+    Returns the canonical healthsim.duckdb path. NetworkSim data is in 
+    the 'network' schema:
+    - network.providers: 8.9M NPPES provider records
+    - network.facilities: 77K CMS facility records
+    - network.hospital_quality: Hospital quality metrics
+    - network.physician_quality: Physician quality metrics
+    - network.ahrf_county: Area Health Resource File data
+    
+    Note: This returns the same path as get_healthsim_db_path() since
+    NetworkSim data is now part of the canonical database.
+    """
+    return get_healthsim_db_path()
 
 
 class NetworkSimResolver:
@@ -231,7 +263,7 @@ class NetworkSimResolver:
         ... )
     """
     
-    # Schema prefix for network tables
+    # Schema prefix for network tables in healthsim.duckdb
     SCHEMA = "network"
     
     def __init__(self, conn):
@@ -376,8 +408,10 @@ class NetworkSimResolver:
             params.append(f"{zip_code[:5]}%")
         
         if facility_type:
+            # Translate facility type name to code if needed
+            type_code = FACILITY_TYPE_MAP.get(facility_type.lower(), facility_type)
             conditions.append("type = ?")
-            params.append(facility_type)
+            params.append(type_code)
         
         if min_beds is not None:
             conditions.append("beds >= ?")
@@ -518,8 +552,10 @@ class NetworkSimResolver:
             params.append(state.upper())
         
         if facility_type:
+            # Translate facility type name to code if needed
+            type_code = FACILITY_TYPE_MAP.get(facility_type.lower(), facility_type)
             conditions.append("type = ?")
-            params.append(facility_type)
+            params.append(type_code)
         
         where_clause = " AND ".join(conditions) if conditions else "1=1"
         
@@ -605,17 +641,26 @@ def get_facilities_by_geography(
         conn: DuckDB connection to NetworkSim database
         state: State abbreviation
         city: Optional city name
-        facility_type: Optional facility type
+        facility_type: Facility type name (from FACILITY_TYPE_MAP) or CMS code
         limit: Maximum results
         
     Returns:
         List of Facility objects
     """
     resolver = NetworkSimResolver(conn)
+    
+    # Resolve facility type to CMS code if needed
+    resolved_type = None
+    if facility_type:
+        resolved_type = FACILITY_TYPE_MAP.get(
+            facility_type.lower().replace(" ", "_"), 
+            facility_type
+        )
+    
     return resolver.find_facilities(
         state=state,
         city=city,
-        facility_type=facility_type,
+        facility_type=resolved_type,
         limit=limit,
     )
 
@@ -634,7 +679,7 @@ def assign_provider_to_patient(
         patient_state: Patient's state
         patient_city: Patient's city (optional)
         specialty: Required specialty (optional)
-        seed: Random seed for reproducibility
+        seed: Random seed for reproducibility (affects Python's random.choice)
         
     Returns:
         Assigned Provider or None if no match found
@@ -648,14 +693,14 @@ def assign_provider_to_patient(
     if specialty:
         taxonomy = TAXONOMY_MAP.get(specialty.lower().replace(" ", "_"), specialty)
     
-    # Try to find in same city first
+    # Try to find in same city first (use deterministic order, then random.choice)
     if patient_city:
         providers = resolver.find_providers(
             state=patient_state,
             city=patient_city,
             taxonomy=taxonomy,
             limit=100,
-            random_sample=True,
+            random_sample=False,  # Use deterministic NPI ordering
         )
         if providers:
             return random.choice(providers)
@@ -665,7 +710,7 @@ def assign_provider_to_patient(
         state=patient_state,
         taxonomy=taxonomy,
         limit=100,
-        random_sample=True,
+        random_sample=False,  # Use deterministic NPI ordering
     )
     
     return random.choice(providers) if providers else None
@@ -684,7 +729,7 @@ def assign_facility_to_patient(
         conn: DuckDB connection to NetworkSim database
         patient_state: Patient's state
         patient_city: Patient's city (optional)
-        facility_type: Type of facility needed
+        facility_type: Type of facility (from FACILITY_TYPE_MAP) or CMS code
         seed: Random seed for reproducibility
         
     Returns:
@@ -695,14 +740,20 @@ def assign_facility_to_patient(
     
     resolver = NetworkSimResolver(conn)
     
-    # Try to find in same city first
+    # Resolve facility type to CMS code
+    resolved_type = FACILITY_TYPE_MAP.get(
+        facility_type.lower().replace(" ", "_"),
+        facility_type
+    )
+    
+    # Try to find in same city first (use deterministic order, then random.choice)
     if patient_city:
         facilities = resolver.find_facilities(
             state=patient_state,
             city=patient_city,
-            facility_type=facility_type,
+            facility_type=resolved_type,
             limit=50,
-            random_sample=True,
+            random_sample=False,  # Use deterministic CCN ordering
         )
         if facilities:
             return random.choice(facilities)
@@ -710,9 +761,9 @@ def assign_facility_to_patient(
     # Fall back to state-level
     facilities = resolver.find_facilities(
         state=patient_state,
-        facility_type=facility_type,
+        facility_type=resolved_type,
         limit=50,
-        random_sample=True,
+        random_sample=False,  # Use deterministic CCN ordering
     )
     
     return random.choice(facilities) if facilities else None
@@ -729,8 +780,10 @@ __all__ = [
     "FacilitySearchCriteria",
     # Constants
     "TAXONOMY_MAP",
+    "FACILITY_TYPE_MAP",
     # Resolver
     "NetworkSimResolver",
+    "get_healthsim_db_path",
     "get_networksim_db_path",
     # Convenience functions
     "get_providers_by_geography",

@@ -86,7 +86,7 @@ class ReferenceProfileResolver:
         """Initialize resolver with database connection.
         
         Args:
-            conn: DuckDB connection with ref_places_* and ref_svi_* tables
+            conn: DuckDB connection to healthsim.duckdb with population and network schemas
         """
         self.conn = conn
     
@@ -144,7 +144,7 @@ class ReferenceProfileResolver:
                 SUM(copd_crudeprev * totalpopulation) / SUM(totalpopulation) as copd_avg,
                 SUM(cancer_crudeprev * totalpopulation) / SUM(totalpopulation) as cancer_avg,
                 SUM(depression_crudeprev * totalpopulation) / SUM(totalpopulation) as depression_avg
-            FROM ref_places_county
+            FROM population.places_county
             WHERE stateabbr = ?
             GROUP BY stateabbr
         """
@@ -161,7 +161,7 @@ class ReferenceProfileResolver:
                 SUM(ep_hisp * e_totpop) / NULLIF(SUM(e_totpop), 0) as hisp_avg,
                 SUM(ep_pov150 * e_totpop) / NULLIF(SUM(e_totpop), 0) as poverty_avg,
                 SUM(ep_uninsur * e_totpop) / NULLIF(SUM(e_totpop), 0) as uninsur_avg
-            FROM ref_svi_county
+            FROM population.svi_county
             WHERE st_abbr = ?
             GROUP BY st_abbr
         """
@@ -199,7 +199,7 @@ class ReferenceProfileResolver:
     def _get_places_county(self, county_fips: str) -> Optional[dict]:
         """Get PLACES data for a county."""
         query = """
-            SELECT * FROM ref_places_county 
+            SELECT * FROM population.places_county 
             WHERE countyfips = ? OR countyfips = ?
         """
         # Try with and without leading zeros
@@ -212,7 +212,7 @@ class ReferenceProfileResolver:
     def _get_svi_county(self, county_fips: str) -> Optional[dict]:
         """Get SVI data for a county."""
         query = """
-            SELECT * FROM ref_svi_county 
+            SELECT * FROM population.svi_county 
             WHERE stcnty = ? OR stcnty = ?
         """
         result = self.conn.execute(query, [county_fips, county_fips.lstrip('0')]).fetchone()
@@ -423,7 +423,7 @@ def list_counties(
     """
     query = """
         SELECT countyfips, countyname, stateabbr, totalpopulation
-        FROM ref_places_county
+        FROM population.places_county
     """
     if state_abbr:
         query += " WHERE stateabbr = ?"
@@ -453,7 +453,7 @@ def list_states(conn: duckdb.DuckDBPyConnection) -> list[dict]:
     """
     query = """
         SELECT stateabbr, SUM(totalpopulation) as total_pop, COUNT(*) as county_count
-        FROM ref_places_county
+        FROM population.places_county
         GROUP BY stateabbr
         ORDER BY stateabbr
     """
