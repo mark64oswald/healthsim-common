@@ -36,10 +36,14 @@ dependencies = [
 dev = [
     "pytest>=7.0.0",
     "pytest-cov>=4.0.0",
+    "pytest-asyncio>=0.21.0",
     "mypy>=1.0.0",
     "ruff>=0.1.0",
     "black>=23.0.0",
     "pre-commit>=3.0.0",
+]
+mcp-server = [
+    "mcp>=1.0.0",
 ]
 # Product packages for unified_generate integration tests
 products = [
@@ -71,6 +75,7 @@ packages = ["src/healthsim"]
 testpaths = ["tests"]
 pythonpath = ["src"]
 addopts = "-v --tb=short"
+asyncio_mode = "auto"
 markers = [
     "integration: marks tests as integration tests (require real database)",
 ]
