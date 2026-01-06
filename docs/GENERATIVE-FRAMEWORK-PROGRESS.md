@@ -264,7 +264,7 @@ All major phases completed:
 - Phase 5: Profile & Journey Persistence ✅
 - Phase 6: Documentation ✅
 
-**Test Suite: 1,690 passed, 2 skipped**
+**Test Suite: 1,708 passed, 2 skipped**
 
 ---
 
@@ -274,18 +274,36 @@ All major phases completed:
 
 | Task | Status | Notes |
 |------|--------|-------|
-| MCP server implementation | ✅ | profile_server.py (571 lines) |
-| Profile tools | ✅ | build, save, load, list, templates, execute |
-| Journey tools | ✅ | list_templates, get_template |
-| Tests | ✅ | 19 tests passing |
+| MCP server implementation | ✅ | profile_server.py (985 lines) |
+| Profile tools | ✅ | build, save, load, list, list_templates, get_template, execute |
+| Journey tools | ✅ | build, save, load, list, list_templates, get_template, execute |
+| Tests | ✅ | 37 tests passing |
 | Documentation | ✅ | README.md with usage examples |
 
-**Files:**
-- `packages/core/src/healthsim/mcp/profile_server.py` (571 lines)
-- `packages/core/src/healthsim/mcp/README.md` (109 lines)
-- `packages/core/tests/mcp/test_profile_server.py` (294 lines)
+**Profile Tools (7):**
+- `build_profile` - Create profile from parameters
+- `save_profile` - Save to ~/.healthsim/profiles/
+- `load_profile` - Load by name/ID/template
+- `list_profiles` - List saved profiles
+- `list_profile_templates` - List built-in templates
+- `get_profile_template` - Get template details
+- `execute_profile` - Generate entities
 
-**Commit**: 79cacdc
+**Journey Tools (7):**
+- `build_journey` - Create journey from parameters
+- `save_journey` - Save to ~/.healthsim/journeys/
+- `load_journey` - Load by name/ID/template
+- `list_journeys` - List saved journeys
+- `list_journey_templates` - List built-in templates
+- `get_journey_template` - Get template details
+- `execute_journey` - Generate event timeline
+
+**Files:**
+- `packages/core/src/healthsim/mcp/profile_server.py` (985 lines)
+- `packages/core/src/healthsim/mcp/README.md` (138 lines)
+- `packages/core/tests/mcp/test_profile_server.py` (650 lines)
+
+**Commits**: 79cacdc, c0f3f67, [current]
 
 ---
 

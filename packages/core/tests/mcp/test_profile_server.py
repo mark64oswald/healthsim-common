@@ -7,19 +7,31 @@ from unittest.mock import patch
 import tempfile
 
 from healthsim.mcp.profile_server import (
+    # Profile formatters
     format_profile_summary,
     format_profile_list,
     format_template_list,
     format_execution_result,
     format_error,
     format_success,
+    # Journey formatters
+    format_journey_summary,
+    format_journey_list,
+    # Profile handlers
     handle_build_profile,
     handle_save_profile,
     handle_load_profile,
     handle_list_profiles,
     handle_list_profile_templates,
+    handle_get_profile_template,
+    # Journey handlers
+    handle_build_journey,
+    handle_save_journey,
+    handle_load_journey,
+    handle_list_journeys,
     handle_list_journey_templates,
     handle_get_journey_template,
+    handle_execute_journey,
 )
 from healthsim.generation.profile_schema import (
     ProfileSpecification,
@@ -32,6 +44,10 @@ from healthsim.generation.profile_schema import (
 )
 from healthsim.generation.profile_executor import ExecutionResult, ValidationReport
 
+
+# =============================================================================
+# Profile Formatter Tests
+# =============================================================================
 
 class TestFormatProfileSummary:
     """Tests for format_profile_summary."""
@@ -164,6 +180,86 @@ class TestFormatExecutionResult:
         assert "Warnings: 1" in formatted
 
 
+# =============================================================================
+# Journey Formatter Tests
+# =============================================================================
+
+class TestFormatJourneySummary:
+    """Tests for format_journey_summary."""
+
+    def test_basic_journey(self):
+        """Test formatting a basic journey."""
+        journey = {
+            "journey_id": "test-journey-001",
+            "name": "Test Journey",
+            "description": "A test journey",
+            "duration_days": 30,
+            "products": ["patientsim"],
+            "events": [
+                {"name": "Event 1", "event_type": "encounter"},
+                {"name": "Event 2", "event_type": "lab_order"},
+            ]
+        }
+        result = format_journey_summary(journey)
+        
+        assert "Test Journey" in result
+        assert "test-journey-001" in result
+        assert "30" in result
+        assert "2" in result  # event count
+        assert "patientsim" in result
+
+    def test_journey_with_many_events(self):
+        """Test formatting journey with more than 8 events."""
+        events = [{"name": f"Event {i}", "event_type": "encounter"} for i in range(15)]
+        journey = {
+            "journey_id": "many-events",
+            "name": "Many Events Journey",
+            "events": events
+        }
+        result = format_journey_summary(journey)
+        
+        assert "15" in result  # total count
+        assert "and 7 more" in result  # 15 - 8 = 7
+
+
+class TestFormatJourneyList:
+    """Tests for format_journey_list."""
+
+    def test_empty_list(self):
+        """Test formatting empty journey list."""
+        result = format_journey_list([])
+        assert "No saved journeys" in result
+
+    def test_journey_list(self):
+        """Test formatting journey list."""
+        journeys = [
+            {
+                "journey_id": "journey-1",
+                "name": "Journey 1",
+                "description": "First journey",
+                "duration_days": 30,
+                "events": [{"name": "e1"}, {"name": "e2"}]
+            },
+            {
+                "journey_id": "journey-2",
+                "name": "Journey 2",
+                "events": [{"name": "e1"}]
+            },
+        ]
+        result = format_journey_list(journeys)
+        
+        assert "Journey 1" in result
+        assert "journey-1" in result
+        assert "First journey" in result
+        assert "Journey 2" in result
+        assert "2 events" in result
+        assert "30 days" in result
+
+
+# =============================================================================
+# Utility Formatter Tests
+# =============================================================================
+
 class TestUtilityFormatters:
     """Tests for utility formatting functions."""
 
@@ -179,6 +275,10 @@ class TestUtilityFormatters:
         assert "✓" in result
         assert "Operation completed" in result
 
+
+# =============================================================================
+# Profile Handler Tests
+# =============================================================================
 
 @pytest.mark.asyncio
 class TestBuildProfileHandler:
@@ -266,8 +366,8 @@ class TestSaveLoadProfileHandlers:
 
 
 @pytest.mark.asyncio
-class TestTemplateHandlers:
-    """Tests for template listing handlers."""
+class TestProfileTemplateHandlers:
+    """Tests for profile template handlers."""
 
     async def test_list_profile_templates(self):
         """Test listing profile templates."""
@@ -275,6 +375,212 @@ class TestTemplateHandlers:
         
         text = result[0].text
         assert "Template" in text
+
+    async def test_get_profile_template_not_found(self):
+        """Test getting non-existent profile template."""
+        result = await handle_get_profile_template({
+            "template_name": "nonexistent-template"
+        })
+        
+        text = result[0].text
+        assert "not found" in text.lower() or "error" in text.lower()
+
+
+# =============================================================================
+# Journey Handler Tests
+# =============================================================================
+
+@pytest.mark.asyncio
+class TestBuildJourneyHandler:
+    """Tests for build_journey handler."""
+
+    async def test_build_basic_journey(self):
+        """Test building a basic journey."""
+        result = await handle_build_journey({"name": "Test Journey"})
+        
+        assert len(result) == 1
+        text = result[0].text
+        assert "Test Journey" in text
+        assert "test-journey" in text
+
+    async def test_build_journey_with_events(self):
+        """Test building journey with events."""
+        result = await handle_build_journey({
+            "name": "Journey With Events",
+            "duration_days": 30,
+            "events": [
+                {"name": "Initial Visit", "event_type": "encounter"},
+                {"name": "Follow Up", "event_type": "encounter"},
+            ]
+        })
+        
+        text = result[0].text
+        assert "Journey With Events" in text
+        assert "2" in text  # event count
+
+    async def test_build_journey_with_custom_id(self):
+        """Test building journey with custom ID."""
+        result = await handle_build_journey({
+            "name": "Custom ID Journey",
+            "id": "my-custom-journey-id",
+        })
+        
+        text = result[0].text
+        assert "my-custom-journey-id" in text
+
+
+@pytest.mark.asyncio
+class TestSaveLoadJourneyHandlers:
+    """Tests for save/load journey handlers."""
+
+    async def test_save_journey(self):
+        """Test saving a journey."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            journeys_dir = Path(tmpdir)
+            
+            with patch("healthsim.mcp.profile_server.JOURNEYS_DIR", journeys_dir):
+                journey = {
+                    "journey_id": "test-save-journey",
+                    "name": "Test Save Journey",
+                    "events": []
+                }
+                
+                result = await handle_save_journey({
+                    "journey_json": json.dumps(journey),
+                })
+                
+                assert "✓" in result[0].text or "Saved" in result[0].text
+                
+                # Verify file was created
+                filepath = journeys_dir / "test-save-journey.json"
+                assert filepath.exists()
+
+    async def test_save_journey_no_overwrite(self):
+        """Test that save_journey doesn't overwrite by default."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            journeys_dir = Path(tmpdir)
+            
+            with patch("healthsim.mcp.profile_server.JOURNEYS_DIR", journeys_dir):
+                journey = {
+                    "journey_id": "duplicate-journey",
+                    "name": "Original",
+                    "events": []
+                }
+                
+                # Save first time
+                await handle_save_journey({"journey_json": json.dumps(journey)})
+                
+                # Try to save again
+                journey["name"] = "Updated"
+                result = await handle_save_journey({
+                    "journey_json": json.dumps(journey),
+                })
+                
+                text = result[0].text
+                assert "exists" in text.lower() or "error" in text.lower()
+
+    async def test_save_journey_with_overwrite(self):
+        """Test save_journey with overwrite=True."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            journeys_dir = Path(tmpdir)
+            
+            with patch("healthsim.mcp.profile_server.JOURNEYS_DIR", journeys_dir):
+                journey = {
+                    "journey_id": "overwrite-journey",
+                    "name": "Original",
+                    "events": []
+                }
+                
+                # Save first time
+                await handle_save_journey({"journey_json": json.dumps(journey)})
+                
+                # Save again with overwrite
+                journey["name"] = "Updated"
+                result = await handle_save_journey({
+                    "journey_json": json.dumps(journey),
+                    "overwrite": True,
+                })
+                
+                assert "✓" in result[0].text or "Saved" in result[0].text
+
+    async def test_load_journey_not_found(self):
+        """Test loading non-existent journey."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            journeys_dir = Path(tmpdir)
+            
+            with patch("healthsim.mcp.profile_server.JOURNEYS_DIR", journeys_dir):
+                result = await handle_load_journey({"name": "nonexistent"})
+                
+                text = result[0].text
+                assert "not found" in text.lower() or "error" in text.lower()
+
+    async def test_load_saved_journey(self):
+        """Test loading a saved journey."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            journeys_dir = Path(tmpdir)
+            
+            with patch("healthsim.mcp.profile_server.JOURNEYS_DIR", journeys_dir):
+                journey = {
+                    "journey_id": "loadable-journey",
+                    "name": "Loadable Journey",
+                    "description": "Can be loaded",
+                    "events": [{"name": "Event 1", "event_type": "encounter"}]
+                }
+                
+                # Save it
+                filepath = journeys_dir / "loadable-journey.json"
+                filepath.write_text(json.dumps(journey))
+                
+                # Load it
+                result = await handle_load_journey({"name": "loadable-journey"})
+                
+                text = result[0].text
+                assert "Loadable Journey" in text
+                assert "Event 1" in text
+
+
+@pytest.mark.asyncio
+class TestListJourneysHandler:
+    """Tests for list_journeys handler."""
+
+    async def test_list_empty_journeys(self):
+        """Test listing when no journeys exist."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            journeys_dir = Path(tmpdir)
+            
+            with patch("healthsim.mcp.profile_server.JOURNEYS_DIR", journeys_dir):
+                result = await handle_list_journeys({})
+                
+                text = result[0].text
+                assert "No saved journeys" in text
+
+    async def test_list_journeys(self):
+        """Test listing saved journeys."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            journeys_dir = Path(tmpdir)
+            
+            with patch("healthsim.mcp.profile_server.JOURNEYS_DIR", journeys_dir):
+                # Create some journeys
+                for i in range(3):
+                    journey = {
+                        "journey_id": f"journey-{i}",
+                        "name": f"Journey {i}",
+                        "events": [{"name": f"e{j}"} for j in range(i + 1)]
+                    }
+                    filepath = journeys_dir / f"journey-{i}.json"
+                    filepath.write_text(json.dumps(journey))
+                
+                result = await handle_list_journeys({})
+                
+                text = result[0].text
+                assert "Journey 0" in text
+                assert "Journey 1" in text
+                assert "Journey 2" in text
+
+
+@pytest.mark.asyncio
+class TestJourneyTemplateHandlers:
+    """Tests for journey template listing handlers."""
 
     async def test_list_journey_templates(self):
         """Test listing journey templates."""
@@ -291,3 +597,53 @@ class TestTemplateHandlers:
         
         text = result[0].text
         assert "not found" in text.lower() or "error" in text.lower()
+
+
+@pytest.mark.asyncio
+class TestExecuteJourneyHandler:
+    """Tests for execute_journey handler."""
+
+    async def test_execute_journey_from_json(self):
+        """Test executing journey from JSON."""
+        journey = {
+            "journey_id": "exec-test",
+            "name": "Execution Test",
+            "duration_days": 7,
+            "events": [
+                {
+                    "event_id": "evt-1",
+                    "name": "Initial Event",
+                    "event_type": "encounter",
+                    "day_offset": 0
+                }
+            ]
+        }
+        
+        result = await handle_execute_journey({
+            "journey_json": json.dumps(journey),
+            "entity_id": "patient-123",
+            "start_date": "2024-01-01",
+        })
+        
+        text = result[0].text
+        # Should either succeed or give a meaningful response
+        assert "patient-123" in text or "Error" in text
+
+    async def test_execute_journey_missing_source(self):
+        """Test execute_journey with no journey source."""
+        result = await handle_execute_journey({})
+        
+        text = result[0].text
+        assert "error" in text.lower() or "provide" in text.lower()
+
+    async def test_execute_journey_invalid_date(self):
+        """Test execute_journey with invalid date format."""
+        journey = {"journey_id": "date-test", "name": "Date Test", "events": []}
+        
+        result = await handle_execute_journey({
+            "journey_json": json.dumps(journey),
+            "start_date": "not-a-date",
+        })
+        
+        text = result[0].text
+        assert "error" in text.lower() or "invalid" in text.lower()

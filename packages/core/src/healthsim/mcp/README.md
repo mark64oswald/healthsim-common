@@ -17,14 +17,20 @@ This MCP server allows Claude (or other MCP-compatible AI assistants) to manage 
 | `load_profile` | Load a profile by name, ID, or from a template |
 | `list_profiles` | List all saved profiles |
 | `list_profile_templates` | List built-in profile templates |
+| `get_profile_template` | Get details of a specific profile template |
 | `execute_profile` | Execute a profile to generate entities |
 
 ### Journey Management
 
 | Tool | Description |
 |------|-------------|
+| `build_journey` | Create a journey specification from parameters |
+| `save_journey` | Save a journey to persistent storage (`~/.healthsim/journeys/`) |
+| `load_journey` | Load a journey by name, ID, or from a template |
+| `list_journeys` | List all saved journeys |
 | `list_journey_templates` | List built-in journey templates |
 | `get_journey_template` | Get details of a specific journey template |
+| `execute_journey` | Execute a journey to generate event timelines |
 
 ## Usage
 
@@ -54,7 +60,9 @@ Add to your MCP settings (e.g., Claude desktop app):
 }
 ```
 
-## Example Conversation
+## Example Conversations
+
+### Profile Creation
 
 **User:** Create a Medicare diabetic profile with 500 patients, ages 65-85.
 
@@ -77,11 +85,32 @@ Add to your MCP settings (e.g., Claude desktop app):
 2. Calls `execute_profile` to generate 500 patients
 3. Returns execution summary
 
+### Journey Creation
+
+**User:** Create a diabetes management journey with quarterly visits and A1C labs.
+
+**Claude (using tools):**
+1. Calls `build_journey` with:
+   - name: "Diabetes Quarterly Management"
+   - duration_days: 365
+   - events: [quarterly office visits, A1C labs, medication reviews]
+
+2. Returns formatted journey summary
+
+**User:** Execute that journey for patient-123 starting January 1st.
+
+**Claude (using tools):**
+1. Calls `execute_journey` with:
+   - journey_name: "Diabetes Quarterly Management"
+   - entity_id: "patient-123"
+   - start_date: "2024-01-01"
+2. Returns timeline of scheduled events
+
 ## Storage
 
-Profiles are stored as JSON files in:
+Profiles and journeys are stored as JSON files in:
 - `~/.healthsim/profiles/` - Saved profiles
-- `~/.healthsim/journeys/` - Saved journeys (future)
+- `~/.healthsim/journeys/` - Saved journeys
 
 ## Dependencies
 

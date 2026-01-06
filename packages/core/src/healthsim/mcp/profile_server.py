@@ -10,18 +10,25 @@ Profile Management Tools:
 - load_profile: Load a profile by name or ID
 - list_profiles: List available profiles
 - list_profile_templates: List built-in profile templates
+- get_profile_template: Get details of a specific profile template
 - execute_profile: Execute a profile to generate entities
 
 Journey Management Tools:
+- build_journey: Create a journey specification from parameters
+- save_journey: Save a journey to persistent storage
+- load_journey: Load a journey by name or ID
+- list_journeys: List available journeys
 - list_journey_templates: List built-in journey templates
 - get_journey_template: Get details of a specific journey template
+- execute_journey: Execute a journey for an entity/cohort
 """
 
 import json
 import logging
-from datetime import datetime
+from datetime import date, datetime, timedelta
 from pathlib import Path
 from typing import Any
+from uuid import uuid4
 
 from mcp.server import Server
 from mcp.server.stdio import stdio_server
@@ -37,6 +44,9 @@ from healthsim.generation.profile_executor import (
 )
 from healthsim.generation.journey_engine import (
     JOURNEY_TEMPLATES,
+    JourneySpecification,
+    JourneyEngine,
+    EventDefinition,
 )
 
 # Configure logging
@@ -46,7 +56,7 @@ logger = logging.getLogger("healthsim.mcp.profile")
 # Initialize MCP server
 app = Server("healthsim-profiles")
 
-# Default storage path for saved profiles
+# Default storage path for saved profiles and journeys
 PROFILES_DIR = Path.home() / ".healthsim" / "profiles"
 JOURNEYS_DIR = Path.home() / ".healthsim" / "journeys"
 
@@ -56,6 +66,10 @@ def ensure_storage_dirs():
     PROFILES_DIR.mkdir(parents=True, exist_ok=True)
     JOURNEYS_DIR.mkdir(parents=True, exist_ok=True)
 
+
+# =============================================================================
+# Profile Formatters
+# =============================================================================
 
 def format_profile_summary(profile: ProfileSpecification) -> str:
     """Format a profile specification for display."""
@@ -130,7 +144,7 @@ def format_template_list(templates: dict, entity_type: str) -> str:
         lines.append(f"- **{name}**: {desc}")
     
     lines.append("")
-    lines.append(f"Use `load_profile` with template= to use one.")
+    lines.append(f"Use `get_{entity_type.lower()}_template` to see details.")
     
     return "\n".join(lines)
 
@@ -158,6 +172,95 @@ def format_execution_result(result: ExecutionResult) -> str:
     return "\n".join(lines)
 
 
+# =============================================================================
+# Journey Formatters
+# =============================================================================
+
+def format_journey_summary(journey: dict) -> str:
+    """Format a journey specification for display."""
+    lines = [
+        f"**Journey: {journey.get('name', journey.get('journey_id', 'Unnamed'))}**",
+        f"- ID: `{journey.get('journey_id', journey.get('id', 'N/A'))}`",
+    ]
+    
+    if journey.get("version"):
+        lines.append(f"- Version: {journey['version']}")
+    
+    if journey.get("description"):
+        lines.append(f"- Description: {journey['description']}")
+    
+    lines.append("")
+    
+    # Duration
+    if journey.get("duration_days"):
+        lines.append(f"**Duration:** {journey['duration_days']} days")
+    elif journey.get("duration"):
+        dur = journey["duration"]
+        lines.append(f"**Duration:** {dur.get('min_days', '?')}-{dur.get('max_days', '?')} days")
+    
+    # Products
+    products = journey.get("products", ["patientsim"])
+    lines.append(f"**Products:** {', '.join(products)}")
+    
+    # Events
+    events = journey.get("events", [])
+    if events:
+        lines.append("")
+        lines.append(f"**Events ({len(events)}):**")
+        for evt in events[:8]:
+            evt_name = evt.get("name", evt.get("event_type", "Event"))
+            evt_type = evt.get("event_type", "")
+            if evt_type and evt_type != evt_name:
+                lines.append(f"- {evt_name} ({evt_type})")
+            else:
+                lines.append(f"- {evt_name}")
+        if len(events) > 8:
+            lines.append(f"- ... and {len(events) - 8} more")
+    
+    # Parameters
+    params = journey.get("parameters", {})
+    if params:
+        lines.append("")
+        lines.append(f"**Parameters:** {len(params)} defined")
+    
+    return "\n".join(lines)
+
+
+def format_journey_list(journeys: list[dict]) -> str:
+    """Format list of journeys for display."""
+    if not journeys:
+        return "No saved journeys found.\n\nUse `build_journey` to create one."
+    
+    lines = ["**Saved Journeys:**", ""]
+    
+    for j in journeys:
+        name = j.get('name', j.get('journey_id', 'Unnamed'))
+        jid = j.get('journey_id', j.get('id', 'N/A'))
+        line = f"- **{name}** (`{jid}`)"
+        
+        event_count = len(j.get('events', []))
+        duration = j.get('duration_days', '')
+        
+        details = []
+        if event_count:
+            details.append(f"{event_count} events")
+        if duration:
+            details.append(f"{duration} days")
+        
+        if details:
+            line += f" - {', '.join(details)}"
+        
+        if j.get("description"):
+            line += f"\n  _{j['description']}_"
+        lines.append(line)
+    
+    return "\n".join(lines)
+
+
+# =============================================================================
+# Common Formatters
+# =============================================================================
+
 def format_error(message: str) -> str:
     """Format error message."""
     return f"**Error:** {message}"
@@ -168,10 +271,15 @@ def format_success(message: str) -> str:
     return f"✓ {message}"
 
 
+# =============================================================================
+# Tool Definitions
+# =============================================================================
+
 @app.list_tools()
 async def list_tools() -> list[Tool]:
     """List available profile/journey management tools."""
     return [
+        # Profile Tools
         Tool(
             name="build_profile",
             description=(
@@ -234,6 +342,17 @@ async def list_tools() -> list[Tool]:
             inputSchema={"type": "object", "properties": {}},
         ),
         Tool(
+            name="get_profile_template",
+            description="Get details of a specific profile template.",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "template_name": {"type": "string", "description": "Template name"},
+                },
+                "required": ["template_name"],
+            },
+        ),
+        Tool(
             name="execute_profile",
             description="Execute a profile to generate entities.",
             inputSchema={
@@ -246,6 +365,55 @@ async def list_tools() -> list[Tool]:
                     "seed_override": {"type": "integer", "description": "Override seed"},
                 },
             },
+        ),
+        # Journey Tools
+        Tool(
+            name="build_journey",
+            description=(
+                "Build a journey specification from parameters. "
+                "Creates a JourneySpecification that can be saved or executed."
+            ),
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "name": {"type": "string", "description": "Journey name"},
+                    "id": {"type": "string", "description": "Unique identifier"},
+                    "description": {"type": "string", "description": "Description"},
+                    "duration_days": {"type": "integer", "description": "Journey duration in days"},
+                    "products": {"type": "array", "items": {"type": "string"}, "description": "Target products"},
+                    "events": {"type": "array", "description": "List of event definitions"},
+                    "from_template": {"type": "string", "description": "Base template name"},
+                },
+                "required": ["name"],
+            },
+        ),
+        Tool(
+            name="save_journey",
+            description="Save a journey specification to persistent storage.",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "journey_json": {"type": "string", "description": "Journey JSON"},
+                    "overwrite": {"type": "boolean", "description": "Overwrite if exists", "default": False},
+                },
+                "required": ["journey_json"],
+            },
+        ),
+        Tool(
+            name="load_journey",
+            description="Load a journey by name, ID, or template name.",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "name": {"type": "string", "description": "Journey name or ID"},
+                    "template": {"type": "string", "description": "Template name"},
+                },
+            },
+        ),
+        Tool(
+            name="list_journeys",
+            description="List available saved journeys.",
+            inputSchema={"type": "object", "properties": {}},
         ),
         Tool(
             name="list_journey_templates",
@@ -263,13 +431,33 @@ async def list_tools() -> list[Tool]:
                 "required": ["template_name"],
             },
         ),
+        Tool(
+            name="execute_journey",
+            description="Execute a journey to generate a timeline of events.",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "journey_json": {"type": "string", "description": "Journey JSON"},
+                    "journey_name": {"type": "string", "description": "Saved journey name"},
+                    "template": {"type": "string", "description": "Template name"},
+                    "entity_id": {"type": "string", "description": "Entity ID to execute journey for"},
+                    "start_date": {"type": "string", "description": "Start date (YYYY-MM-DD)"},
+                    "seed": {"type": "integer", "description": "Random seed for reproducibility"},
+                },
+            },
+        ),
     ]
 
+
+# =============================================================================
+# Tool Router
+# =============================================================================
 
 @app.call_tool()
 async def call_tool(name: str, arguments: dict) -> list[TextContent]:
     """Handle tool calls."""
     try:
+        # Profile tools
         if name == "build_profile":
             return await handle_build_profile(arguments)
         elif name == "save_profile":
@@ -280,18 +468,35 @@ async def call_tool(name: str, arguments: dict) -> list[TextContent]:
             return await handle_list_profiles(arguments)
         elif name == "list_profile_templates":
             return await handle_list_profile_templates(arguments)
+        elif name == "get_profile_template":
+            return await handle_get_profile_template(arguments)
         elif name == "execute_profile":
             return await handle_execute_profile(arguments)
+        # Journey tools
+        elif name == "build_journey":
+            return await handle_build_journey(arguments)
+        elif name == "save_journey":
+            return await handle_save_journey(arguments)
+        elif name == "load_journey":
+            return await handle_load_journey(arguments)
+        elif name == "list_journeys":
+            return await handle_list_journeys(arguments)
         elif name == "list_journey_templates":
             return await handle_list_journey_templates(arguments)
         elif name == "get_journey_template":
             return await handle_get_journey_template(arguments)
+        elif name == "execute_journey":
+            return await handle_execute_journey(arguments)
         else:
             return [TextContent(type="text", text=format_error(f"Unknown tool: {name}"))]
     except Exception as e:
         logger.exception(f"Error in tool {name}")
         return [TextContent(type="text", text=format_error(str(e)))]
 
+
+# =============================================================================
+# Profile Handlers
+# =============================================================================
 
 async def handle_build_profile(arguments: dict) -> list[TextContent]:
     """Handle build_profile tool call."""
@@ -458,6 +663,31 @@ async def handle_list_profile_templates(arguments: dict) -> list[TextContent]:
     return [TextContent(type="text", text=format_template_list(PROFILE_TEMPLATES, "Profile"))]
 
 
+async def handle_get_profile_template(arguments: dict) -> list[TextContent]:
+    """Handle get_profile_template tool call."""
+    template_name = arguments["template_name"]
+    
+    if template_name not in PROFILE_TEMPLATES:
+        available = ", ".join(PROFILE_TEMPLATES.keys())
+        return [TextContent(
+            type="text",
+            text=format_error(f"Template not found: {template_name}. Available: {available}")
+        )]
+    
+    template = PROFILE_TEMPLATES[template_name]
+    
+    try:
+        profile = ProfileSpecification.model_validate(template)
+        result = format_profile_summary(profile)
+        result += "\n\n**JSON:**\n```json\n" + profile.to_json() + "\n```"
+    except Exception:
+        # Template may not be a full ProfileSpecification
+        result = f"**Profile Template: {template_name}**\n\n"
+        result += "```json\n" + json.dumps(template, indent=2, default=str) + "\n```"
+    
+    return [TextContent(type="text", text=result)]
+
+
 async def handle_execute_profile(arguments: dict) -> list[TextContent]:
     """Handle execute_profile tool call."""
     profile_json = arguments.get("profile_json")
@@ -496,17 +726,138 @@ async def handle_execute_profile(arguments: dict) -> list[TextContent]:
     return [TextContent(type="text", text=format_execution_result(result))]
 
 
+# =============================================================================
+# Journey Handlers
+# =============================================================================
+
+async def handle_build_journey(arguments: dict) -> list[TextContent]:
+    """Handle build_journey tool call."""
+    name = arguments["name"]
+    
+    # Start from template if specified
+    if arguments.get("from_template"):
+        template_name = arguments["from_template"]
+        if template_name in JOURNEY_TEMPLATES:
+            base_spec = JOURNEY_TEMPLATES[template_name].copy()
+        else:
+            return [TextContent(type="text", text=format_error(f"Template not found: {template_name}"))]
+    else:
+        base_spec = {}
+    
+    journey_id = arguments.get("id") or name.lower().replace(" ", "-")
+    
+    # Build journey spec
+    spec = {
+        "journey_id": journey_id,
+        "name": name,
+        "description": arguments.get("description", base_spec.get("description", "")),
+        "version": "1.0",
+        "products": arguments.get("products", base_spec.get("products", ["patientsim"])),
+        "duration_days": arguments.get("duration_days", base_spec.get("duration_days")),
+        "events": arguments.get("events", base_spec.get("events", [])),
+        "parameters": base_spec.get("parameters", {}),
+    }
+    
+    result = format_journey_summary(spec)
+    result += "\n\n**JSON:**\n```json\n" + json.dumps(spec, indent=2, default=str) + "\n```"
+    result += "\n\nUse `save_journey` to save or `execute_journey` to run."
+    
+    return [TextContent(type="text", text=result)]
+
+
+async def handle_save_journey(arguments: dict) -> list[TextContent]:
+    """Handle save_journey tool call."""
+    ensure_storage_dirs()
+    
+    journey_json = arguments["journey_json"]
+    overwrite = arguments.get("overwrite", False)
+    
+    try:
+        journey = json.loads(journey_json)
+    except Exception as e:
+        return [TextContent(type="text", text=format_error(f"Invalid JSON: {e}"))]
+    
+    journey_id = journey.get("journey_id", journey.get("id"))
+    if not journey_id:
+        return [TextContent(type="text", text=format_error("Journey must have journey_id or id field"))]
+    
+    filepath = JOURNEYS_DIR / f"{journey_id}.json"
+    
+    if filepath.exists() and not overwrite:
+        return [TextContent(
+            type="text",
+            text=format_error(f"Journey exists: {journey_id}. Use overwrite=true.")
+        )]
+    
+    filepath.write_text(json.dumps(journey, indent=2, default=str))
+    
+    journey_name = journey.get("name", journey_id)
+    return [TextContent(type="text", text=format_success(f"Saved: {journey_name} ({filepath})"))]
+
+
+async def handle_load_journey(arguments: dict) -> list[TextContent]:
+    """Handle load_journey tool call."""
+    name = arguments.get("name")
+    template = arguments.get("template")
+    
+    if not name and not template:
+        return [TextContent(type="text", text=format_error("Either name or template required"))]
+    
+    if template:
+        if template in JOURNEY_TEMPLATES:
+            journey = JOURNEY_TEMPLATES[template]
+            result = format_journey_summary(journey)
+            result += "\n\n**JSON:**\n```json\n" + json.dumps(journey, indent=2, default=str) + "\n```"
+            return [TextContent(type="text", text=result)]
+        else:
+            return [TextContent(type="text", text=format_error(f"Template not found: {template}"))]
+    
+    ensure_storage_dirs()
+    filepath = JOURNEYS_DIR / f"{name}.json"
+    if not filepath.exists():
+        for f in JOURNEYS_DIR.glob("*.json"):
+            try:
+                content = json.loads(f.read_text())
+                if content.get("name") == name or content.get("journey_id") == name:
+                    filepath = f
+                    break
+            except:
+                continue
+    
+    if not filepath.exists():
+        return [TextContent(type="text", text=format_error(f"Journey not found: {name}"))]
+    
+    journey = json.loads(filepath.read_text())
+    result = format_journey_summary(journey)
+    result += "\n\n**JSON:**\n```json\n" + json.dumps(journey, indent=2, default=str) + "\n```"
+    
+    return [TextContent(type="text", text=result)]
+
+
+async def handle_list_journeys(arguments: dict) -> list[TextContent]:
+    """Handle list_journeys tool call."""
+    ensure_storage_dirs()
+    
+    journeys = []
+    for f in sorted(JOURNEYS_DIR.glob("*.json")):
+        try:
+            content = json.loads(f.read_text())
+            journeys.append(content)
+        except:
+            continue
+    
+    return [TextContent(type="text", text=format_journey_list(journeys))]
+
+
 async def handle_list_journey_templates(arguments: dict) -> list[TextContent]:
     """Handle list_journey_templates tool call."""
     lines = ["**Built-in Journey Templates:**", ""]
     
     for name, spec in JOURNEY_TEMPLATES.items():
         desc = spec.get("description", spec.get("name", name))
-        duration = spec.get("duration", {})
-        duration_str = ""
-        if duration:
-            duration_str = f" ({duration.get('min_days', '?')}-{duration.get('max_days', '?')} days)"
-        lines.append(f"- **{name}**: {desc}{duration_str}")
+        duration = spec.get("duration_days") or spec.get("duration", {}).get("max_days", "?")
+        events = len(spec.get("events", []))
+        lines.append(f"- **{name}**: {desc} ({events} events, ~{duration} days)")
     
     lines.append("")
     lines.append("Use `get_journey_template` to see details.")
@@ -527,37 +878,100 @@ async def handle_get_journey_template(arguments: dict) -> list[TextContent]:
     
     template = JOURNEY_TEMPLATES[template_name]
     
-    lines = [
-        f"**Journey Template: {template_name}**",
-        "",
-        f"_{template.get('description', 'No description')}_",
-        "",
-    ]
+    result = format_journey_summary(template)
+    result += "\n\n**JSON:**\n```json\n" + json.dumps(template, indent=2, default=str) + "\n```"
     
-    duration = template.get("duration", {})
-    if duration:
-        lines.append("**Duration:**")
-        lines.append(f"- Min: {duration.get('min_days', 'N/A')} days")
-        lines.append(f"- Max: {duration.get('max_days', 'N/A')} days")
-        lines.append("")
-    
-    events = template.get("events", [])
-    if events:
-        lines.append(f"**Events ({len(events)}):**")
-        for evt in events[:10]:
-            evt_name = evt.get("name", evt.get("event_type", "Event"))
-            lines.append(f"- {evt_name}")
-        if len(events) > 10:
-            lines.append(f"- ... and {len(events) - 10} more")
-    
-    lines.append("")
-    lines.append("**JSON:**")
-    lines.append("```json")
-    lines.append(json.dumps(template, indent=2, default=str))
-    lines.append("```")
-    
-    return [TextContent(type="text", text="\n".join(lines))]
+    return [TextContent(type="text", text=result)]
 
+
+async def handle_execute_journey(arguments: dict) -> list[TextContent]:
+    """Handle execute_journey tool call."""
+    journey_json = arguments.get("journey_json")
+    journey_name = arguments.get("journey_name")
+    template = arguments.get("template")
+    entity_id = arguments.get("entity_id", f"entity-{uuid4().hex[:8]}")
+    start_date_str = arguments.get("start_date")
+    seed = arguments.get("seed")
+    
+    # Determine start date
+    if start_date_str:
+        try:
+            start_date = date.fromisoformat(start_date_str)
+        except ValueError:
+            return [TextContent(type="text", text=format_error(f"Invalid date format: {start_date_str}. Use YYYY-MM-DD."))]
+    else:
+        start_date = date.today()
+    
+    # Load journey spec
+    if journey_json:
+        try:
+            journey_spec = json.loads(journey_json)
+        except Exception as e:
+            return [TextContent(type="text", text=format_error(f"Invalid JSON: {e}"))]
+    elif template:
+        if template in JOURNEY_TEMPLATES:
+            journey_spec = JOURNEY_TEMPLATES[template]
+        else:
+            return [TextContent(type="text", text=format_error(f"Template not found: {template}"))]
+    elif journey_name:
+        ensure_storage_dirs()
+        filepath = JOURNEYS_DIR / f"{journey_name}.json"
+        if not filepath.exists():
+            # Try to find by name
+            for f in JOURNEYS_DIR.glob("*.json"):
+                try:
+                    content = json.loads(f.read_text())
+                    if content.get("name") == journey_name or content.get("journey_id") == journey_name:
+                        filepath = f
+                        break
+                except:
+                    continue
+        if not filepath.exists():
+            return [TextContent(type="text", text=format_error(f"Journey not found: {journey_name}"))]
+        journey_spec = json.loads(filepath.read_text())
+    else:
+        return [TextContent(type="text", text=format_error("Provide journey_json, journey_name, or template"))]
+    
+    # Execute journey using JourneyEngine
+    try:
+        engine = JourneyEngine(seed=seed)
+        timeline = engine.create_timeline(
+            entity_id=entity_id,
+            entity_type="patient",
+            journey_spec=journey_spec,
+            start_date=start_date,
+        )
+        
+        # Format results
+        lines = [
+            "**Journey Execution Complete**",
+            "",
+            f"- Entity ID: `{entity_id}`",
+            f"- Journey: {journey_spec.get('name', journey_spec.get('journey_id', 'Unknown'))}",
+            f"- Start date: {start_date}",
+            f"- Events scheduled: {len(timeline.events)}",
+        ]
+        
+        if seed:
+            lines.append(f"- Seed: {seed}")
+        
+        if timeline.events:
+            lines.append("")
+            lines.append("**Timeline Preview (first 10 events):**")
+            for evt in timeline.events[:10]:
+                lines.append(f"- {evt.scheduled_date}: {evt.event_name} ({evt.event_type})")
+            if len(timeline.events) > 10:
+                lines.append(f"- ... and {len(timeline.events) - 10} more events")
+        
+        return [TextContent(type="text", text="\n".join(lines))]
+    except Exception as e:
+        logger.exception("Error executing journey")
+        return [TextContent(type="text", text=format_error(f"Execution failed: {e}"))]
+
+
+# =============================================================================
+# Main Entry Point
+# =============================================================================
 
 async def main():
     """Run the MCP server."""
