@@ -109,6 +109,15 @@ from .auto_persist import (
     reset_service,
 )
 
+# Profile persistence
+from .profile_manager import (
+    ProfileManager,
+    ProfileRecord,
+    ProfileSummary,
+    ExecutionRecord,
+    get_profile_manager,
+)
+
 __all__ = [
     # Provenance
     "Provenance",
@@ -163,4 +172,10 @@ __all__ = [
     "CohortBrief",
     "get_auto_persist_service",
     "reset_service",
+    # Profile Persistence
+    "ProfileManager",
+    "ProfileRecord",
+    "ProfileSummary",
+    "ExecutionRecord",
+    "get_profile_manager",
 ]

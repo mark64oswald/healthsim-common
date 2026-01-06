@@ -9,7 +9,7 @@ from typing import List
 import duckdb
 
 # Current schema version
-SCHEMA_VERSION = "1.5"
+SCHEMA_VERSION = "1.6"
 
 # Standard provenance columns included in all canonical tables
 PROVENANCE_COLUMNS = """
@@ -75,6 +75,44 @@ CREATE TABLE IF NOT EXISTS cohort_tags (
     cohort_id       VARCHAR NOT NULL REFERENCES cohorts(id),
     tag             VARCHAR NOT NULL,
     UNIQUE(cohort_id, tag)
+);
+"""
+
+# ============================================================================
+# PROFILE MANAGEMENT TABLES
+# ============================================================================
+
+PROFILES_SEQ_DDL = """
+CREATE SEQUENCE IF NOT EXISTS profiles_seq START 1;
+"""
+
+PROFILES_DDL = """
+CREATE TABLE IF NOT EXISTS profiles (
+    id              VARCHAR PRIMARY KEY,
+    name            VARCHAR NOT NULL UNIQUE,
+    description     VARCHAR,
+    version         INTEGER DEFAULT 1,
+    profile_spec    JSON NOT NULL,          -- Full ProfileSpecification as JSON
+    product         VARCHAR,                -- 'patientsim', 'membersim', etc.
+    tags            JSON,                   -- Array of tags for filtering
+    created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    metadata        JSON                    -- Additional metadata
+);
+"""
+
+PROFILE_EXECUTIONS_DDL = """
+CREATE TABLE IF NOT EXISTS profile_executions (
+    id              INTEGER PRIMARY KEY DEFAULT nextval('profiles_seq'),
+    profile_id      VARCHAR NOT NULL REFERENCES profiles(id),
+    cohort_id       VARCHAR REFERENCES cohorts(id),
+    executed_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    seed            INTEGER,                -- Random seed used
+    count           INTEGER,                -- Number of entities generated
+    duration_ms     INTEGER,                -- Execution time in milliseconds
+    status          VARCHAR DEFAULT 'completed',  -- 'completed', 'failed', 'partial'
+    error_message   VARCHAR,                -- Error details if failed
+    metadata        JSON                    -- Execution metadata (timings, etc.)
 );
 """
 
@@ -541,6 +579,11 @@ ALL_DDL = [
     COHORTS_DDL,
     COHORT_ENTITIES_DDL,
     COHORT_TAGS_DDL,
+    
+    # Profile management tables
+    PROFILES_SEQ_DDL,
+    PROFILES_DDL,
+    PROFILE_EXECUTIONS_DDL,
     
     # PatientSim canonical tables
     PATIENTS_DDL,
