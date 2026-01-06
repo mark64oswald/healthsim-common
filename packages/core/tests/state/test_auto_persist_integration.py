@@ -16,6 +16,18 @@ import pytest
 from healthsim.db import DatabaseConnection
 from healthsim.state.auto_persist import AutoPersistService
 
+# Check for pyarrow availability
+try:
+    import pyarrow
+    PYARROW_AVAILABLE = True
+except ImportError:
+    PYARROW_AVAILABLE = False
+
+requires_pyarrow = pytest.mark.skipif(
+    not PYARROW_AVAILABLE, 
+    reason="pyarrow not installed"
+)
+
 
 @pytest.fixture
 def db_connection():
@@ -34,6 +46,7 @@ def service(db_connection):
     return AutoPersistService(db_connection)
 
 
+@requires_pyarrow
 class TestParquetExport:
     """Test Parquet export functionality."""
 
@@ -127,6 +140,7 @@ class TestPerformance:
         assert clone.total_entities == 1000
         assert elapsed < 5.0, f"Clone took {elapsed:.2f}s, expected < 5s"
 
+    @requires_pyarrow
     def test_export_1000_entities_all_formats(self, service):
         """Export 1000 patients in all formats should be fast."""
         patients = [
