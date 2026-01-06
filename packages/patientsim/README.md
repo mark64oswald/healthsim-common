@@ -37,6 +37,36 @@ patients = gen.generate_many(count=10)
 patient = gen.generate(skill="icu_sepsis")
 ```
 
+## Profile-Based Generation
+
+PatientSim supports the unified generation framework:
+
+```python
+from patientsim.generation import generate, list_templates, quick_sample
+
+# Generate from template
+result = generate("diabetic-senior", count=100, seed=42)
+
+# Quick sample
+patients = quick_sample(count=10)
+
+# Via unified healthsim API
+import healthsim
+result = healthsim.generate("patients", template="oncology", count=50)
+```
+
+### Available Templates
+
+| Template | Description |
+|----------|-------------|
+| `diabetic-senior` | Elderly patients with diabetes and comorbidities |
+| `healthy-adult` | Adults with no chronic conditions |
+| `pediatric-asthma` | Children with asthma |
+| `ed-frequent-flyer` | Frequent ED utilizers |
+| `surgical-inpatient` | Patients requiring surgery |
+| `maternity` | Pregnancy and childbirth |
+| `oncology` | Cancer patients |
+
 ## Architecture
 
 ```

@@ -41,6 +41,35 @@ ae_gen = AdverseEventGenerator()
 aes = ae_gen.generate_for_subject(subjects[0], visit_count=len(visits))
 ```
 
+## Profile-Based Generation
+
+TrialSim supports the unified generation framework:
+
+```python
+from trialsim.generation import generate, quick_sample
+
+# Generate from template
+result = generate("phase3-oncology-trial", count=200, seed=42)
+print(f"Generated {result.count} subjects")
+
+# Quick sample
+subjects = quick_sample(count=10)
+
+# Via unified healthsim API
+import healthsim
+result = healthsim.generate("trials", template="phase2-diabetes-trial", count=100)
+```
+
+### Available Templates
+
+| Template | Description |
+|----------|-------------|
+| `phase3-oncology-trial` | Phase 3 oncology RCT |
+| `phase2-diabetes-trial` | Phase 2 diabetes study |
+| `phase1-healthy-volunteers` | Phase 1 PK/PD study |
+| `observational-registry` | Non-interventional registry |
+| `rare-disease-trial` | Small rare disease study |
+
 ## Architecture
 
 ```

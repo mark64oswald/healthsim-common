@@ -37,6 +37,37 @@ rx_gen = PrescriptionGenerator()
 prescriptions = rx_gen.generate_for_member(members[0], rx_count=5)
 ```
 
+## Profile-Based Generation
+
+RxMemberSim supports the unified generation framework:
+
+```python
+from rxmembersim.generation import generate, quick_sample
+
+# Generate from template
+result = generate("medicare-partd-polypharmacy", count=100, seed=42)
+
+# Quick sample
+rx_members = quick_sample(count=10)
+
+# Via unified healthsim API
+import healthsim
+result = healthsim.generate("rx", template="specialty-oncology", count=50)
+```
+
+### Available Templates
+
+| Template | Description |
+|----------|-------------|
+| `commercial-healthy` | Minimal medication use |
+| `commercial-chronic` | Multiple chronic conditions |
+| `medicare-partd-standard` | Standard Part D beneficiary |
+| `medicare-partd-polypharmacy` | 5+ medications |
+| `medicare-partd-lis` | Low-income subsidy eligible |
+| `specialty-oncology` | Oncology specialty drugs |
+| `specialty-autoimmune` | Autoimmune specialty drugs |
+| `ltc-nursing-home` | Long-term care residents |
+
 ## Architecture
 
 ```

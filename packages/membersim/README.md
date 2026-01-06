@@ -37,6 +37,42 @@ claim_gen = ClaimGenerator()
 claims = claim_gen.generate_for_member(members[0], claim_count=5)
 ```
 
+## Profile-Based Generation
+
+MemberSim supports the unified generation framework for creating members from profile specifications:
+
+```python
+from membersim.generation import generate, list_templates, quick_sample
+
+# List available templates
+templates = list_templates()
+# ['commercial-ppo-healthy', 'medicare-advantage-diabetic', ...]
+
+# Generate from template
+result = generate("commercial-ppo-healthy", count=100, seed=42)
+print(f"Generated {result.count} members")
+
+# Quick sample for testing
+members = quick_sample(count=10)
+
+# Or use the unified healthsim API
+import healthsim
+result = healthsim.generate("members", template="medicare-advantage-diabetic", count=50)
+```
+
+### Available Templates
+
+| Template | Description |
+|----------|-------------|
+| `commercial-ppo-healthy` | Working-age adults with PPO coverage |
+| `commercial-hdhp-young` | Young adults with high-deductible plans |
+| `commercial-family-mix` | Diverse commercial population with families |
+| `medicare-advantage-diabetic` | MA members with Type 2 diabetes |
+| `medicare-original-healthy` | Traditional Medicare in good health |
+| `medicaid-pediatric` | Children covered under Medicaid/CHIP |
+| `medicaid-adult-expansion` | Adults covered under Medicaid expansion |
+| `exchange-silver-plan` | ACA marketplace Silver plan members |
+
 ## Architecture
 
 ```
