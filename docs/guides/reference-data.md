@@ -218,6 +218,6 @@ print(f"Facility pool: {hybrid['profile']['_facilities']['count']} hospitals")
 
 ## See Also
 
-- [Data Architecture](../docs/data-architecture.md) - Full database schema documentation
+- [Data Architecture](../data-architecture.md) - Full database schema documentation
 - [Skill Integration Guide](skill-integration.md) - Using skills with generation
-- [Profile Schema](../docs/api/profile-schema.md) - Profile specification format
+- [Profile Schema](../api/profile-schema.md) - Profile specification format

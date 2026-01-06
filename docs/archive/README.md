@@ -2,6 +2,8 @@
 
 Historical documentation from HealthSim development. These documents are preserved for reference but are not part of active product documentation.
 
+> ⚠️ **Note on Links**: Documents in this archive may contain broken links to files that have been moved, renamed, or removed during development. These links are preserved as historical artifacts and are not maintained. For current documentation, see the links at the bottom of this page.
+
 ---
 
 ## Contents

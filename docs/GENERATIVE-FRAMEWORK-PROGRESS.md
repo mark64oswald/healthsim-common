@@ -237,7 +237,16 @@ All product READMEs updated with generation examples
 | Performance tests | ✅ | Basic timing in execution records |
 | docs/guides/generative-framework.md | ✅ | Comprehensive guide created |
 | Oswald demo script | ✅ | demos/oswald_demo.py |
-| Link validation | ⬜ | Deferred (low priority) |
+| Link validation | ✅ | 6 broken links fixed, archive disclaimer added |
+
+**Link Validation Details:**
+- Created `docs/api/profile-schema.md` (206 lines)
+- Created `docs/api/journey-engine.md` (281 lines)
+- Created `docs/guides/profile-persistence.md` (280 lines)
+- Created `docs/skills/README.md` (110 lines)
+- Fixed paths in `docs/guides/reference-data.md`
+- Added broken link disclaimer to `docs/archive/README.md`
+- Created `scripts/check_links.py` for future validation
 
 **Files Created**:
 - `docs/guides/generative-framework.md` (422 lines) - Complete user guide
