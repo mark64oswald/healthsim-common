@@ -41,6 +41,13 @@ dev = [
     "black>=23.0.0",
     "pre-commit>=3.0.0",
 ]
+# Product packages for unified_generate integration tests
+products = [
+    "membersim",
+    "patientsim",
+    "rxmembersim",
+    "trialsim",
+]
 databricks = [
     "databricks-sql-connector>=3.0.0",
 ]
@@ -64,6 +71,9 @@ packages = ["src/healthsim"]
 testpaths = ["tests"]
 pythonpath = ["src"]
 addopts = "-v --tb=short"
+markers = [
+    "integration: marks tests as integration tests (require real database)",
+]
 
 [tool.ruff]
 line-length = 100
